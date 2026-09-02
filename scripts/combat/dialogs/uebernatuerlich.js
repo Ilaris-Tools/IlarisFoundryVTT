@@ -6,6 +6,7 @@ import * as hardcoded from '../../actors/data/hardcodedvorteile.js'
 import { sanitizeEnergyCost, isNumericCost, formatDiceFormula } from '../../core/utilities.js'
 import {
     IlarisGameSettingNames,
+    IlarisAutomatisierungSettingNames,
     ConfigureGameSettingsCategories,
 } from '../../settings/configure-game-settings.model.js'
 import { ILARIS } from '../../core/config.js'
@@ -23,6 +24,28 @@ import {
     normalizeSpellModifications,
     resolveSpellModificationContext,
 } from '../../items/data/spell-modifications.js'
+import { getCasterToken, placeZonePreview } from '../zones/zone-region-adapter.js'
+import { resolvePersistentZoneDuration } from '../zones/zone-profile.js'
+import {
+    createPersistentZone,
+    createZoneDraftRegion,
+    deleteZoneDraftRegion,
+    resolveInstantZoneTargets,
+} from '../zones/zone-lifecycle.js'
+import { resolveCastSkillContext } from './cast-skill-context.js'
+import {
+    createMagicResistanceChallenge,
+    resolveMagicResistanceTarget,
+} from '../magic-resistance.js'
+import { handleMagicResistanceRequest } from '../magic-resistance-chat.js'
+import {
+    resolveDamageExecutorUserId,
+    resolveTargetActorForDamage,
+} from './shared-dialog-helpers.js'
+import {
+    getCreatureSourceOptions,
+    normalizeCreatureTypes,
+} from '../../effects/pre-effects/summoned-creatures.js'
 
 export class UebernatuerlichDialog extends CombatDialog {
     /** @override */
@@ -33,6 +56,8 @@ export class UebernatuerlichDialog extends CombatDialog {
             ...super.DEFAULT_OPTIONS.actions,
             energieErfolg: UebernatuerlichDialog.#onEnergieErfolg,
             energieMisserfolg: UebernatuerlichDialog.#onEnergieMisserfolg,
+            placeZone: UebernatuerlichDialog.#onPlaceZone,
+            requestMagicResistance: UebernatuerlichDialog.#onRequestMagicResistance,
         },
     }
 
@@ -65,6 +90,13 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.armedInputValues = {}
         this.selectedSpellModificationIds = []
         this.spellModificationContext = resolveSpellModificationContext(this.item, [])
+        this.zonePlacement = null
+        this.zoneCasterTokenId = ''
+        this.zoneRangeBonus = 0
+        this.castSkillContext = resolveCastSkillContext(actor, item)
+        this.castSkill = this.castSkillContext.castSkill
+        this.magicResistanceChallenge = null
+        this.summonCreatureSelections = new Map()
     }
 
     /**
@@ -78,8 +110,39 @@ export class UebernatuerlichDialog extends CombatDialog {
         // Setup modifier display with debounced listeners
         this.setupModifierDisplay()
         this.element.querySelectorAll('.spell-modification').forEach((input) => {
-            input.addEventListener('change', () => {
+            input.addEventListener('change', async () => {
+                await this._discardZoneDraft()
                 this._updateSpellModificationSelection()
+                await this.render()
+                await this.updateModifierDisplay()
+            })
+        })
+        this.element
+            .querySelector('[name="ilaris-cast-skill"]')
+            ?.addEventListener('change', async (event) => {
+                this.castSkill = event.currentTarget.value || ''
+                await this.render()
+            })
+        this.element.querySelectorAll('.summon-creature-type').forEach((input) => {
+            input.addEventListener('change', () => {
+                const index = Number(input.dataset.preEffectIndex)
+                const selection = this.summonCreatureSelections.get(index) || {}
+                this.summonCreatureSelections.set(index, {
+                    ...selection,
+                    kreaturentyp: input.value,
+                    uuid: '',
+                    option: null,
+                })
+                this.spellModificationContext = null
+                this.render()
+            })
+        })
+        this.element.querySelectorAll('.summon-creature-source').forEach((input) => {
+            input.addEventListener('change', () => {
+                const index = Number(input.dataset.preEffectIndex)
+                const selection = this.summonCreatureSelections.get(index) || {}
+                this.summonCreatureSelections.set(index, { ...selection, uuid: input.value })
+                this.spellModificationContext = null
                 this.render()
             })
         })
@@ -107,13 +170,39 @@ export class UebernatuerlichDialog extends CombatDialog {
         await this._energieAbrechnenKlick(false)
     }
 
+    static async #onPlaceZone(event, target) {
+        await this._placeZone()
+    }
+
+    static async #onRequestMagicResistance(event, target) {
+        await this._requestMagicResistance()
+    }
+
     /**
      * Returns base values specific to UebernatuerlichDialog
      */
     getBaseValues() {
         return {
-            basePW: this.item.system.pw || 0,
+            basePW: this.castSkillContext.basePW ?? (this.item.system.pw || 0),
         }
+    }
+
+    getResolvedCastSkill() {
+        return this.castSkill || ''
+    }
+
+    _isCastSkillMissing() {
+        return this.castSkillContext.requiresSelection && !this.getResolvedCastSkill()
+    }
+
+    getIlarisFertigkeitContext() {
+        return this.getResolvedCastSkill() || super.getIlarisFertigkeitContext()
+    }
+
+    async _requireCastSkill() {
+        if (!this._isCastSkillMissing()) return true
+        ui.notifications.warn('Wähle zuerst die Fertigkeit für diesen Zauber.')
+        return false
     }
 
     /**
@@ -157,21 +246,27 @@ export class UebernatuerlichDialog extends CombatDialog {
 
         const difficultyRows = []
         const schwierigkeit = this.getEffectiveSpellProfile().difficulty
-        if (schwierigkeit) {
-            const parsedDifficulty = parseInt(schwierigkeit)
-            if (!isNaN(parsedDifficulty)) {
+        const difficulty = this._getCastingDifficulty()
+        if (difficulty !== null) {
+            if (this._isAutomaticMagicResistance()) {
                 difficultyRows.push({
-                    label: 'Schwierigkeit',
-                    value: `${parsedDifficulty}`,
+                    label: 'Magieresistenz',
+                    value: `${difficulty}`,
                     cssClass: 'modifier-item base-value',
                 })
             } else {
                 difficultyRows.push({
                     label: 'Schwierigkeit',
-                    value: `${schwierigkeit}`,
-                    cssClass: 'modifier-item neutral',
+                    value: `${difficulty}`,
+                    cssClass: 'modifier-item base-value',
                 })
             }
+        } else if (schwierigkeit) {
+            difficultyRows.push({
+                label: 'Schwierigkeit',
+                value: `${schwierigkeit}`,
+                cssClass: 'modifier-item neutral',
+            })
         }
 
         const maneuverSection = this._buildModifierSectionData(this.text_at, {
@@ -180,9 +275,10 @@ export class UebernatuerlichDialog extends CombatDialog {
         const ilarisProbeResult =
             this.ilarisProbeResult || this.getIlarisModifierResult(IlarisModifierTarget.Probe)
 
+        const rollDisabled = this._isRollDisabled()
         return {
-            action: 'angreifen',
-            cssClass: 'modifier-summary talent-summary clickable-summary',
+            action: rollDisabled ? null : 'angreifen',
+            cssClass: `modifier-summary talent-summary ${rollDisabled ? 'zone-roll-disabled' : 'clickable-summary'}`,
             heading: `${icon} ${itemType}: ${finalFormula}`,
             rows: [
                 {
@@ -249,9 +345,10 @@ export class UebernatuerlichDialog extends CombatDialog {
             })
         }
 
-        const difficulty = this.getEffectiveSpellProfile().difficulty
-        const isNonStandardDifficulty = isNaN(difficulty) || !difficulty
+        const difficulty = this._getCastingDifficulty()
+        const isNonStandardDifficulty = difficulty === null
 
+        const rollDisabled = this._isRollDisabled()
         return {
             cssClass: 'modifier-summary energy-summary',
             heading: `${icon} Energiekosten: ${baseEnergy} Energie`,
@@ -267,15 +364,15 @@ export class UebernatuerlichDialog extends CombatDialog {
             actionButtons: isNonStandardDifficulty
                 ? [
                       {
-                          action: 'energieErfolg',
+                          action: rollDisabled ? null : 'energieErfolg',
                           text: '✅ Erfolgreich gewirkt',
-                          cssClass: 'clickable-summary energie-erfolg',
+                          cssClass: `clickable-summary energie-erfolg ${rollDisabled ? 'zone-roll-disabled' : ''}`,
                           style: 'cursor: pointer; padding: 8px; margin: 4px 0; background: rgba(0, 150, 0, 0.1); border: 1px solid rgba(0, 150, 0, 0.3); border-radius: 4px; text-align: center;',
                       },
                       {
-                          action: 'energieMisserfolg',
+                          action: rollDisabled ? null : 'energieMisserfolg',
                           text: '❌ Misslungen',
-                          cssClass: 'clickable-summary energie-misserfolg',
+                          cssClass: `clickable-summary energie-misserfolg ${rollDisabled ? 'zone-roll-disabled' : ''}`,
                           style: 'cursor: pointer; padding: 8px; margin: 4px 0; background: rgba(220, 0, 0, 0.1); border: 1px solid rgba(220, 0, 0, 0.3); border-radius: 4px; text-align: center;',
                       },
                   ]
@@ -312,11 +409,16 @@ export class UebernatuerlichDialog extends CombatDialog {
 
         const hasVerbotenePforten = this.hasVerbotenePfortenAccess()
 
-        const difficulty = this.getEffectiveSpellProfile().difficulty
-        const isNonStandardDifficulty = isNaN(difficulty) || !difficulty
+        const difficulty = this._getCastingDifficulty()
+        const isNonStandardDifficulty = difficulty === null
+        const summonCreatureSelectors = await this._getSummonCreatureSelectors()
 
+        const zonePlacementEnabled = this._hasZonePlacementRequirement()
         return {
             ...context,
+            castSkillOptions: this.castSkillContext.options,
+            castSkillSelectionRequired: this.castSkillContext.requiresSelection,
+            selectedCastSkill: this.getResolvedCastSkill(),
             choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: '1',
             choices_verbotene_pforten: {
@@ -333,6 +435,11 @@ export class UebernatuerlichDialog extends CombatDialog {
             set_energy_cost: this.set_energy_cost,
             ilarisSituationControls: this.ilarisSituationControls,
             armedInputs: this._getArmedInputs(),
+            zonePlacement: this.zonePlacement,
+            zonePlacementEnabled,
+            zonePlacementReady: this._hasZoneDraft(),
+            magicResistance: this._getMagicResistanceTemplateContext(),
+            summonCreatureSelectors,
             ...this._getSpellModificationTemplateContext(),
         }
     }
@@ -342,6 +449,11 @@ export class UebernatuerlichDialog extends CombatDialog {
     /* -------------------------------------------- */
 
     async _angreifenKlick() {
+        if (!(await this._requireCastSkill())) return
+        if (this._isMagicResistancePending()) {
+            ui.notifications.warn('Fordere zuerst den W20 für die Magieresistenz an.')
+            return
+        }
         if (callIlarisHookWithGlobalMirror('Ilaris.preAngriff', this) === false) return
         let xd20_choice =
             Number(this.element.querySelector('input[name="xd20"]:checked')?.value) || 0
@@ -350,6 +462,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         if ((await this.manoeverAuswaehlen()) === false) return
         await this.updateManoeverMods()
         this.updateStatusMods()
+        if (!(await this._requireZonePlacement())) return
 
         // Initialize and check energy values
         await this.initializeEnergyValues()
@@ -360,10 +473,10 @@ export class UebernatuerlichDialog extends CombatDialog {
             ${signed(this.mod_at)}`
 
         // Parse difficulty from item's schwierigkeit
-        let difficulty = null
+        let difficulty = this._getCastingDifficulty()
         let additionalText = ''
         const schwierigkeit = this.getEffectiveSpellProfile().difficulty
-        if (schwierigkeit) {
+        if (difficulty === null && schwierigkeit) {
             const parsedDifficulty = parseInt(schwierigkeit)
             if (!isNaN(parsedDifficulty)) {
                 difficulty = parsedDifficulty
@@ -403,34 +516,35 @@ export class UebernatuerlichDialog extends CombatDialog {
                 )
             }
             // Refresh dialog data after energy application
+            const preEffectManeuverState = {
+                maneuverDurationBonus: this.maneuverDurationBonus || 0,
+                maechtigeMagieQs: this.maechtigeMagieQs || 0,
+            }
             await this.refreshActorData()
+            Object.assign(this, preEffectManeuverState)
         }
         super._updateSchipsStern()
 
-        // Fire-and-forget pre-effects on success
-        if (isSuccess && this.getEffectiveSpellModificationContext().preEffects.length > 0) {
-            await applyPreEffects(rollResult, this, this.armedInputValues, {
-                preEffects: this.getEffectiveSpellModificationContext().preEffects,
-                spellModificationId: this.getSelectedSpellModificationId(),
-            })
-        }
+        if (isSuccess) await this._resolveSuccessfulSpellEffects(rollResult)
+        else await this._discardZoneDraft()
     }
 
     async _energieAbrechnenKlick(isSuccess) {
+        if (!(await this._requireCastSkill())) return
+        if (this._isMagicResistancePending()) {
+            ui.notifications.warn('Fordere zuerst den W20 für die Magieresistenz an.')
+            return
+        }
         if ((await this.manoeverAuswaehlen()) === false) return
         await this.updateManoeverMods()
+        if (!(await this._requireZonePlacement())) return
         // Initialize and check energy values
         await this.initializeEnergyValues()
 
         await this.applyEnergyCost(isSuccess, this.is16OrHigher)
 
-        // Fire-and-forget pre-effects for non-standard difficulty spells
-        if (isSuccess && this.getEffectiveSpellModificationContext().preEffects.length > 0) {
-            await applyPreEffects({ success: true }, this, this.armedInputValues, {
-                preEffects: this.getEffectiveSpellModificationContext().preEffects,
-                spellModificationId: this.getSelectedSpellModificationId(),
-            })
-        }
+        if (isSuccess) await this._resolveSuccessfulSpellEffects({ success: true })
+        else await this._discardZoneDraft()
 
         // If not enough resources, show error
         if (this.currentEnergy < this.endCost) {
@@ -469,6 +583,270 @@ export class UebernatuerlichDialog extends CombatDialog {
     /* -------------------------------------------- */
     /*  Energy Management                           */
     /* -------------------------------------------- */
+
+    _isZoneAutomationEnabled() {
+        return game.settings.get(
+            ConfigureGameSettingsCategories.Ilaris,
+            IlarisAutomatisierungSettingNames.useTargetSelection,
+        )
+    }
+
+    _isAutomaticMagicResistance() {
+        const requirement = this.getEffectiveSpellProfile().magicResistance
+        return Boolean(this._isZoneAutomationEnabled() && requirement?.enabled)
+    }
+
+    _resolveMagicResistanceTarget() {
+        return resolveMagicResistanceTarget(this.selectedActors, {
+            resolveActor: (target) => resolveTargetActorForDamage(target).targetActor,
+        })
+    }
+
+    _getCastingDifficulty() {
+        if (this._isAutomaticMagicResistance()) {
+            return Number.isFinite(this.magicResistanceChallenge?.difficulty)
+                ? this.magicResistanceChallenge.difficulty
+                : null
+        }
+        if (!Number.isFinite(Number.parseInt(this.item.system.schwierigkeit, 10))) return null
+        const difficulty = Number.parseInt(this.getEffectiveSpellProfile().difficulty, 10)
+        return Number.isFinite(difficulty) ? difficulty : null
+    }
+
+    _isMagicResistancePending() {
+        return this._isAutomaticMagicResistance() && this._getCastingDifficulty() === null
+    }
+
+    _isRollDisabled() {
+        return (
+            this._isZonePlacementMissing() ||
+            this._isCastSkillMissing() ||
+            this._isMagicResistancePending()
+        )
+    }
+
+    _getMagicResistanceTemplateContext() {
+        if (!this._isAutomaticMagicResistance()) return { enabled: false }
+        const target = this._resolveMagicResistanceTarget()
+        if (!target) {
+            return {
+                enabled: true,
+                status: 'missing-target',
+                message: 'Wähle genau ein Actor-Ziel für die Magieresistenz.',
+            }
+        }
+        const challenge = this.magicResistanceChallenge
+        if (
+            challenge?.targetActorUuid === target.actor.uuid &&
+            Number.isFinite(challenge.difficulty)
+        ) {
+            return {
+                enabled: true,
+                status: 'resolved',
+                targetName: target.actor.name,
+                magicResistance: challenge.magicResistance,
+                d20: challenge.d20,
+                difficulty: challenge.difficulty,
+            }
+        }
+        return {
+            enabled: true,
+            status: 'pending',
+            targetName: target.actor.name,
+            magicResistance: target.magicResistance,
+        }
+    }
+
+    async _requestMagicResistance() {
+        const target = this._resolveMagicResistanceTarget()
+        if (!this._isAutomaticMagicResistance() || !target) {
+            ui.notifications.warn('Wähle genau ein Actor-Ziel für die Magieresistenz.')
+            return false
+        }
+        const executorUserId = resolveDamageExecutorUserId(target.actor)
+        if (!executorUserId) {
+            ui.notifications.warn(
+                `Keine berechtigte Benutzerinstanz für ${target.actor.name} ist aktiv.`,
+            )
+            return false
+        }
+        const challenge = createMagicResistanceChallenge({
+            dialogId: this.dialogId,
+            target,
+            executorUserId,
+            requestId: foundry.utils.randomID(16),
+        })
+        if (!challenge) return false
+        this.magicResistanceChallenge = challenge
+        const request = { ...challenge, spellName: this.item.name }
+        game.socket.emit('system.Ilaris', { type: 'requestMagicResistance', data: request })
+        if (executorUserId === game.user.id) await handleMagicResistanceRequest(request)
+        await this.render()
+        return true
+    }
+
+    _hasZonePlacementRequirement() {
+        const zone = this.getEffectiveSpellModificationContext().zone
+        return Boolean(this._isZoneAutomationEnabled() && zone)
+    }
+
+    _hasZoneDraft() {
+        return Boolean(this.zonePlacement?.draftId)
+    }
+
+    _isZonePlacementMissing() {
+        return this._hasZonePlacementRequirement() && !this._hasZoneDraft()
+    }
+
+    async _requireZonePlacement() {
+        if (!this._isZonePlacementMissing()) return true
+        ui.notifications.warn('Platziere zuerst die Zone.')
+        return false
+    }
+
+    async _placeZone() {
+        if ((await this.manoeverAuswaehlen()) === false) return
+        await this.updateManoeverMods()
+        const zone = this.getEffectiveSpellModificationContext().zone
+        if (!this._isZoneAutomationEnabled() || !zone) return
+
+        await this._discardZoneDraft()
+
+        const casterToken = getCasterToken(this.actor)
+        if (!globalThis.canvas?.scene || !casterToken) {
+            ui.notifications.error(
+                'Zonenplatzierung benötigt eine aktive Szene und einen Zauberer-Token.',
+            )
+            return
+        }
+
+        const placement = await placeZonePreview(zone, casterToken, {
+            rangeBonus: this.zoneRangeBonus,
+        })
+        if (!placement) {
+            await this.updateModifierDisplay()
+            return
+        }
+
+        const draftId =
+            globalThis.foundry?.utils?.randomID?.(16) ||
+            globalThis.crypto?.randomUUID?.() ||
+            `${Date.now()}`
+        this.zonePlacement = { ...placement, draftId }
+        this.zoneCasterTokenId = casterToken.id
+        const draftRequest = {
+            sceneId: canvas.scene.id,
+            regionData: placement.regionData,
+            draftId,
+            ownerUserId: game.user.id,
+            dialogId: this.dialogId,
+        }
+        if (game.user.isGM) {
+            const draft = await createZoneDraftRegion({ scene: canvas.scene, ...draftRequest })
+            if (!draft) {
+                this.zonePlacement = null
+                this.zoneCasterTokenId = ''
+                ui.notifications.error('Die Zonenplatzierung konnte nicht gespeichert werden.')
+                await this.updateModifierDisplay()
+                return
+            }
+            this.zonePlacement.draftId = draft.id
+        } else game.socket.emit('system.Ilaris', { type: 'createZoneDraft', data: draftRequest })
+        ui.notifications.info('Zone platziert. Jetzt kann der Zauber gewirkt werden.')
+        await this.updateModifierDisplay()
+    }
+
+    async _discardZoneDraft() {
+        const draftId = this.zonePlacement?.draftId
+        if (!draftId) {
+            this.zonePlacement = null
+            this.zoneCasterTokenId = ''
+            return false
+        }
+        const request = {
+            sceneId: canvas.scene?.id,
+            draftId,
+            ownerUserId: game.user.id,
+            dialogId: this.dialogId,
+        }
+        if (game.user.isGM) await deleteZoneDraftRegion({ scene: canvas.scene, ...request })
+        else game.socket.emit('system.Ilaris', { type: 'deleteZoneDraft', data: request })
+        this.zonePlacement = null
+        this.zoneCasterTokenId = ''
+        return true
+    }
+
+    async _resolveSuccessfulSpellEffects(rollResult) {
+        const context = this.getEffectiveSpellModificationContext()
+        const preEffectContext = {
+            preEffects: context.preEffects,
+            spellModificationId: this.getSelectedSpellModificationId(),
+        }
+        if (!context.zone || !this._isZoneAutomationEnabled() || !this.zonePlacement) {
+            if (context.preEffects.length)
+                await applyPreEffects(rollResult, this, this.armedInputValues, preEffectContext)
+            return
+        }
+
+        if (context.zone.lifecycle === 'persistent') {
+            const zone = resolvePersistentZoneDuration(context.zone, this.actor)
+            if (!zone) {
+                ui.notifications.error('Die Dauerquelle der Zone konnte nicht aufgelöst werden.')
+                return
+            }
+            const persistentContext = { ...context, zone }
+            if (!game.user.isGM) {
+                game.socket.emit('system.Ilaris', {
+                    type: 'createPersistentZone',
+                    data: this._serializePersistentZoneRequest(persistentContext),
+                })
+                this.zonePlacement = null
+                this.zoneCasterTokenId = ''
+                return
+            }
+            await createPersistentZone({
+                scene: canvas.scene,
+                regionData: this.zonePlacement.regionData,
+                dialog: this,
+                zone,
+                preEffects: context.preEffects,
+            })
+            await this._discardZoneDraft()
+            return
+        }
+
+        this.selectedActors = await resolveInstantZoneTargets(this.zonePlacement.regionData, {
+            zone: context.zone,
+            casterTokenId: this.zoneCasterTokenId,
+        })
+        if (context.preEffects.length)
+            await applyPreEffects(rollResult, this, this.armedInputValues, preEffectContext)
+        await this._discardZoneDraft()
+    }
+
+    _serializePersistentZoneRequest(context) {
+        return {
+            sceneId: canvas.scene.id,
+            regionData: this.zonePlacement.regionData,
+            zone: context.zone,
+            preEffects: context.preEffects,
+            casterActorUuid: this.actor.uuid,
+            casterTokenId: this.zoneCasterTokenId,
+            spellUuid: this.item.uuid,
+            spellModificationId: this.getSelectedSpellModificationId(),
+            armedInputValues: this.armedInputValues,
+            maneuverDurationBonus: this.maneuverDurationBonus || 0,
+            maechtigeMagieQs: this.maechtigeMagieQs || 0,
+            draftRegionId: this.zonePlacement.draftId,
+            draftOwnerUserId: game.user.id,
+            dialogId: this.dialogId,
+        }
+    }
+
+    async close(options = {}) {
+        await this._discardZoneDraft()
+        return super.close(options)
+    }
 
     async initializeEnergyValues() {
         // Check if we have enough resources
@@ -794,6 +1172,15 @@ export class UebernatuerlichDialog extends CombatDialog {
             })
         })
 
+        // Zone-capable casting maneuvers can declare an additive RANGE or
+        // ZONE_RANGE modification. Existing maneuvers remain unchanged.
+        this.zoneRangeBonus = allModifications.reduce((total, { modification }) => {
+            if (!['RANGE', 'ZONE_RANGE'].includes(modification?.type)) return total
+            const value = Number(modification.value)
+            if (!Number.isFinite(value)) return total
+            return total + (modification.operator === 'SUBTRACT' ? -value : value)
+        }, 0)
+
         // Process all modifications in order
         ;[
             mod_at,
@@ -941,15 +1328,72 @@ export class UebernatuerlichDialog extends CombatDialog {
     }
 
     getEffectiveSpellModificationContext() {
-        this.spellModificationContext ??= resolveSpellModificationContext(
-            this.item,
-            this.selectedSpellModificationIds,
-        )
+        if (!this.spellModificationContext) {
+            const context = resolveSpellModificationContext(
+                this.item,
+                this.selectedSpellModificationIds,
+            )
+            context.preEffects = foundry.utils.deepClone(context.preEffects)
+            for (const [index, selection] of this.summonCreatureSelections) {
+                if (context.preEffects[index]?.summonCreature && selection.uuid) {
+                    context.preEffects[index].summonCreature.selectedCreatureUuid = selection.uuid
+                }
+            }
+            this.spellModificationContext = context
+        }
         return this.spellModificationContext
     }
 
     getEffectiveSpellProfile() {
-        return this.getEffectiveSpellModificationContext().profile
+        const profile = { ...this.getEffectiveSpellModificationContext().profile }
+        const selectedCreature = Array.from(this.summonCreatureSelections.values()).find(
+            (selection) => selection.option?.uuid === selection.uuid,
+        )?.option
+        if (selectedCreature) {
+            profile.difficulty = selectedCreature.summoningDifficulty
+            profile.cost = selectedCreature.summoningCost
+        }
+        return profile
+    }
+
+    async _getSummonCreatureSelectors() {
+        const selectors = []
+        for (const [
+            index,
+            preEffect,
+        ] of this.getEffectiveSpellModificationContext().preEffects.entries()) {
+            const config = preEffect?.summonCreature
+            if (!config?.enabled) continue
+            // A fixed source is resolved by summonCreatureFromPreEffect. It must
+            // not depend on the generic picker or its configured-pack index.
+            if (config.sourceUuid) continue
+            const kreaturentypen = normalizeCreatureTypes(config.kreaturentypen)
+            const current = this.summonCreatureSelections.get(index) || {}
+            const kreaturentyp = kreaturentypen.includes(current.kreaturentyp)
+                ? current.kreaturentyp
+                : kreaturentypen[0] || ''
+            const options = await getCreatureSourceOptions(kreaturentyp ? [kreaturentyp] : [])
+            const option =
+                options.find((entry) => entry.uuid === current.uuid) || options[0] || null
+            this.summonCreatureSelections.set(index, {
+                kreaturentyp,
+                uuid: option?.uuid || '',
+                option,
+            })
+            if (option && this.spellModificationContext?.preEffects[index]?.summonCreature) {
+                this.spellModificationContext.preEffects[
+                    index
+                ].summonCreature.selectedCreatureUuid = option.uuid
+            }
+            selectors.push({
+                index,
+                kreaturentypen,
+                kreaturentyp,
+                options,
+                selectedUuid: option?.uuid || '',
+            })
+        }
+        return selectors
     }
 
     getSelectedSpellModificationId() {

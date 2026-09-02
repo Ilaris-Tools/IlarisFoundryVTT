@@ -49,3 +49,4 @@ node_modules
 
 # claude code local
 .claude/settings.local.json
+.codex/logs/

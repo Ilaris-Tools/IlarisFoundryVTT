@@ -8,6 +8,9 @@
     "text": "Das Opfer wird vom Hexenschuss geplagt, der entweder alle körperlichen oder alle geistigen Tätigkeiten um –2 erschwert.",
     "maechtig": "Der Malus steigt um –1.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "",
     "vorbereitung": "2 Aktionen",
     "ziel": "Einzelperson",

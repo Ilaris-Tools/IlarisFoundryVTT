@@ -195,6 +195,34 @@ test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
                             diminishedOnly: false,
                             resistDifficulty: difficulty,
                         }
+                        pe.resistanceOutcomes = {
+                            failure: {
+                                enabled: true,
+                                changes: [],
+                                ilarisModifiers: [],
+                                marker: {
+                                    enabled: true,
+                                    id: 'handlungsunfaehig',
+                                    label: 'Handlungsunfähig',
+                                },
+                                condition: { enabled: false, statusId: '' },
+                            },
+                            success: {
+                                enabled: true,
+                                changes: [],
+                                ilarisModifiers: [
+                                    {
+                                        phase: 'roll',
+                                        target: 'probe',
+                                        value: '-4',
+                                        stacking: 'strongest-supernatural',
+                                        selector: {},
+                                    },
+                                ],
+                                marker: { enabled: false, id: '', label: '' },
+                                condition: { enabled: false, statusId: '' },
+                            },
+                        }
                     }
                 }
 
@@ -320,110 +348,141 @@ test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
         await expect(fertigkeitDialog).toContainText(String(RESIST_DIFFICULTY))
     })
 
-    test('failed resist applies the full pre-effect through Ilaris.postSkillRoll', async ({
+    test('tied automatic casting requires a visible Fertigkeit choice before rolling', async ({
         page,
     }) => {
-        const effectsBefore = await page.evaluate(
-            (name) => game.actors.getName(name)?.effects.size ?? 0,
-            ACTOR_NAME,
-        )
-        await openResistDialog(page)
-        await resolveResist(page, false)
-        await page.waitForFunction(
-            ({ name, count }) => (game.actors.getName(name)?.effects.size ?? 0) > count,
-            { name: ACTOR_NAME, count: effectsBefore },
-            { timeout: 10000 },
-        )
-    })
-
-    test('successful resist skips the regular pre-effect through Ilaris.postSkillRoll', async ({
-        page,
-    }) => {
-        const effectsBefore = await page.evaluate(
-            (name) => game.actors.getName(name)?.effects.size ?? 0,
-            ACTOR_NAME,
-        )
-        await openResistDialog(page)
-        await resolveResist(page, true)
-        expect(
-            await page.evaluate((name) => game.actors.getName(name)?.effects.size ?? 0, ACTOR_NAME),
-        ).toBe(effectsBefore)
-    })
-
-    test('failed diminishedOnly resist creates the reviewed zero-value marker', async ({
-        page,
-    }) => {
-        await page.evaluate(
-            ({ name, spellName }) => {
-                const spell = game.actors
-                    .getName(name)
-                    ?.items.find((item: any) => item.name?.includes(spellName))
-                const preEffects = foundry.utils.deepClone(spell?.system?.preEffects ?? [])
-                for (const preEffect of Object.values(preEffects) as any[]) {
-                    preEffect.avoidTest.diminishedOnly = true
-                    preEffect.changes[0].key = 'system.modifikatoren.manuellermod'
-                    preEffect.changes[0].value = '0'
-                    preEffect.changes[0].diminishedValue = '-4'
+        const tiedSkills = await page.evaluate(
+            async ({ name, spellName }) => {
+                const actor = game.actors.getName(name)
+                const skills = Array.from(actor?.uebernatuerlich?.fertigkeiten ?? []) as any[]
+                const groups = new Map<number, string[]>()
+                for (const skill of skills) {
+                    const pw = Number(skill.system?.pw ?? 0)
+                    const group = groups.get(pw) ?? []
+                    group.push(skill.name)
+                    groups.set(pw, group)
                 }
-                return spell?.update({ 'system.preEffects': preEffects })
+                const pair = Array.from(groups.values())
+                    .find((group) => group.length >= 2)
+                    ?.slice(0, 2)
+                if (!pair) return []
+                const spell = actor?.items.find((item: any) => item.name?.includes(spellName))
+                await spell?.update({
+                    'system.fertigkeit_ausgewaehlt': 'auto',
+                    'system.fertigkeiten': pair.join(', '),
+                })
+                return pair
             },
             { name: ACTOR_NAME, spellName: SPELL_NAME },
         )
-        await openResistDialog(page)
-        await resolveResist(page, false)
-        await page.waitForFunction(
-            (name) => (game.actors.getName(name)?.effects.size ?? 0) > 0,
-            ACTOR_NAME,
-            { timeout: 10000 },
-        )
-        const marker = await page.evaluate(
-            (name) =>
-                Array.from(game.actors.getName(name)?.effects ?? []).find((effect: any) =>
-                    effect.changes.some(
-                        (change: any) =>
-                            change.key === 'system.modifikatoren.manuellermod' &&
-                            String(change.value) === '0',
-                    ),
-                )?.name,
-            ACTOR_NAME,
-        )
-        expect(marker).toContain(SPELL_NAME)
+        if (tiedSkills.length < 2) test.skip(true, 'No tied supernatural skills on the E2E actor')
+
+        const actorWindow = await openActorSheet(page, ACTOR_NAME)
+        await openSpellDialog(actorWindow, SPELL_NAME)
+        const spellDialog = page.locator('.application.uebernatuerlich-dialog').last()
+        const selector = spellDialog.locator('[name="ilaris-cast-skill"]')
+        await expect(selector).toBeVisible()
+        await expect(spellDialog.locator('[data-action="angreifen"]')).toHaveCount(0)
+
+        await selector.selectOption(tiedSkills[0])
+        await expect(spellDialog.locator('[data-action="angreifen"]')).toBeVisible()
+        await spellDialog.screenshot({ path: 'test-results/tied-cast-skill-selector.png' })
     })
 
-    test('successful diminishedOnly resist applies the reviewed -4 branch through Ilaris.postSkillRoll', async ({
-        page,
-    }) => {
-        await page.evaluate(
-            ({ name, spellName }) => {
-                const spell = game.actors
-                    .getName(name)
-                    ?.items.find((item: any) => item.name?.includes(spellName))
-                const preEffects = foundry.utils.deepClone(spell?.system?.preEffects ?? [])
-                for (const preEffect of Object.values(preEffects) as any[]) {
-                    preEffect.avoidTest.diminishedOnly = true
-                    preEffect.changes[0].key = 'system.modifikatoren.manuellermod'
-                    preEffect.changes[0].value = '0'
-                    preEffect.changes[0].diminishedValue = '-4'
-                }
-                return spell?.update({ 'system.preEffects': preEffects })
-            },
-            { name: ACTOR_NAME, spellName: SPELL_NAME },
-        )
+    test('failed resist visibly applies only the configured marker outcome', async ({ page }) => {
         await openResistDialog(page)
-        await resolveResist(page, true)
-        await page.waitForFunction(
-            (name) => (game.actors.getName(name)?.effects.size ?? 0) > 0,
-            ACTOR_NAME,
-            { timeout: 10000 },
-        )
-        const values = await page.evaluate(
+        // The player opened the real resistance dialog. This deterministic hook dispatch is
+        // limited to choosing the branch without relying on random dice during E2E.
+        await resolveResist(page, false)
+        await expect
+            .poll(() =>
+                page.evaluate((name) => {
+                    const effect = Array.from(game.actors.getName(name)?.effects ?? []).find(
+                        (entry: any) => entry.flags.ilaris?.resistanceOutcome === 'failure',
+                    ) as any
+                    return effect?.name ?? ''
+                }, ACTOR_NAME),
+            )
+            .toContain('Handlungsunfähig — Ignifaxius')
+
+        const provenance = await page.evaluate((name) => {
+            const effect = Array.from(game.actors.getName(name)?.effects ?? []).find(
+                (entry: any) => entry.flags.ilaris?.resistanceOutcome === 'failure',
+            ) as any
+            return {
+                changes: effect?.changes ?? [],
+                sourceItemUuid: effect?.flags.ilaris?.sourceItemUuid,
+                spellUuid: effect?.flags.ilaris?.spellUuid,
+                castSkill: effect?.flags.ilaris?.castSkill,
+                markerId: effect?.flags.ilaris?.markerId,
+            }
+        }, ACTOR_NAME)
+        expect(provenance).toMatchObject({
+            changes: [],
+            markerId: 'handlungsunfaehig',
+        })
+        expect(provenance.sourceItemUuid).toBe(provenance.spellUuid)
+        expect(provenance.castSkill).not.toBe('auto')
+
+        // The spell and resistance dialogs completed their visible player flow above.
+        // Close only those transient apps before inspecting the actor sheet behind them.
+        await page.evaluate(async () => {
+            const dialogs = Array.from(
+                (foundry.applications as any).instances?.values() ?? [],
+            ).filter(
+                (app: any) =>
+                    app.element?.classList?.contains('uebernatuerlich-dialog') ||
+                    app.element?.classList?.contains('fertigkeit-dialog'),
+            )
+            await Promise.all(dialogs.map((app: any) => app.close()))
+        })
+        const effectId = await page.evaluate(
             (name) =>
-                Array.from(game.actors.getName(name)?.effects ?? []).flatMap((effect: any) =>
-                    effect.changes.map((change: any) => change.value),
+                Array.from(game.actors.getName(name)?.effects ?? []).find(
+                    (entry: any) => entry.flags.ilaris?.resistanceOutcome === 'failure',
+                )?.id,
+            ACTOR_NAME,
+        )
+        const actorWindow = page.locator('form.application.sheet.ilaris.actor').last()
+        await expect(actorWindow).toBeVisible()
+        await actorWindow.locator('nav [data-tab="effekte"]').click()
+        const row = actorWindow.locator(
+            `section.tab.effekte a[data-action="itemEdit"][data-itemid="${effectId}"]`,
+        )
+        await expect(row).toContainText('Handlungsunfähig — Ignifaxius')
+        await actorWindow.screenshot({ path: 'test-results/resistance-outcome-effect-row.png' })
+    })
+
+    test('successful resist applies only the configured -4 outcome', async ({ page }) => {
+        await openResistDialog(page)
+        // See the failed branch above: the hook is a deterministic result selection only.
+        await resolveResist(page, true)
+        await expect
+            .poll(() =>
+                page.evaluate(
+                    (name) =>
+                        Array.from(game.actors.getName(name)?.effects ?? []).some(
+                            (entry: any) => entry.flags.ilaris?.resistanceOutcome === 'success',
+                        ),
+                    ACTOR_NAME,
                 ),
-            ACTOR_NAME,
-        )
-        expect(values).toContain(-4)
+            )
+            .toBe(true)
+        const outcome = await page.evaluate((name) => {
+            const effect = Array.from(game.actors.getName(name)?.effects ?? []).find(
+                (entry: any) => entry.flags.ilaris?.resistanceOutcome === 'success',
+            ) as any
+            return {
+                changes: effect?.changes,
+                modifiers: effect?.system.ilarisModifiers,
+                outcome: effect?.flags.ilaris?.resistanceOutcome,
+            }
+        }, ACTOR_NAME)
+        expect(outcome).toMatchObject({
+            changes: [],
+            modifiers: [expect.objectContaining({ target: 'probe', value: '-4' })],
+            outcome: 'success',
+        })
     })
 
     test('preselects a configured profane talent owned by the target', async ({ page }) => {

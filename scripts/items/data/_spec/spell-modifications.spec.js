@@ -109,8 +109,111 @@ describe('structured spell modifications', () => {
         })
     })
 
-    test('requires one anti-magic preset form and accepts any one of its four choices', () => {
-        const source = item({ ...baseSystem, spellModificationPreset: 'antiMagic' })
+    test('resolves a selected form zone over the optional base zone', () => {
+        const source = item({
+            ...baseSystem,
+            zone: {
+                shape: 'cone',
+                distance: 8,
+                angle: 45,
+                placement: { anchor: 'caster', pivot: 'tip' },
+            },
+            spellModifications: [
+                {
+                    id: 'miasmasphaero',
+                    zone: {
+                        shape: 'circle',
+                        distance: 8,
+                        placement: { anchor: 'caster', pivot: 'center' },
+                    },
+                },
+            ],
+        })
+
+        expect(resolveSpellModificationContext(source, ['miasmasphaero']).zone).toMatchObject({
+            shape: 'circle',
+            distance: 8,
+            placement: { anchor: 'caster', pivot: 'center' },
+        })
+        expect(resolveSpellModificationContext(item(baseSystem), []).zone).toBeNull()
+    })
+
+    test('lets a form opt out of inherited zone automation', () => {
+        const source = item({
+            ...baseSystem,
+            zone: { shape: 'circle', distance: 8, placement: { anchor: 'caster' } },
+            spellModifications: [{ id: 'faxius', zone: false }],
+        })
+        expect(resolveSpellModificationContext(source, ['faxius']).zone).toBeNull()
+    })
+
+    test('inherits an Aeolitus-style Zone while a form switches its duration source and triggers', () => {
+        const source = item({
+            ...baseSystem,
+            zone: {
+                shape: 'cone',
+                distance: 16,
+                angle: 45,
+                placement: { anchor: 'caster', range: 0, pivot: 'tip' },
+                lifecycle: 'instant',
+            },
+            spellModifications: [
+                {
+                    id: 'langer-atem',
+                    profile: { difficulty: -8, cost: { mode: 'set', value: 8 } },
+                    zone: {
+                        lifecycle: 'persistent',
+                        duration: { source: 'casterAttribute', attribute: 'KO' },
+                        trigger: { triggerOnCreate: true, onEnter: true, onRoundStart: true },
+                    },
+                },
+            ],
+        })
+
+        expect(resolveSpellModificationContext(source, ['langer-atem'])).toMatchObject({
+            profile: { difficulty: 4, cost: 8 },
+            zone: {
+                shape: 'cone',
+                distance: 16,
+                placement: { anchor: 'caster', pivot: 'tip' },
+                lifecycle: 'persistent',
+                duration: { source: 'casterAttribute', attribute: 'KO', remaining: 0 },
+                trigger: { triggerOnCreate: true, onEnter: true, onRoundStart: true },
+            },
+        })
+    })
+
+    test('requires one explicit anti-magic form and accepts any one of its four choices', () => {
+        const source = item({
+            ...baseSystem,
+            spellModificationGroups: [{ id: 'antiMagicForm', required: true }],
+            spellModifications: [
+                {
+                    id: 'gegenzauber',
+                    group: 'antiMagicForm',
+                    effectMode: 'replace',
+                    profile: { cost: { mode: 'set', value: 4 } },
+                },
+                {
+                    id: 'magie-unterdruecken',
+                    group: 'antiMagicForm',
+                    effectMode: 'replace',
+                    profile: { cost: { mode: 'set', value: 8 } },
+                },
+                {
+                    id: 'zauber-aufheben',
+                    group: 'antiMagicForm',
+                    effectMode: 'replace',
+                    profile: { permanentCost: 'Halbe Basiskosten des Zielzaubers' },
+                },
+                {
+                    id: 'wesenheit-bannen',
+                    group: 'antiMagicForm',
+                    effectMode: 'replace',
+                    profile: { permanentCost: 'Halbe Basiskosten der Beschwörung' },
+                },
+            ],
+        })
 
         expect(resolveSpellModificationContext(source, []).valid).toBe(false)
         expect(resolveSpellModificationContext(source, ['zauber-aufheben'])).toMatchObject({
@@ -118,5 +221,45 @@ describe('structured spell modifications', () => {
             selectedForms: [expect.objectContaining({ effectMode: 'replace' })],
             profile: { permanentCost: 'Halbe Basiskosten des Zielzaubers' },
         })
+    })
+
+    test('does not create anti-magic forms for obsolete preset-only source data', () => {
+        const source = item({ ...baseSystem, spellModificationPreset: 'antiMagic' })
+
+        expect(normalizeSpellModifications(source.system)).toEqual({
+            groups: [],
+            modifications: [],
+        })
+        expect(resolveSpellModificationContext(source, [])).toMatchObject({
+            valid: true,
+            selectedForms: [],
+        })
+    })
+
+    test('retains explicit target Magieresistenz through base and selected profiles', () => {
+        const source = item({
+            ...baseSystem,
+            magicResistance: { enabled: true },
+            spellModifications: [
+                { id: 'manual', profile: { magicResistance: { enabled: false } } },
+            ],
+        })
+
+        expect(resolveSpellModificationContext(source, []).profile.magicResistance).toEqual({
+            enabled: true,
+        })
+        expect(resolveSpellModificationContext(source, ['manual']).profile.magicResistance).toEqual(
+            { enabled: false },
+        )
+        expect(
+            normalizeSpellModifications({
+                spellModifications: [
+                    {
+                        id: 'invalid',
+                        profile: { magicResistance: { enabled: 'ja' } },
+                    },
+                ],
+            }).modifications[0].profile.magicResistance,
+        ).toEqual({ enabled: false })
     })
 })

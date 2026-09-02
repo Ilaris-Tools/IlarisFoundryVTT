@@ -10,7 +10,13 @@ export function prepareEffectRows(effects) {
             : Object.values(conditionSources || {})
         const conditionSourcesLabel = sourceEntries.length
             ? `Quellen: ${sourceEntries
-                  .map((source) => (source.type === 'manual' ? 'manuell' : 'automatisch'))
+                  .map((source) => {
+                      if (source.type === 'manual') return 'manuell'
+                      if (!source.spellName) return 'automatisch'
+                      return source.castSkill
+                          ? `${source.spellName} (${source.castSkill})`
+                          : source.spellName
+                  })
                   .join(', ')}`
             : ''
         return {

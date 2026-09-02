@@ -105,22 +105,50 @@ The system SHALL decrement and expire `ownerTurns` effects only on the owning co
 
 ### Requirement: DOT (Damage Over Time) effects
 
-The system SHALL support DOT effects using the `change.type === "dot"` change type registered as a first-class Foundry V14 change type via `foundry.data.fields.TypeDataField`.
+The system SHALL support DOT effects using the `change.type === "dot"` change
+type registered as a first-class Foundry V14 change type via
+`foundry.data.fields.TypeDataField`. An active finite `ownerTurns` DOT SHALL
+continue to resolve at the end of its owner's turn and use its normal timing
+decrement/expiry lifecycle. An active infinite DOT owned by a passive Zone
+application SHALL resolve once at the end of its owner's turn without setting
+expiry flags, decrementing timing, or expiring. A DOT SHALL resolve supported
+numeric or dice-formula values and its configured damage type through the
+shared damage path before updating the owning actor; its chat result SHALL
+identify the source effect.
 
 #### Scenario: DOT effect identification
 
 - **WHEN** an effect has changes with keys starting with `system.gesundheit.wunden` or `system.gesundheit.erschoepfungen` and `type === "dot"`
 - **THEN** these changes SHALL be identified as DOT changes
 
-#### Scenario: DOT damage application
+#### Scenario: Finite DOT damage application
 
-- **WHEN** an effect with DOT changes is processed during owner turn timing
+- **WHEN** an active finite owner-turn effect with DOT changes reaches its
+  documented owner-turn end processing
 - **THEN** the DOT damage SHALL be applied to the owning actor and a ChatMessage SHALL be created documenting the tick
+- **AND** its existing duration decrement and expiry behavior SHALL remain
+  unchanged
 
-#### Scenario: DOT damage uses ilarisTiming
+#### Scenario: Infinite passive-Zone DOT tick
 
-- **WHEN** a DOT effect is created
-- **THEN** it SHALL use `system.ilarisTiming` with `durationType: "ownerTurns"` for turn-counted duration
+- **WHEN** an active passive-Zone-owned infinite DOT reaches its owner's turn
+  end during forward combat progression
+- **THEN** it SHALL apply exactly one DOT tick through the shared damage path
+- **AND** its timing remaining value and Region-owned lifetime SHALL remain
+  unchanged
+
+#### Scenario: Formula and typed DOT damage
+
+- **WHEN** a DOT has the formula `2W6+1W6` and damage type `PROFAN`
+- **THEN** the system SHALL roll the formula and apply the resolved typed
+  damage once
+- **AND** it SHALL not add an unrolled formula string to actor health data
+
+#### Scenario: Invalid DOT does not partially mutate health
+
+- **WHEN** a DOT formula or configured damage type cannot be resolved
+- **THEN** the system SHALL issue a GM-facing warning
+- **AND** it SHALL not partially update the actor's health data
 
 ### Requirement: Ilaris modifier data and configuration are available on effects
 
@@ -270,3 +298,36 @@ DOT changes use core `ActiveEffectChange` with `type: "dot"` and `key` starting 
 
 - [combat](../combat/spec.md) — Combat hooks that trigger turn timing processing
 - [actor-sheets](../actor-sheets/spec.md) — Actor data models that provide attribute keys for autocomplete
+
+### Requirement: ActiveEffects retain passive Zone provenance
+
+The system SHALL store passive Zone ownership separately from ordinary supernatural spell-cast provenance in `flags.ilaris`. A passive Zone effect SHALL retain its Region ID, Region application identity, target Token ID, spell UUID, and Pre-Effect index so that only its owning Region lifecycle can remove it.
+
+#### Scenario: Passive Zone provenance is available after reload
+
+- **WHEN** a passive Zone ActiveEffect is persisted and the Scene or Actor reloads
+- **THEN** the effect SHALL retain its passive marker and complete Region/token ownership fields
+- **AND** the lifecycle service SHALL be able to identify it without relying on in-memory state
+
+### Requirement: Passive Zone effects bypass ordinary spell-recast replacement
+
+The optional Foundry supernatural-stacking mode SHALL continue to replace ordinary repeated spell applications, but it SHALL NOT replace a passive Zone application merely because another Region shares its spell UUID.
+
+#### Scenario: Second passive Region does not replace the first
+
+- **WHEN** two passive Regions created from the same spell affect the same Actor while Foundry stacking is enabled
+- **THEN** the Actor SHALL retain one passive ActiveEffect from each Region
+
+### Requirement: Zone-origin effect context
+
+ActiveEffects created by persistent zone triggers SHALL retain the originating Region identity, source spell UUID, application identity, and triggering token context in Ilaris flags. The existing `ActiveEffect` document and `Actor` embedded-document APIs SHALL be used: [ActiveEffect](https://foundryvtt.com/api/v14/classes/foundry.documents.ActiveEffect.html), [Actor](https://foundryvtt.com/api/v14/classes/foundry.documents.Actor.html).
+
+#### Scenario: Zone effect records origin
+
+- **WHEN** a persistent zone creates an ActiveEffect after a failed resistance
+- **THEN** its Ilaris flags SHALL identify the zone Region, spell, application, and triggering token
+
+#### Scenario: Zone expiry removes future triggers
+
+- **WHEN** the originating Region is deleted or expires
+- **THEN** no new ActiveEffect or resistance prompt SHALL be created from that zone

@@ -8,6 +8,9 @@
     "text": "Du kannst das Aussehen deines Zieles nach Belieben ändern, musst dabei aber dabei Größe und Gewicht deines Zieles beibehalten.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "Neues Leben (–8, Wirkungsdauer bis die Bindung gelöst wird, 32 AsP, davon 8 gAsP)",
     "vorbereitung": "1 Tag",
     "ziel": "Einzelwesen",

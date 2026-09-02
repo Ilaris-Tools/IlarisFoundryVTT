@@ -51,6 +51,8 @@ Depending on what the user brings, you might:
 **Surface testing impact (where applicable)**
 
 - When a change touches UI/dialogs, note which existing E2E test cases exercise that area and ask whether they should be regression-verified
+- When a change touches a rendered sheet, dialog, sidebar, chat card, or settings screen, surface its intended hierarchy: affected surface, top-to-bottom section order or tab placement, what remains unchanged, and whether shared behavior must remain independent from concrete layout. Ask the user to decide ambiguous placement before a proposal is created.
+- Treat visual acceptance as distinct from functional acceptance. Discuss the player-visible result, an approved reference screenshot if one exists, and whether light mode, dark mode, or both need review. Do not claim a layout is acceptable merely because its controls function.
 - When a change introduces new pure functions or helpers, note that they are unit-testable and ask whether test tasks should be created
 - When a change is a pure internal refactor with no UI or API surface change, focus on unit test coverage and skip E2E questions
 - Identify which `_spec_/` directories already exist for the affected modules and which test patterns (pure function, dynamic import, jest.mock, Object.create) are used there
