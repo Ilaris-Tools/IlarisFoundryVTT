@@ -242,6 +242,70 @@
                 </div>
             </div>
 
+            <div class="summon-creature-section">
+                <h4>Kreatur beschwören</h4>
+                <div class="form-group">
+                    <label><input type="checkbox" name="system.preEffects.{{@index}}.summonCreature.enabled" {{checked summonCreature.enabled}} /> Aktiviert</label>
+                </div>
+                {{#if summonCreature.enabled}}
+                <div class="form-group">
+                    <label>Erlaubte Kreaturentypen:</label>
+                    <input type="text" name="system.preEffects.{{@index}}.summonCreature.kreaturentypen" value="{{summonCreature.kreaturentypen}}" placeholder="z. B. daemon, elementar" />
+                </div>
+                <div class="form-group"><label>Feste Kreaturenquelle (optional):</label><input type="text" name="system.preEffects.{{@index}}.summonCreature.sourceUuid" value="{{summonCreature.sourceUuid}}" list="ilaris-summon-creature-sources" placeholder="Kreatur suchen …" /></div>
+                <div class="form-group"><label>Lebensdauer:</label><select name="system.preEffects.{{@index}}.summonCreature.lifetime"><option value="permanent" {{#unless (ifEq summonCreature.lifetime "timed")}}selected{{/unless}}>Permanent</option><option value="timed" {{#if (ifEq summonCreature.lifetime "timed")}}selected{{/if}}>Zauberdauer</option></select></div>
+                <div class="summon-creature-overrides-list">
+                    <h5>Werte des beschworenen Schwarms</h5>
+                    {{#each summonCreature.overrides}}
+                    <fieldset class="summon-creature-override-card">
+                        <legend>Überschreibung</legend>
+                        <button type="button" class="delete-summon-creature-override">✕</button>
+                        <div class="form-group"><label>Datenpfad:</label><input type="text" name="system.preEffects.{{@../index}}.summonCreature.overrides.{{@index}}.path" value="{{path}}" placeholder="z. B. items.0.system.at" /></div>
+                        <div class="form-group"><label>Zusatzwert:</label><input type="text" name="system.preEffects.{{@../index}}.summonCreature.overrides.{{@index}}.value" value="{{value}}" /></div>
+                        <div class="form-group"><label><input type="checkbox" name="system.preEffects.{{@../index}}.summonCreature.overrides.{{@index}}.amplifiedByMaechtigeMagie" {{checked amplifiedByMaechtigeMagie}} /> Verstärkt durch Mächtige Magie</label></div>
+                        <div class="form-group"><label>Mächtig-Bonus je QS:</label><input type="text" name="system.preEffects.{{@../index}}.summonCreature.overrides.{{@index}}.maechtigBonus" value="{{maechtigBonus}}" placeholder="z. B. +1" /></div>
+                    </fieldset>
+                    {{/each}}
+                    <button type="button" class="add-summon-creature-override">+ Überschreibung hinzufügen</button>
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" name="system.preEffects.{{@index}}.summonCreature.boundResourceCost.enabled" {{checked summonCreature.boundResourceCost.enabled}} /> gAsP/gKaP binden</label>
+                </div>
+                {{#if summonCreature.boundResourceCost.enabled}}
+                <div class="form-group">
+                    <label>Ressource:</label>
+                    <select name="system.preEffects.{{@index}}.summonCreature.boundResourceCost.resource">
+                        <option value="gasp" {{#unless (ifEq summonCreature.boundResourceCost.resource "gkap")}}selected{{/unless}}>gAsP</option>
+                        <option value="gkap" {{#if (ifEq summonCreature.boundResourceCost.resource "gkap")}}selected{{/if}}>gKaP</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Menge:</label><input type="number" min="1" name="system.preEffects.{{@index}}.summonCreature.boundResourceCost.amount" value="{{summonCreature.boundResourceCost.amount}}" /></div>
+                {{/if}}
+                <div class="form-group"><label><input type="checkbox" name="system.preEffects.{{@index}}.summonCreature.dominationChecks.enabled" {{checked summonCreature.dominationChecks.enabled}} /> Beherrschungsprobe konfigurieren</label></div>
+                {{#if summonCreature.dominationChecks.enabled}}
+                <div class="domination-checks-list">
+                    <h5>Beherrschungsproben nach Kreaturentyp</h5>
+                    {{#each summonCreature.dominationChecks.entries}}
+                    <fieldset class="domination-check-card">
+                        <legend>Beherrschungsprobe</legend>
+                        <button type="button" class="delete-domination-check">✕</button>
+                        <div class="form-group"><label>Kreaturentyp:</label><input type="text" name="system.preEffects.{{@../index}}.summonCreature.dominationChecks.entries.{{@index}}.kreaturentyp" value="{{kreaturentyp}}" placeholder="z. B. daemon" /></div>
+                        <div class="form-group"><label>Schwierigkeit:</label><input type="number" min="0" name="system.preEffects.{{@../index}}.summonCreature.dominationChecks.entries.{{@index}}.difficulty" value="{{difficulty}}" /></div>
+                        <div class="form-group"><label>Probe:</label><select name="system.preEffects.{{@../index}}.summonCreature.dominationChecks.entries.{{@index}}.probeType"><option value="attribut" {{#if (ifEq probeType "attribut")}}selected{{/if}}>Attribut</option><option value="fertigkeit" {{#if (ifEq probeType "fertigkeit")}}selected{{/if}}>Fertigkeit</option></select></div>
+                        {{#if (ifEq probeType "attribut")}}
+                        <div class="form-group"><label>Attribut:</label><select name="system.preEffects.{{@../index}}.summonCreature.dominationChecks.entries.{{@index}}.attribut"><option value="">— Wählen —</option>{{#each @root.avoidTestAttributeOptions}}<option value="{{value}}" {{#if (ifEq value ../attribut)}}selected{{/if}}>{{label}}</option>{{/each}}</select></div>
+                        {{else}}
+                        <div class="form-group"><label>Fertigkeit:</label><input type="text" name="system.preEffects.{{@../index}}.summonCreature.dominationChecks.entries.{{@index}}.fertigkeit" value="{{fertigkeit}}" /></div>
+                        <div class="form-group"><label>Talent (optional):</label><input type="text" name="system.preEffects.{{@../index}}.summonCreature.dominationChecks.entries.{{@index}}.talent" value="{{talent}}" /></div>
+                        {{/if}}
+                    </fieldset>
+                    {{/each}}
+                    <button type="button" class="add-domination-check">+ Beherrschungsprobe hinzufügen</button>
+                </div>
+                {{/if}}
+                {{/if}}
+            </div>
+
             <div class="armed-combat-section">
                 <h4>Bewaffneter Kampfeffekt</h4>
                 <div class="form-group">
@@ -405,6 +469,13 @@
                 {{#each @root.summonItemOptions.gegenstand}}
                     {{#each items}}
                     <option value="{{uuid}}" label="{{name}} ({{type}}, {{../packName}})"></option>
+                    {{/each}}
+                {{/each}}
+            </datalist>
+            <datalist id="ilaris-summon-creature-sources">
+                {{#each @root.summonCreatureOptions}}
+                    {{#each actors}}
+                    <option value="{{uuid}}" label="{{name}} ({{../packName}})"></option>
                     {{/each}}
                 {{/each}}
             </datalist>

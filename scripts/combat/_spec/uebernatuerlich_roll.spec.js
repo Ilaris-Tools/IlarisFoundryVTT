@@ -112,7 +112,15 @@ describe('UebernatuerlichDialog roll execution', () => {
         })
         dialog.initializeEnergyValues = jest.fn().mockResolvedValue()
         dialog.applyEnergyCost = jest.fn().mockResolvedValue()
-        dialog.refreshActorData = jest.fn().mockResolvedValue()
+        dialog.updateManoeverMods.mockImplementation(async () => {
+            dialog.maechtigeMagieQs = 2
+            dialog.maneuverDurationBonus = 3
+        })
+        dialog.refreshActorData = jest.fn().mockImplementation(async () => {
+            dialog.maechtigeMagieQs = 0
+            dialog.maneuverDurationBonus = 0
+        })
+        dialog._resolveSuccessfulSpellEffects = jest.fn().mockResolvedValue()
 
         await dialog._angreifenKlick()
 
@@ -124,6 +132,9 @@ describe('UebernatuerlichDialog roll execution', () => {
             { messageMode: false },
         )
         expect(dialog.applyEnergyCost).toHaveBeenCalledWith(true, true)
+        expect(dialog._resolveSuccessfulSpellEffects).toHaveBeenCalledWith(expect.any(Object))
+        expect(dialog.maechtigeMagieQs).toBe(2)
+        expect(dialog.maneuverDurationBonus).toBe(3)
     })
 
     test('holds an automatic MR cast until the selected target supplies its D20', async () => {
@@ -215,6 +226,24 @@ describe('UebernatuerlichDialog roll execution', () => {
         expect(dialog.getEffectiveSpellProfile()).toMatchObject({ difficulty: 10, cost: 8 })
         expect(dialog.getEffectiveSpellProfileText()).toContain('Zaubermodifikation: FF')
         expect(item.system).not.toHaveProperty('selectedSpellModificationIds')
+    })
+
+    test('does not render a selectable creature source for a fixed creature summon', async () => {
+        const dialog = Object.create(UebernatuerlichDialog.prototype)
+        dialog.summonCreatureSelections = new Map()
+        dialog.getEffectiveSpellModificationContext = () => ({
+            preEffects: [
+                {
+                    summonCreature: {
+                        enabled: true,
+                        sourceUuid: 'Compendium.Ilaris.kreaturen.Actor.Kraehenschwarm1',
+                    },
+                },
+            ],
+        })
+
+        await expect(dialog._getSummonCreatureSelectors()).resolves.toEqual([])
+        expect(dialog.summonCreatureSelections.size).toBe(0)
     })
 
     test('rejects a missing required spell-form choice before mutating maneuver state', async () => {

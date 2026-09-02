@@ -16,7 +16,21 @@
     "kosten": "nach Untotem",
     "erlernen": "Bor, Mag 16; Alch 20",
     "pw": 0,
-    "gruppe": 0
+    "gruppe": 0,
+    "preEffects": [
+      {
+        "baseDuration": 0,
+        "instant": false,
+        "changes": [],
+        "ilarisModifiers": [],
+        "summonCreature": {
+          "enabled": true,
+          "kreaturentypen": ["untot"],
+          "boundResourceCost": { "enabled": false, "resource": "gasp", "amount": 0 },
+          "dominationChecks": { "enabled": false }
+        }
+      }
+    ]
   },
   "effects": [],
   "folder": null,

@@ -1,6 +1,6 @@
 let shouldRunModelDataNormalizationMigration
 let runModelDataNormalizationMigrationIfNeeded
-const TARGET_SCHEMA_VERSION = '13.2.0'
+const TARGET_SCHEMA_VERSION = '13.3.0'
 let progressNotification
 
 function createDoc({ id, name, type, system }) {
@@ -221,6 +221,8 @@ describe('migrate-modeldata-normalization', () => {
             system: {
                 abgeleitete: { globalermoddisplay: '-' },
                 kampfwerte: { ini: 7 },
+                summoningDifficulty: '14',
+                summoningCost: null,
                 attribute: {
                     FF: { pw: 10 },
                     GE: { pw: 8 },
@@ -248,6 +250,8 @@ describe('migrate-modeldata-normalization', () => {
             system: {
                 abgeleitete: { globalermoddisplay: '-' },
                 kampfwerte: { ini: 5 },
+                summoningDifficulty: 'nicht-numerisch',
+                summoningCost: 8,
                 attribute: {
                     MU: { pw: 4 },
                 },
@@ -309,6 +313,8 @@ describe('migrate-modeldata-normalization', () => {
         expect(worldKreatur.update).toHaveBeenCalled()
         expect(worldKreatur.system.displayWerte).toEqual({ globalermoddisplay: '-' })
         expect(worldKreatur.system.initiative).toBe(7)
+        expect(worldKreatur.system.summoningDifficulty).toBe(14)
+        expect(worldKreatur.system.summoningCost).toBe(12)
         expect(worldKreatur.system.attribute.FF.kampfPw).toBe(10)
 
         expect(compendiumManoever.update).toHaveBeenCalled()
@@ -317,6 +323,8 @@ describe('migrate-modeldata-normalization', () => {
 
         expect(compendiumKreatur.update).toHaveBeenCalled()
         expect(compendiumKreatur.system.initiative).toBe(5)
+        expect(compendiumKreatur.system.summoningDifficulty).toBe(12)
+        expect(compendiumKreatur.system.summoningCost).toBe(8)
         expect(compendiumKreatur.system.attribute.MU.kampfPw).toBe(4)
 
         expect(game.settings.set).toHaveBeenCalledWith(

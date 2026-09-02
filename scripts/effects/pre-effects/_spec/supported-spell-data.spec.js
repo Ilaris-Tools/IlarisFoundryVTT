@@ -68,6 +68,19 @@ describe('reviewed supported spell pre-effect source data', () => {
         }
     })
 
+    it('configures Krähenruf and Skelettarius as generic creature summons', () => {
+        const kraehenruf = readSpell('Kr_henruf_pmYauhoUrn6PEgJA.json')
+        const skelettarius = readSpell('Skelettarius_Totenherr_001JyIWh0a6PVD8k.json')
+
+        expect(kraehenruf.system.preEffects?.[0]).toMatchObject({
+            baseDuration: 16,
+            summonCreature: { enabled: true, kreaturentypen: ['tier'] },
+        })
+        expect(skelettarius.system.preEffects?.[0]).toMatchObject({
+            summonCreature: { enabled: true, kreaturentypen: ['untot'] },
+        })
+    })
+
     it('configures Phexens Sternenwurf and Segen der Heiligen Ardare as first-slice summons', () => {
         const phexensSternenwurf = readLiturgy('Phexens_Sternenwurf_Zd8WWyywzZvGNjrP.json')
         const ardare = readLiturgy('Segen_der_Heiligen_Ardare_nniOXont43xAf4Bq.json')
