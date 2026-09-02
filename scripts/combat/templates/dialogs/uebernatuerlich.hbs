@@ -36,6 +36,68 @@
             <input type="number" name="ilaris-armed-input-{{key}}" value="{{default}}" min="{{min}}" max="{{max}}" step="1" />
         </div>
         {{/each}}
+        {{#if castSkillSelectionRequired}}
+        <div class="flexrow ilaris-cast-skill-selection">
+            <label>Fertigkeit:</label>
+            <select name="ilaris-cast-skill" required>
+                <option value="">— Auswahl —</option>
+                {{#each castSkillOptions}}
+                <option value="{{name}}" {{#if (ifEq name ../selectedCastSkill)}}selected{{/if}}>{{name}} (PW {{pw}})</option>
+                {{/each}}
+            </select>
+        </div>
+        {{/if}}
+        {{#each summonCreatureSelectors}}
+        <div class="summon-creature-selector">
+            <h3>Kreatur beschwören</h3>
+            <div class="flexrow">
+                <label>Kreaturentyp:</label>
+                <select class="summon-creature-type" data-pre-effect-index="{{index}}">
+                    {{#each kreaturentypen}}
+                    <option value="{{this}}" {{#if (ifEq this ../kreaturentyp)}}selected{{/if}}>{{this}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="flexrow">
+                <label>Kreatur:</label>
+                <select class="summon-creature-source" data-pre-effect-index="{{index}}">
+                    {{#each options}}
+                    <option value="{{uuid}}" {{#if (ifEq uuid ../selectedUuid)}}selected{{/if}}>{{name}} ({{packName}})</option>
+                    {{/each}}
+                </select>
+            </div>
+            {{#unless options.length}}<p class="notification warning">Keine passende Kreatur im ausgewählten Kompendium.</p>{{/unless}}
+        </div>
+        {{/each}}
+        {{#if (or spellModificationGroups.length ungroupedSpellModifications.length)}}
+        <hr />
+        <section class="spell-modifications-section">
+            <h3>Zaubermodifikationen</h3>
+            {{#each spellModificationGroups as |group|}}
+            <fieldset class="spell-modification-group">
+                <legend>{{group.label}}{{#if group.required}} <span class="required">*</span>{{/if}}</legend>
+                {{#each group.forms as |form|}}
+                <label class="spell-modification-option" data-tooltip="{{form.description}}">
+                    <input class="spell-modification" type="radio" name="spell-modification-group-{{group.id}}" value="{{form.id}}" {{checked form.selected}} />
+                    <strong>{{form.name}}</strong>
+                    {{#if form.description}}<span class="description">{{form.description}}</span>{{/if}}
+                </label>
+                {{/each}}
+            </fieldset>
+            {{/each}}
+            {{#each ungroupedSpellModifications as |form|}}
+            <label class="spell-modification-option" data-tooltip="{{form.description}}">
+                <input class="spell-modification" type="checkbox" name="spell-modification-{{form.id}}" value="{{form.id}}" {{checked form.selected}} />
+                <strong>{{form.name}}</strong>
+                {{#if form.description}}<span class="description">{{form.description}}</span>{{/if}}
+            </label>
+            {{/each}}
+            {{#if spellModificationErrors.length}}
+            <p class="notification error">{{spellModificationErrors.[0]}}</p>
+            {{/if}}
+            <p class="description"><strong>Effektives Profil:</strong> Schwierigkeit {{spellModificationProfile.difficulty}}, Kosten {{spellModificationProfile.cost}}{{#if spellModificationProfile.target}}, Ziel {{spellModificationProfile.target}}{{/if}}{{#if spellModificationProfile.range}}, Reichweite {{spellModificationProfile.range}}{{/if}}{{#if spellModificationProfile.duration}}, Dauer {{spellModificationProfile.duration}}{{/if}}{{#if spellModificationProfile.permanentCost}}, Permanente Kosten {{spellModificationProfile.permanentCost}}{{/if}}</p>
+        </section>
+        {{/if}}
         {{#if (or ilarisSituationControls.boolean.length ilarisSituationControls.exclusive.length)}}
         <hr />
         <div>
@@ -113,6 +175,19 @@
                 <i class="fas fa-users"></i>
                 Andere Akteure
             </button>
+            {{#if magicResistance.enabled}}
+            <div class="magic-resistance-section">
+                <h4>Magieresistenz</h4>
+                {{#if (ifEq magicResistance.status "missing-target")}}
+                <p class="notification warning">{{magicResistance.message}}</p>
+                {{else if (ifEq magicResistance.status "pending")}}
+                <p>{{magicResistance.targetName}}: MR {{magicResistance.magicResistance}} + 1W20</p>
+                <button class="combat-button-narrow" type="button" data-action="requestMagicResistance">MR würfeln anfragen</button>
+                {{else if (ifEq magicResistance.status "resolved")}}
+                <p><strong>Magieresistenz:</strong> {{magicResistance.magicResistance}} + {{magicResistance.d20}} = {{magicResistance.difficulty}}</p>
+                {{/if}}
+            </div>
+            {{/if}}
         </div>
         <hr />
         {{/if}}

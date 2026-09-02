@@ -3,7 +3,7 @@
  *
  * Covers:
  * - isExpiryEvent guard (returns false for ownerTurns effects, delegates for others)
- * - updateDuration guard (skips core for ownerTurns effects, delegates for others)
+ * - updateDuration delegation keeps the Foundry v14 registry valid
  * - IlarisActiveEffectConfig._getIlarisTimingData defaults
  * - Regression: DoT effects are unaffected by the timing guards
  */
@@ -111,11 +111,11 @@ describe('IlarisActiveEffect.isExpiryEvent', () => {
 // ── updateDuration ───────────────────────────────────────────────────────────
 
 describe('IlarisActiveEffect.updateDuration', () => {
-    test('skips super for ownerTurns effects — core must not decrement them', () => {
+    test('delegates for ownerTurns effects so Foundry can derive registry data', () => {
         const effect = new IlarisActiveEffect()
         effect.system = { ilarisTiming: { durationType: 'ownerTurns' } }
         effect.updateDuration({})
-        expect(effect._updateDurationCalled).toBe(false)
+        expect(effect._updateDurationCalled).toBe(true)
     })
 
     test('delegates to super for effects without ilarisTiming', () => {

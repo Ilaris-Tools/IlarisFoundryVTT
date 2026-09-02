@@ -20,7 +20,12 @@ describe('Held effect rows', () => {
                         statusId: 'Position4',
                         sources: [
                             { id: 'manual', type: 'manual' },
-                            { id: 'maneuver', type: 'preEffect' },
+                            {
+                                id: 'maneuver',
+                                type: 'preEffect',
+                                spellName: 'Fluch des Gewürms',
+                                castSkill: 'Hexerei',
+                            },
                         ],
                     },
                 },
@@ -34,7 +39,9 @@ describe('Held effect rows', () => {
             effectDurationLabel: 'Dauer: 3 Runden',
             armedChargesLabel: 'Ladungen: 2',
         })
-        expect(condition.conditionSourcesLabel).toBe('Quellen: manuell, automatisch')
+        expect(condition.conditionSourcesLabel).toBe(
+            'Quellen: manuell, Fluch des Gewürms (Hexerei)',
+        )
         expect(nativeDuration.effectDurationLabel).toBe('Dauer: 4 Runden')
         expect(nativeDuration.armedChargesLabel).toBe('')
         expect(indefinite.effectDurationLabel).toBe('')

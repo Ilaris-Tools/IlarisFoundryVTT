@@ -309,6 +309,7 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
         const fertigkeitenSelection = getSelection(IlarisGameSettingNames.fertigkeitenPacks)
         const waffenSelection = getSelection(IlarisGameSettingNames.waffenPacks)
         const gegenstandeSelection = getSelection(IlarisGameSettingNames.gegenstandPacks)
+        const kreaturenSelection = getSelection(IlarisGameSettingNames.kreaturenPacks)
         const talenteSelection = getSelection(IlarisGameSettingNames.talentePacks)
         const manoeverSelection = getSelection(IlarisGameSettingNames.manoeverPacks)
         const vorteileSelection = getSelection(IlarisGameSettingNames.vorteilePacks)
@@ -321,6 +322,7 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
             fertigkeiten: [],
             waffen: [],
             gegenstande: [],
+            kreaturen: [],
             talente: [],
             manoever: [],
             vorteile: [],
@@ -329,7 +331,7 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
         }
 
         for (const pack of game.packs) {
-            if (pack.metadata.type !== 'Item' || pack.index.size === 0) continue
+            if (pack.index.size === 0) continue
 
             const isSystemPack = pack.metadata.id?.startsWith('Ilaris.')
             const entry = (selected) => ({
@@ -339,6 +341,15 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                 isSystemPack,
             })
             const contents = pack.index.contents
+
+            if (pack.metadata.type === 'Actor') {
+                if (contents.some((i) => i.type === 'kreatur')) {
+                    result.kreaturen.push(entry(kreaturenSelection.includes(pack.collection)))
+                }
+                continue
+            }
+
+            if (pack.metadata.type !== 'Item') continue
 
             if (
                 contents.some(
@@ -412,6 +423,7 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                     groupKey: 'gegenstande',
                     settingName: IlarisGameSettingNames.gegenstandPacks,
                 },
+                { groupKey: 'kreaturen', settingName: IlarisGameSettingNames.kreaturenPacks },
                 { groupKey: 'talente', settingName: IlarisGameSettingNames.talentePacks },
                 { groupKey: 'manoever', settingName: IlarisGameSettingNames.manoeverPacks },
                 { groupKey: 'vorteile', settingName: IlarisGameSettingNames.vorteilePacks },
@@ -579,6 +591,7 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                     name: IlarisGameSettingNames.gegenstandPacks,
                     value: '["Ilaris.gegenstande"]',
                 },
+                { name: IlarisGameSettingNames.kreaturenPacks, value: '["Ilaris.kreaturen"]' },
                 {
                     name: IlarisGameSettingNames.talentePacks,
                     value: '["Ilaris.fertigkeiten-und-talente","Ilaris.fertigkeiten-und-talente-advanced","Ilaris.liturgien-und-mirakel","Ilaris.zauberspruche-und-rituale","Ilaris.zaubertricks-advanced"]',

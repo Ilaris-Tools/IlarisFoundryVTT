@@ -16,7 +16,39 @@
     "kosten": "8 AsP",
     "erlernen": "Geo, Mag 18; Dru 20",
     "pw": 0,
-    "gruppe": 0
+    "gruppe": 0,
+    "zone": {
+      "shape": "rectangle",
+      "distance": 4,
+      "width": 1,
+      "placement": { "anchor": "free", "range": 8, "pivot": "topLeft" },
+      "lifecycle": "persistent",
+      "duration": { "remaining": 256, "originalValue": 256 },
+      "trigger": { "triggerOnCreate": false, "onEnter": false, "onTraverse": true },
+      "traversal": {
+        "avoidTest": { "attribut": "GE", "resistDifficulty": 16 },
+        "failureMarker": { "name": "Durchquerung fehlgeschlagen" }
+      }
+    },
+    "preEffects": [
+      {
+        "baseDuration": 0,
+        "instant": true,
+        "changes": [
+          {
+            "key": "system.gesundheit.wunden",
+            "type": "add",
+            "value": "2W6",
+            "damageType": "PROFAN",
+            "amplifiedByMaechtigeMagie": false,
+            "maechtigBonus": "",
+            "diminishedValue": "",
+            "diminishedMaechtigBonus": "",
+            "priority": null
+          }
+        ]
+      }
+    ]
   },
   "effects": [],
   "folder": null,

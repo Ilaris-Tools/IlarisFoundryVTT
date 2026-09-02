@@ -17,6 +17,45 @@
     "erlernen": "Mag 18; Bor, Dru, Hex 20",
     "pw": 0,
     "gruppe": 0,
+    "zone": {
+      "shape": "cone",
+      "distance": 8,
+      "angle": 45,
+      "placement": { "anchor": "caster", "range": 0, "pivot": "tip" },
+      "lifecycle": "instant",
+      "trigger": { "triggerOnCreate": true, "onEnter": false }
+    },
+    "spellModifications": [
+      {
+        "id": "miasmasphaero",
+        "name": "Miasmasphaero",
+        "description": "Die Wolke breitet sich kreisförmig um dich aus.",
+        "effectMode": "inherit",
+        "profile": { "difficulty": -4 },
+        "zone": {
+          "shape": "circle",
+          "distance": 8,
+          "placement": { "anchor": "caster", "range": 0, "pivot": "center" },
+          "lifecycle": "instant",
+          "trigger": { "triggerOnCreate": true, "onEnter": false }
+        },
+        "preEffects": []
+      },
+      {
+        "id": "miasmafaxius",
+        "name": "Miasmafaxius",
+        "description": "Die Wolke trifft eine Einzelperson.",
+        "effectMode": "inherit",
+        "profile": {
+          "difficulty": -4,
+          "cost": { "mode": "set", "value": 8 },
+          "target": "Einzelperson"
+        },
+        "zone": false,
+        "preEffects": []
+      }
+    ],
+    "spellModificationGroups": [],
     "preEffects": [
       {
         "baseDuration": 0,

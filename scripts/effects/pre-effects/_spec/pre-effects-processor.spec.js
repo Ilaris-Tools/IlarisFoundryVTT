@@ -75,6 +75,120 @@ describe('toArray', () => {
 })
 
 describe('pre-effect processor', () => {
+    it('dispatches a successful summonCreature pre-effect without changing summonItem handling', async () => {
+        const caster = createTargetActor({ id: 'caster-id', uuid: 'Actor.caster' })
+        const created = { actor: { sheet: { render: jest.fn() } } }
+        global.game.settings.get = jest.fn((_namespace, key) =>
+            key === 'kreaturenPacks' ? '["Ilaris.kreaturen"]' : undefined,
+        )
+        global.game.actors = new Map([[caster.id, caster]])
+        global.Actor = {
+            implementation: {
+                create: jest.fn(async (data) => ({
+                    id: 'summon-base',
+                    flags: data.flags,
+                    toObject: () => data,
+                    getTokenDocument: jest.fn().mockResolvedValue({
+                        width: 1,
+                        height: 1,
+                        toObject: () => ({ width: 1, height: 1 }),
+                    }),
+                })),
+            },
+        }
+        global.foundry = {
+            ...global.foundry,
+            utils: { ...global.foundry?.utils, diffObject: jest.fn().mockReturnValue({}) },
+        }
+        global.canvas = {
+            scene: {
+                dimensions: { width: 500, height: 500 },
+                tokens: [],
+                createEmbeddedDocuments: jest.fn().mockResolvedValue([created]),
+            },
+            grid: { size: 100 },
+            tokens: {
+                controlled: [{ actor: { id: caster.id }, document: { x: 100, y: 100 } }],
+            },
+        }
+        global.fromUuid = jest.fn().mockResolvedValue({
+            documentName: 'Actor',
+            type: 'kreatur',
+            pack: 'Ilaris.kreaturen',
+            uuid: 'Compendium.Ilaris.kreaturen.Actor.daemon',
+            system: { kreaturentyp: 'daemon' },
+            getTokenDocument: jest.fn().mockResolvedValue({
+                width: 1,
+                height: 1,
+                toObject: () => ({ width: 1, height: 1 }),
+            }),
+        })
+
+        await applyPreEffects(
+            { success: true },
+            {
+                item: { name: 'Beschwörung', system: {} },
+                actor: caster,
+                selectedActors: [{ actorId: caster.id }, { actorId: caster.id }],
+                speaker: {},
+            },
+            {},
+            {
+                preEffects: [
+                    {
+                        summonCreature: {
+                            enabled: true,
+                            kreaturentypen: ['daemon'],
+                            selectedCreatureUuid: 'Compendium.Ilaris.kreaturen.Actor.daemon',
+                        },
+                    },
+                ],
+            },
+        )
+
+        expect(canvas.scene.createEmbeddedDocuments).toHaveBeenCalledWith('Token', [
+            expect.objectContaining({ actorLink: false }),
+        ])
+        expect(canvas.scene.createEmbeddedDocuments).toHaveBeenCalledTimes(1)
+        expect(created.actor.sheet.render).toHaveBeenCalledWith(true)
+    })
+
+    it('uses an explicit form list instead of source pre-effects and records form provenance', async () => {
+        const caster = createTargetActor({ id: 'caster-id', uuid: 'Actor.caster' })
+        global.game.actors = { get: jest.fn((id) => (id === caster.id ? caster : undefined)) }
+        const spell = {
+            name: 'Fortifex',
+            uuid: 'Item.fortifex',
+            system: {
+                preEffects: [
+                    { baseDuration: 2, changes: [{ key: 'system.base', type: 'add', value: '1' }] },
+                ],
+            },
+        }
+        const replacement = {
+            baseDuration: 4,
+            changes: [{ key: 'system.replacement', type: 'add', value: '2' }],
+        }
+
+        await applyPreEffects(
+            { success: true },
+            { item: spell, actor: caster, selectedActors: [{ actorId: caster.id }], speaker: {} },
+            {},
+            {
+                preEffects: [replacement],
+                spellModificationId: 'schimmernder-schild',
+                zoneRegionId: 'zone-region-1',
+            },
+        )
+
+        const created = global.ActiveEffect.createDocuments.mock.calls[0][0][0]
+        expect(created.changes).toEqual([
+            expect.objectContaining({ key: 'system.replacement', value: '2' }),
+        ])
+        expect(created.flags.ilaris.spellModificationId).toBe('schimmernder-schild')
+        expect(created.flags.ilaris.zoneRegionId).toBe('zone-region-1')
+    })
+
     it('routes a canonical condition pre-effect to one status-bearing condition effect', async () => {
         global.CONFIG.statusEffects = {
             Position4: {
@@ -124,6 +238,55 @@ describe('pre-effect processor', () => {
             ],
             { parent: target },
         )
+    })
+
+    it('materializes a combined Sturm condition and marker with shared spell-form provenance', async () => {
+        global.CONFIG.statusEffects = {
+            Position4: {
+                id: 'Position4',
+                name: 'Sehr schlechte Position (Liegend)',
+                changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, value: -4 }],
+            },
+        }
+        const target = createTargetActor()
+        const spell = { name: 'Aeolitus Windgebraus', uuid: 'Item.aeolitus', system: {} }
+
+        await createActiveEffectFromPreEffect(
+            target,
+            {
+                condition: { enabled: true, statusId: 'Position4' },
+                marker: { enabled: true, id: 'zurueckgestossen', label: 'Zurückgestoßen' },
+                castSkill: 'Luft',
+            },
+            { uuid: 'Actor.caster' },
+            spell,
+            0,
+            0,
+            0,
+            'aeolitus-cast',
+            {},
+            'uebernatuerlich',
+            'sturm',
+            'zone-aeolitus',
+            null,
+            'target-token',
+        )
+
+        const [conditionData] = global.ActiveEffect.createDocuments.mock.calls[0][0]
+        const [markerData] = global.ActiveEffect.createDocuments.mock.calls[1][0]
+        expect(conditionData.system.ilarisCondition.sources[0]).toMatchObject({
+            origin: 'Item.aeolitus',
+            castSkill: 'Luft',
+            applicationId: 'aeolitus-cast',
+        })
+        expect(markerData).toMatchObject({ name: 'Zurückgestoßen — Aeolitus Windgebraus' })
+        expect(markerData.flags.ilaris).toMatchObject({
+            spellUuid: 'Item.aeolitus',
+            casterUuid: 'Actor.caster',
+            spellModificationId: 'sturm',
+            zoneRegionId: 'zone-aeolitus',
+            targetTokenId: 'target-token',
+        })
     })
 
     it('materializes maneuver provenance and its opposed-escape ending without spell replacement', async () => {
@@ -505,7 +668,12 @@ describe('pre-effect processor', () => {
                 maechtigeMagieQs: 0,
             }
 
-            await applyPreEffects({ success: true }, dialog)
+            await applyPreEffects(
+                { success: true },
+                dialog,
+                {},
+                { spellModificationId: 'shield-form' },
+            )
             await applyPreEffects({ success: true }, dialog)
 
             for (const target of [firstTarget, secondTarget]) {
@@ -531,6 +699,11 @@ describe('pre-effect processor', () => {
                 ).toBe(2)
             }
             expect(global.ActiveEffect.createDocuments).toHaveBeenCalledTimes(4)
+            expect(
+                global.ActiveEffect.createDocuments.mock.calls[0][0][0].flags.ilaris,
+            ).toMatchObject({
+                spellModificationId: 'shield-form',
+            })
         },
     )
 
@@ -657,6 +830,7 @@ describe('pre-effect processor', () => {
             preEffectIndex: 0,
             applicationId: expect.any(String),
             triggeringRollTotal: 18,
+            target: { actorId: 'target-id', tokenId: '', actorLink: true },
         })
     })
 
@@ -822,6 +996,151 @@ describe('pre-effect processor', () => {
         ])
         expect(target.deleteEmbeddedDocuments.mock.invocationCallOrder[0]).toBeLessThan(
             global.ActiveEffect.createDocuments.mock.invocationCallOrder[0],
+        )
+    })
+
+    it('keeps a passive Zone application infinite and distinct from another Region in Foundry mode', async () => {
+        const target = createTargetActor({
+            effects: [
+                {
+                    id: 'other-region',
+                    flags: {
+                        ilaris: {
+                            passiveZone: true,
+                            zoneRegionId: 'region-other',
+                            zoneApplicationId: 'cast-other:token-a',
+                            targetTokenId: 'token-a',
+                            spellUuid: 'Item.component-spell',
+                            preEffectIndex: 0,
+                        },
+                    },
+                },
+            ],
+            deleteEmbeddedDocuments: jest.fn(),
+        })
+        global.game.settings.get = jest.fn((_namespace, key) =>
+            key === 'supernaturalEffectStacking' ? 'foundry' : undefined,
+        )
+        global.game.actors = { get: jest.fn(() => target) }
+        global.canvas = { tokens: { get: jest.fn(() => null) } }
+        await applyPreEffects(
+            { success: true },
+            {
+                item: {
+                    name: 'Passive spell',
+                    uuid: 'Item.component-spell',
+                    system: {
+                        preEffects: [
+                            {
+                                baseDuration: 3,
+                                instant: false,
+                                changes: [{ key: 'system.test', type: 'add', value: '1' }],
+                            },
+                        ],
+                    },
+                },
+                selectedActors: [{ actorId: 'target-id', tokenId: 'token-a', actorLink: true }],
+                actor: { id: 'caster-id', uuid: 'Actor.caster' },
+                speaker: {},
+                maneuverDurationBonus: 0,
+                maechtigeMagieQs: 0,
+            },
+            {},
+            { passiveZone: { regionId: 'region-a', applicationId: 'cast-a' } },
+        )
+
+        const effect = global.ActiveEffect.createDocuments.mock.calls.at(-1)[0][0]
+        expect(effect.system.ilarisTiming).toMatchObject({ durationType: 'infinite', remaining: 0 })
+        expect(effect.flags.ilaris).toMatchObject({
+            passiveZone: true,
+            zoneRegionId: 'region-a',
+            zoneApplicationId: 'cast-a:token-a',
+            targetTokenId: 'token-a',
+        })
+        expect(target.deleteEmbeddedDocuments).not.toHaveBeenCalled()
+    })
+
+    it('coalesces concurrent creation for the same passive Zone application', async () => {
+        let resolveCreation
+        const target = createTargetActor()
+        global.ActiveEffect.createDocuments = jest.fn(
+            () =>
+                new Promise((resolve) => {
+                    resolveCreation = resolve
+                }),
+        )
+        const args = [
+            target,
+            { changes: [{ key: 'system.test', type: 'add', value: '1' }] },
+            { id: 'caster-id', uuid: 'Actor.caster' },
+            { name: 'Passive spell', uuid: 'Item.passive', system: {} },
+            3,
+            0,
+            0,
+            'cast-a:token-a',
+            {},
+            'uebernatuerlich',
+            '',
+            '',
+            { regionId: 'region-a', applicationId: 'cast-a' },
+            'token-a',
+        ]
+
+        const first = createActiveEffectFromPreEffect(...args)
+        const second = createActiveEffectFromPreEffect(...args)
+
+        await Promise.resolve()
+        await Promise.resolve()
+        expect(global.ActiveEffect.createDocuments).toHaveBeenCalledTimes(1)
+        resolveCreation([])
+        await Promise.all([first, second])
+    })
+
+    it('creates an explicit marker-only Pre-Effect but keeps an ordinary empty one inert', async () => {
+        const target = createTargetActor()
+        global.game.actors = { get: jest.fn(() => target) }
+        global.canvas = { tokens: { get: jest.fn(() => null) } }
+        const caster = { id: 'caster-id', uuid: 'Actor.caster' }
+        const item = { name: 'Dunkelheit', uuid: 'Item.dunkelheit', system: {} }
+
+        await createActiveEffectFromPreEffect(target, { changes: [] }, caster, item, 1, 0)
+        expect(global.ActiveEffect.createDocuments).not.toHaveBeenCalled()
+
+        await createActiveEffectFromPreEffect(
+            target,
+            {
+                changes: [],
+                marker: { enabled: true, id: 'handlungsunfaehig', label: 'Handlungsunfähig' },
+                castSkill: 'Dämonisch',
+                resistanceOutcome: 'failure',
+            },
+            caster,
+            item,
+            1,
+            0,
+            2,
+            'cast-a',
+        )
+        expect(global.ActiveEffect.createDocuments).toHaveBeenCalledWith(
+            [
+                expect.objectContaining({
+                    name: 'Handlungsunfähig — Dunkelheit',
+                    system: expect.objectContaining({ ilarisMarker: true }),
+                    flags: expect.objectContaining({
+                        ilaris: expect.objectContaining({
+                            sourceItemUuid: 'Item.dunkelheit',
+                            spellUuid: 'Item.dunkelheit',
+                            casterUuid: 'Actor.caster',
+                            castSkill: 'Dämonisch',
+                            preEffectIndex: 2,
+                            applicationId: 'cast-a',
+                            resistanceOutcome: 'failure',
+                            markerId: 'handlungsunfaehig',
+                        }),
+                    }),
+                }),
+            ],
+            { parent: target },
         )
     })
 })

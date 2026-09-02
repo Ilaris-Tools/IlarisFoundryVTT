@@ -1,4 +1,4 @@
-import { PreEffectItemSheet } from './pre-effect-item.js'
+import { PreEffectItemSheet, toPreEffectArray } from './pre-effect-item.js'
 
 export class UebernatuerlichTalentSheet extends PreEffectItemSheet {
     /** @override */
@@ -9,10 +9,10 @@ export class UebernatuerlichTalentSheet extends PreEffectItemSheet {
 
     /** @override */
     static PARTS = {
-        ...PreEffectItemSheet.PARTS,
         form: {
             template: 'systems/Ilaris/scripts/items/templates/uebernatuerlich_talent.hbs',
         },
+        ...PreEffectItemSheet.PARTS,
     }
 
     /** @override */
@@ -34,6 +34,178 @@ export class UebernatuerlichTalentSheet extends PreEffectItemSheet {
         this.element.querySelector('.generate-pre-effect')?.addEventListener('click', async () => {
             await this.#handleLLMGenerate()
         })
+        this.element
+            .querySelector('.spell-modification-editor')
+            ?.addEventListener('click', (event) => {
+                this.#handleSpellModificationEditorClick(event)
+            })
+    }
+
+    #cloneSpellModifications() {
+        return toPreEffectArray(foundry.utils.deepClone(this.document.system.spellModifications))
+    }
+
+    #cloneSpellModificationGroups() {
+        return toPreEffectArray(
+            foundry.utils.deepClone(this.document.system.spellModificationGroups),
+        )
+    }
+
+    #defaultSpellModification() {
+        return {
+            id: `form-${foundry.utils.randomID(8)}`,
+            name: 'Neue Zaubermodifikation',
+            description: '',
+            group: '',
+            effectMode: 'inherit',
+            profile: {
+                difficulty: 0,
+                cost: { mode: 'add', value: 0 },
+                permanentCost: '',
+                target: '',
+                range: '',
+                duration: '',
+                magicResistance: { enabled: false },
+            },
+            zone: null,
+            preEffects: [],
+        }
+    }
+
+    async #handleSpellModificationEditorClick(event) {
+        const button = event.target.closest('button')
+        if (!button) return
+        const formIndex = Number(button.dataset.formIndex)
+        const groupIndex = Number(button.dataset.groupIndex)
+        const updateForms = async (forms) =>
+            this.document.update({ 'system.spellModifications': forms })
+
+        if (button.closest('.add-spell-modification-group')) {
+            const groups = this.#cloneSpellModificationGroups()
+            groups.push({
+                id: `gruppe-${foundry.utils.randomID(8)}`,
+                label: 'Neue Gruppe',
+                required: false,
+            })
+            await this.document.update({ 'system.spellModificationGroups': groups })
+            return
+        }
+        if (button.closest('.delete-spell-modification-group')) {
+            const groups = this.#cloneSpellModificationGroups()
+            const [removed] = groups.splice(groupIndex, 1)
+            const forms = this.#cloneSpellModifications().map((form) =>
+                form.group === removed?.id ? { ...form, group: '' } : form,
+            )
+            await this.document.update({
+                'system.spellModificationGroups': groups,
+                'system.spellModifications': forms,
+            })
+            return
+        }
+        if (button.closest('.add-spell-modification')) {
+            const forms = this.#cloneSpellModifications()
+            forms.push(this.#defaultSpellModification())
+            await updateForms(forms)
+            return
+        }
+        if (button.closest('.disable-spell-modification-zone')) {
+            const forms = this.#cloneSpellModifications()
+            if (!forms[formIndex]) return
+            forms[formIndex].zone = false
+            await updateForms(forms)
+            return
+        }
+        if (button.closest('.clear-spell-modification-zone')) {
+            const forms = this.#cloneSpellModifications()
+            if (!forms[formIndex]) return
+            delete forms[formIndex].zone
+            await updateForms(forms)
+            return
+        }
+        if (button.closest('.clear-zone-profile')) {
+            await this.document.update({ 'system.zone': null })
+            return
+        }
+        if (button.closest('.delete-spell-modification')) {
+            const forms = this.#cloneSpellModifications()
+            forms.splice(formIndex, 1)
+            await updateForms(forms)
+            return
+        }
+        if (button.closest('.move-spell-modification')) {
+            const forms = this.#cloneSpellModifications()
+            const targetIndex = formIndex + Number(button.dataset.direction)
+            if (targetIndex < 0 || targetIndex >= forms.length) return
+            ;[forms[formIndex], forms[targetIndex]] = [forms[targetIndex], forms[formIndex]]
+            await updateForms(forms)
+            return
+        }
+        if (button.closest('.add-spell-modification-pre-effect')) {
+            const forms = this.#cloneSpellModifications()
+            if (!forms[formIndex]) return
+            forms[formIndex].preEffects = toPreEffectArray(forms[formIndex].preEffects)
+            forms[formIndex].preEffects.push(this._defaultPreEffect())
+            await updateForms(forms)
+            return
+        }
+        if (button.closest('.add-spell-modification-domination-check')) {
+            const preEffectIndex = Number(button.dataset.preEffectIndex)
+            const forms = this.#cloneSpellModifications()
+            const summonCreature = forms[formIndex]?.preEffects?.[preEffectIndex]?.summonCreature
+            if (!summonCreature) return
+            summonCreature.dominationChecks ??= { enabled: false, entries: [] }
+            summonCreature.dominationChecks.entries = toPreEffectArray(
+                summonCreature.dominationChecks.entries,
+            )
+            summonCreature.dominationChecks.entries.push(this._defaultDominationCheck())
+            await updateForms(forms)
+            return
+        }
+        if (button.closest('.add-spell-modification-summon-creature-override')) {
+            const preEffectIndex = Number(button.dataset.preEffectIndex)
+            const forms = this.#cloneSpellModifications()
+            const summonCreature = forms[formIndex]?.preEffects?.[preEffectIndex]?.summonCreature
+            if (!summonCreature) return
+            summonCreature.overrides = toPreEffectArray(summonCreature.overrides)
+            summonCreature.overrides.push(this._defaultSummonCreatureOverride())
+            await updateForms(forms)
+            return
+        }
+        if (button.closest('.delete-spell-modification-summon-creature-override')) {
+            const preEffectIndex = Number(button.dataset.preEffectIndex)
+            const overrideIndex = Number(button.dataset.overrideIndex)
+            const forms = this.#cloneSpellModifications()
+            const overrides =
+                forms[formIndex]?.preEffects?.[preEffectIndex]?.summonCreature?.overrides
+            if (!overrides) return
+            forms[formIndex].preEffects[preEffectIndex].summonCreature.overrides =
+                toPreEffectArray(overrides)
+            forms[formIndex].preEffects[preEffectIndex].summonCreature.overrides.splice(
+                overrideIndex,
+                1,
+            )
+            await updateForms(forms)
+            return
+        }
+        if (button.closest('.delete-spell-modification-domination-check')) {
+            const preEffectIndex = Number(button.dataset.preEffectIndex)
+            const checkIndex = Number(button.dataset.dominationCheckIndex)
+            const forms = this.#cloneSpellModifications()
+            const checks =
+                forms[formIndex]?.preEffects?.[preEffectIndex]?.summonCreature?.dominationChecks
+            if (!checks) return
+            checks.entries = toPreEffectArray(checks.entries)
+            checks.entries.splice(checkIndex, 1)
+            await updateForms(forms)
+            return
+        }
+        if (button.closest('.delete-spell-modification-pre-effect')) {
+            const forms = this.#cloneSpellModifications()
+            if (!forms[formIndex]) return
+            forms[formIndex].preEffects = toPreEffectArray(forms[formIndex].preEffects)
+            forms[formIndex].preEffects.splice(Number(button.dataset.preEffectIndex), 1)
+            await updateForms(forms)
+        }
     }
 
     /** Call the configured LLM API to generate Pre-Effects for this spell. */

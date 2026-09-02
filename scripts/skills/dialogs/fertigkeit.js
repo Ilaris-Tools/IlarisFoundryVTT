@@ -237,6 +237,7 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
                 target,
                 fertigkeit: this.fertigkeitName,
                 talent,
+                attributes: this.attributeTargets,
                 situation: getIlarisSituationTags(this._getSelectedSituation()),
             }),
         )

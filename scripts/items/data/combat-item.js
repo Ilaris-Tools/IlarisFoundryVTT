@@ -357,9 +357,7 @@ export class CombatItem extends IlarisItem {
                 }
             })
 
-            // Parse modifikationen string and add dynamic maneuvers
-            const dynamicManeuvers = this._parseModifikationen(this.system.modifikationen)
-            this.manoever.push(...dynamicManeuvers)
+            this._addLegacySpellModificationManeuvers()
         }
         if ('liturgie' === this.type) {
             this.system.manoever = foundry.utils.mergeObject(
@@ -378,9 +376,7 @@ export class CombatItem extends IlarisItem {
                 }
             })
 
-            // Parse modifikationen string and add dynamic maneuvers
-            const dynamicManeuvers = this._parseModifikationen(this.system.modifikationen)
-            this.manoever.push(...dynamicManeuvers)
+            this._addLegacySpellModificationManeuvers()
         }
         if ('anrufung' === this.type) {
             this.system.manoever = foundry.utils.mergeObject(
@@ -400,9 +396,19 @@ export class CombatItem extends IlarisItem {
             //     }
             // })
 
-            // Parse modifikationen string and add dynamic maneuvers
-            const dynamicManeuvers = this._parseModifikationen(this.system.modifikationen)
-            this.manoever.push(...dynamicManeuvers)
+            this._addLegacySpellModificationManeuvers()
         }
+    }
+
+    /** Preserve prose parsing only until an Item has real structured spell forms. */
+    _addLegacySpellModificationManeuvers() {
+        const structuredForms = this.system.spellModifications
+        const hasStructuredForms = Array.isArray(structuredForms)
+            ? structuredForms.length > 0
+            : structuredForms && typeof structuredForms === 'object'
+              ? Object.keys(structuredForms).length > 0
+              : false
+        if (hasStructuredForms) return
+        this.manoever.push(...this._parseModifikationen(this.system.modifikationen))
     }
 }
