@@ -1,298 +1,115 @@
-# E2E-Tests (Halbautomatisiert)
+# E2E-Tests mit Playwright
 
-Dieser Artikel beschreibt Strategie, Ausführungsprotokoll und Testdaten-Setup für halbautomatisierte End-to-End-Tests im Ilaris FoundryVTT System. Der mittelfristige Zielzustand ist ein Agenten-Workflow, der einen Tester schrittweise durch die Testfalldefinition führt, daraus eine Playwright-Testdatei im Repository generiert und diese anschließend ausführbar macht.
+Die E2E-Tests prüfen Ilaris in einer echten Foundry-VTT-Installation. Sie benötigen deshalb eine eigene, lizenzierte Foundry-VTT-Installation des Contributors. Das Repository startet Foundry **nicht** selbst und kopiert keine Lizenz- oder Konfigurationsdateien.
 
----
+Für die Tests wird ausschließlich die dedizierte Welt `ilaris-e2e-world-v14363-r1` verwendet. Niemals eine persönliche Spielwelt als E2E-Ziel konfigurieren: Die Tests dürfen Chat-Nachrichten, Akteure und Einstellungen dieser Welt verändern.
 
-## Strategie
+## Voraussetzungen
 
-### Was ist "halbautomatisiert"?
+- Foundry VTT `14.363` mit gültiger eigener Lizenz.
+- Microsoft Edge unter Windows beziehungsweise Google Chrome unter macOS/Linux.
+- Eine lokale Ilaris-Systemkopie, die zu diesem Repository-Stand passt.
+- Node.js und die installierten Repository-Abhängigkeiten (`npm install`).
 
-E2E-Tests laufen im **echten Foundry-Browser** (v13) und werden **manuell durch den Tester ausgelöst**. Die gesamte Ausführung, Inspektion und Abnahme erfolgt mit dem **VS Code Browser-Agent** (experimentelles GitHub-Copilot-Feature).
+Die Baseline-Welt `r1` ist an Foundry VTT `14.363` und Ilaris `14.0.0` gebunden. Für eine andere Foundry-Version muss eine passend migrierte und geprüfte Baseline bereitgestellt werden.
 
-Jeder Testfall enthält einen **vollständigen Login-Flow**. Der Browser-Agent öffnet Foundry selbst, meldet sich mit einem dedizierten Test-Account an und joint die Zielwelt eigenständig.
+## Konfigurations-Baseline
 
-Diese Tests laufen **nicht** in CI/Pipeline und werden **nicht** über `npm test` gestartet. Sie ergänzen die bestehenden Jest-Unit-Tests um echte UI- und Chat-Interaktion.
+Die veröffentlichte E2E-Welt verwendet für konfigurierbare Ilaris-Welteinstellungen die System-Defaults. Insbesondere sind `useTargetSelection`, `lepSystem` und `renameTriumphWithCrit` deaktiviert. Tests, die eine abweichende Einstellung benötigen, setzen sie vor ihrem Ablauf selbst und stellen den vorherigen Wert anschließend wieder her.
 
-Kurzfristig dienen Markdown-Testfälle als Spezifikation und Review-Artefakt. Langfristig soll daraus pro Testfall eine **generierte Playwright-Datei** im Repository entstehen.
+Client-Einstellungen wie `hideSyncKampfstileButton` und Foundrys `core.messageMode` gehören nicht zum Weltarchiv. Auch `worldSchemaVersion` wird nicht auf einen Default zurückgesetzt, weil es von der Systemmigration verwaltet wird.
 
-| Ebene             | Werkzeug                    | Trigger              | Scope                                     |
-| ----------------- | --------------------------- | -------------------- | ----------------------------------------- |
-| Unit-Tests        | Jest (`npm test`)           | Entwickler / CI      | Pure Logic, keine Foundry-UI              |
-| E2E-Spezifikation | Markdown + Browser-Agent    | Manuell durch Tester | Testdefinition, Explorationslauf, Abnahme |
-| E2E-Ausführung    | Generierter Playwright-Test | Manuell durch Tester | Reproduzierbare UI- und Chat-Validierung  |
+## Baseline-Welt einmalig installieren
 
-### Warum (vorerst) kein Quench?
+1. Foundry beenden.
+2. Das Archiv [`ilaris-e2e-world-v14363-r1.zip`](https://github.com/Ilaris-Tools/IlarisFoundryVTT/releases/download/e2e-world-v14363-r1/ilaris-e2e-world-v14363-r1.zip) herunterladen.
+3. Optional die Integrität prüfen. Der erwartete SHA-256-Wert ist `DC13421A531B17667F4E077558923DD1FBF597ACBE2A9A428F74E52DF38A563D`:
 
-[Quench](https://foundryvtt.com/packages/quench/) ist ein FoundryVTT-Modul für In-Browser-Testbatches (Mocha/Chai). Es wird vorerst **nicht** eingesetzt, weil:
+    ```powershell
+    Get-FileHash .\ilaris-e2e-world-v14363-r1.zip -Algorithm SHA256
+    ```
 
-- Der VS Code Browser-Agent direkten UI-Zugriff, DOM-Inspektion und Chat-Validierung ohne Zusatzmodul ermöglicht.
-- Kein Modul-Installationsaufwand beim Tester.
-- Testfälle können zunächst als Markdown-Dateien versioniert und reviewed werden.
-- Der Browser-Agent eignet sich gut, um aus einer dialogischen Testfallerhebung robuste Playwright-Locators und Assertions abzuleiten.
+4. Das Archiv in den Ordner `worlds` des **Foundry-Benutzerdatenordners** entpacken. Bei der Standardinstallation unter Windows ist das gewöhnlich:
 
-Quench wird als **Phase-2-Option** evaluiert, sobald der MVP läuft — mit klaren Metriken:
-Wartbarkeit, Stabilität der automatischen Reports, Aufwand gegenüber Browser-Agent. Details: [Phase-2-Entscheidungspunkt](../_specs/2026_03_27_e2e_halbautomatisch_browser_agent/e2e_halbautomatisch_plan.md).
+    ```text
+    C:\Users\<Benutzer>\AppData\Local\FoundryVTT\Data\worlds\
+    ```
 
----
+    Danach muss diese Datei existieren:
 
-## VS Code Browser-Agent
+    ```text
+    ...\Data\worlds\ilaris-e2e-world-v14363-r1\world.json
+    ```
 
-### Was kann er?
+5. Sicherstellen, dass die Welt das Ilaris-System aus diesem Checkout verwendet. Ein Checkout außerhalb des Foundry-Systemordners muss dafür als System installiert oder verlinkt werden.
 
-Der Browser-Agent ist ein experimentelles Feature von GitHub Copilot in VS Code (Agent-Modus). Er kann:
+Die Metadaten zum Archiv (Version, Welt-ID und Prüfsumme) stehen zusätzlich in `e2e/fixtures/baselines/manifest.json`.
 
-- Eine Browser-Seite zu einer URL öffnen.
-- Elemente im DOM per CSS-Selektor finden und anklicken.
-- Text eingeben.
-- Den DOM-Zustand und Chat-Inhalte lesen.
-- Screenshot-ähnliche Evidenz erzeugen (Seitenbeobachtung).
+## Lokale Testkonfiguration
 
-### Wie wird er gestartet?
+Im Repository `e2e/.env.example` nach `e2e/.env` kopieren und nur lokale Werte eintragen. Die Datei ist von Git ausgeschlossen.
 
-1. VS Code öffnen.
-2. GitHub Copilot Chat öffnen (Standard-Shortcut `Ctrl+Alt+I`).
-3. Auf **Agent-Modus** wechseln (experimentell, muss in VS Code aktiviert sein).
-4. Sicherstellen, dass die VS-Code-Einstellung `workbench.browser.enableChatTools` aktiviert ist.
-5. Die Testfall-Datei als Kontext anhängen (Büroklammer-Symbol oder Drag & Drop).
-6. Prompt eingeben: z. B. `Führe den E2E-Testfall aus der angehängten Datei aus.`
+```dotenv
+E2E_FOUNDRY_URL=http://127.0.0.1:30000
+E2E_FOUNDRY_USER=e2e-gm
+E2E_PLAYER_USER=e2e-player
 
-### Technische Voraussetzung in VS Code
-
-Für echte Browser-Interaktion reicht es **nicht**, dass der integrierte Browser die Foundry-URL öffnen kann. Der Browser-Agent benötigt zusätzlich die VS-Code-Einstellung:
-
-`workbench.browser.enableChatTools = true`
-
-Ohne diese Einstellung kann der Agent zwar unter Umständen eine Seite öffnen, aber **keine Seiteninhalte lesen, keine Elemente anklicken und keine Eingaben ausführen**. Ein vollständiger E2E-Testlauf ist dann nicht möglich.
-
-### Zielarchitektur
-
-Der gewünschte Zielprozess besteht aus vier Schritten:
-
-1. Ein Agent führt den Nutzer dialogisch durch den Testfall.
-2. Aus den Antworten erzeugt der Agent eine normierte Testfallspezifikation.
-3. Der Agent generiert daraus eine Playwright-Datei im Repository.
-4. Der generierte Test wird manuell ausgeführt und das Ergebnis wird abgenommen.
-
-Der Browser-Agent bleibt dabei wichtig, aber primär für Exploration, Selektorfindung, Erstabnahme und Debugging. Die wiederholbare Ausführung soll über Playwright-Code erfolgen.
-
-### Wichtige Einschränkungen
-
-| Einschränkung                  | Auswirkung                                                 | Umgang                                                                                          |
-| ------------------------------ | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| Experimenteller Status         | API-Änderungen möglich                                     | Tests als robuste Markdown-Definitionen versionieren, nicht Agent-Prompts                       |
-| Kein persistenter Zustand      | Jede Session startet "frisch"                              | Vorbedingungen vollständig in der Testdatei dokumentieren                                       |
-| Foundry-Auth required          | Browser-Agent muss Login und Welteintritt selbst ausführen | Jeder Testfall beschreibt Login-Seite, Benutzerwahl, Passwort-Eingabe und Join-Schritt explizit |
-| Zufälliges Würfelergebnis      | Rollwert nicht deterministisch                             | Chat-Validierung prüft **Struktur** und **Plausibilität**, nicht den exakten Wert               |
-| Browser-Chat-Tools deaktiviert | Nur URL-Öffnen möglich, keine Interaktion mit DOM          | Vor Testlauf `workbench.browser.enableChatTools` aktivieren und VS Code neu laden               |
-
-### Login-Regel
-
-E2E-Testfälle dürfen **keinen bereits eingeloggten Browserzustand voraussetzen**. Ein Testfall ist nur dann vollständig, wenn er:
-
-1. die Foundry-URL selbst öffnet,
-2. den Login-Dialog erkennt,
-3. den vorgesehenen Test-Account auswählt,
-4. das Passwort eingibt,
-5. die Zielwelt joint,
-6. erst danach mit der eigentlichen Fachaktion beginnt.
-
-Die Zugangsdaten selbst gehören **nicht** in versionierte Markdown-Dateien. Stattdessen wird mit einem fest definierten Test-Account gearbeitet, dessen Passwort dem Tester lokal bekannt ist.
-
----
-
-## Ausführungsprotokoll: Ablauf eines Testlaufs
-
-### Schritt 1 — Foundry starten
-
-Über den VS Code Task `Start Foundry` (Terminal → Run Task → Start Foundry).  
-Foundry ist danach erreichbar unter `http://localhost:30000` (Standard-Port).
-
-### Schritt 2 — Login und Testwelt aktivieren
-
-1. Im Browser Foundry-URL öffnen.
-2. Den definierten Test-Account auswählen.
-3. Passwort eingeben.
-4. Die **Testwelt** auswählen und joinen (siehe [Testdaten einrichten](#testdaten-einrichten)).
-
-### Schritt 3 — Browser-Agent starten
-
-VS Code öffnen → Copilot Chat → Agent-Modus → `workbench.browser.enableChatTools` prüfen → Testfall-Datei anhängen → Prompt abschicken.
-
-### Schritt 4 — Ausführung beobachten
-
-Der Agent führt die Schritte aus dem Testfall aus und meldet Ergebnis pro Schritt.
-
-Wenn der Agent nur melden kann, dass eine Browser-Seite geöffnet wurde, aber keine DOM-Interaktion verfügbar ist, gilt der Testlauf als **technisch blockiert** und nicht als `FAIL` des eigentlichen Features.
-
-### Schritt 5 — Abnahme dokumentieren
-
-Nach dem Lauf wird das Ergebnis als Abnahme-Protokoll festgehalten (manuell oder durch den Agenten generiert). Format: `PASS` / `FAIL` pro Testfall, mit Evidenz (DOM-Zustand, Chat-Nachweis, Fehler-Log falls vorhanden).
-
----
-
-## Testdaten einrichten
-
-Damit E2E-Tests reproduzierbar sind, muss die Testwelt einen definierten Ausgangszustand haben.
-
-### Minimale Anforderungen
-
-| Anforderung              | Beschreibung                                                                                   |
-| ------------------------ | ---------------------------------------------------------------------------------------------- |
-| **Testheld**             | Ein Actor vom Typ `held` (Name: `Testlauf-Held` oder konfigurierbar im Testfall)               |
-| **Nahkampfwaffe**        | Mindestens eine `nahkampfwaffe`-Item am Held, z. B. `Kurzschwert` mit AT-Wert                  |
-| **Test-Account**         | Dedizierter Login für E2E, idealerweise GM-Rechte, z. B. `e2e-gm`                              |
-| **Lokale Credentials**   | Passwort des Test-Accounts ist dem Tester lokal bekannt, wird aber nicht im Repo gespeichert   |
-| **Kein laufender Kampf** | Kein aktiver Combat-Tracker beim Teststart (verhindert unerwünschte Kampfphasen-Dialoge)       |
-| **Leerer Chat**          | Chat-Log sollte zu Beginn leer oder bekannt sein (erleichtert Validierung der neuen Nachricht) |
-
-### Vorbereitungsschritte (einmalig)
-
-1. Testwelt anlegen (oder eine existierende "Entwicklungswelt" verwenden).
-2. Held `Testlauf-Held` anlegen: Actor-Typ `held`, Name exakt `Testlauf-Held`.
-3. Nahkampfwaffe hinzufügen: Weapon-Typ `nahkampfwaffe`, Name `Kurzschwert`, AT-Wert z. B. `12`.
-4. Dedizierten Test-Account anlegen, z. B. `e2e-gm`, mit den benötigten Rechten.
-5. Weltname und Accountname im Team dokumentieren.
-
-### Login-Parameter für Testfälle
-
-Jeder Testfall soll diese Werte explizit benennen:
-
-| Feld           | Beispiel                     | Hinweis                                        |
-| -------------- | ---------------------------- | ---------------------------------------------- |
-| Foundry-URL    | `http://localhost:30000`     | Kann je nach lokaler Installation abweichen    |
-| Accountname    | `e2e-gm`                     | Kein Personen-Account verwenden                |
-| Weltname       | `Ilaris E2E`                 | Muss exakt mit der Foundry-Welt übereinstimmen |
-| Passwortquelle | Lokal beim Tester hinterlegt | Nie im Markdown oder Repo speichern            |
-
-### Wiederherstellung des Ausgangszustands
-
-Vor jedem Testlauf:
-
-```
-1. Chat-Log leeren: Chatbereich → "Chat leeren" (GM-Reiter)
-2. Alle offenen Sheets schließen
-3. Seite neu laden (damit kein Dirty-State aus vorherigem Testlauf verbleibt)
+# Nur setzen, wenn die Baseline-Benutzer Passwörter besitzen.
+# E2E_FOUNDRY_PASSWORD=
+# E2E_PLAYER_PASSWORD=
 ```
 
----
+`E2E_FOUNDRY_URL` muss auf den bereits gestarteten Foundry-Server zeigen. Der Runner startet und beendet Foundry nie. Optional kann `PLAYWRIGHT_CHROMIUM_CHANNEL` den Browserkanal überschreiben; ohne Angabe wird unter Windows `msedge`, sonst `chrome` verwendet. `E2E_CI_HEADLESS=true` schaltet den Browser in den Headless-Modus.
 
-## Repository-Struktur für E2E-Artefakte
+## Testlauf
 
-Alle generierten und gepflegten E2E-Artefakte liegen unter dem Root-Ordner `e2e/`.
+1. Foundry normal starten und die Welt `ilaris-e2e-world-v14363-r1` laden.
+2. Prüfen, dass die Benutzer `e2e-gm` und `e2e-player` sowie die Akteure `HatAlles`, `Testlauf-Held` und `Testlauf-Npc` vorhanden sind. `e2e-player` benötigt Besitzerrechte für `Testlauf-Held`; außerdem müssen die Kreaturen- und Zauberspruch-Kompendien sowie eine aktive Szene verfügbar sein. Der Runner prüft diese Voraussetzungen vor jedem Testlauf.
+3. Im Repository die Abhängigkeiten installieren und zunächst einen fokussierten Test ausführen:
 
-```text
-e2e/
-	cases/
-		e2e-001-nahkampf-angriff/
-			testfall.md
-			e2e-001-nahkampf-angriff.spec.ts
-		e2e-002-.../
-			testfall.md
-			e2e-002-....spec.ts
-	shared/
-		fixtures/
-			auth.fixture.ts
-			foundry-world.fixture.ts
-		helpers/
-			chat-assertions.ts
-			locator-utils.ts
-```
+    ```powershell
+    npm install
+    npm run test:e2e -- e2e/cases/e2e-001-nahkampf-angriffsdialog/e2e-001-nahkampf-angriffsdialog.spec.ts
+    ```
 
-Regeln:
+4. Für die gesamte Suite ausführen:
 
-- Pro Testfall genau ein eigener Ordner in `e2e/cases/`.
-- In jedem Testfallordner liegt eine `testfall.md` mit Beschreibung, getroffenen Annahmen, ausgeführten Schritten und Ergebnis.
-- In demselben Ordner liegt die passende Playwright-Spec-Datei `*.spec.ts`.
-- Wiederverwendbare Dateien kommen nicht in den Testfallordner, sondern nach `e2e/shared/`.
-- Reusable Fixtures liegen unter `e2e/shared/fixtures/`, wenn sie auch für andere Testfälle nutzbar sind.
+    ```powershell
+    npm run test:e2e
+    ```
 
-### Inhalt der testfall.md im Testfallordner
+Die Tests laufen absichtlich seriell mit einem Worker. Bei einem Fehler bleiben Playwright-Video und Screenshot in `test-results/` erhalten.
 
-Die `testfall.md` pro Fall dokumentiert:
+### Pre-effect scenarios
 
-- Ausgangsbeschreibung durch den Nutzer
-- Vom Agenten normalisierte Testschritte
-- Login-Parameter (ohne Passwort im Repo)
-- Durchgeführten Lauf inkl. PASS/FAIL/BLOCKED
-- Abweichungen zwischen Erwartung und Beobachtung
-- Verweis auf die zugehörige `*.spec.ts`
+E2E-025 and E2E-026 use `HatAlles` as both caster and selectable target and require its existing `Ignifaxius Flammenstrahl` item. They clone and temporarily replace that embedded item's `preEffects` with the reviewed marker, alternate-resistance, and Pandämonium-style one-time damage configurations, then restore the actor snapshot. The baseline therefore needs no additional spell items for these scenarios.
 
----
+Before running them, ensure that `e2e-gm` is not already connected. The runner intentionally refuses an occupied account; use a free configured E2E user instead of a personal game client.
 
-## Abnahmekriterien
+## Nicht unterstützte Altdaten
 
-Ein E2E-Test gilt als `PASS`, wenn **alle** Punkte erfüllt sind:
+Verwaiste oder nicht mehr definierte Token-Status-Effekte werden nicht migriert und müssen nicht weiter bearbeitbar bleiben. Wenn eine alte Welt einen solchen Status enthält, das Token entfernen und neu anlegen. Die E2E-Baseline enthält nur aktuell unterstützte Status-Effekte.
 
-- [ ] Alle UI-Schritte des Testfalls laufen ohne JavaScript-Fehler in der Browser-Konsole.
-- [ ] Der beschriebene Dialog öffnet sich korrekt (sichtbar, korrekte Klasse/Titel).
-- [ ] Der Würfelwurf wird ausgeführt (kein Absturz, kein leerer Fehler).
-- [ ] Eine neue ChatMessage erscheint im Chat-Log.
-- [ ] Die ChatMessage enthält die gesetzten Pflichtinhalte (Titel, Rollwert, kein leerer Flavor).
-- [ ] Kein `ILARIS | Error` in der Browser-Konsole während des Tests.
+## Welt zurücksetzen
 
-Ein E2E-Test gilt als `FAIL`, sobald **ein** Punkt nicht erfüllt ist.
+Die E2E-Welt ist veränderlich. Vor einem vollständigen erneuten Lauf die Welt auf den Archivzustand zurücksetzen:
 
-Ein E2E-Testlauf gilt als **blockiert**, wenn die Browser-Agent-Werkzeuge in VS Code nicht aktiv sind und deshalb keine Interaktion mit dem Foundry-DOM möglich ist.
+1. Foundry beenden.
+2. Den Ordner `ilaris-e2e-world-v14363-r1` im Foundry-Ordner `worlds` löschen oder vorher sichern.
+3. Das geprüfte Archiv erneut in `worlds` entpacken.
+4. Foundry starten und die E2E-Welt erneut laden.
 
----
+Andere Welten und die Foundry-Lizenz bleiben bei diesem Ablauf unberührt.
 
-## Bekannter Ausführungs-Blocker
+## Fehlerbehebung
 
-Beim dokumentierten Ausführungsversuch konnte der integrierte Browser `http://localhost:30000` erfolgreich öffnen. Die weitere Ausführung des Referenz-Testfalls war jedoch blockiert, weil in der VS-Code-Session die Browser-Chat-Tools nicht aktiviert waren.
+| Meldung                         | Ursache und Lösung                                                                |
+| ------------------------------- | --------------------------------------------------------------------------------- |
+| `Set E2E_FOUNDRY_URL ...`       | `e2e/.env` fehlt oder enthält keine gültige HTTP(S)-URL.                          |
+| `Foundry user not found`        | Die E2E-Welt wurde nicht geladen oder der angegebene Benutzer fehlt.              |
+| `E2E baseline r1 is incomplete` | Falsche oder unvollständig entpackte Welt; Archiv erneut prüfen und installieren. |
+| Browser startet nicht           | Edge/Chrome installieren oder `PLAYWRIGHT_CHROMIUM_CHANNEL` passend setzen.       |
 
-Beobachtetes Verhalten:
+## Baseline aktualisieren (Maintainer)
 
-- Foundry-URL erreichbar und im integrierten Browser geöffnet.
-- Kein Lesen von Seiteninhalten durch den Agent.
-- Kein Klicken, Tippen oder DOM-Inspektion möglich.
-
-Folgerung:
-
-- Foundry-Erreichbarkeit allein reicht nicht für einen E2E-Testlauf.
-- Für Login, Weltbeitritt, Sheet-Interaktion und Chat-Validierung muss `workbench.browser.enableChatTools` aktiv sein.
-
----
-
-## Referenzfälle
-
-| ID      | Name                                                        | Datei                                                                                                                 |
-| ------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| E2E-001 | Nahkampf-Angriffsdialog: Held öffnen, Kampf-Tab, Würfelwurf | [referenz-testfall-nahkampf.md](../_specs/2026_03_27_e2e_halbautomatisch_browser_agent/referenz-testfall-nahkampf.md) |
-
----
-
-## Neuen Testfall erstellen
-
-Jeder Tester kann einen Testfall beschreiben ohne tiefe Codekenntnis. Das Template dafür:
-[testfall-template.md](../_specs/2026_03_27_e2e_halbautomatisch_browser_agent/testfall-template.md).
-
-Zielbild:
-
-1. Tester beschreibt den Ablauf gemeinsam mit einem Agenten.
-2. Agent schärft Vorbedingungen, Login-Daten, UI-Schritte, Chat-Erwartungen und robuste Locator-Strategien.
-3. Agent erzeugt eine versionierte Playwright-Datei im Repo.
-4. Tester führt den generierten Test manuell aus.
-
-Konkretes Zielartefakt pro Testfall:
-
-1. Neuer Ordner unter `e2e/cases/[testfallname]/`
-2. `testfall.md` mit Beschreibung und Ausführungsprotokoll
-3. `[testfallname].spec.ts` mit Playwright-Testcode
-4. Optional: Nutzung von `e2e/shared/fixtures/` für wiederverwendbare Fixtures
-
----
-
-## Phase 2: Quench-Evaluation
-
-Nach dem MVP-Betrieb wird Quench anhand folgender Metriken bewertet:
-
-| Metrik              | Frage                                                                     |
-| ------------------- | ------------------------------------------------------------------------- |
-| Wartbarkeit         | Wie aufwändig ist die Pflege von Quench-Batches vs. Markdown-Testfällen?  |
-| Stabilität          | Schlagen Quench-Tests durch Foundry-Updates regelmäßig fehl?              |
-| Report-Qualität     | Liefert Quench bessere PASS/FAIL-Nachweise als der Browser-Agent?         |
-| Integrationsaufwand | Wie teuer ist die Quench-Installation und -Konfiguration in der Testwelt? |
-| Komplement          | Können Quench und Browser-Agent parallel sinnvoll koexistieren?           |
-
-Entscheidung durch das Team nach ≥ 3 abgeschlossenen MVP-Testläufen.
+Eine neue Baseline darf keine Lizenzdateien, Passwörter oder persönliche Daten enthalten. Nach einer Änderung müssen Maintainer die Welt über Foundry prüfen, eine neue Revisionsnummer vergeben, das ZIP als Release-Asset veröffentlichen, den SHA-256-Wert sowie die Metadaten in `e2e/fixtures/baselines/manifest.json` aktualisieren und den vollständigen E2E-Lauf gegen die neue Welt ausführen.

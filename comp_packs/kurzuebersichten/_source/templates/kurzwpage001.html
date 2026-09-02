@@ -108,3 +108,70 @@
         Gruppe zu optimieren!</em
     >
 </p>
+
+<h2>🤖 LLM / KI-Einstellungen</h2>
+<p>
+    Diese Einstellungen ermöglichen die automatische Generierung von Pre-Effects für Zaubersprüche,
+    Liturgien und Anrufungen über eine KI-API (z.B. OpenAI, OpenRouter, DeepSeek oder ein lokales
+    Ollama-Modell).
+</p>
+
+<h3>🔑 Konfiguration</h3>
+<p>
+    Die folgenden drei Einstellungen müssen im Ilaris-Einstellungsdialog (Allgemein-Tab) gesetzt
+    werden:
+</p>
+<ul>
+    <li>
+        <strong>LLM API URL</strong> — Die Adresse des Chat-Completions-Endpunkts. Beispiele:
+        <br />OpenAI: <code>https://api.openai.com/v1/chat/completions</code> <br />OpenRouter:
+        <code>https://openrouter.ai/api/v1/chat/completions</code> <br />DeepSeek:
+        <code>https://api.deepseek.com/v1/chat/completions</code> <br />Ollama (lokal):
+        <code>http://localhost:11434/v1/chat/completions</code>
+    </li>
+    <li>
+        <strong>LLM API Key</strong> — Der API-Schlüssel. Wird als Passwort-Feld maskiert und
+        <strong>nur im Browser der SL gespeichert</strong> — nie mit der Welt synchronisiert.
+    </li>
+    <li>
+        <strong>LLM Model</strong> — Das Modell. Beispiele: <code>gpt-4o</code>,
+        <code>deepseek-chat</code>, <code>openai/gpt-4o</code> (OpenRouter),
+        <code>llama3</code> (Ollama).
+    </li>
+</ul>
+
+<h3>🚀 Verwendung</h3>
+<ol>
+    <li>Öffne einen Zauber, eine Liturgie oder eine Anrufung im Item-Bogen.</li>
+    <li>Scrolle zum <strong>Pre-Effects</strong>-Bereich.</li>
+    <li>
+        Klicke auf den <strong>🤖 Generieren</strong>-Button (erscheint nur wenn API-URL und Key
+        konfiguriert sind).
+    </li>
+    <li>
+        Die KI analysiert den Zaubertext und generiert automatisch die passende
+        Pre-Effect-Konfiguration.
+    </li>
+    <li>Der generierte Pre-Effect kann anschließend manuell angepasst werden.</li>
+</ol>
+
+<h3>⚠️ Wichtige Hinweise</h3>
+<ul>
+    <li>
+        Der API-Key wird <strong>ausschließlich lokal im Browser</strong> gespeichert und nie an
+        andere Spieler:innen übertragen.
+    </li>
+    <li>
+        Die Einstellungen sind nur für die SL sichtbar — Spieler:innen sehen weder die Felder noch
+        den Generieren-Button.
+    </li>
+    <li>Ist kein API-Key oder keine URL konfiguriert, wird der Button ausgeblendet.</li>
+    <li>
+        Die KI kann manchmal falsche Key-Pfade oder Schadenstypen vorschlagen — überprüfe das
+        Ergebnis vor der Verwendung.
+    </li>
+    <li>
+        Jede Generation sendet eine Anfrage an die API — dies kann Kosten verursachen (abhängig vom
+        Anbieter).
+    </li>
+</ul>

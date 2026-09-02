@@ -151,8 +151,8 @@ export async function handleAkrobatikDefense(actor, rollResult, html) {
             checked_xd20: '1',
             choices_schips: CONFIG.ILARIS.schips_choice,
             checked_schips: '0',
-            rollModes: CONFIG.Dice.rollModes,
-            defaultRollMode: game.settings.get('core', 'rollMode'),
+            rollModes: CONFIG.ChatMessage.modes,
+            defaultRollMode: game.settings.get('core', 'messageMode'),
             dialogId: dialogId,
         },
     )
@@ -216,7 +216,7 @@ export async function handleAkrobatikDefense(actor, rollResult, html) {
                     }
 
                     // Get roll mode
-                    let rollmode = game.settings.get('core', 'rollMode')
+                    let rollmode = game.settings.get('core', 'messageMode')
                     const rollModeInput = dialog.element.querySelector(`#rollMode-${dialogId}`)
                     if (rollModeInput) {
                         rollmode = rollModeInput.value

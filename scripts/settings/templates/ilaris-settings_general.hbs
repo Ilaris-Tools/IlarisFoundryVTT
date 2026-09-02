@@ -18,6 +18,14 @@
         </div>
         <div class="setting-row">
             <div class="setting-label-block">
+                <span class="setting-label">Waffenschaden vor dem Würfeln multiplizieren</span>
+                <span class="setting-scope"><i class="fas fa-globe"></i> Welt</span>
+                <p class="setting-hint">Wenn aktiviert, werden bei Waffenschaden-Multiplikatoren Würfel und feste Boni vor dem Würfeln multipliziert. Beispiel: 2W6+3 wird zu 4W6+6.</p>
+            </div>
+            <input type="checkbox" name="general.expandWeaponDamageMultipliers" {{#if settings.expandWeaponDamageMultipliers}}checked{{/if}}>
+        </div>
+        <div class="setting-row">
+            <div class="setting-label-block">
                 <span class="setting-label">Umbenennen von Triumph in Crit</span>
                 <span class="setting-scope"><i class="fas fa-globe"></i> Welt</span>
                 <p class="setting-hint">Für alle, die lieber das Wort "Crit" anstelle von "Triumph" verwenden.</p>
@@ -76,4 +84,66 @@
         </div>
         <input type="checkbox" name="general.enableTabbingCharacterSheet" {{#if settings.enableTabbingCharacterSheet}}checked{{/if}}>
     </div>
+    <div class="setting-row">
+        <div class="setting-label-block">
+            <span class="setting-label">Würfel details im Chat direkt anzeigen</span>
+            <span class="setting-scope"><i class="fas fa-user"></i> Lokal</span>
+            <p class="setting-hint">Zeigt Details zum Würfelwurf im Chat direkt an.</p>
+        </div>
+        <input type="checkbox" name="general.showDiceRollInChat" {{#if settings.showDiceRollInChat}}checked{{/if}}>
+    </div>
+
+    {{#if isGM}}
+    <hr />
+    <div class="setting-row setting-row-list damage-types">
+        <div class="setting-label-block">
+            <span class="setting-label">Schadenstypen</span>
+            <span class="setting-scope"><i class="fas fa-globe"></i> Welt</span>
+            <p class="setting-hint">Definiert die verfügbaren Schadenstypen für Pre-Effects und zukünftige Systemfunktionen. Jeder Typ hat einen Wert (Key), einen Anzeigenamen (Label) und ein Verhalten.</p>
+        </div>
+        <div class="damage-type-list" data-section="damageTypes">
+            {{#each damageTypes}}
+            <div class="damage-type-row flexrow">
+                <span class="damage-type-label">{{label}}</span>
+                <span class="damage-type-key">{{value}}</span>
+                <span class="damage-type-behavior">
+                    {{#if behavior.healing}}Heilung{{else}}Schaden{{/if}}
+                    ·
+                    {{#if behavior.targetsErschoepfung}}Erschöpfung{{else}}Wunden{{/if}}
+                    {{#if behavior.bypassesArmor}} · Rüstung ignorieren{{/if}}
+                </span>
+                <button type="button" class="edit-damage-type" data-index="{{@index}}" title="Bearbeiten">✎</button>
+                <button type="button" class="delete-damage-type" data-index="{{@index}}" title="Entfernen">✕</button>
+            </div>
+            {{/each}}
+            <button type="button" class="add-damage-type">+ Typ hinzufügen</button>
+        </div>
+    </div>
+
+    <hr />
+    <div class="setting-row">
+        <div class="setting-label-block">
+            <span class="setting-label">LLM API URL</span>
+            <span class="setting-scope"><i class="fas fa-user"></i> Lokal (GM Browser)</span>
+            <p class="setting-hint">Die URL des OpenAI-kompatiblen Chat-Completions-Endpunkts. Unterstützt: OpenAI, OpenRouter, DeepSeek, Ollama und andere.</p>
+        </div>
+        <input type="text" name="general.llmApiUrl" value="{{settings.llmApiUrl}}" placeholder="https://api.openai.com/v1/chat/completions" style="width: 60%;" />
+    </div>
+    <div class="setting-row">
+        <div class="setting-label-block">
+            <span class="setting-label">LLM API Key</span>
+            <span class="setting-scope"><i class="fas fa-user"></i> Lokal (GM Browser)</span>
+            <p class="setting-hint">Der API-Schlüssel für den LLM-Dienst. Wird nur im Browser gespeichert und nie mit der Welt synchronisiert.</p>
+        </div>
+        <input type="password" name="general.llmApiKey" value="{{settings.llmApiKey}}" placeholder="sk-..." style="width: 60%;" />
+    </div>
+    <div class="setting-row">
+        <div class="setting-label-block">
+            <span class="setting-label">LLM Model</span>
+            <span class="setting-scope"><i class="fas fa-user"></i> Lokal (GM Browser)</span>
+            <p class="setting-hint">Das zu verwendende Modell. Beispiele: gpt-4o, deepseek-chat, openai/gpt-4o (OpenRouter), llama3 (Ollama).</p>
+        </div>
+        <input type="text" name="general.llmModel" value="{{settings.llmModel}}" placeholder="gpt-4o" style="width: 60%;" />
+    </div>
+    {{/if}}
 </section>

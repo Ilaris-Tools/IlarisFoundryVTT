@@ -232,3 +232,25 @@
   font-size: 0.9em;
 }
 
+.damage-types {
+  display: flex;
+  flex-direction: column;
+}
+
+.damage-type-row {
+  gap: 8px;
+}
+
+.damage-type-label {
+  flex: 2;
+}
+
+.damage-type-key {
+  flex: 1;
+  font-family: monospace;
+}
+
+.damage-type-behavior {
+  flex: 2;
+  color: var(--color-text-dark-secondary);
+}

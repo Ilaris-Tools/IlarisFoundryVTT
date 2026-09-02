@@ -41,5 +41,11 @@ node_modules
 # Playwright test results
 /test-results/
 
+# Local E2E credentials and server configuration.
+/e2e/.env
+
 .vscode/tasks-scripts/start-foundry/developer.env
 *.code-workspace
+
+# claude code local
+.claude/settings.local.json

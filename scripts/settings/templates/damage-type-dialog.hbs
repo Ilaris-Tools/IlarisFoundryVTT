@@ -1,0 +1,23 @@
+<div class="form-group">
+    <label for="damage-type-value">Key (Wert)</label>
+    <input id="damage-type-value" name="value" value="{{value}}" required autofocus />
+</div>
+<div class="form-group">
+    <label for="damage-type-label">Anzeigename</label>
+    <input id="damage-type-label" name="label" value="{{label}}" required />
+</div>
+<fieldset>
+    <legend>Verhalten</legend>
+    <label>
+        <input type="checkbox" name="healing" {{#if behavior.healing}}checked{{/if}} />
+        Heilung (statt Schaden)
+    </label>
+    <label>
+        <input type="checkbox" name="targetsErschoepfung" {{#if behavior.targetsErschoepfung}}checked{{/if}} />
+        Betrifft Erschöpfung (statt Wunden)
+    </label>
+    <label>
+        <input type="checkbox" name="bypassesArmor" {{#if behavior.bypassesArmor}}checked{{/if}} />
+        Ignoriert Rüstung
+    </label>
+</fieldset>

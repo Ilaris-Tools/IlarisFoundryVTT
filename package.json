@@ -1,7 +1,7 @@
 {
   "name": "ilaris-foundryvtt",
   "description": "Ein System für [Ilaris](https://ilarisblog.wordpress.com/) zur Verwendung mit [FoundryVTT](https://foundryvtt.com/).",
-  "version": "v14.0.0",
+  "version": "v14.1.0",
   "main": "",
   "type": "module",
   "devDependencies": {
@@ -27,7 +27,7 @@
     "test": "jest",
     "lint": "eslint --fix .",
     "prettier": "prettier --write .",
-    "test:e2e": "playwright test e2e/cases",
+    "test:e2e": "node e2e/tools/run.mjs",
     "prepare": "husky",
     "optimize-svgs": "node scripts/optimize-svgs.js",
     "pack-all": "node utils/pack-all.js",

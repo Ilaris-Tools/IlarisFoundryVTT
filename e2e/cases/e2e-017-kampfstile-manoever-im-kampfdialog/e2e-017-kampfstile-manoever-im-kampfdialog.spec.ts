@@ -477,4 +477,41 @@ test.describe('E2E-017 Kampfstile und Stil-Manöver im Kampfdialog', () => {
             expect(optionTexts.map((text) => text.trim())).toContain(styleCase.styleName)
         }
     })
+
+    test('Kompendium-Synchronisierung erhält die humanoide Zielauswahl für Parierwaffenkampf', async ({
+        page,
+    }) => {
+        await loginAndJoinWorld(page, foundryConfig)
+        actorDefaultSnapshot = await captureActorDefaultSnapshot(page, ACTOR_NAME)
+
+        const originalHideSyncButton = await page.evaluate(() =>
+            game.settings.get('Ilaris', 'hideSyncKampfstileButton'),
+        )
+        await page.evaluate(async () => {
+            await game.settings.set('Ilaris', 'hideSyncKampfstileButton', false)
+            game.actors?.getName('HatAlles')?.sheet?.render(true)
+        })
+
+        try {
+            const preparedState = await prepareActorForStyle(page, ACTOR_NAME, 'Parierwaffenkampf')
+            const actorWindow = await ensureActorSheetOpen(page, ACTOR_NAME)
+            await actorWindow.locator('nav [data-tab="kampf"]').click()
+            await actorWindow
+                .locator('select[name="system.misc.selected_kampfstil"]')
+                .selectOption('Parierwaffenkampf')
+
+            await page.locator('.hero-sync-button-wrapper [data-action="syncItems"]').click()
+            await page.waitForTimeout(500)
+
+            await openMeleeAttackDialogForWeapon(actorWindow, preparedState.mainWeaponName)
+            const attackDialog = page.locator('.application.angriff-dialog').last()
+            await expect(attackDialog).toBeVisible({ timeout: 15000 })
+            await expect(attackDialog.locator('input[id^="isHumanoid-"]')).toBeVisible()
+        } finally {
+            await page.evaluate(
+                (value) => game.settings.set('Ilaris', 'hideSyncKampfstileButton', value),
+                originalHideSyncButton,
+            )
+        }
+    })
 })

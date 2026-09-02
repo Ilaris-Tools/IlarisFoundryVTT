@@ -108,7 +108,7 @@ Hooks.once('init', () => {
         makeDefault: true,
     })
     Items.registerSheet('Ilaris', UebernatuerlichTalentSheet, {
-        types: ['zauber', 'liturgie'],
+        types: ['zauber', 'liturgie', 'anrufung'],
         makeDefault: true,
     })
     Items.registerSheet('Ilaris', FreieFertigkeitSheet, {
@@ -552,6 +552,9 @@ function setupIlarisSocket() {
             case 'createDefensePromptByOwner':
                 await handleCreateDefensePromptByOwnerRequest(data.data)
                 break
+            case 'createResistPromptByOwner':
+                await handleCreateResistPromptByOwnerRequest(data.data)
+                break
             case 'broadcastCombatHook':
                 await handleBroadcastCombatHookRequest(data.data)
                 break
@@ -633,6 +636,18 @@ async function handleCreateDefensePromptByOwnerRequest(data) {
     const { handleDefensePromptSocketEvent } =
         await import('../combat/hooks/combat_dialog_handlers.js')
     await handleDefensePromptSocketEvent(data)
+}
+
+/**
+ * Handle resist prompt socket event — delegates to resist-handler.js.
+ * @param {Object} data - Socket payload with resist prompt data
+ */
+async function handleCreateResistPromptByOwnerRequest(data) {
+    const { sendResistPrompt } = await import('../effects/pre-effects/resist-handler.js')
+    const targetActor = game.actors.get(data.targetActorId)
+    if (!targetActor) return
+
+    await sendResistPrompt(targetActor, data.preEffect, data.spellName, ChatMessage.getSpeaker())
 }
 
 /**
@@ -763,10 +778,7 @@ Hooks.on('renderTokenHUD', (app, htmlDOM, data) => {
         const statusEffectsContainer = htmlDOM.querySelector('.status-effects')
 
         if (statusEffectsContainer) {
-            // Find all effect controls within the status effects container
-            const effectControls = statusEffectsContainer.querySelectorAll('.effect-control')
-
-            effectControls.forEach((control) => {
+            const applyTint = (control) => {
                 const statusId = control.dataset.statusId
 
                 // Find the matching status effect configuration
@@ -789,9 +801,43 @@ Hooks.on('renderTokenHUD', (app, htmlDOM, data) => {
 
                     control.classList.add('ilaris-tinted')
                 }
+            }
+
+            const applyTints = () => {
+                statusEffectsContainer.querySelectorAll('.effect-control').forEach(applyTint)
+            }
+
+            applyTints()
+
+            // AppV2 replaces the palette controls when it is expanded. Observe
+            // those replacements so the visible palette receives the same
+            // configured tint as its initially rendered, hidden counterpart.
+            new MutationObserver(applyTints).observe(statusEffectsContainer, {
+                childList: true,
+                subtree: true,
             })
         }
     }, 100)
+})
+
+// TokenHUD palettes are re-rendered independently in Foundry V14. The
+// specialized renderTokenHUD hook only runs for the initial bind, so apply the
+// same tint when an ApplicationV2 render supplies the expanded palette.
+Hooks.on('renderApplicationV2', (app, htmlDOM) => {
+    const statusEffectsContainer = htmlDOM.querySelector?.('.status-effects')
+    if (!statusEffectsContainer) return
+
+    setTimeout(() => {
+        statusEffectsContainer.querySelectorAll('.effect-control').forEach((control) => {
+            const tint = CONFIG.statusEffects[control.dataset.statusId]?.tint
+            if (!tint) return
+
+            const filterValue = getFilterForColor(tint)
+            control.style.setProperty('filter', filterValue, 'important')
+            control.style.setProperty('-webkit-filter', filterValue, 'important')
+            control.classList.add('ilaris-tinted')
+        })
+    }, 0)
 })
 
 // Helper function to create CSS filters that convert white SVG to specific colors
@@ -1004,6 +1050,17 @@ Hooks.on('renderChatMessageHTML', (message, htmlDOM, data) => {
             element.textContent = formattedDice + remainder
         }
     })
+
+    // Set all dice-tooltip to be expanded, to see the dice rolls directly
+    const showDiceRollInChat = game.settings.get(
+        ConfigureGameSettingsCategories.Ilaris,
+        IlarisGameSettingNames.showDiceRollInChat,
+    )
+    if (showDiceRollInChat) {
+        htmlDOM.querySelectorAll('.dice-roll').forEach((element) => {
+            element.classList.add('expanded')
+        })
+    }
 
     // Handle defense prompt message visibility
     const isDefensePrompt = message.flags?.Ilaris?.defensePrompt

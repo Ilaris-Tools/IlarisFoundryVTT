@@ -67,8 +67,9 @@ Output using the Implementation Plan Template from `.agents/HANDOFFS_AND_STANDAR
 
 ### Step 7: Document Plan (Always mandatory)
 
-- **Always** write the plan to a markdown file in `docs/_specs/` in a new folder named with date and descriptive underscored name (e.g., `2024_06_15_new_feature_planning/new_feature_plan.md`).
-- If `[NEEDS INPUT]` items remain, still write the file and mark it as `DRAFT` in the title.
+- **Always** create an OpenSpec change via `openspec new change "<name>"` and write the proposal, design, specs, and tasks artifacts.
+- If `[NEEDS INPUT]` items remain, still create the change and mark the proposal as `DRAFT`.
+- Reference existing capability specs in `openspec/specs/` for context.
 - Never skip this step.
 
 ## Quality Criteria

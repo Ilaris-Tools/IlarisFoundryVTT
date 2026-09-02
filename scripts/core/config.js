@@ -170,6 +170,12 @@ let itemTemplates = {
         system: {},
         logMessage: 'Neue Liturgie',
     },
+    anrufung: {
+        name: 'Anrufung',
+        type: 'anrufung',
+        system: {},
+        logMessage: 'Neue Anrufung',
+    },
     eigenheit: {
         name: 'eigenheit',
         type: 'eigenheit',
@@ -362,6 +368,8 @@ let manoever = {
         CHANGE_DAMAGE_TYPE: 'Schadenstyp ändern',
         ARMOR_BREAKING: 'Rüstung ignorieren',
         SPECIAL_TEXT: 'Spezialeffekt',
+        DURATION: 'Wirkungsdauer',
+        MAECHTIGE_MAGIE: 'Mächtige Magie/Liturgie',
     },
     operator: {
         MULTIPLY: 'Multiplizieren',
@@ -502,6 +510,8 @@ let schadenstypen = {
     NORMAL: '',
     PROFAN: 'Profan',
     STUMPF: 'Stumpf',
+    HEALING_WOUND: 'Heilung (Wunden)',
+    HEALING_EXHAUSTION: 'Heilung (Erschöpfung)',
     STICH: 'Stich',
     SCHARF: 'Scharf',
     MAGISCH: 'Magisch',
@@ -540,6 +550,7 @@ let vorteilsgruppen = [
     { value: '6', label: 'Karma' },
     { value: '7', label: 'Geweihte Traditionen' },
     { value: '8', label: 'Tiergeist' },
+    { value: '9', label: 'Pakt Traditionen' },
 ]
 ILARIS.vorteilsgruppen = vorteilsgruppen
 

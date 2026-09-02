@@ -34,6 +34,15 @@ export const registerIlarisGameSettings = () => {
             scope: 'world',
         },
         {
+            settingsName: IlarisGameSettingNames.expandWeaponDamageMultipliers,
+            name: 'Waffenschaden vor dem Würfeln multiplizieren',
+            hint: 'Wenn aktiviert, werden bei Waffenschaden-Multiplikatoren Würfel und feste Boni vor dem Würfeln multipliziert. Beispiel: 2W6+3 wird zu 4W6+6.',
+            config: false,
+            type: new foundry.data.fields.BooleanField(),
+            scope: 'world',
+            default: false,
+        },
+        {
             // Rename Triumph with Crit
             settingsName: IlarisGameSettingNames.renameTriumphWithCrit,
             name: 'Umbenennen von Triumph in Crit im Text',
@@ -67,6 +76,17 @@ export const registerIlarisGameSettings = () => {
             settingsName: IlarisGameSettingNames.enableTabbingCharacterSheet,
             name: 'Heldensheet Reiter Rotation mit Tab aktivieren',
             hint: 'Wenn aktiviert, kann auf dem Heldensheet mit Tab zwischen den Reitern rotiert werden.',
+            config: false,
+            type: new foundry.data.fields.BooleanField(),
+            scope: 'client',
+            default: false,
+            requiresReload: true,
+        },
+        {
+            // Register showing dice roll directly in chat message (instead of result only)
+            settingsName: IlarisGameSettingNames.showDiceRollInChat,
+            name: 'Würfel details im Chat direkt anzeigen',
+            hint: 'Zeigt Details zum Würfelwurf im Chat direkt an.',
             config: false,
             type: new foundry.data.fields.BooleanField(),
             scope: 'client',
@@ -113,6 +133,17 @@ export const registerIlarisGameSettings = () => {
             scope: 'world',
             default: false,
             requiresReload: true,
+        },
+        {
+            // Register damage types setting
+            settingsName: IlarisGameSettingNames.damageTypes,
+            name: 'Schadenstypen',
+            hint: 'Definiert die verfügbaren Schadenstypen für Pre-Effects und zukünftige Systemfunktionen. Jeder Typ hat einen Wert (Key), einen Anzeigenamen (Label) und ein Verhalten.',
+            config: false,
+            type: String,
+            scope: 'world',
+            default:
+                '[{"value":"PROFAN","label":"Profan (Wunden)","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"STUMPF","label":"Stumpf (Erschöpfung)","behavior":{"healing":false,"targetsErschoepfung":true,"bypassesArmor":false}},{"value":"MAGISCH","label":"Magisch","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"GEWEIHT","label":"Geweiht","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"DAEMONISCH","label":"Dämonisch","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"FEUER","label":"Feuer","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"EIS","label":"Eis","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"ERZ","label":"Erz","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"HUMUS","label":"Humus","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"LUFT","label":"Luft","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"WASSER","label":"Wasser","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"HEALING_WOUND","label":"Heilung (Wunden)","behavior":{"healing":true,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"HEALING_EXHAUSTION","label":"Heilung (Erschöpfung)","behavior":{"healing":true,"targetsErschoepfung":true,"bypassesArmor":false}},{"value":"TRUE_DAMAGE","label":"SP-Schaden","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":true}}]',
         },
     ].forEach((setting) => {
         game.settings.register(ConfigureGameSettingsCategories.Ilaris, setting.settingsName, {
@@ -274,6 +305,43 @@ export const registerIlarisGameSettings = () => {
             default: setting.default,
             onChange: setting.onChange,
             requiresReload: setting.requiresReload,
+        })
+    })
+
+    // LLM / KI-Einstellungen (client-scoped — nur im Browser des GMs)
+    ;[
+        {
+            settingsName: IlarisGameSettingNames.llmApiUrl,
+            name: 'LLM API URL',
+            hint: 'Die URL des OpenAI-kompatiblen Chat-Completions-Endpunkts (z.B. OpenAI, OpenRouter, DeepSeek, Ollama).',
+            scope: Scope.Client,
+            type: String,
+            default: '',
+        },
+        {
+            settingsName: IlarisGameSettingNames.llmApiKey,
+            name: 'LLM API Key',
+            hint: 'Der API-Schlüssel für den LLM-Dienst. Wird nur im Browser gespeichert und nie mit der Welt synchronisiert.',
+            scope: Scope.Client,
+            type: String,
+            default: '',
+        },
+        {
+            settingsName: IlarisGameSettingNames.llmModel,
+            name: 'LLM Model',
+            hint: 'Das zu verwendende Modell (z.B. gpt-4o, deepseek-chat, openai/gpt-4o für OpenRouter).',
+            scope: Scope.Client,
+            type: String,
+            default: '',
+        },
+    ].forEach((setting) => {
+        game.settings.register(ConfigureGameSettingsCategories.Ilaris, setting.settingsName, {
+            name: setting.name,
+            hint: setting.hint,
+            config: setting.config,
+            type: setting.type,
+            scope: setting.scope,
+            default: setting.default,
         })
     })
 

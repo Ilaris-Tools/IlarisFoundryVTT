@@ -68,16 +68,21 @@ Always run `npm install` before building or testing. Always run `npm run pack-al
 
 Never guess about Hooks, utility methods (`foundry.utils.*`), Document classes, data models, socket communication, or Canvas/rendering APIs. If the API docs are unclear, ask the user.
 
+## OpenSpec workflow (canonical policy)
+
+Read and follow root [`AGENTS.md`](../AGENTS.md) and the relevant section of [`.agents/OPENSPEC_OPERATIONS.md`](../.agents/OPENSPEC_OPERATIONS.md) before proposing, reviewing, or changing significant work. Together they are the single source of truth for the OpenSpec lifecycle, retrospective changes, handoff contract, validation, Git handoff, self-review, and operation instructions.
+
+Copilot-specific command prompts and skills live in `.github/prompts/` and `.github/skills/`. They provide command mechanics only; they do not replace `AGENTS.md`.
+
 ## Precedence Rules
 
-Instruction precedence (highest to lowest):
+For the shared OpenSpec workflow, `AGENTS.md` is authoritative and this file does not override it. For Copilot-specific and path-scoped guidance, precedence is:
 
 1. **Path-specific instructions** (`.github/instructions/*.instructions.md`) — scoped by `applyTo` glob
 2. **This file** (`.github/copilot-instructions.md`) — repository-wide baseline
-3. **`AGENTS.md`** (root) — tool-agnostic agent behavior and orchestration contracts
-4. **`.agents/` documentation** — detailed project knowledge base
+3. **`.agents/` documentation** — detailed project knowledge base
 
-In case of conflict, higher-precedence instructions override lower ones. See `.agents/README.md` for the full documentation map.
+An explicit exception documented in `AGENTS.md` is required to override the shared workflow. See `.agents/README.md` for the full documentation map.
 
 ## Agent Profile Resolution (Mandatory)
 
@@ -89,6 +94,8 @@ Canonical mapping:
 - `Researcher` -> `.github/agents/researcher.md`
 - `Reviewer` -> `.github/agents/reviewer.md`
 - `Setup Specialist` -> `.github/agents/setup-specialist.md`
+- `E2E Testfall Assistant` -> `.github/agents/e2e-testfall-assistant.md`
+- `E2E Spec Generator` -> `.github/agents/e2e-spec-generator.md`
 
 Operational rules:
 

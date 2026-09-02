@@ -127,7 +127,18 @@ global.Handlebars = {
     registerPartial: jest.fn(),
 }
 
-// Mock Foundry Hooks
+// Mock ChatMessage
+global.ChatMessage = class ChatMessage {
+    static create() {}
+    static getSpeaker() {
+        return { actor: null, token: null, alias: '' }
+    }
+}
+
+// Mock ActiveEffect
+global.ActiveEffect = class ActiveEffect {
+    static createDocuments() {}
+}
 global.Hooks = {
     call: jest.fn().mockReturnValue(true),
     callAll: jest.fn(),

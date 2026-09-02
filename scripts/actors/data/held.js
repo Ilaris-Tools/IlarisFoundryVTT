@@ -105,6 +105,10 @@ export class HeldActor extends IlarisActor {
             this.system.abgeleitete.kap > 0 ||
             this.system.abgeleitete.gkap ||
             this.system.abgeleitete.kap_zugekauft
+        this.system.abgeleitete.paktierer =
+            this.system.abgeleitete.gup > 0 ||
+            this.system.abgeleitete.ggup ||
+            this.system.abgeleitete.gup_zugekauft
 
         let be = this.system.abgeleitete.be
         for (let ruestung of this.ruestungen) {

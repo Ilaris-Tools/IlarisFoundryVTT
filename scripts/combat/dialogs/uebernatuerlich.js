@@ -13,6 +13,7 @@ import {
     callIlarisHookAllWithGlobalMirror,
     callIlarisHookWithGlobalMirror,
 } from '../hooks/global_combat_hooks.js'
+import { applyPreEffects } from '../../effects/pre-effects/pre-effects-processor.js'
 
 export class UebernatuerlichDialog extends CombatDialog {
     /** @override */
@@ -99,6 +100,10 @@ export class UebernatuerlichDialog extends CombatDialog {
      * Override getDiceFormula to handle the special xd20 logic for supernatural abilities.
      */
     getDiceFormula(xd20_choice = null) {
+        // Anrufungen werden immer mit 1W20 gewürfelt, keine Median-Option
+        if (this.item.type === 'anrufung') {
+            return super.getDiceFormula(1)
+        }
         if (xd20_choice === null) {
             xd20_choice =
                 Number(this.element.querySelector('input[name="xd20"]:checked')?.value) || 0
@@ -131,8 +136,10 @@ export class UebernatuerlichDialog extends CombatDialog {
         const finalFormula =
             finalPW >= 0 ? `${formattedDice}+${finalPW}` : `${formattedDice}${finalPW}`
 
-        const itemType = this.item.type === 'zauber' ? 'Zauber' : 'Liturgie'
-        const icon = this.item.type === 'zauber' ? '🔮' : '✨'
+        const itemTypeLabels = { zauber: 'Zauber', liturgie: 'Liturgie', anrufung: 'Anrufung' }
+        const itemTypeIcons = { zauber: '🔮', liturgie: '✨', anrufung: '👹' }
+        const itemType = itemTypeLabels[this.item.type] || 'Liturgie'
+        const icon = itemTypeIcons[this.item.type] || '✨'
 
         const difficultyRows = []
         const schwierigkeit = this.item.system.schwierigkeit
@@ -311,10 +318,12 @@ export class UebernatuerlichDialog extends CombatDialog {
 
     async _angreifenKlick() {
         if (callIlarisHookWithGlobalMirror('Ilaris.preAngriff', this) === false) return
-        let xd20_choice =
-            Number(this.element.querySelector('input[name="xd20"]:checked')?.value) || 0
-        xd20_choice = xd20_choice == 0 ? 1 : 3
-        let diceFormula = this.getDiceFormula(xd20_choice)
+        // getDiceFormula already checks this
+        // let xd20_choice =
+        //     Number(this.element.querySelector('input[name="xd20"]:checked')?.value) || 0
+        // xd20_choice = xd20_choice == 0 ? 1 : 3
+        // let diceFormula = this.getDiceFormula(xd20_choice)
+        let diceFormula = this.getDiceFormula()
         await this.manoeverAuswaehlen()
         await this.updateManoeverMods()
         this.updateStatusMods()
@@ -368,6 +377,11 @@ export class UebernatuerlichDialog extends CombatDialog {
             await this.refreshActorData()
         }
         super._updateSchipsStern()
+
+        // Fire-and-forget pre-effects on success
+        if (isSuccess && this.item.system.preEffects?.length > 0) {
+            applyPreEffects(rollResult, this)
+        }
     }
 
     async _energieAbrechnenKlick(isSuccess) {
@@ -377,6 +391,11 @@ export class UebernatuerlichDialog extends CombatDialog {
         await this.initializeEnergyValues()
 
         await this.applyEnergyCost(isSuccess, this.is16OrHigher)
+
+        // Fire-and-forget pre-effects for non-standard difficulty spells
+        if (isSuccess && this.item.system.preEffects?.length > 0) {
+            applyPreEffects({ success: true }, this)
+        }
 
         // If not enough resources, show error
         if (this.currentEnergy < this.endCost) {
@@ -418,23 +437,11 @@ export class UebernatuerlichDialog extends CombatDialog {
 
     async initializeEnergyValues() {
         // Check if we have enough resources
-        if (this.actor.type == 'held') {
-            if (this.item.type === 'zauber') {
-                this.currentEnergy = this.actor.system.abgeleitete.asp_stern
-                this.energyPath = 'system.abgeleitete.asp_stern'
-            } else {
-                this.currentEnergy = this.actor.system.abgeleitete.kap_stern
-                this.energyPath = 'system.abgeleitete.kap_stern'
-            }
-        } else {
-            if (this.item.type === 'zauber') {
-                this.currentEnergy = this.actor.system.energien.asp.value
-                this.energyPath = 'system.energien.asp.value'
-            } else {
-                this.currentEnergy = this.actor.system.energien.kap.value
-                this.energyPath = 'system.energien.kap.value'
-            }
-        }
+        const energyKey =
+            this.item.type === 'anrufung' ? 'gup' : this.item.type === 'zauber' ? 'asp' : 'kap'
+        const energyState = this.actor.getEnergyState(energyKey)
+        this.currentEnergy = energyState.current
+        this.energyPath = energyState.currentPath
     }
 
     async applyEnergyCost(isSuccess, is16OrHigher) {
@@ -553,19 +560,9 @@ export class UebernatuerlichDialog extends CombatDialog {
      * @returns {number} Available energy (AsP or KaP)
      */
     getAvailableEnergy() {
-        if (this.actor.type == 'held') {
-            if (this.item.type === 'zauber') {
-                return this.actor.system.abgeleitete.asp_stern
-            } else {
-                return this.actor.system.abgeleitete.kap_stern
-            }
-        } else {
-            if (this.item.type === 'zauber') {
-                return this.actor.system.energien.asp.value
-            } else {
-                return this.actor.system.energien.kap.value
-            }
-        }
+        const energyKey =
+            this.item.type === 'anrufung' ? 'gup' : this.item.type === 'zauber' ? 'asp' : 'kap'
+        return this.actor.getEnergyState(energyKey).current
     }
 
     /**
@@ -657,6 +654,8 @@ export class UebernatuerlichDialog extends CombatDialog {
         let fumble_val = 1
         let damageType = 'NORMAL'
         let trueDamage = false
+        let durationBonus = 0
+        let maechtigeMagieQs = 0
 
         // Get the minimum available resource based on actor and item type
         const availableEnergy = this.getAvailableEnergy()
@@ -720,6 +719,8 @@ export class UebernatuerlichDialog extends CombatDialog {
             nodmg,
             damageType,
             trueDamage,
+            durationBonus,
+            maechtigeMagieQs,
             this.energy_override,
         ] = handleModifications(allModifications, {
             mod_at,
@@ -735,6 +736,8 @@ export class UebernatuerlichDialog extends CombatDialog {
             nodmg: null,
             damageType,
             trueDamage,
+            durationBonus,
+            maechtigeMagieQs,
             context: this,
         })
 
@@ -800,6 +803,11 @@ export class UebernatuerlichDialog extends CombatDialog {
 
         // Ensure mod_energy is never less than 0
         mod_energy = Math.max(0, mod_energy)
+
+        // Track Mächtige Magie QS and maneuver duration bonus for pre-effects
+        this.maechtigeMagieQs = maechtigeMagieQs || 0
+        this.maneuverDurationBonus = durationBonus || 0
+
         this.mod_at = mod_at
         this.mod_vt = mod_vt
         this.mod_dm = mod_dm

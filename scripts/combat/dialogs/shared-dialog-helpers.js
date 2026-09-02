@@ -3,6 +3,62 @@ import {
     ConfigureGameSettingsCategories,
     IlarisGameSettingNames,
 } from '../../settings/configure-game-settings.model.js'
+
+const DEFAULT_DAMAGE_TYPE_BEHAVIOR = {
+    healing: false,
+    targetsErschoepfung: false,
+    bypassesArmor: false,
+}
+let cachedDamageTypesRaw
+let cachedDamageTypes = []
+const warnedDamageTypes = new Set()
+
+/**
+ * Returns the behavior flags configured for a damage type.
+ *
+ * @param {string} damageType - The configured damage type key
+ * @returns {{healing: boolean, targetsErschoepfung: boolean, bypassesArmor: boolean}}
+ */
+export function getDamageTypeBehavior(damageType) {
+    // 'NORMAL' is the dialogs' legacy "no specific type" sentinel (CONFIG.ILARIS.schadenstypen
+    // maps it to an empty label). It is intentionally not part of the configurable registry.
+    if (!damageType || damageType === 'NORMAL') {
+        return { ...DEFAULT_DAMAGE_TYPE_BEHAVIOR }
+    }
+
+    try {
+        const raw = game.settings.get(
+            ConfigureGameSettingsCategories.Ilaris,
+            IlarisGameSettingNames.damageTypes,
+        )
+        if (raw !== cachedDamageTypesRaw) {
+            const parsed = JSON.parse(raw || '[]')
+            cachedDamageTypes = Array.isArray(parsed) ? parsed : []
+            cachedDamageTypesRaw = raw
+        }
+    } catch (error) {
+        console.warn('Ilaris | Failed to parse damageTypes setting:', error)
+        cachedDamageTypes = []
+    }
+
+    const configuredType = cachedDamageTypes.find((type) => type.value === damageType)
+    if (!configuredType && !warnedDamageTypes.has(damageType)) {
+        warnedDamageTypes.add(damageType)
+        ui?.notifications?.warn(
+            `Schadenstyp "${damageType}" existiert nicht in den Einstellungen. ` +
+                'Standard (Profan / Wunden) wird verwendet.',
+        )
+    }
+
+    return {
+        healing: configuredType?.behavior?.healing ?? DEFAULT_DAMAGE_TYPE_BEHAVIOR.healing,
+        targetsErschoepfung:
+            configuredType?.behavior?.targetsErschoepfung ??
+            DEFAULT_DAMAGE_TYPE_BEHAVIOR.targetsErschoepfung,
+        bypassesArmor:
+            configuredType?.behavior?.bypassesArmor ?? DEFAULT_DAMAGE_TYPE_BEHAVIOR.bypassesArmor,
+    }
+}
 /**
  * Applies the specified operator to the current value
  * @param {number} currentValue - The current value to modify
@@ -126,7 +182,25 @@ export function processModification(
                     trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''
                 }: ${value} / Waffenschaden\n`
             } else {
-                rollValues.schaden = `(${rollValues.schaden})*${value}`
+                const expandWeaponDamageMultipliers = game.settings.get(
+                    ConfigureGameSettingsCategories.Ilaris,
+                    IlarisGameSettingNames.expandWeaponDamageMultipliers,
+                )
+                if (expandWeaponDamageMultipliers) {
+                    try {
+                        rollValues.schaden = new Roll(rollValues.schaden).alter(value, 0, {
+                            multiplyNumeric: true,
+                        }).formula
+                    } catch (error) {
+                        console.warn(
+                            'Ilaris | Failed to expand weapon damage multiplier formula:',
+                            error,
+                        )
+                        rollValues.schaden = `(${rollValues.schaden})*${value}`
+                    }
+                } else {
+                    rollValues.schaden = `(${rollValues.schaden})*${value}`
+                }
                 text = `${manoeverName}${
                     trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''
                 }: ${value} * Waffenschaden\n`
@@ -146,7 +220,9 @@ export function processModification(
                 trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''
             }: Schadenstyp zu ${CONFIG.ILARIS.schadenstypen[modification.value]}\n`
             rollValues.text_dm = rollValues.text_dm.concat(text)
-            rollValues.damageType = CONFIG.ILARIS.schadenstypen[modification.value]
+            // Keep the key ('STUMPF'), not the label ('Stumpf') — getDamageTypeBehavior and
+            // the damageTypes setting match on keys.
+            rollValues.damageType = modification.value
             break
         case 'ARMOR_BREAKING':
             text = `${manoeverName}${
@@ -202,6 +278,24 @@ export function processModification(
                 } Energiekosten\n`
             }
             rollValues.text_energy = rollValues.text_energy.concat(text)
+            break
+        case 'DURATION':
+            rollValues.durationBonus =
+                (rollValues.durationBonus || 0) +
+                (modification.operator === 'ADD'
+                    ? value
+                    : modification.operator === 'MULTIPLY'
+                      ? value
+                      : 0)
+            text = `${manoeverName}: Wirkungsdauer ${
+                modification.operator === 'ADD' ? '+' + value : '×' + value
+            }\n`
+            rollValues.text_energy = rollValues.text_energy.concat(text)
+            break
+        case 'MAECHTIGE_MAGIE':
+            rollValues.maechtigeMagieQs = (rollValues.maechtigeMagieQs || 0) + (value || 1)
+            text = `${manoeverName}: Mächtige Magie QS +${value || 1}\n`
+            rollValues.text_at = rollValues.text_at.concat(text)
             break
     }
 
@@ -355,13 +449,19 @@ export async function routeDamageToOwner(
  * Exported so it can be called by the socket handler in hooks.js
  */
 export async function _applyDamageDirectly(targetActor, damage, damageType, trueDamage, speaker) {
+    const behavior = getDamageTypeBehavior(damageType)
+    const healthKey = behavior.targetsErschoepfung ? 'erschoepfung' : 'wunden'
+    const statKey = `system.gesundheit.${healthKey}`
+    const ignoresArmor = trueDamage || behavior.bypassesArmor
+    const damageTypeLabel = CONFIG.ILARIS.schadenstypen[damageType] ?? 'Profan'
+
     // Get WS and WS* of the target
     const useLepSystem = game.settings.get(
         ConfigureGameSettingsCategories.Ilaris,
         IlarisGameSettingNames.lepSystem,
     )
     let ws = targetActor.system.abgeleitete.ws
-    let ws_stern = targetActor.system.abgeleitete.ws_stern
+    let ws_stern = targetActor.system.abgeleitete.ws_stern ?? ws
 
     if (targetActor.type === 'kreatur') {
         ws = targetActor.system.kampfwerte.ws
@@ -373,16 +473,60 @@ export async function _applyDamageDirectly(targetActor, damage, damageType, true
     // Examples with WS=5: damage=5 -> 0 wounds, damage=6 -> 1 wound, damage=10 -> 1 wound,
     //                     damage=11 -> 2 wounds, damage=16 -> 3 wounds
     // The (damage - 1) shift ensures damage must exceed WS, not just equal it
-    let woundsToAdd = trueDamage
-        ? damage > ws
-            ? Math.floor((damage - 1) / ws)
+
+    // --- Healing branch ---
+    if (behavior.healing) {
+        const healAmount = Math.max(0, damage)
+
+        if (useLepSystem && !behavior.targetsErschoepfung) {
+            // Under LEP, gesundheit.wunden accumulates raw damage points (see the LEP damage
+            // branch below and hp = max_hp - wunden in actor.js), so healing removes from it.
+            const currentDamage = targetActor.system.gesundheit.wunden || 0
+            const newDamage = Math.max(0, currentDamage - healAmount)
+            if (newDamage < currentDamage) {
+                await targetActor.update({ 'system.gesundheit.wunden': newDamage })
+                await ChatMessage.create({
+                    content: `${targetActor.name} erhält ${currentDamage - newDamage} Heilung!`,
+                    speaker: speaker,
+                    style: CONST.CHAT_MESSAGE_STYLES.OTHER,
+                })
+            }
+        } else {
+            const currentValue = targetActor.system.gesundheit[healthKey] || 0
+            const woundsToRemove = healAmount > ws ? Math.floor((healAmount - 1) / ws) : 0
+
+            if (woundsToRemove > 0) {
+                const newValue = Math.max(0, currentValue - woundsToRemove)
+                await targetActor.update({ [statKey]: newValue })
+                await ChatMessage.create({
+                    content: `${targetActor.name} heilt ${woundsToRemove} Einschränkung${
+                        woundsToRemove > 1 ? 'en' : ''
+                    }! (Heilung: ${healAmount})`,
+                    speaker: speaker,
+                    style: CONST.CHAT_MESSAGE_STYLES.OTHER,
+                })
+            } else {
+                await ChatMessage.create({
+                    content: `${targetActor.name} erhält keine Heilung - die Heilung (${healAmount}) war nicht hoch genug (WS ${ws}).`,
+                    speaker: speaker,
+                    style: CONST.CHAT_MESSAGE_STYLES.OTHER,
+                })
+            }
+        }
+        return
+    }
+
+    const damageAmount = Math.max(0, damage)
+    let woundsToAdd = ignoresArmor
+        ? damageAmount > ws
+            ? Math.floor((damageAmount - 1) / ws)
             : 0
-        : damage > ws_stern
-          ? Math.floor((damage - 1) / ws_stern)
+        : damageAmount > ws_stern
+          ? Math.floor((damageAmount - 1) / ws_stern)
           : 0
 
-    if (useLepSystem) {
-        woundsToAdd = trueDamage ? damage : damage - ws_stern
+    if (useLepSystem && !behavior.targetsErschoepfung) {
+        woundsToAdd = ignoresArmor ? damageAmount : damageAmount - ws_stern
 
         if (woundsToAdd > 0) {
             await targetActor.update({
@@ -393,7 +537,7 @@ export async function _applyDamageDirectly(targetActor, damage, damageType, true
             // Send a message to chat
             await ChatMessage.create({
                 content: `${targetActor.name} erleidet ${woundsToAdd} Schaden! (${
-                    damageType ? CONFIG.ILARIS.schadenstypen[damageType] : 'profan'
+                    damageTypeLabel
                 })`,
                 speaker: speaker,
                 style: CONST.CHAT_MESSAGE_STYLES.OTHER,
@@ -404,23 +548,17 @@ export async function _applyDamageDirectly(targetActor, damage, damageType, true
 
         if (woundsToAdd > 0) {
             // Get current value and update the appropriate stat based on damage type
-            const currentValue =
-                damageType === 'STUMPF'
-                    ? targetActor.system.gesundheit.erschoepfung || 0
-                    : targetActor.system.gesundheit.wunden || 0
+            const currentValue = targetActor.system.gesundheit[healthKey] || 0
 
             await targetActor.update({
-                [`system.gesundheit.${damageType === 'STUMPF' ? 'erschoepfung' : 'wunden'}`]:
-                    currentValue + woundsToAdd,
+                [statKey]: currentValue + woundsToAdd,
             })
 
             // Send a message to chat
             await ChatMessage.create({
                 content: `${targetActor.name} erleidet ${woundsToAdd} Einschränkung${
                     woundsToAdd > 1 ? 'en' : ''
-                }! (${
-                    damageType ? CONFIG.ILARIS.schadenstypen[damageType] : ''
-                } Schaden: ${damage})`,
+                }! (${damageTypeLabel} Schaden: ${damage})`,
                 speaker: speaker,
                 style: CONST.CHAT_MESSAGE_STYLES.OTHER,
             })
@@ -513,6 +651,8 @@ export function handleModifications(allModifications, rollValues) {
         rollValues.nodmg,
         rollValues.damageType,
         rollValues.trueDamage,
+        rollValues.durationBonus || 0,
+        rollValues.maechtigeMagieQs || 0,
         originalRessourceCost,
     ]
 }

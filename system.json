@@ -2,7 +2,7 @@
   "id": "Ilaris",
   "title": "Ilaris",
   "description": "Schnelle und schlanke Regeln für das beliebteste deutsche P&P Setting.",
-  "version": "14.0.0",
+  "version": "14.1.0",
   "compatibility": {
     "minimum": 14,
     "verified": "14.360",
@@ -43,6 +43,7 @@
     "scripts/actors/styles/sidebar.css",
     "scripts/items/styles/items.css",
     "scripts/items/styles/manoever.css",
+    "scripts/items/styles/pre-effects.css",
     "scripts/waffe/styles/waffe.css",
     "scripts/combat/styles/combat-dialogs.css",
     "scripts/effects/styles/effects.css",
