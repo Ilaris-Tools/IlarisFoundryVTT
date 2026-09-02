@@ -36,6 +36,23 @@
       "ownership": { "default": -1 },
       "flags": {},
       "_key": "!journal.pages!kurzpreffect001.kurzprepage002"
+    },
+    {
+      "_id": "summoncreature01",
+      "name": "Kreaturen beschwören",
+      "type": "text",
+      "title": { "show": true, "level": 1 },
+      "text": {
+        "format": 1,
+        "content": "<h2>Kreaturen beschwören</h2><ol><li>Wähle unter <strong>Ilaris-Einstellungen → Benutzte Kompendien</strong> mindestens ein Kreaturen-Kompendium aus (standardmäßig <code>Ilaris.kreaturen</code>).</li><li>Lege auf dem Zauber oder der Liturgie einen Pre-Effect <strong>Kreatur beschwören</strong> an und trage die erlaubten Kreaturentypen kommagetrennt ein, etwa <code>daemon, elementar</code>.</li><li>Nach einer gelungenen Probe wählst du erst den Kreaturentyp und dann die Kreatur aus dem gewählten Kompendium.</li></ol><p>Schwierigkeit und Kosten stammen von der ausgewählten Kreatur; fehlende Angaben zählen als <code>12</code>. Die Kreatur erscheint auf einem freien Feld neben der beschwörenden Person, ihr Blatt öffnet sich, und der Spielleiter entfernt den Token später manuell.</p><p>Optional kann der Zauber gAsP oder gKaP binden. Diese Bindung wird beim Löschen des beschworenen Tokens wieder freigegeben. Eine Beherrschungsprobe ist nur erforderlich, wenn sie im Pre-Effect global aktiviert und für den gewählten Kreaturentyp konfiguriert wurde.</p>"
+      },
+      "video": { "controls": true, "volume": 0.5 },
+      "src": null,
+      "system": {},
+      "sort": 2,
+      "ownership": { "default": -1 },
+      "flags": {},
+      "_key": "!journal.pages!kurzpreffect001.summoncreature01"
     }
   ],
   "folder": null,

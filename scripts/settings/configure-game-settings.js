@@ -247,6 +247,16 @@ export const registerIlarisGameSettings = () => {
             },
         },
         {
+            settingsName: IlarisGameSettingNames.kreaturenPacks,
+            name: 'Kreaturen Kompendien',
+            hint: 'Hier kannst du die Kompendien auswählen, die beschwörbare Kreaturen enthalten.',
+            scope: 'world',
+            config: false,
+            type: String,
+            default: '["Ilaris.kreaturen"]',
+            requiresReload: true,
+        },
+        {
             // Register talente packs setting
             settingsName: IlarisGameSettingNames.talentePacks,
             name: 'Talente Kompendien',

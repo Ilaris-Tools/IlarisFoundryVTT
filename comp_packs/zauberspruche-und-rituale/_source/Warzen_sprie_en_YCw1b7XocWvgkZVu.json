@@ -8,6 +8,9 @@
     "text": "Eklige Warzen entstellen das Gesicht deines Ziels. Die Vorteile Eindrucksvoll I und II werden aufgehoben und alle Proben auf Autorität, Beeinflussung  und Gebräuche sind um –2 erschwert.",
     "maechtig": "Der Malus steigt um –1.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "",
     "vorbereitung": "4 Aktionen",
     "ziel": "Einzelperson",

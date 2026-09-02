@@ -112,7 +112,15 @@ describe('UebernatuerlichDialog roll execution', () => {
         })
         dialog.initializeEnergyValues = jest.fn().mockResolvedValue()
         dialog.applyEnergyCost = jest.fn().mockResolvedValue()
-        dialog.refreshActorData = jest.fn().mockResolvedValue()
+        dialog.updateManoeverMods.mockImplementation(async () => {
+            dialog.maechtigeMagieQs = 2
+            dialog.maneuverDurationBonus = 3
+        })
+        dialog.refreshActorData = jest.fn().mockImplementation(async () => {
+            dialog.maechtigeMagieQs = 0
+            dialog.maneuverDurationBonus = 0
+        })
+        dialog._resolveSuccessfulSpellEffects = jest.fn().mockResolvedValue()
 
         await dialog._angreifenKlick()
 
@@ -124,6 +132,65 @@ describe('UebernatuerlichDialog roll execution', () => {
             { messageMode: false },
         )
         expect(dialog.applyEnergyCost).toHaveBeenCalledWith(true, true)
+        expect(dialog._resolveSuccessfulSpellEffects).toHaveBeenCalledWith(expect.any(Object))
+        expect(dialog.maechtigeMagieQs).toBe(2)
+        expect(dialog.maneuverDurationBonus).toBe(3)
+    })
+
+    test('holds an automatic MR cast until the selected target supplies its D20', async () => {
+        const targetActor = {
+            id: 'target',
+            uuid: 'Actor.target',
+            name: 'Ziel',
+            type: 'held',
+            system: { abgeleitete: { mr: 8 } },
+        }
+        global.game.settings.get.mockImplementation((scope, key) => {
+            if (scope === 'Ilaris' && key === 'useTargetSelection') return true
+            return false
+        })
+        global.game.actors = { get: jest.fn().mockReturnValue(targetActor) }
+        global.canvas = { tokens: { get: jest.fn().mockReturnValue(null) } }
+
+        const dialog = Object.create(UebernatuerlichDialog.prototype)
+        dialog.item = { system: { schwierigkeit: 'Magieresistenz' } }
+        dialog.selectedActors = [{ actorId: 'target' }]
+        dialog.magicResistanceChallenge = null
+        dialog.getEffectiveSpellProfile = () => ({
+            difficulty: 0,
+            magicResistance: { enabled: true },
+        })
+
+        expect(dialog._getMagicResistanceTemplateContext()).toMatchObject({
+            status: 'pending',
+            targetName: 'Ziel',
+            magicResistance: 8,
+        })
+        expect(dialog._getCastingDifficulty()).toBeNull()
+        expect(dialog._isMagicResistancePending()).toBe(true)
+
+        dialog._requireCastSkill = jest.fn().mockResolvedValue(true)
+        dialog._isMagicResistancePending = jest.fn().mockReturnValue(true)
+        await dialog._angreifenKlick()
+        expect(dialog._requireCastSkill).toHaveBeenCalledTimes(1)
+        expect(ui.notifications.warn).toHaveBeenCalledWith(
+            'Fordere zuerst den W20 für die Magieresistenz an.',
+        )
+        expect(mockRoll.toMessage).not.toHaveBeenCalled()
+
+        dialog.magicResistanceChallenge = {
+            targetActorUuid: targetActor.uuid,
+            magicResistance: 8,
+            d20: 13,
+            difficulty: 21,
+        }
+        dialog._isMagicResistancePending = UebernatuerlichDialog.prototype._isMagicResistancePending
+        expect(dialog._getCastingDifficulty()).toBe(21)
+        expect(dialog._getMagicResistanceTemplateContext()).toMatchObject({
+            status: 'resolved',
+            d20: 13,
+            difficulty: 21,
+        })
     })
 
     test('keeps selected spell forms dialog-local and resolves their effective profile', () => {
@@ -159,6 +226,24 @@ describe('UebernatuerlichDialog roll execution', () => {
         expect(dialog.getEffectiveSpellProfile()).toMatchObject({ difficulty: 10, cost: 8 })
         expect(dialog.getEffectiveSpellProfileText()).toContain('Zaubermodifikation: FF')
         expect(item.system).not.toHaveProperty('selectedSpellModificationIds')
+    })
+
+    test('does not render a selectable creature source for a fixed creature summon', async () => {
+        const dialog = Object.create(UebernatuerlichDialog.prototype)
+        dialog.summonCreatureSelections = new Map()
+        dialog.getEffectiveSpellModificationContext = () => ({
+            preEffects: [
+                {
+                    summonCreature: {
+                        enabled: true,
+                        sourceUuid: 'Compendium.Ilaris.kreaturen.Actor.Kraehenschwarm1',
+                    },
+                },
+            ],
+        })
+
+        await expect(dialog._getSummonCreatureSelectors()).resolves.toEqual([])
+        expect(dialog.summonCreatureSelections.size).toBe(0)
     })
 
     test('rejects a missing required spell-form choice before mutating maneuver state', async () => {
