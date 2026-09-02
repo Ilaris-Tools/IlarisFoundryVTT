@@ -55,7 +55,35 @@ describe('CombatItem', () => {
         })
     })
 
+    it('preserves persisted maneuver UUIDs and selector choices for outcome pre-effects', () => {
+        const maneuver = combatItem._createManeuverFromItem({
+            _id: 'entwaffnen',
+            uuid: 'Compendium.Ilaris.manover.Item.entwaffnen',
+            system: { input: { field: 'SELECTOR', choices: ['Hauptwaffe', 'Nebenwaffe'] } },
+        })
+
+        expect(maneuver.uuid).toBe('Compendium.Ilaris.manover.Item.entwaffnen')
+        expect(maneuver.inputValue).toEqual({
+            field: 'SELECTOR',
+            choices: ['Hauptwaffe', 'Nebenwaffe'],
+            value: '',
+        })
+    })
+
     describe('_parseModifikationen', () => {
+        it('keeps prose parsing as a legacy fallback but suppresses it for structured forms', () => {
+            combatItem.system.modifikationen = 'Miasmafaxius (-4, 8 AsP)'
+            combatItem.manoever = []
+            combatItem.system.spellModifications = []
+            combatItem._addLegacySpellModificationManeuvers()
+            expect(combatItem.manoever).toHaveLength(1)
+
+            combatItem.manoever = []
+            combatItem.system.spellModifications = [{ id: 'miasmafaxius' }]
+            combatItem._addLegacySpellModificationManeuvers()
+            expect(combatItem.manoever).toEqual([])
+        })
+
         it('should parse complex modification string with multiple modifications', () => {
             const modificationString =
                 'Schutz vor Übelkeit (–4; auch ungefährliche, aber unangenehme Inhalte wie Salz im Meerwasser werden entfernt.)\nSchutz vor Vergiftung (–4, Wirkungsdauer 8 Stunden; du reinigst auch alles, was dem Essen hinzugefügt wird.)'
@@ -70,6 +98,8 @@ describe('CombatItem', () => {
             expect(firstMod.id).toBe('mod0')
             expect(firstMod.type).toBe('manoever')
             expect(firstMod.system.gruppe).toBe(2) // zauber
+            expect(firstMod.system.preEffects).toBeUndefined()
+            expect(firstMod.system.input.choices).toBeUndefined()
             expect(firstMod.system.probe).toBe(-4)
             expect(firstMod.system.text).toBe(
                 'auch ungefährliche, aber unangenehme Inhalte wie Salz im Meerwasser werden entfernt.',

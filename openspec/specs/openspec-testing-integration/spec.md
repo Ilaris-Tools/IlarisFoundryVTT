@@ -77,7 +77,7 @@ The tasks.md artifact SHALL include dedicated "Unit Tests" and "E2E Tests" task 
 
 ### Requirement: Apply phase uses test-first ordering
 
-During the apply phase, when a code task has a corresponding unit test task, the apply agent SHALL execute the test task before the code task.
+During the apply phase, when a code task has a corresponding unit test task, the apply agent SHALL execute the test task before the code task. For a Foundry-facing change, the apply agent SHALL also invoke the repository-local runtime-verification workflow before marking runtime or E2E validation complete.
 
 #### Scenario: Test written before implementation
 
@@ -88,6 +88,11 @@ During the apply phase, when a code task has a corresponding unit test task, the
 
 - **WHEN** an E2E test task references a spec scenario
 - **THEN** the apply agent MAY use the E2E Spec Generator to create the `.spec.ts` skeleton, or generate it directly using the spec scenario's WHEN/THEN clauses
+
+#### Scenario: Foundry-facing validation has a runtime checklist
+
+- **WHEN** a change modifies Foundry-facing runtime, UI, compendium, data-lifecycle, or settings behavior
+- **THEN** the apply agent SHALL derive and maintain the change-specific runtime checklist before marking validation complete
 
 ### Requirement: Archive phase verifies test coverage
 

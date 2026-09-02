@@ -109,6 +109,10 @@ describe('registerIlarisTypeDataModels', () => {
         expect(itemSchema.modifications.kind).toBe('array')
         expect(itemSchema.gruppe.kind).toBe('number')
 
+        const supernaturalSchema = CONFIG.Item.dataModels.zauber.defineSchema()
+        expect(supernaturalSchema.zone.kind).toBe('object')
+        expect(supernaturalSchema.zone.options.initial()).toBeNull()
+
         const weaponSchema = CONFIG.Item.dataModels.waffeneigenschaft.defineSchema()
         expect(weaponSchema.modifiers.kind).toBe('schema')
         expect(weaponSchema.parameterSlots.kind).toBe('array')

@@ -1,5 +1,6 @@
 import { openSkillDialog } from '../../skills/skills-api.js'
 import { toArray } from './pre-effects-processor.js'
+import { resolveTargetActorForDamage } from '../../combat/dialogs/shared-dialog-helpers.js'
 
 /**
  * Register the resist test system: socket listener, click delegation, and resolution.
@@ -14,7 +15,6 @@ export function registerResistHandler() {
                     const clickedButton = this
                     clickedButton.disabled = true
 
-                    const actorId = this.dataset.actorId
                     let preEffectData
                     try {
                         preEffectData = JSON.parse(
@@ -25,7 +25,9 @@ export function registerResistHandler() {
                         return
                     }
 
-                    const actor = game.actors.get(actorId)
+                    const { targetActor: actor } = resolveTargetActorForDamage(
+                        preEffectData.target || { actorId: preEffectData.targetActorId },
+                    )
                     if (!actor) {
                         ui.notifications.warn('Akteur wurde nicht gefunden.')
                         clickedButton.disabled = false
@@ -51,19 +53,67 @@ export function resolveInitialResistTalent(talents, configuredTalent) {
     return talents?.some((talent) => talent.name === configuredTalent) ? configuredTalent : ''
 }
 
+const DEFAULT_RESIST_DIFFICULTY = 12
+
+function toFiniteNumber(value) {
+    if (value === undefined || value === null || value === '') return null
+    const number = typeof value === 'number' ? value : Number(value)
+    return Number.isFinite(number) ? number : null
+}
+
+/** Resolve the immutable difficulty of a resistance prompt. */
+export function resolveResistDifficulty(preEffectData) {
+    const avoidTest = preEffectData?.avoidTest || {}
+    if (avoidTest.resistDifficultySource === 'triggeringRoll') {
+        const triggeringRollTotal = toFiniteNumber(preEffectData?.triggeringRollTotal)
+        if (triggeringRollTotal !== null) {
+            return { difficulty: triggeringRollTotal, missingTriggeringRoll: false }
+        }
+        return { difficulty: DEFAULT_RESIST_DIFFICULTY, missingTriggeringRoll: true }
+    }
+
+    const baseDifficulty = toFiniteNumber(avoidTest.resistDifficulty) ?? DEFAULT_RESIST_DIFFICULTY
+    const maechtigeQs = toFiniteNumber(preEffectData?.maechtigeQs) ?? 0
+    return { difficulty: baseDifficulty + maechtigeQs * 4, missingTriggeringRoll: false }
+}
+
 /**
  * Handle a resist button click: open FertigkeitDialog and wait for result.
  */
 async function handleResistClick(actor, preEffectData, button) {
-    const avoidTest = preEffectData.avoidTest || {}
+    const avoidTest = { ...(preEffectData.avoidTest || {}) }
     const eventId = preEffectData.eventId
     const spellItemUuid = preEffectData.spellUuid
     const spellName = preEffectData.spellName || ''
 
-    // Compute resist difficulty
-    const maechtigeQs = preEffectData.maechtigeQs || 0
-    const baseDifficulty = avoidTest.resistDifficulty || 12
-    const resistDifficulty = baseDifficulty + maechtigeQs * 4
+    const { difficulty: resistDifficulty, missingTriggeringRoll } =
+        resolveResistDifficulty(preEffectData)
+    if (missingTriggeringRoll) {
+        ui?.notifications?.warn(
+            'Die auslösende Probe ist nicht verfügbar. Widerstandsschwierigkeit ist 12.',
+        )
+    }
+
+    const attributeChoices = (avoidTest.attributChoices || []).filter(
+        (attribute) => actor.system?.attribute?.[attribute]?.pw !== undefined,
+    )
+    if (attributeChoices.length > 1) {
+        const selectedAttribute = await foundry.applications.api.DialogV2.wait({
+            window: { title: 'Widerstandsprobe' },
+            content: '<p>Wähle das Attribut für die Widerstandsprobe.</p>',
+            buttons: attributeChoices.map((attribute) => ({
+                action: attribute,
+                label: `${CONFIG.ILARIS.label?.[attribute] || attribute} (PW ${actor.system.attribute[attribute].pw})`,
+                callback: () => attribute,
+            })),
+            rejectClose: false,
+        })
+        if (!selectedAttribute) {
+            button.disabled = false
+            return
+        }
+        avoidTest.attribut = selectedAttribute
+    }
 
     // Resolve skill or attribute for the dialog
     let dialogOptions
@@ -180,7 +230,35 @@ export function registerResistResolutionListener() {
 async function processResistResult(dialog, payload, preEffectData) {
     const resistSuccess = payload?.rollResult?.success
 
-    if (resistSuccess) {
+    if (preEffectData?.traversal) {
+        const { targetActor } = resolveTargetActorForDamage(
+            preEffectData.target || { actorId: preEffectData.targetActorId },
+        )
+        if (!targetActor) return
+        const { resolveZoneTraversalResistance } =
+            await import('../../combat/zones/zone-lifecycle.js')
+        await resolveZoneTraversalResistance(targetActor, preEffectData.traversal, resistSuccess)
+        return
+    }
+
+    if (preEffectData?.zoneMovementResistance) {
+        const { targetActor } = resolveTargetActorForDamage(
+            preEffectData.target || { actorId: preEffectData.targetActorId },
+        )
+        if (!targetActor) return
+        const { resolveZoneMovementResistance } =
+            await import('../../combat/zones/zone-lifecycle.js')
+        await resolveZoneMovementResistance(
+            targetActor,
+            preEffectData.zoneMovementResistance,
+            resistSuccess,
+        )
+        return
+    }
+
+    if (resistSuccess && hasResistanceOutcome(preEffectData, 'success')) {
+        await applyPreEffectFromResist(selectResistanceOutcome(preEffectData, 'success'))
+    } else if (resistSuccess) {
         const avoidTest = preEffectData.avoidTest || {}
 
         if (avoidTest.diminishedOnly) {
@@ -188,17 +266,70 @@ async function processResistResult(dialog, payload, preEffectData) {
             await applyDiminishedEffect(preEffectData)
         }
         // else: effect entirely avoided — do nothing
+    } else if (hasResistanceOutcome(preEffectData, 'failure')) {
+        await applyPreEffectFromResist(selectResistanceOutcome(preEffectData, 'failure'))
     } else {
         // Resist failed — apply full effect
         await applyPreEffectFromResist(preEffectData)
     }
 }
 
+const RESISTANCE_OUTCOME_FIELDS = [
+    'changes',
+    'ilarisModifiers',
+    'marker',
+    'condition',
+    'tableManagedDisplacement',
+]
+
+function hasResistanceOutcome(preEffectData, outcome) {
+    const selected = preEffectData?.resistanceOutcomes?.[outcome]
+    if (selected?.enabled !== true) return false
+    if (selected.marker?.enabled && (!selected.marker.id || !selected.marker.label)) {
+        ui?.notifications?.warn(
+            'Ein Hinweis-Effekt für eine Widerstandsprobe benötigt Marker-ID und Anzeige.',
+        )
+        return false
+    }
+    if (
+        selected.tableManagedDisplacement?.enabled === true &&
+        (selected.marker?.enabled !== true || !selected.marker.id || !selected.marker.label)
+    ) {
+        ui?.notifications?.warn(
+            'Zurückstoßen (Spielleitung) benötigt einen aktivierten Hinweis-Effekt mit Marker-ID und Anzeige.',
+        )
+        return false
+    }
+    return true
+}
+
+/** Create a result-only copy without mutating serialized source data. */
+export function selectResistanceOutcome(preEffectData, outcome) {
+    const selected = preEffectData?.resistanceOutcomes?.[outcome]
+    if (!selected?.enabled) return preEffectData
+
+    const effective = foundry.utils.deepClone(preEffectData)
+    for (const field of RESISTANCE_OUTCOME_FIELDS) {
+        const fallback =
+            field === 'marker' || field === 'condition'
+                ? {}
+                : field === 'tableManagedDisplacement'
+                  ? { enabled: false }
+                  : []
+        effective[field] = foundry.utils.deepClone(selected[field] || fallback)
+    }
+    effective.resistanceOutcome = outcome
+    return effective
+}
+
 /**
  * Apply the pre-effect with full values (resist failed).
  */
 async function applyPreEffectFromResist(preEffectData) {
-    const targetActor = game.actors.get(preEffectData.targetActorId)
+    const { targetActor } = resolveTargetActorForDamage(
+        preEffectData.target || { actorId: preEffectData.targetActorId },
+    )
+    if (!targetActor) return
 
     const spellItem = await foundry.utils.fromUuid(preEffectData.spellUuid)
     const caster = await foundry.utils.fromUuid(preEffectData.casterUuid)
@@ -234,14 +365,54 @@ async function applyPreEffectFromResist(preEffectData) {
         maechtigeQs,
         preEffectData.preEffectIndex,
         preEffectData.applicationId,
+        preEffectData.armedInputValues || {},
+        preEffectData.sourceType || 'uebernatuerlich',
+        preEffectData.spellModificationId || '',
+        preEffectData.zoneRegionId || '',
     )
+    await sendTableManagedDisplacementNotice(targetActor, preEffectData, spellItem)
+}
+
+/**
+ * Tell the target owner and active GMs that a rules outcome requires table-managed
+ * displacement. This intentionally never updates a Token document.
+ */
+async function sendTableManagedDisplacementNotice(targetActor, preEffectData, spellItem) {
+    if (preEffectData.tableManagedDisplacement?.enabled !== true) return
+
+    const whisper = game.users
+        .filter(
+            (user) =>
+                user.active &&
+                (user.isGM ||
+                    targetActor.testUserPermission(user, CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER)),
+        )
+        .map((user) => user.id)
+    if (whisper.length === 0) return
+
+    await ChatMessage.create({
+        content: `<div class="ilaris-table-managed-displacement"><p><strong>Zurückstoßen (Spielleitung)</strong></p><p>${targetActor.name} hat der Widerstandsprobe gegen ${spellItem?.name || 'den Zauber'} nicht standgehalten. Zustand und Hinweis-Effekt wurden angewendet. Die Spielleitung positioniert den Token nach den Regeln für Zurückstoßen manuell neu.</p></div>`,
+        speaker: ChatMessage.getSpeaker({ actor: targetActor }),
+        whisper,
+        flags: {
+            ilaris: {
+                tableManagedDisplacement: true,
+                spellUuid: preEffectData.spellUuid || '',
+                spellModificationId: preEffectData.spellModificationId || '',
+                targetActorUuid: targetActor.uuid || '',
+                targetTokenId: preEffectData.target?.tokenId || preEffectData.targetTokenId || '',
+            },
+        },
+    })
 }
 
 /**
  * Apply diminished effect (resist succeeded with diminishedOnly).
  */
 async function applyDiminishedEffect(preEffectData) {
-    const targetActor = game.actors.get(preEffectData.targetActorId)
+    const { targetActor } = resolveTargetActorForDamage(
+        preEffectData.target || { actorId: preEffectData.targetActorId },
+    )
     if (!targetActor) return
 
     const spellItem = await foundry.utils.fromUuid(preEffectData.spellUuid)
@@ -305,6 +476,10 @@ async function applyDiminishedEffect(preEffectData) {
         maechtigeQs,
         preEffectData.preEffectIndex,
         preEffectData.applicationId,
+        preEffectData.armedInputValues || {},
+        preEffectData.sourceType || 'uebernatuerlich',
+        preEffectData.spellModificationId || '',
+        preEffectData.zoneRegionId || '',
     )
 }
 

@@ -8,6 +8,9 @@
     "text": "Dein Ziel verliert sämtliche Erinnerung an sein voriges Leben und kann sich später nicht an Ereignisse während der Wirkungsdauer erinnern.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "",
     "vorbereitung": "1 Aktion",
     "ziel": "Einzelperson",

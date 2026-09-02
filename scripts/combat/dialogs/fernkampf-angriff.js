@@ -358,7 +358,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
         let trefferzone = 0
         let schaden = this.item.getTp()
         let fumble_val = 1
-        let damageType = 'NORMAL'
+        let damageType = 'PROFAN'
         let trueDamage = false
 
         // Kombinierte Aktion kbak
@@ -496,6 +496,8 @@ export class FernkampfAngriffDialog extends CombatDialog {
                     check = dynamicManoever.inputValue.value
                 } else if (dynamicManoever.inputValue.field == 'NUMBER') {
                     number = dynamicManoever.inputValue.value
+                } else if (dynamicManoever.inputValue.field == 'SELECTOR') {
+                    number = 1
                 } else {
                     trefferZoneInput = dynamicManoever.inputValue.value
                 }

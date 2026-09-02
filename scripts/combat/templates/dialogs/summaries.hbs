@@ -1,4 +1,15 @@
 <div>
+    {{#if zonePlacementEnabled}}
+        <div class="zone-placement-control">
+            <button type="button" data-action="placeZone">
+                <i class="fas fa-draw-polygon"></i>
+                Zone platzieren
+            </button>
+            {{#if zonePlacementReady}}
+                <span class="zone-placement-ready"><i class="fas fa-check"></i> Zone platziert</span>
+            {{/if}}
+        </div>
+    {{/if}}
     <div class="flex_center_center">
         <div>{{summary.title}}</div>
     </div>
@@ -55,7 +66,7 @@
                                 <hr>
                                 <div class="modifier-section">Energie abrechnen:</div>
                                 {{#each section.actionButtons as |button|}}
-                                    <div class="{{button.cssClass}}" data-action="{{button.action}}" style="{{button.style}}">
+                                    <div class="{{button.cssClass}}" {{#if button.action}}data-action="{{button.action}}"{{/if}} style="{{button.style}}">
                                         {{button.text}}
                                     </div>
                                 {{/each}}
