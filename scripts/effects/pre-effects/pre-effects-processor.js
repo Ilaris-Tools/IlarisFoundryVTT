@@ -7,6 +7,7 @@ import {
 } from '../utils/ilaris-modifier-constants.js'
 import { materializeArmedCombat } from './armed-combat-effects.js'
 import { summonItemFromPreEffect } from './summoned-items.js'
+import { summonCreatureFromPreEffect } from './summoned-creatures.js'
 import { addConditionSource } from '../status-conditions.js'
 import { isPassiveZoneEffect } from '../zone-effect-ownership.js'
 
@@ -136,6 +137,7 @@ function materializeIlarisModifier(modifier, maechtigeQs, armedInputValues = {})
 
 function getEffectPayload(preEffect, maechtigeQs, armedInputValues = {}) {
     const changes = []
+    const dotDamageTypes = []
     const ilarisModifiers = toArray(preEffect.ilarisModifiers).map((modifier) =>
         materializeIlarisModifier(modifier, maechtigeQs, armedInputValues),
     )
@@ -156,8 +158,10 @@ function getEffectPayload(preEffect, maechtigeQs, armedInputValues = {}) {
             })
             continue
         }
+        const materializedValue = materializePreEffectValue(change, maechtigeQs)
         changes.push({
             key: change.key || '',
+            ...(change.type === 'dot' ? { type: 'dot' } : {}),
             mode:
                 change.type === 'custom'
                     ? 10
@@ -166,11 +170,16 @@ function getEffectPayload(preEffect, maechtigeQs, armedInputValues = {}) {
                       : change.type === 'override'
                         ? 1
                         : 2,
-            value: materializePreEffectValue(change, maechtigeQs),
+            value: materializedValue,
             priority: change.priority || null,
         })
+        if (change.type === 'dot')
+            dotDamageTypes.push({
+                key: change.key || '',
+                damageType: change.damageType || 'PROFAN',
+            })
     }
-    return { changes, ilarisModifiers }
+    return { changes, ilarisModifiers, dotDamageTypes }
 }
 
 /** Apply all pre-effects from a spell to its targets. */
@@ -188,6 +197,7 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {},
     const triggeringRollTotal = Number(rollResult?.roll?.total)
 
     const targets = dialog.selectedActors?.length ? dialog.selectedActors : [{ actorId: caster.id }]
+    const summonedCreaturePreEffects = new Set()
     for (const target of targets) {
         const { targetActor } = resolveTargetActorForDamage(target)
         if (!targetActor) continue
@@ -239,6 +249,19 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {},
                     preEffectIndex,
                     applicationId,
                     spellModificationId: context.spellModificationId || '',
+                })
+            } else if (appliedPreEffect.summonCreature?.enabled) {
+                if (summonedCreaturePreEffects.has(preEffectIndex)) continue
+                summonedCreaturePreEffects.add(preEffectIndex)
+                await summonCreatureFromPreEffect({
+                    caster,
+                    preEffect: appliedPreEffect,
+                    selectedCreatureUuid: appliedPreEffect.summonCreature.selectedCreatureUuid,
+                    effectiveDuration: appliedPreEffect.baseDuration + maneuverDurationBonus,
+                    maechtigeQs,
+                    spellItem: item,
+                    preEffectIndex,
+                    applicationId,
                 })
             } else if (appliedPreEffect.instant) {
                 await applyInstantPreEffect(targetActor, appliedPreEffect, maechtigeQs, speaker)
@@ -359,7 +382,7 @@ export async function createActiveEffectFromPreEffect(
         ui?.notifications?.error(error.message)
         return
     }
-    const { changes, ilarisModifiers } = payload
+    const { changes, ilarisModifiers, dotDamageTypes } = payload
     const ilarisArmedCombat = materializeArmedCombat(
         preEffect.armedCombat,
         armedInputValues,
@@ -462,6 +485,7 @@ export async function createActiveEffectFromPreEffect(
                 passiveZone: Boolean(passiveZone),
                 targetTokenId:
                     targetTokenId || preEffect.target?.tokenId || preEffect.targetTokenId || '',
+                dotDamageTypes,
             },
         },
     }

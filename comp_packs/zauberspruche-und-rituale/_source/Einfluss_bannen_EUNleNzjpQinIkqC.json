@@ -3,7 +3,71 @@
   "type": "zauber",
   "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
   "system": {
-    "spellModificationPreset": "antiMagic",
+    "spellModificationGroups": [
+      { "id": "antiMagicForm", "label": "Antimagieform", "required": true }
+    ],
+    "spellModifications": [
+      {
+        "id": "gegenzauber",
+        "name": "Gegenzauber",
+        "description": "Vorbereitung 0 Aktionen. Konterprobe (12) gegen einen Zauber in Vorbereitung. Die weitere Abwicklung erfolgt durch Spielleitung und Spieler.",
+        "group": "antiMagicForm",
+        "effectMode": "replace",
+        "profile": {
+          "difficulty": 0,
+          "cost": { "mode": "set", "value": 4 },
+          "target": "Zauber in Vorbereitung",
+          "range": "16 Schritt",
+          "duration": "augenblicklich"
+        },
+        "preEffects": []
+      },
+      {
+        "id": "magie-unterdruecken",
+        "name": "Magie unterdrücken",
+        "description": "Vorbereitung 16 Aktionen. Unterdrückt zukünftige Zauber der Fertigkeit in einer Zone. Der Malus und die Zone werden durch Spielleitung und Spieler verwaltet.",
+        "group": "antiMagicForm",
+        "effectMode": "replace",
+        "profile": {
+          "difficulty": 0,
+          "cost": { "mode": "set", "value": 8 },
+          "target": "Zone",
+          "range": "8 Schritt",
+          "duration": "1 Stunde"
+        },
+        "preEffects": []
+      },
+      {
+        "id": "zauber-aufheben",
+        "name": "Zauber aufheben",
+        "description": "Vorbereitung 16 Aktionen. Konterprobe (12) gegen einen bereits gewirkten Zauber. Die Aufhebung wird durch Spielleitung und Spieler verwaltet.",
+        "group": "antiMagicForm",
+        "effectMode": "replace",
+        "profile": {
+          "difficulty": 0,
+          "permanentCost": "Halbe Basiskosten des Zielzaubers",
+          "target": "Zauber",
+          "range": "8 Schritt",
+          "duration": "augenblicklich"
+        },
+        "preEffects": []
+      },
+      {
+        "id": "wesenheit-bannen",
+        "name": "Wesenheit bannen",
+        "description": "Vorbereitung 16 Aktionen. Bannung einer beschworenen Wesenheit. Schwierigkeit und Ergebnis werden durch Spielleitung und Spieler verwaltet.",
+        "group": "antiMagicForm",
+        "effectMode": "replace",
+        "profile": {
+          "difficulty": 0,
+          "permanentCost": "Halbe Basiskosten der Beschwörung",
+          "target": "beschworenes Wesen",
+          "range": "8 Schritt",
+          "duration": "augenblicklich"
+        },
+        "preEffects": []
+      }
+    ],
     "fertigkeiten": "Antimagie, Einfluss",
     "fertigkeit_ausgewaehlt": "auto",
     "text": "Wirkt gegen Zauber der Fertigkeit Einfluss, spezielle Antimagie-Modifikationen siehe S. 126.",

@@ -8,6 +8,9 @@
     "text": "Das von deinem Vertrautentier beobachtete Opfer regeneriert in dieser Nacht keine AsP oder Wunden. Stattdessen erscheint ihm das Vertrautentier in fürchterlichen Albträumen.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "",
     "vorbereitung": "0 Aktionen",
     "ziel": "Einzelperson",

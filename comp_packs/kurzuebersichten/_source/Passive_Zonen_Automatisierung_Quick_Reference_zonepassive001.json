@@ -36,6 +36,23 @@
       "ownership": { "default": -1 },
       "flags": {},
       "_key": "!journal.pages!kurzzonepassive001.kurzzonepassivepage002"
+    },
+    {
+      "_id": "kurzzonepassivepage003",
+      "name": "DOT und Pandämonium",
+      "type": "text",
+      "title": { "show": true, "level": 1 },
+      "text": {
+        "format": 1,
+        "content": "<h1>DOT in passiven Zonen</h1><p>Ein nicht sofortiger Pre-Effect mit <code>type: dot</code> bleibt sichtbar, solange der Token in der Zone ist. In einem Kampf würfelt Ilaris den DOT genau einmal am Ende des eigenen Zuges des betroffenen Actors. Außerhalb eines Kampfes gibt es keinen automatischen DOT-Tick.</p><h2>Pandämonium</h2><p><em>Pandämonium</em> ist eine frei platzierbare passive Kreiszone mit 2 Schritt Radius und 960 Szenenrunden Dauer. Enthaltene Wesen erhalten <code>2W6 PROFAN</code>; Mächtige Magie fügt <code>+1W6</code> hinzu. Der Vorteil <em>Unheilig</em> bleibt ausdrücklich Tischentscheidung und wird nicht automatisch ausgewertet.</p>"
+      },
+      "video": { "controls": true, "volume": 0.5 },
+      "src": null,
+      "system": {},
+      "sort": 2,
+      "ownership": { "default": -1 },
+      "flags": {},
+      "_key": "!journal.pages!kurzzonepassive001.kurzzonepassivepage003"
     }
   ],
   "folder": null,

@@ -403,13 +403,11 @@ export class CombatItem extends IlarisItem {
     /** Preserve prose parsing only until an Item has real structured spell forms. */
     _addLegacySpellModificationManeuvers() {
         const structuredForms = this.system.spellModifications
-        const hasStructuredForms =
-            this.system.spellModificationPreset ||
-            (Array.isArray(structuredForms)
-                ? structuredForms.length > 0
-                : structuredForms && typeof structuredForms === 'object'
-                  ? Object.keys(structuredForms).length > 0
-                  : false)
+        const hasStructuredForms = Array.isArray(structuredForms)
+            ? structuredForms.length > 0
+            : structuredForms && typeof structuredForms === 'object'
+              ? Object.keys(structuredForms).length > 0
+              : false
         if (hasStructuredForms) return
         this.manoever.push(...this._parseModifikationen(this.system.modifikationen))
     }

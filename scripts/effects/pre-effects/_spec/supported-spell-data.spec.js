@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs'
+import { readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 
 const spellSourceDirectory = join(
@@ -41,6 +41,46 @@ function expectDamageChange(preEffect, { value, damageType, maechtigBonus = '' }
 }
 
 describe('reviewed supported spell pre-effect source data', () => {
+    it('authors target Magieresistenz only for the audited single-Actor sources', () => {
+        const eligibleTargets = new Set(['Einzelperson', 'Einzelwesen', 'einzelnes Tier', 'Tier'])
+        const spells = readdirSync(spellSourceDirectory)
+            .filter((filename) => filename.endsWith('.json'))
+            .map(readSpell)
+        const automatic = spells.filter(
+            (spell) =>
+                spell.system?.schwierigkeit?.trim() === 'Magieresistenz' &&
+                eligibleTargets.has(spell.system?.ziel),
+        )
+        const excluded = spells.filter(
+            (spell) =>
+                spell.system?.schwierigkeit?.includes('Magieresistenz') &&
+                !eligibleTargets.has(spell.system?.ziel),
+        )
+
+        expect(automatic).toHaveLength(86)
+        for (const spell of automatic) {
+            expect(spell.system.magicResistance).toEqual({
+                enabled: true,
+            })
+        }
+        for (const spell of excluded) {
+            expect(spell.system.magicResistance?.enabled).not.toBe(true)
+        }
+    })
+
+    it('configures Krähenruf and Skelettarius as generic creature summons', () => {
+        const kraehenruf = readSpell('Kr_henruf_pmYauhoUrn6PEgJA.json')
+        const skelettarius = readSpell('Skelettarius_Totenherr_001JyIWh0a6PVD8k.json')
+
+        expect(kraehenruf.system.preEffects?.[0]).toMatchObject({
+            baseDuration: 16,
+            summonCreature: { enabled: true, kreaturentypen: ['tier'] },
+        })
+        expect(skelettarius.system.preEffects?.[0]).toMatchObject({
+            summonCreature: { enabled: true, kreaturentypen: ['untot'] },
+        })
+    })
+
     it('configures Phexens Sternenwurf and Segen der Heiligen Ardare as first-slice summons', () => {
         const phexensSternenwurf = readLiturgy('Phexens_Sternenwurf_Zd8WWyywzZvGNjrP.json')
         const ardare = readLiturgy('Segen_der_Heiligen_Ardare_nniOXont43xAf4Bq.json')
@@ -439,12 +479,7 @@ describe('reviewed supported spell pre-effect source data', () => {
         )
     })
 
-    it('adds one-time-only damage approximations for the accepted zone and contact spells', () => {
-        expectDamageChange(readSpell('Pand_monium_veNTD1rnQURhqGjs.json').system.preEffects?.[0], {
-            value: '2W6',
-            damageType: 'PROFAN',
-            maechtigBonus: '+1W6',
-        })
+    it('keeps one-time-only damage approximations for the accepted contact spells', () => {
         expectDamageChange(readSpell('Seelenfeuer_QkRPoYl037LeA7Pi.json').system.preEffects?.[0], {
             value: '2W6',
             damageType: 'TRUE_DAMAGE',
@@ -454,6 +489,26 @@ describe('reviewed supported spell pre-effect source data', () => {
             readSpell('Wand_aus_Flammen_cwYNL2OTHHn8HGmA.json').system.preEffects?.[0],
             { value: '4W6', damageType: 'TRUE_DAMAGE', maechtigBonus: '+2W6' },
         )
+    })
+
+    it('configures Pandämonium as a passive Zone DOT with GE 16 movement resistance', () => {
+        const pandemonium = readSpell('Pand_monium_veNTD1rnQURhqGjs.json').system
+        expect(pandemonium.zone).toMatchObject({
+            shape: 'circle',
+            distance: 2,
+            placement: { anchor: 'free', range: 16, pivot: 'center' },
+            lifecycle: 'persistent',
+            effectMode: 'passive',
+            duration: { remaining: 960, originalValue: 960 },
+            movementResistance: { enabled: true, attribut: 'GE', resistDifficulty: 16 },
+        })
+        expect(pandemonium.preEffects[0]).toMatchObject({ baseDuration: 0, instant: false })
+        expect(pandemonium.preEffects[0].changes[0]).toMatchObject({
+            type: 'dot',
+            value: '2W6',
+            damageType: 'PROFAN',
+            maechtigBonus: '+1W6',
+        })
     })
 
     it('configures Tanz der Schwerter with its complete 16-phase combat modifiers', () => {
@@ -513,6 +568,99 @@ describe('reviewed supported spell pre-effect source data', () => {
                 }),
             ])
         }
+    })
+
+    it('authors all anti-magic forms explicitly and configures Dämonenbann suppression', () => {
+        const filenames = [
+            'D_monenbann_hpWwGFDGDNXFwQUa.json',
+            'Eigenschaft_wiederherstellen_pj3Es4uzyY7q29LW.json',
+            'Einfluss_bannen_EUNleNzjpQinIkqC.json',
+            'Elementarbann_KAZ5SaAP2ey6q8j0.json',
+            'Hellsicht_tr_ben_op9bdZaS34Cetv4S.json',
+            'Illusion_aufl_sen_3nDS8VDkI62IjYDp.json',
+            'Kraftmagie_neutralisieren_1PPzzg8e8XhhtBVp.json',
+            'Ver_nderung_aufheben_Gj8ii7vEOGD3fsZF.json',
+            'Verst_ndigung_st_ren_UbGPpv5gU6dsDRle.json',
+            'Verwandlung_beenden_s96x6LbypdSPkDCU.json',
+        ]
+
+        for (const filename of filenames) {
+            const spell = readSpell(filename)
+            expect(spell.system).not.toHaveProperty('spellModificationPreset')
+            expect(spell.system.spellModificationGroups).toEqual([
+                { id: 'antiMagicForm', label: 'Antimagieform', required: true },
+            ])
+            expect(spell.system.spellModifications.map((form) => form.id)).toEqual([
+                'gegenzauber',
+                'magie-unterdruecken',
+                'zauber-aufheben',
+                'wesenheit-bannen',
+            ])
+            expect(spell.system.spellModifications).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({ id: 'gegenzauber', effectMode: 'replace' }),
+                    expect.objectContaining({ id: 'magie-unterdruecken', effectMode: 'replace' }),
+                    expect.objectContaining({
+                        id: 'zauber-aufheben',
+                        effectMode: 'replace',
+                        profile: expect.objectContaining({
+                            permanentCost: 'Halbe Basiskosten des Zielzaubers',
+                        }),
+                    }),
+                    expect.objectContaining({
+                        id: 'wesenheit-bannen',
+                        effectMode: 'replace',
+                        profile: expect.objectContaining({
+                            permanentCost: 'Halbe Basiskosten der Beschwörung',
+                        }),
+                    }),
+                ]),
+            )
+        }
+
+        const daemonban = readSpell('D_monenbann_hpWwGFDGDNXFwQUa.json')
+        const suppression = daemonban.system.spellModifications.find(
+            (form) => form.id === 'magie-unterdruecken',
+        )
+        expect(suppression).toMatchObject({
+            effectMode: 'replace',
+            profile: {
+                difficulty: 0,
+                cost: { mode: 'set', value: 8 },
+                target: 'Zone',
+                range: '8 Schritt',
+                duration: '1 Stunde',
+            },
+            zone: {
+                shape: 'circle',
+                distance: 16,
+                placement: { anchor: 'free', range: 8, pivot: 'center' },
+                lifecycle: 'persistent',
+                effectMode: 'passive',
+                duration: { remaining: 960, originalValue: 960 },
+                trigger: { triggerOnCreate: true, onEnter: true },
+                targeting: { includeCaster: true },
+            },
+            preEffects: [
+                {
+                    baseDuration: 0,
+                    durationType: 'infinite',
+                    instant: false,
+                    changes: [],
+                    ilarisModifiers: [
+                        {
+                            phase: 'roll',
+                            target: 'probe',
+                            value: '-8',
+                            stacking: 'strongest-supernatural',
+                            selector: { fertigkeit: 'Dämonisch' },
+                            amplifiedByMaechtigeMagie: true,
+                            maechtigBonus: '-4',
+                        },
+                    ],
+                },
+            ],
+        })
     })
 
     it('configures the reviewed MR effects with semantic modifiers and converted durations', () => {

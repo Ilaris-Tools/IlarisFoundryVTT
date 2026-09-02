@@ -8,6 +8,9 @@
     "text": "Du raubst deinem Ziel einen Sinn deiner Wahl und lieferst es völlig seinen inneren Ängsten aus. Es erleidet einen Furcht-Effekt Stufe 1. Nach Meisterentscheid sind auch langfristige Nachwirkungen möglich.",
     "maechtig": "Du raubst deinem Opfer einen weiteren Sinn und der Furcht-Effekt steigt um eine Stufe.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "",
     "vorbereitung": "1 Aktion",
     "ziel": "Einzelperson",

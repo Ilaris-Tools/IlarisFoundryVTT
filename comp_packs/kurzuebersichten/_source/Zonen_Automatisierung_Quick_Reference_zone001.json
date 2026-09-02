@@ -53,6 +53,23 @@
       "ownership": { "default": -1 },
       "flags": {},
       "_key": "!journal.pages!kurzzone001.kurzzonepage003"
+    },
+    {
+      "_id": "kurzzonepage004",
+      "name": "Bewegungswiderstand",
+      "type": "text",
+      "title": { "show": true, "level": 1 },
+      "text": {
+        "format": 1,
+        "content": "<h1>Bewegungswiderstand</h1><p>Eine Zone kann mit <code>movementResistance</code> eine Konterprobe bei normaler Bewegung innerhalb der Zone, beim Betreten oder beim Verlassen verlangen. Teleportation und direkte Token- oder Regionenänderungen lösen keine Probe aus.</p><p>Bei Misserfolg legt Ilaris einen sichtbaren, quellengebundenen Hinweis-Effekt an und nennt den Bewegungsursprung im privaten Chat. Ilaris blockiert oder verschiebt den Token nie: Die Spielleitung setzt ihn bei Bedarf manuell auf diesen Ursprung zurück. Ein späterer Erfolg, das Verlassen der Zone oder das Ende der Region entfernt nur den zugehörigen Hinweis-Effekt.</p>"
+      },
+      "video": { "controls": true, "volume": 0.5 },
+      "src": null,
+      "system": {},
+      "sort": 3,
+      "ownership": { "default": -1 },
+      "flags": {},
+      "_key": "!journal.pages!kurzzone001.kurzzonepage004"
     }
   ],
   "folder": null,
