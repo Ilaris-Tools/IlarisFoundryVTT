@@ -116,6 +116,14 @@
                         Number(this.value) < Number(this.min)) || (this.dataset.hasMax === 'true' &&
                         Number(this.value) > Number(this.max)))" />
                 {{/if}}
+                {{#if (ifEq manoever.inputValue.field "SELECTOR")}}
+                <select id="{{manoever.id}}SELECTOR-{{../dialogId}}" class="combat-select-narrow">
+                    <option value="">-- Auswahl --</option>
+                    {{#each manoever.inputValue.choices}}
+                    <option value="{{this}}" {{#if (ifEq this ../manoever.inputValue.value)}}selected{{/if}}>{{this}}</option>
+                    {{/each}}
+                </select>
+                {{/if}}
                 {{#if (ifEq manoever.inputValue.field "TREFFER_ZONE")}}
                 <select
                     id="{{manoever.id}}TREFFER_ZONE-{{../dialogId}}"

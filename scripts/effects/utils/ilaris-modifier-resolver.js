@@ -42,9 +42,10 @@ function effectSource(effect) {
 }
 
 /**
- * Parse a safe, additive Ilaris modifier. Numeric values and linear XW6 (+ a
- * fixed offset) are intentionally the only supported shapes. The resulting
- * dice formula remains separate so callers can append it after maneuvers.
+ * Parse a safe, additive Ilaris modifier. Numeric values and linear XW3, XW6,
+ * or XW20 terms (+ a fixed offset) are intentionally the only supported
+ * shapes. The resulting dice formula remains separate so callers can append
+ * it after maneuvers.
  */
 export function parseIlarisModifierValue(value) {
     const raw = String(value ?? '')
@@ -58,7 +59,7 @@ export function parseIlarisModifierValue(value) {
     let numericValue = 0
     let expectedValue = 0
     const diceTerms = []
-    const token = /([+-]?)(?:(\d*)[Ww]6|(\d+(?:\.\d+)?))/y
+    const token = /([+-]?)(?:(\d*)[Ww](3|6|20)|(\d+(?:\.\d+)?))/y
     while (position < raw.length) {
         token.lastIndex = position
         const match = token.exec(raw)
@@ -71,10 +72,12 @@ export function parseIlarisModifierValue(value) {
             if (!Number.isFinite(diceCount) || diceCount < 1) {
                 throw new TypeError(`Unsupported Ilaris modifier value: ${value}`)
             }
-            expectedValue += sign * diceCount * 3.5
-            diceTerms.push(`${match[1] || ''}${match[2] || '1'}W6`)
+            const dieSize = Number(match[3])
+            const dieExpectedValue = { 3: 2, 6: 3.5, 20: 10.5 }[dieSize]
+            expectedValue += sign * diceCount * dieExpectedValue
+            diceTerms.push(`${match[1] || ''}${match[2] || '1'}W${dieSize}`)
         } else {
-            const fixed = Number(match[3])
+            const fixed = Number(match[4])
             numericValue += sign * fixed
             expectedValue += sign * fixed
         }
@@ -113,6 +116,7 @@ function modifierMatchesContext(modifier, context) {
     return (
         selectorMatches(selector.fertigkeit, context.fertigkeit) &&
         selectorMatches(selector.talent, context.talent) &&
+        selectorMatches(selector.attribute, context.attributes) &&
         selectorMatches(selector.situation, context.situation)
     )
 }

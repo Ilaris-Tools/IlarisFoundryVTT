@@ -16,7 +16,32 @@
     "kosten": "8 KaP",
     "erlernen": "Kor 18",
     "pw": 0,
-    "gruppe": 54
+    "gruppe": 54,
+    "preEffects": [
+      {
+        "baseDuration": 1,
+        "instant": false,
+        "changes": [],
+        "ilarisModifiers": [],
+        "armedCombat": {
+          "enabled": true,
+          "trigger": "nextSuccessfulAttack",
+          "scope": "any",
+          "attackBonus": 0,
+          "inputs": [
+            {
+              "key": "previousHits",
+              "label": "Bisherige Treffer auf Ziel",
+              "default": 0,
+              "min": 0,
+              "max": 8
+            }
+          ],
+          "damage": { "input": "previousHits", "perInput": "W6" },
+          "charges": { "base": 1, "amplifiedByMaechtigeMagie": false, "maechtigBonus": 0 }
+        }
+      }
+    ]
   },
   "effects": [],
   "folder": null,

@@ -42,13 +42,26 @@ The failed-resistance handlungsunfähig outcomes for Hexengalle and Fluch des Ge
 
 ### Requirement: Accepted partial damage remains explicitly bounded
 
-Pandämonium, Seelenfeuer, and Wand aus Flammen SHALL define one-time direct-damage pre-effects only. Their ongoing zone, contact, crossing, and per-Initiativephase behavior SHALL remain documented as manual/deferred.
+_Seelenfeuer_ and _Wand aus Flammen_ SHALL define one-time direct-damage
+Pre-Effects only. Their ongoing zone, contact, crossing, and per-Initiativephase
+behavior SHALL remain documented as manual/deferred. _Pandämonium_ SHALL
+instead use the reviewed persistent passive-Zone lifecycle defined by the
+`pandemonium-zone-spell` capability; its _Unheilig_ exception SHALL remain
+explicitly documented as manual until generic Vorteil applicability exists.
 
-#### Scenario: Damage-only approximation is applied once
+#### Scenario: Remaining damage-only approximation is applied once
 
-- **WHEN** one of the accepted partial spells succeeds against selected targets
+- **WHEN** _Seelenfeuer_ or _Wand aus Flammen_ succeeds against selected
+  targets
 - **THEN** the configured direct damage SHALL be applied once through the shared damage pipeline
 - **AND** the system SHALL not claim to automate its omitted trigger or repeating behavior
+
+#### Scenario: Pandämonium is no longer a one-time approximation
+
+- **WHEN** a contributor reviews the supported spell inventory after this
+  change
+- **THEN** _Pandämonium_ SHALL be identified as a persistent passive Zone
+- **AND** it SHALL not be described as a one-time damage-only approximation
 
 ### Requirement: Deferred candidates are separated from active inventory
 
@@ -90,3 +103,7 @@ Each selected source Item's stated Mächtige Magie/Liturgie increase SHALL be re
 - **WHEN** a contributor reviews this coverage set
 - **THEN** source Items requiring contact/crossing triggers, zones, repeated damage, resource changes, next-roll consumption, direct main-attribute changes, derived armor protection, condition enforcement, or ambiguous blessings SHALL remain without a new pre-effect from this change
 - **AND** the inventory documentation SHALL identify those categories as deferred or manual
+
+### Requirement: Armed source Items are configured declaratively
+
+Falkenauge Meisterschuss SHALL arm one ranged attack with +4 AT and consume on its next matching attack. Neun Streiche in einem SHALL collect `Bisherige Treffer auf Ziel` (`0..8`), add one W6 per stored hit only when its next matching attack hits, and consume its charge on that attack.

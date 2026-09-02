@@ -92,3 +92,29 @@ comparable deferred mechanics remain manual.
 - **THEN** the guide SHALL not describe a timed Active Effect as automatic
   one-roll consumption
 - **AND** it SHALL direct the GM to handle that consequence manually
+
+### Requirement: The guide documents resistance-difficulty source modes
+
+The German `Übersicht: Zauber, Liturgien & Pre-Effects` JournalEntry SHALL document resistance difficulties as an explicit authoring choice. It SHALL explain that `Fester Wert` uses the numeric value and defaults to 12, while `Ergebnis der auslösenden Probe` uses the completed triggering roll's result. It SHALL state that the latter is appropriate for reviewed combat maneuvers such as _Entwaffnen_ and _Niederwerfen_, rather than assigning a magic value of 0 to the fixed-difficulty field.
+
+#### Scenario: A GM authors a maneuver resistance
+
+- **WHEN** a GM opens the Pre-Effect quick reference to configure a maneuver resistance
+- **THEN** the guide SHALL identify `Ergebnis der auslösenden Probe` as the appropriate source when the defender rolls against the maneuver user's completed result
+- **AND** it SHALL state that a numeric zero remains a fixed value, not a source selector
+
+### Requirement: The Zone guide documents wall traversal boundary behavior
+
+The German Zone automation quick reference SHALL state that _Wand aus Dornen_
+uses the wall-specific traversal lifecycle rather than generic Region entry.
+It SHALL explain that placing a wall over an already-contained Token has no
+automatic consequence; a later normal movement into or out of the wall causes
+the reviewed `2W6 TP` and GE 16 resistance flow. It SHALL retain the statement
+that failed movement remains GM-managed and does not automatically reposition a
+Token.
+
+#### Scenario: A GM checks an initially contained Token
+
+- **WHEN** a GM reads the Zone guide before placing _Wand aus Dornen_ over a Token
+- **THEN** the guide SHALL state that placement alone neither damages the Token nor opens a resistance prompt
+- **AND** it SHALL state that a later normal outbound movement is one traversal attempt

@@ -13,8 +13,8 @@
         "affectedByInput": true
       },
       "1": {
-        "type": "SPECIAL_TEXT",
-        "value": "Ignoriert Rüstung",
+        "type": "CHANGE_DAMAGE_TYPE",
+        "value": "TRUE_DAMAGE",
         "operator": "ADD",
         "target": "",
         "affectedByInput": true

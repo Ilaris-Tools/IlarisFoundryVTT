@@ -1,0 +1,69 @@
+{
+  "name": "Hexenkrallen",
+  "type": "nahkampfwaffe",
+  "_id": "iyoROxzExM0toe8P",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "haerte": 0,
+    "beschaedigung": 0,
+    "aufbewahrungs_ort": "mitführend",
+    "bewahrt_auf": [],
+    "gewicht_summe": 0,
+    "gewicht": 0,
+    "preis": 0,
+    "quantity": 2,
+    "tp": "2W6",
+    "fertigkeit": "Handgemengewaffen",
+    "talent": "Unbewaffnet",
+    "rw": 0,
+    "hauptwaffe": false,
+    "nebenwaffe": false,
+    "eigenschaften": [
+      {
+        "key": "kein Malus als Nebenwaffe",
+        "parameters": [],
+        "_meta": {
+          "parameterSlots": [],
+          "kategorie": "wielding"
+        }
+      },
+      {
+        "key": "Parierwaffe",
+        "parameters": [],
+        "_meta": {
+          "parameterSlots": [],
+          "kategorie": "passive"
+        }
+      },
+      {
+        "key": "Stumpf",
+        "parameters": []
+      }
+    ],
+    "text": "",
+    "wm_at": 0,
+    "wm_vt": 0,
+    "rw_mod": 0,
+    "computed": {}
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "I6YlRiEqRJwTfdEG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "Ilaris",
+    "systemVersion": "14.0.0",
+    "createdTime": 1786199002961,
+    "modifiedTime": 1786199092479,
+    "lastModifiedBy": "I6YlRiEqRJwTfdEG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!iyoROxzExM0toe8P"
+}

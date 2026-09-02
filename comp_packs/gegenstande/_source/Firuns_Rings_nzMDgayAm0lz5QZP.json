@@ -1,0 +1,37 @@
+{
+  "name": "Firuns Rings",
+  "type": "gegenstand",
+  "_id": "nzMDgayAm0lz5QZP",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "haerte": 0,
+    "beschaedigung": 0,
+    "aufbewahrungs_ort": "mitführend",
+    "bewahrt_auf": [],
+    "gewicht_summe": 0,
+    "gewicht": 0,
+    "preis": 0,
+    "quantity": 1,
+    "text": "Firuns Ring, dir den Aufenthaltsort von Lebewesen im Radius von 16\nMeilen offenbart. Du kannst außerdem Tiere von Humanoiden unterscheiden"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "I6YlRiEqRJwTfdEG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "Ilaris",
+    "systemVersion": "14.0.0",
+    "createdTime": 1786199388287,
+    "modifiedTime": 1786199405945,
+    "lastModifiedBy": "I6YlRiEqRJwTfdEG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!nzMDgayAm0lz5QZP"
+}

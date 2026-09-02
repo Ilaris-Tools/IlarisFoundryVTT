@@ -8,6 +8,9 @@
     "text": "Dein Ziel muss einen einzigen Befehl von dir ausführen und darf währenddessen nicht gegen dich vorgehen. Widerspricht der Befehl den tiefsten Überzeugungen oder dem Selbsterhaltungstrieb des Zieles, kann es mit einer Konterprobe (Willenskraft, 16) widerstehen. Eine Verschachtelung von Befehlen („Folge allen weiteren Befehlen!“) ist nicht möglich.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "Sofort (–4, 0 Aktionen, 8 AsP; das Ziel muss einen kurzen Befehl sofort ausführen.)\nSpäter (–4; der Zauber wirkt erst, sobald ein einfacher Auslöser eintritt.)\nDauerhafter Diener (–4, 4 Minuten, Berührung, Wirkungsdauer 16 Tage, 32 AsP; du kannst bis zu 16 Befehle äußern.)",
     "vorbereitung": "4 Aktionen",
     "ziel": "Einzelperson",

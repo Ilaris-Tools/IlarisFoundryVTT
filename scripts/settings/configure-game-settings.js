@@ -234,6 +234,29 @@ export const registerIlarisGameSettings = () => {
             },
         },
         {
+            settingsName: IlarisGameSettingNames.gegenstandPacks,
+            name: 'Gegenstände Kompendien',
+            hint: 'Hier kannst du die Kompendien auswählen, die Gegenstände enthalten.',
+            scope: 'world',
+            config: false,
+            type: String,
+            default: '["Ilaris.gegenstande"]',
+            requiresReload: true,
+            onChange: (value) => {
+                Hooks.callAll('ilarisGegenstandPacksChanged', JSON.parse(value))
+            },
+        },
+        {
+            settingsName: IlarisGameSettingNames.kreaturenPacks,
+            name: 'Kreaturen Kompendien',
+            hint: 'Hier kannst du die Kompendien auswählen, die beschwörbare Kreaturen enthalten.',
+            scope: 'world',
+            config: false,
+            type: String,
+            default: '["Ilaris.kreaturen"]',
+            requiresReload: true,
+        },
+        {
             // Register talente packs setting
             settingsName: IlarisGameSettingNames.talentePacks,
             name: 'Talente Kompendien',

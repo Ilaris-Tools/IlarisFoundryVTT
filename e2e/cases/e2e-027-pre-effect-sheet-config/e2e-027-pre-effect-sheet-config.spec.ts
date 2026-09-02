@@ -107,6 +107,81 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         await expect(addButton).toBeVisible()
     })
 
+    test('outcome panels follow Widerstand and reveal only when enabled', async ({ page }) => {
+        const itemWindow = await openImportedSpellSheet(page)
+        await openPreEffectsTab(itemWindow)
+        const card = itemWindow.locator('.pre-effect-card').first()
+        const resistance = card.locator('.avoid-test-section')
+        const outcomes = card.locator('.resistance-outcomes-section')
+        await expect(resistance).toBeVisible()
+        await expect(outcomes).toBeVisible()
+
+        const ordered = await card.evaluate((element) => {
+            const normal = element.querySelector('input[name$=".baseDuration"]')
+            const resistanceSection = element.querySelector('.avoid-test-section')
+            const outcomeSection = element.querySelector('.resistance-outcomes-section')
+            return Boolean(
+                normal &&
+                resistanceSection &&
+                outcomeSection &&
+                normal.compareDocumentPosition(resistanceSection) &
+                    Node.DOCUMENT_POSITION_FOLLOWING &&
+                resistanceSection.compareDocumentPosition(outcomeSection) &
+                    Node.DOCUMENT_POSITION_FOLLOWING,
+            )
+        })
+        expect(ordered).toBe(true)
+
+        const failure = outcomes.locator('.outcome-payload[data-outcome="failure"]')
+        const success = outcomes.locator('.outcome-payload[data-outcome="success"]')
+        await expect(failure).toContainText('Bei misslungener Widerstandsprobe')
+        await expect(success).toContainText('Bei gelungener Widerstandsprobe')
+        await expect(failure.locator('input[name$=".marker.id"]')).toBeHidden()
+
+        await failure.locator('input[name$=".resistanceOutcomes.failure.enabled"]').check()
+        await expect(failure.locator('input[name$=".marker.id"]')).toBeVisible()
+        await itemWindow.screenshot({ path: 'test-results/resistance-outcomes-editor.png' })
+    })
+
+    test('outcome panels remain legible in Foundry light and dark application themes', async ({
+        page,
+    }) => {
+        const itemWindow = await openImportedSpellSheet(page)
+        await openPreEffectsTab(itemWindow)
+        const savedUiConfig = await page.evaluate(() =>
+            foundry.utils.deepClone(game.settings.get('core', 'uiConfig')),
+        )
+
+        try {
+            for (const theme of ['light', 'dark']) {
+                await page.evaluate(
+                    async ({ config, colorScheme }) => {
+                        await game.settings.set('core', 'uiConfig', {
+                            ...config,
+                            colorScheme: {
+                                ...(config.colorScheme ?? {}),
+                                applications: colorScheme,
+                            },
+                        })
+                    },
+                    { config: savedUiConfig, colorScheme: theme },
+                )
+                await expect(page.locator(`body.theme-${theme}`)).toBeVisible()
+                const outcomes = itemWindow.locator('.resistance-outcomes-section')
+                await expect(outcomes).toBeVisible()
+                await outcomes.scrollIntoViewIfNeeded()
+                await itemWindow.screenshot({
+                    path: `test-results/resistance-outcomes-editor-${theme}.png`,
+                })
+            }
+        } finally {
+            await page.evaluate(
+                (config) => game.settings.set('core', 'uiConfig', config),
+                savedUiConfig,
+            )
+        }
+    })
+
     test('AvoidTest skill dropdown is populated from compendium', async ({ page }) => {
         const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)
@@ -167,6 +242,82 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         await expect(damageTypeSelect).toBeVisible({ timeout: 10000 })
         const options = await damageTypeSelect.locator('option').all()
         expect(options.length).toBeGreaterThan(0)
+    })
+
+    test('summon-item source autocomplete follows and persists its selected source kind', async ({
+        page,
+    }) => {
+        const itemWindow = await openImportedSpellSheet(page)
+        await openPreEffectsTab(itemWindow)
+
+        const sourceKind = itemWindow.locator('select[name$="summonItem.sourceKind"]').first()
+        const sourceInput = itemWindow.locator('input[name$="summonItem.sourceUuid"]').first()
+        await expect(sourceKind).toHaveValue('waffe')
+        await expect(sourceInput).toBeVisible({ timeout: 10000 })
+        await expect(sourceInput).toHaveAttribute('list', 'ilaris-summon-item-sources-waffe')
+        const phexUuid = await itemWindow
+            .locator('#ilaris-summon-item-sources-waffe option')
+            .evaluateAll((options) => {
+                const phex = options.find((option: any) =>
+                    option.getAttribute('label')?.includes('Phexens Wurfstern'),
+                )
+                return phex?.getAttribute('value') ?? ''
+            })
+        expect(phexUuid).toBe('Compendium.Ilaris.waffen.Item.C9Qy0anjBUWn9TUw')
+
+        await sourceKind.selectOption('gegenstand')
+        await sourceKind.dispatchEvent('change')
+        await page.waitForFunction(
+            ({ id }) => {
+                const preEffect = Object.values(
+                    game.items.get(id)?.system?.preEffects ?? {},
+                )[0] as any
+                return preEffect?.summonItem?.sourceKind === 'gegenstand'
+            },
+            { id: importedItemId },
+            { timeout: 10000 },
+        )
+
+        await page.evaluate((id) => game.items.get(id)?.sheet?.close(), importedItemId)
+        const reopenedWindow = await openImportedSpellSheet(page)
+        await openPreEffectsTab(reopenedWindow)
+        const reopenedInput = reopenedWindow.locator('input[name$="summonItem.sourceUuid"]').first()
+        await expect(reopenedInput).toHaveAttribute('list', 'ilaris-summon-item-sources-gegenstand')
+        const ringUuid = await reopenedWindow
+            .locator('#ilaris-summon-item-sources-gegenstand option')
+            .evaluateAll((options) => {
+                const ring = options.find((option: any) =>
+                    option.getAttribute('label')?.includes('Firuns Rings'),
+                )
+                return ring?.getAttribute('value') ?? ''
+            })
+        expect(ringUuid).toBe('Compendium.Ilaris.gegenstande.Item.nzMDgayAm0lz5QZP')
+
+        await reopenedInput.fill(ringUuid)
+        await reopenedInput.dispatchEvent('change')
+        await page.waitForFunction(
+            ({ id, sourceUuid }) => {
+                const preEffect = Object.values(
+                    game.items.get(id)?.system?.preEffects ?? {},
+                )[0] as any
+                return (
+                    preEffect?.summonItem?.sourceKind === 'gegenstand' &&
+                    preEffect?.summonItem?.sourceUuid === sourceUuid
+                )
+            },
+            { id: importedItemId, sourceUuid: ringUuid },
+            { timeout: 10000 },
+        )
+
+        await page.evaluate((id) => game.items.get(id)?.sheet?.close(), importedItemId)
+        const finalWindow = await openImportedSpellSheet(page)
+        await openPreEffectsTab(finalWindow)
+        await expect(
+            finalWindow.locator('select[name$="summonItem.sourceKind"]').first(),
+        ).toHaveValue('gegenstand')
+        await expect(
+            finalWindow.locator('input[name$="summonItem.sourceUuid"]').first(),
+        ).toHaveValue(ringUuid)
     })
 
     test('adds, persists, and deletes a pre-effect entry', async ({ page }) => {

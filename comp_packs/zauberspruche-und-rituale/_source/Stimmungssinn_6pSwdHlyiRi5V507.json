@@ -8,6 +8,9 @@
     "text": "Dein Vertrautentier starrt das Ziel an und gibt dir seine Eindrücke weiter. Menschenkenntnis-Proben gegen das Ziel sind um +4 erleichtert.",
     "maechtig": "Der Bonus steigt um +2.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "",
     "vorbereitung": "0 Aktionen",
     "ziel": "Einzelperson",

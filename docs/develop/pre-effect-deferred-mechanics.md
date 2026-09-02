@@ -10,23 +10,15 @@ This note records spell and liturgy effects that are intentionally outside the c
 
 Several effects need a timed, recognizable state marker without necessarily changing an actor value. This is particularly relevant for `handlungsunfähig`.
 
-The current processor only creates an ActiveEffect when it has one or more data changes, and names that effect after the source spell. It has no separate marker identifier or display label. For heroes, NPCs, and creatures this must not be emulated by writing an arbitrary `system.*` path: the available actor schemas differ.
-
-### Future design direction (out of scope)
-
-If marker effects are implemented later, the preferred model is an explicit marker on a pre-effect, for example a stable `markerId` plus a German display label. The processor would then create a timed ActiveEffect with that label and store the marker in an Ilaris flag, even when the effect has no numeric changes.
-
-This would make a marker visible and queryable without claiming that the system automatically enforces every table rule attached to it.
+Pre-Effects now support a stable marker id and German display label. A marker-only result creates a timed ActiveEffect even with no numeric changes and is visibly named `<Marker> — <Zauber>`. Its structured Ilaris provenance retains the source Item, caster, component, application, resistance outcome, and exact casting skill. Markers remain visible and queryable without claiming that the system automatically enforces every table rule attached to them.
 
 ## Outcome-specific resistance effects
 
-Some effects need different results for a passed and failed resistance check. `Fluch des Gewürms` is the current example: failure marks the target as handlungsunfähig; success applies a timed global -4 modifier.
-
-The current `diminishedOnly` mechanism can replace change values after a successful resistance, but it cannot assign separate marker and modifier payloads to the two outcomes. A future extension could define explicit success and failure effect payloads.
+Pre-Effects now support optional explicit success and failure payloads. `Fluch des Gewürms` and `Krabbelnder Schrecken` use them: failure marks the target as handlungsunfähig, while success applies a timed global `-4` modifier. `Hexengalle` uses the same marker model after a failed Zähigkeit resistance. Existing `diminishedOnly` source data remains supported for legacy effects.
 
 ## Other deferred mechanics
 
-The current model also intentionally does not automate moving or persistent zones, delayed triggers, contact/crossing triggers, per-Initiativephase repetition, distance-based formulas, target-category filters, resource drains, or next-roll-only consumption. These are documented as deferred in the spell/liturgy effect inventory.
+The current model also intentionally does not automate moving or persistent zones, delayed triggers, contact/crossing triggers, per-Initiativephase repetition, distance-based formulas, target-category filters, resource drains, or generic next-roll-only consumption. These are documented as deferred in the spell/liturgy effect inventory. Charged next-eligible weapon attacks are the deliberate exception: `Falkenauge Meisterschuss` and `Neun Streiche in einem` use the structured `armedCombat` pre-effect payload, which consumes one charge for every matching attack and adds damage only on a confirmed hit.
 
 ## Deferred entries and rationale
 
@@ -39,4 +31,4 @@ The current model also intentionally does not automate moving or persistent zone
 - The nine **Mirakel** apply to the next relevant roll only; the current timed ActiveEffect model cannot consume an effect after that one roll.
 - **Zerschmetternder Bannstrahl** requires target-category filtering and an Astralenergie drain in addition to its damage.
 
-These entries remain source data for future work. They are not removed from the compendium and this change does not introduce the marker, outcome-payload, zone, or next-roll architecture needed to automate them.
+These entries remain source data for future work. They are not removed from the compendium; marker and outcome-payload support no longer blocks reviewed spells, while their other listed mechanics remain manual.
