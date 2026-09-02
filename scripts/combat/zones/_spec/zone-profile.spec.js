@@ -154,6 +154,34 @@ describe('zone profiles', () => {
         ).toBeNull()
     })
 
+    it('normalizes an opt-in movement resistance without changing other profiles', () => {
+        expect(
+            normalizeZoneProfile({
+                shape: 'circle',
+                distance: 2,
+                lifecycle: 'persistent',
+                duration: { remaining: 960 },
+                effectMode: 'passive',
+                movementResistance: {
+                    enabled: true,
+                    attribut: 'GE',
+                    resistDifficulty: 16,
+                    failureMarker: { name: 'Bewegung fehlgeschlagen' },
+                },
+            }),
+        ).toMatchObject({
+            movementResistance: {
+                enabled: true,
+                attribut: 'GE',
+                resistDifficulty: 16,
+                failureMarker: { name: 'Bewegung fehlgeschlagen' },
+            },
+        })
+        expect(normalizeZoneProfile({ shape: 'circle', distance: 2 })).not.toHaveProperty(
+            'movementResistance',
+        )
+    })
+
     it('keeps a caster-attribute duration source until a successful cast snapshots it', () => {
         const profile = normalizeZoneProfile({
             shape: 'cone',

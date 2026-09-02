@@ -4,7 +4,10 @@ import {
     removePassiveZoneEffects,
     removeZoneTraversalMarkers,
     removeZoneTraversalMarkersForRegion,
+    removeZoneMovementResistanceMarkers,
+    removeZoneMovementResistanceMarkersForRegion,
     upsertZoneTraversalMarker,
+    upsertZoneMovementResistanceMarker,
 } from '../../effects/zone-effect-ownership.js'
 import { resolvePersistentZoneDuration } from './zone-profile.js'
 import { resolveZoneTargets } from './zone-targets.js'
@@ -15,6 +18,7 @@ const DRAFT_FLAG_KEY = 'zoneDraft'
 const pendingTurnStartDispatches = new Map()
 const pendingRoundStartDispatches = new Map()
 const pendingTraversalDispatches = new Map()
+const pendingMovementResistanceDispatches = new Map()
 
 function activeGM() {
     const gm = game.users.find((user) => user.active && user.isGM)
@@ -77,6 +81,10 @@ function hasTraversalTrigger(zone) {
     )
 }
 
+function hasMovementResistance(zone) {
+    return zone?.profile?.movementResistance?.enabled === true
+}
+
 function isAdministrablePersistentZone(zone) {
     const durationType = zone?.durationType || zone?.profile?.duration?.type
     return Boolean(
@@ -118,9 +126,39 @@ export function classifyZoneTraversalMovement(region, token, movement) {
     const segments =
         token.segmentizeRegionMovementPath?.(region, [movement.origin, ...waypoints]) || []
     const enter = globalThis.CONST?.REGION_MOVEMENT_SEGMENTS?.ENTER
-    if (!segments.some((segment) => segment?.type === enter && !isTeleportAction(segment?.action)))
+    const exit = globalThis.CONST?.REGION_MOVEMENT_SEGMENTS?.EXIT
+    if (
+        !segments.some(
+            (segment) =>
+                (segment?.type === enter || segment?.type === exit) &&
+                !isTeleportAction(segment?.action),
+        )
+    )
         return null
     return { window: [region.id, token.id, movement.id].join(':') }
+}
+
+/** Classify normal in/through/out movement for an opt-in Zone resistance. */
+export function classifyZoneMovementResistance(region, token, movement) {
+    const waypoints = movement?.passed?.waypoints || []
+    if (!region?.id || !token?.id || !movement?.id || !movement?.origin || !waypoints.length)
+        return null
+    if (waypoints.some((waypoint) => isTeleportAction(waypoint?.action))) return null
+    const segments =
+        token.segmentizeRegionMovementPath?.(region, [movement.origin, ...waypoints]) || []
+    const types = globalThis.CONST?.REGION_MOVEMENT_SEGMENTS || {}
+    if (
+        !segments.some(
+            (segment) =>
+                [types.MOVE, types.ENTER, types.EXIT].includes(segment?.type) &&
+                !isTeleportAction(segment?.action),
+        )
+    )
+        return null
+    return {
+        window: [region.id, token.id, movement.id].join(':'),
+        origin: { x: movement.origin.x, y: movement.origin.y },
+    }
 }
 
 function invalidPassivePreEffects(preEffects = []) {
@@ -162,6 +200,10 @@ function traversalOwnership(traversal) {
     }
 }
 
+function movementResistanceOwnership(resistance) {
+    return traversalOwnership(resistance)
+}
+
 function traversalRecipients(actor, token = null) {
     const ownerLevel = globalThis.CONST?.DOCUMENT_OWNERSHIP_LEVELS?.OWNER ?? 3
     return (game.users || [])
@@ -194,6 +236,26 @@ async function sendTraversalFailureNotice(actor, traversal, token = null) {
     })
 }
 
+async function sendMovementResistanceFailureNotice(actor, resistance, token = null) {
+    if (!globalThis.ChatMessage?.create) return
+    const recipients = traversalRecipients(actor, token)
+    const { x, y } = resistance.origin || {}
+    await ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor }),
+        ...(recipients.length ? { whisper: recipients } : {}),
+        content: `<div class="ilaris-zone-movement-failure"><p><strong>Die Bewegung ist misslungen.</strong> Bitte den Token manuell zum Bewegungsursprung (${x}, ${y}) zurücksetzen.</p></div>`,
+        flags: {
+            ilaris: {
+                zoneMovementResistanceFailure: {
+                    regionId: resistance.regionId,
+                    tokenId: resistance.tokenId,
+                    origin: resistance.origin,
+                },
+            },
+        },
+    })
+}
+
 /** Resolve the table-managed success/failure result of one wall traversal prompt. */
 export async function resolveZoneTraversalResistance(targetActor, traversal, success) {
     if (!targetActor || !traversal?.sceneId || !traversal?.regionId) return
@@ -210,6 +272,25 @@ export async function resolveZoneTraversalResistance(targetActor, traversal, suc
     })
     const targetToken = region.parent?.tokens?.get?.(traversal.tokenId) || null
     await sendTraversalFailureNotice(targetActor, traversal, targetToken)
+}
+
+/** Resolve one table-managed Zone movement-resistance result without moving a Token. */
+export async function resolveZoneMovementResistance(targetActor, resistance, success) {
+    if (!targetActor || !resistance?.sceneId || !resistance?.regionId) return
+    const region = game.scenes?.get?.(resistance.sceneId)?.regions?.get?.(resistance.regionId)
+    if (!region) return
+    const ownership = movementResistanceOwnership(resistance)
+    if (success) {
+        await removeZoneMovementResistanceMarkers(targetActor, ownership)
+        return
+    }
+    await upsertZoneMovementResistanceMarker(targetActor, ownership, {
+        name: `${resistance.spellName || 'Zone'} – ${resistance.failureMarkerName || 'Bewegung fehlgeschlagen'}`,
+        origin: resistance.casterUuid || '',
+        movementOrigin: resistance.origin || {},
+    })
+    const token = region.parent?.tokens?.get?.(resistance.tokenId) || null
+    await sendMovementResistanceFailureNotice(targetActor, resistance, token)
 }
 
 function zoneActors() {
@@ -367,6 +448,40 @@ async function dispatchZoneTraversal(region, token, window) {
     )
 }
 
+async function dispatchZoneMovementResistance(region, token, attempt) {
+    const zone = await hydrateZoneState(zoneState(region))
+    const target = selectedTargetForToken(token)
+    if (!zone || !target) return
+    const resistance = zone.profile.movementResistance
+    await sendResistPrompt(
+        token.actor,
+        {
+            avoidTest: {
+                enabled: true,
+                attribut: resistance.attribut,
+                fertigkeit: '',
+                talent: '',
+                resistDifficulty: resistance.resistDifficulty,
+            },
+            targetActorId: token.actor.id,
+            target,
+            zoneMovementResistance: {
+                sceneId: region.parent?.id || token.parent?.id || '',
+                regionId: region.id,
+                tokenId: token.id,
+                applicationId: zone.applicationId,
+                spellUuid: zone.spellUuid,
+                spellName: zone.spellItem.name,
+                casterUuid: zone.casterUuid,
+                failureMarkerName: resistance.failureMarker?.name || '',
+                origin: attempt.origin,
+            },
+        },
+        zone.spellItem.name,
+        ChatMessage.getSpeaker({ actor: zone.casterActor }),
+    )
+}
+
 /** Dispatch a traversal attempt only for a processed normal map movement through an eligible wall. */
 export async function dispatchPersistentZoneTraversal(token, movement) {
     if (!token?.parent) return
@@ -413,6 +528,46 @@ export async function dispatchPersistentZoneTraversal(token, movement) {
     }
 }
 
+/** Dispatch one opt-in movement resistance for MOVE, ENTER, or EXIT segments. */
+export async function dispatchPersistentZoneMovementResistance(token, movement) {
+    if (!token?.parent) return
+    if (!activeGM()) {
+        const eligible = Array.from(token.parent.regions || []).some((region) =>
+            hasMovementResistance(zoneState(region)),
+        )
+        if (eligible && movement?.id && movement?.origin && movement?.passed?.waypoints?.length)
+            game.socket?.emit?.('system.Ilaris', {
+                type: 'dispatchZoneMovementResistance',
+                data: {
+                    sceneId: token.parent.id,
+                    tokenId: token.id,
+                    userId: game.user.id,
+                    movement: serializeTraversalMovement(movement),
+                },
+            })
+        return
+    }
+    for (const region of token.parent.regions || []) {
+        const zone = zoneState(region)
+        if (zone?.initializing || !hasMovementResistance(zone)) continue
+        const attempt = classifyZoneMovementResistance(region, token, movement)
+        if (!attempt) continue
+        const pending = pendingMovementResistanceDispatches.get(attempt.window)
+        if (pending) {
+            await pending
+            continue
+        }
+        const dispatch = dispatchZoneMovementResistance(region, token, attempt)
+        pendingMovementResistanceDispatches.set(attempt.window, dispatch)
+        try {
+            await dispatch
+        } finally {
+            if (pendingMovementResistanceDispatches.get(attempt.window) === dispatch)
+                pendingMovementResistanceDispatches.delete(attempt.window)
+        }
+    }
+}
+
 /** Execute a player-issued normal movement traversal request on the active GM client. */
 export async function dispatchPersistentZoneTraversalFromRequest(request) {
     if (!activeGM() || !request?.sceneId || !request?.tokenId || !request?.userId) return
@@ -422,6 +577,17 @@ export async function dispatchPersistentZoneTraversalFromRequest(request) {
     const ownerLevel = globalThis.CONST?.DOCUMENT_OWNERSHIP_LEVELS?.OWNER ?? 3
     if (!token || !user || token.testUserPermission?.(user, ownerLevel) !== true) return
     await dispatchPersistentZoneTraversal(token, request.movement)
+}
+
+/** Execute a player-issued normal movement resistance request on the active GM client. */
+export async function dispatchPersistentZoneMovementResistanceFromRequest(request) {
+    if (!activeGM() || !request?.sceneId || !request?.tokenId || !request?.userId) return
+    const scene = game.scenes?.get?.(request.sceneId)
+    const token = scene?.tokens?.get?.(request.tokenId)
+    const user = game.users?.get?.(request.userId)
+    const ownerLevel = globalThis.CONST?.DOCUMENT_OWNERSHIP_LEVELS?.OWNER ?? 3
+    if (!token || !user || token.testUserPermission?.(user, ownerLevel) !== true) return
+    await dispatchPersistentZoneMovementResistance(token, request.movement)
 }
 
 function resolveDestinationToken(combat, updateData = {}) {
@@ -604,6 +770,18 @@ export async function cleanupZoneTraversalMarkers(region) {
         })
 }
 
+/** Remove all neutral movement markers owned by an expiring or deleted Zone. */
+export async function cleanupZoneMovementResistanceMarkers(region) {
+    const zone = zoneState(region)
+    if (!hasMovementResistance(zone)) return
+    for (const actor of zoneActors())
+        await removeZoneMovementResistanceMarkersForRegion(actor, {
+            regionId: region.id,
+            applicationId: zone.applicationId,
+            spellUuid: zone.spellUuid,
+        })
+}
+
 /** Create the persistent Region only after its originating cast has succeeded. */
 export async function createPersistentZone({ scene, regionData, dialog, zone, preEffects }) {
     if (!activeGM() || !scene || !regionData || !zone?.duration) return null
@@ -725,7 +903,15 @@ export async function updatePersistentZoneMembership(scene, updatedToken = null)
             for (const tokenId of left) {
                 const token = scene.tokens?.get?.(tokenId)
                 const target = selectedTargetForToken(token)
-                if (target) await removePassiveEffectsForTarget(region, zone, target, token.actor)
+                if (target) {
+                    await removePassiveEffectsForTarget(region, zone, target, token.actor)
+                    await removeZoneMovementResistanceMarkers(token.actor, {
+                        regionId: region.id,
+                        applicationId: zone.applicationId,
+                        tokenId,
+                        spellUuid: zone.spellUuid,
+                    })
+                }
             }
             if (entered.length) await applyPassiveZoneEffects(region, entered)
         } else if (entered.length) await dispatchZoneTrigger(region, 'enter', entered)
@@ -746,6 +932,7 @@ export async function reducePersistentZoneDurations(combat, updateOptions = {}) 
         if (remaining <= 0) {
             await cleanupPassiveZoneEffects(region)
             await cleanupZoneTraversalMarkers(region)
+            await cleanupZoneMovementResistanceMarkers(region)
             await region.delete()
         } else await region.update({ [`flags.${FLAG_SCOPE}.${FLAG_KEY}.remaining`]: remaining })
     }
@@ -809,15 +996,28 @@ export function registerZoneLifecycleHooks() {
     window._ilarisZoneLifecycleRegistered = true
     Hooks.on('updateToken', (token) => updatePersistentZoneMembership(token.parent, token))
     Hooks.on('deleteToken', async (token) => {
-        for (const region of token.parent?.regions || [])
+        for (const region of token.parent?.regions || []) {
             await cleanupPassiveZoneEffects(region, token)
+            const zone = zoneState(region)
+            if (hasMovementResistance(zone))
+                await removeZoneMovementResistanceMarkers(token.actor, {
+                    regionId: region.id,
+                    applicationId: zone.applicationId,
+                    tokenId: token.id,
+                    spellUuid: zone.spellUuid,
+                })
+        }
         await updatePersistentZoneMembership(token.parent)
     })
     Hooks.on('deleteRegion', async (region) => {
         await cleanupPassiveZoneEffects(region)
         await cleanupZoneTraversalMarkers(region)
+        await cleanupZoneMovementResistanceMarkers(region)
     })
-    Hooks.on('moveToken', (token, movement) => dispatchPersistentZoneTraversal(token, movement))
+    Hooks.on('moveToken', async (token, movement) => {
+        await dispatchPersistentZoneTraversal(token, movement)
+        await dispatchPersistentZoneMovementResistance(token, movement)
+    })
     Hooks.on('canvasReady', () => reconcilePersistentPassiveZones(canvas?.scene))
     Hooks.on('combatRound', (combat, updateData, updateOptions) =>
         runPersistentZoneRoundLifecycle(combat, updateData, updateOptions),

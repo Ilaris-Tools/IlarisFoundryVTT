@@ -1,5 +1,6 @@
 import {
     classifyZoneMembership,
+    classifyZoneMovementResistance,
     classifyZoneTraversalMovement,
     createPersistentZone,
     createZoneDraftRegion,
@@ -12,6 +13,7 @@ import {
     reducePersistentZoneDurations,
     reconcilePersistentPassiveZones,
     reconcileZoneAdministration,
+    resolveZoneMovementResistance,
     resolveZoneTraversalResistance,
     updatePersistentZoneMembership,
 } from '../zone-lifecycle.js'
@@ -58,6 +60,69 @@ describe('persistent zone duration', () => {
         ])
     })
 
+    test('classifies MOVE, ENTER, and EXIT for movement resistance but ignores teleports', () => {
+        global.CONST = { REGION_MOVEMENT_SEGMENTS: { ENTER: 1, MOVE: 2, EXIT: 3 } }
+        const region = { id: 'zone-region' }
+        const token = {
+            id: 'target-token',
+            segmentizeRegionMovementPath: jest.fn(() => [{ type: 2, action: 'walk' }]),
+        }
+        const movement = {
+            id: 'movement-internal',
+            origin: { x: 10, y: 20 },
+            passed: { waypoints: [{ x: 20, y: 20, action: 'walk' }] },
+        }
+        expect(classifyZoneMovementResistance(region, token, movement)).toEqual({
+            window: 'zone-region:target-token:movement-internal',
+            origin: { x: 10, y: 20 },
+        })
+        token.segmentizeRegionMovementPath.mockReturnValue([{ type: 1, action: 'teleport' }])
+        global.CONFIG = { Token: { movement: { actions: { teleport: { teleport: true } } } } }
+        expect(classifyZoneMovementResistance(region, token, movement)).toBeNull()
+    })
+
+    test('keeps movement resistance marker ownership narrow and never moves the Token', async () => {
+        const actor = {
+            effects: [{ id: 'manual', flags: { ilaris: {} } }],
+            createEmbeddedDocuments: jest.fn(async (_type, [data]) => {
+                const marker = { id: 'marker', ...data, update: jest.fn() }
+                actor.effects.push(marker)
+                return [marker]
+            }),
+            deleteEmbeddedDocuments: jest.fn(async (_type, ids) => {
+                actor.effects = actor.effects.filter((effect) => !ids.includes(effect.id))
+            }),
+        }
+        const token = { id: 'target-token', x: 100, y: 200 }
+        const region = {
+            id: 'zone-region',
+            parent: { tokens: new Map([[token.id, token]]) },
+        }
+        global.game.scenes = { get: jest.fn(() => ({ regions: new Map([[region.id, region]]) })) }
+        global.ChatMessage.create = jest.fn()
+        const resistance = {
+            sceneId: 'scene',
+            regionId: region.id,
+            tokenId: token.id,
+            applicationId: 'cast-a',
+            spellUuid: 'Item.pandemonium',
+            spellName: 'Pandämonium',
+            origin: { x: 10, y: 20 },
+        }
+
+        await resolveZoneMovementResistance(actor, resistance, false)
+        await resolveZoneMovementResistance(actor, resistance, false)
+
+        expect(actor.createEmbeddedDocuments).toHaveBeenCalledTimes(1)
+        expect(actor.effects).toHaveLength(2)
+        expect(actor.effects[1].flags.ilaris.zoneMovementOrigin).toEqual({ x: 10, y: 20 })
+        expect({ x: token.x, y: token.y }).toEqual({ x: 100, y: 200 })
+
+        await resolveZoneMovementResistance(actor, resistance, true)
+        expect(actor.deleteEmbeddedDocuments).toHaveBeenCalledWith('ActiveEffect', ['marker'])
+        expect(actor.effects).toEqual([{ id: 'manual', flags: { ilaris: {} } }])
+    })
+
     test('administrative reconciliation updates triggered-zone membership without dispatching', async () => {
         const actor = { id: 'target-actor', name: 'Target' }
         const token = { id: 'target-token', actor, actorLink: true }
@@ -89,7 +154,25 @@ describe('persistent zone duration', () => {
         expect(global.ChatMessage.create).not.toHaveBeenCalled()
     })
 
-    test('rejects internal, exit-only, and teleport movement paths', () => {
+    test('classifies a normal EXIT movement through a Region', () => {
+        global.CONST = { REGION_MOVEMENT_SEGMENTS: { ENTER: 1, MOVE: 2, EXIT: 3 } }
+        const region = { id: 'wall-region' }
+        const token = {
+            id: 'target-token',
+            segmentizeRegionMovementPath: jest.fn(() => [{ type: 3, action: 'walk' }]),
+        }
+        const movement = {
+            id: 'movement-exit',
+            origin: { x: 100, y: 0 },
+            passed: { waypoints: [{ x: 0, y: 0, action: 'walk' }] },
+        }
+
+        expect(classifyZoneTraversalMovement(region, token, movement)).toEqual({
+            window: 'wall-region:target-token:movement-exit',
+        })
+    })
+
+    test('rejects internal, initial, and teleport movement paths', () => {
         global.CONST = {
             REGION_MOVEMENT_SEGMENTS: { ENTER: 1, MOVE: 2, EXIT: 3 },
             TOKEN_MOVEMENT_ACTIONS: { teleport: { teleport: true } },
@@ -106,10 +189,9 @@ describe('persistent zone duration', () => {
         }
 
         expect(classifyZoneTraversalMovement(region, token, movement)).toBeNull()
-        token.segmentizeRegionMovementPath.mockReturnValue([{ type: 3, action: 'walk' }])
-        expect(classifyZoneTraversalMovement(region, token, movement)).toBeNull()
         token.segmentizeRegionMovementPath.mockReturnValue([{ type: 1, action: 'teleport' }])
         expect(classifyZoneTraversalMovement(region, token, movement)).toBeNull()
+        expect(classifyZoneTraversalMovement(region, token, null)).toBeNull()
     })
 
     test('dispatches one traversal resistance for an entered wall without generic entry dispatch', async () => {
@@ -156,6 +238,53 @@ describe('persistent zone duration', () => {
             dispatchPersistentZoneTraversal(target, movement),
             dispatchPersistentZoneTraversal(target, movement),
         ])
+
+        expect(global.ChatMessage.create).toHaveBeenCalledTimes(1)
+        expect(global.ChatMessage.create.mock.calls[0][0].content).toContain(
+            'Widerstand leisten (GE)',
+        )
+    })
+
+    test('dispatches the existing traversal resistance flow for an outbound wall movement', async () => {
+        global.CONST = {
+            REGION_MOVEMENT_SEGMENTS: { ENTER: 1, MOVE: 2, EXIT: 3 },
+            DOCUMENT_OWNERSHIP_LEVELS: { OWNER: 3 },
+        }
+        global.ChatMessage.create = jest.fn().mockResolvedValue(undefined)
+        const target = {
+            id: 'target-token',
+            actor: { id: 'target-actor', name: 'Target', isToken: true },
+            actorLink: false,
+            segmentizeRegionMovementPath: jest.fn(() => [{ type: 3, action: 'walk' }]),
+        }
+        const zone = {
+            applicationId: 'cast-a',
+            spellUuid: 'Item.wand',
+            casterUuid: 'Actor.caster',
+            profile: {
+                shape: 'rectangle',
+                lifecycle: 'persistent',
+                effectMode: 'triggered',
+                trigger: { onTraverse: true, onEnter: false },
+                traversal: { avoidTest: { enabled: true, attribut: 'GE', resistDifficulty: 16 } },
+            },
+            preEffects: [],
+        }
+        const scene = { id: 'scene-a', regions: [] }
+        const region = { id: 'wall-region', parent: scene, flags: { Ilaris: { zone } } }
+        scene.regions = [region]
+        target.parent = scene
+        global.foundry.utils.fromUuid.mockImplementation((uuid) => {
+            if (uuid === 'Item.wand') return { uuid, name: 'Wand aus Dornen' }
+            if (uuid === 'Actor.caster') return { uuid, id: 'caster', name: 'Caster' }
+            return null
+        })
+
+        await dispatchPersistentZoneTraversal(target, {
+            id: 'movement-exit',
+            origin: { x: 100, y: 0 },
+            passed: { waypoints: [{ x: 0, y: 0, action: 'walk' }] },
+        })
 
         expect(global.ChatMessage.create).toHaveBeenCalledTimes(1)
         expect(global.ChatMessage.create.mock.calls[0][0].content).toContain(

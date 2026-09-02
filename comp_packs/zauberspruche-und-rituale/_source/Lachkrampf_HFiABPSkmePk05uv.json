@@ -8,6 +8,9 @@
     "text": "Dein Opfer bekommt einen schweren Lachkrampf, der es von jeglicher Beteiligung in Rededuellen abhält. Nach 1 Minute darf es mit einer Konterprobe (Willenskraft, 16) versuchen, den Zauber zu beenden.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "Schluckauf (2 AsP; dein Opfer erhält einen kräftigen Schluckauf. Auswirkungen sind Spielleiterentscheid.)\nBlähungen (–4; alle Proben zur gesellschaftlichen Interaktion sind um –4 erschwert.)",
     "vorbereitung": "0 Aktionen",
     "ziel": "Einzelperson",

@@ -10,11 +10,6 @@
   "requiredUsers": ["e2e-gm", "e2e-player"],
   "requiredActors": ["HatAlles", "Testlauf-Held", "Testlauf-Npc"],
   "playerOwnership": { "user": "e2e-player", "actor": "Testlauf-Held" },
-  "requiredSettingDefaults": {
-    "renameTriumphWithCrit": false,
-    "lepSystem": false,
-    "useTargetSelection": false
-  },
   "requiredCompendiumLabels": ["Kreatur", "Zauberspruch"],
   "releaseAsset": "https://github.com/Ilaris-Tools/IlarisFoundryVTT/releases/download/e2e-world-v14363-r1/ilaris-e2e-world-v14363-r1.zip"
 }

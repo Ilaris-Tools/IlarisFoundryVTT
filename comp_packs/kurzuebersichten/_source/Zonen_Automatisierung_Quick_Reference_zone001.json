@@ -27,7 +27,7 @@
       "title": { "show": true, "level": 1 },
       "text": {
         "format": 1,
-        "content": "<h1>Wanddurchquerung</h1>\n<p>Eine persistente rechteckige Zone kann mit <code>trigger.onTraverse: true</code> eine echte Bewegung durch die Wand erkennen. Diese Ausloesung ist ausschliesslich fuer Wand-Zonen: <code>triggerOnCreate</code> und <code>onEnter</code> muessen beide <code>false</code> sein.</p>\n<h2>Wand aus Dornen</h2>\n<p>Der Versuch, die Wand zu betreten oder zu durchqueren, verursacht <strong>immer 2W6 TP</strong>. Anschliessend entscheidet die Widerstandsprobe <strong>GE 16</strong> nur ueber die Bewegung:</p>\n<ul><li><strong>Erfolg:</strong> Der Token darf auf seiner neuen Position bleiben.</li><li><strong>Misserfolg:</strong> Ilaris legt den sichtbaren Hinweis <em>Durchquerung fehlgeschlagen</em> an und schreibt eine Chat-Erinnerung. Die Spielleitung setzt den Token manuell vor die Wand zurueck.</li></ul>\n<p>Ein weiterer normaler Bewegungsversuch durch die Wand loest erneut GE 16 und 2W6 TP aus. Ilaris blockiert oder verschiebt Token dabei bewusst nicht automatisch. Teleportation, erzwungene Bewegung und das Verlassen der Wand nach jeweils vier Initiativephasen bleiben Tischentscheidung und werden nicht automatisiert.</p>"
+        "content": "<h1>Wanddurchquerung</h1>\n<p>Eine persistente rechteckige Zone kann mit <code>trigger.onTraverse: true</code> eine echte Bewegung durch die Wand erkennen. Diese Ausloesung ist ausschliesslich fuer Wand-Zonen: <code>triggerOnCreate</code> und <code>onEnter</code> muessen beide <code>false</code> sein.</p>\n<h2>Wand aus Dornen</h2>\n<p>Das Platzieren einer Wand ueber einem bereits enthaltenen Token loest nichts aus: keinen Schaden, keine Widerstandsprobe und keinen Hinweis. Erst eine normale Bewegung in die Wand hinein oder aus ihr heraus ist ein Durchquerungsversuch.</p>\n<p>Jeder Durchquerungsversuch verursacht <strong>immer 2W6 TP</strong>. Anschliessend entscheidet die Widerstandsprobe <strong>GE 16</strong> nur ueber die Bewegung:</p>\n<ul><li><strong>Erfolg:</strong> Der Token darf auf seiner neuen Position bleiben.</li><li><strong>Misserfolg:</strong> Ilaris legt den sichtbaren Hinweis <em>Durchquerung fehlgeschlagen</em> an und schreibt eine Chat-Erinnerung. Die Spielleitung setzt den Token manuell vor die Wand zurueck.</li></ul>\n<p>Ein weiterer normaler Bewegungsversuch in oder aus der Wand loest erneut GE 16 und 2W6 TP aus. Ilaris blockiert oder verschiebt Token dabei bewusst nicht automatisch. Teleportation, erzwungene Bewegung und die Aktionskosten des Verlassens nach jeweils vier Initiativephasen bleiben Tischentscheidung.</p>"
       },
       "video": { "controls": true, "volume": 0.5 },
       "src": null,
@@ -53,6 +53,23 @@
       "ownership": { "default": -1 },
       "flags": {},
       "_key": "!journal.pages!kurzzone001.kurzzonepage003"
+    },
+    {
+      "_id": "kurzzonepage004",
+      "name": "Bewegungswiderstand",
+      "type": "text",
+      "title": { "show": true, "level": 1 },
+      "text": {
+        "format": 1,
+        "content": "<h1>Bewegungswiderstand</h1><p>Eine Zone kann mit <code>movementResistance</code> eine Konterprobe bei normaler Bewegung innerhalb der Zone, beim Betreten oder beim Verlassen verlangen. Teleportation und direkte Token- oder Regionenänderungen lösen keine Probe aus.</p><p>Bei Misserfolg legt Ilaris einen sichtbaren, quellengebundenen Hinweis-Effekt an und nennt den Bewegungsursprung im privaten Chat. Ilaris blockiert oder verschiebt den Token nie: Die Spielleitung setzt ihn bei Bedarf manuell auf diesen Ursprung zurück. Ein späterer Erfolg, das Verlassen der Zone oder das Ende der Region entfernt nur den zugehörigen Hinweis-Effekt.</p>"
+      },
+      "video": { "controls": true, "volume": 0.5 },
+      "src": null,
+      "system": {},
+      "sort": 3,
+      "ownership": { "default": -1 },
+      "flags": {},
+      "_key": "!journal.pages!kurzzone001.kurzzonepage004"
     }
   ],
   "folder": null,

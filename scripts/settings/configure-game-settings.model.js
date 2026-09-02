@@ -10,6 +10,7 @@ export const IlarisGameSettingNames = {
     fertigkeitenPacks: 'fertigkeitenPacks',
     waffenPacks: 'waffenPacks',
     gegenstandPacks: 'gegenstandPacks',
+    kreaturenPacks: 'kreaturenPacks',
     talentePacks: 'talentePacks',
     manoeverPacks: 'manoeverPacks',
     vorteilePacks: 'vorteilePacks',
