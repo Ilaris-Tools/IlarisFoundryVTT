@@ -12,7 +12,7 @@ This inventory contains the compendium entries whose currently supported behavio
 - **Humofaxius** — `4W6` HUMUS damage
 - **Ignifaxius Flammenstrahl** — `4W6` FEUER damage
 - **Orcanofaxius** — `4W6` LUFT damage
-- **Pandämonium** — `2W6` PROFAN damage; Mächtige Magie `+1W6`; one-time approximation only
+- **Pandämonium** — persistent passive Zone: `2W6` PROFAN DOT at the affected actor's turn end; Mächtige Magie `+1W6`; GE 16 movement resistance. _Unheilig_ remains a table-managed exception.
 - **Seelenfeuer** — `2W6` TRUE_DAMAGE; Mächtige Magie `+4`; one-time approximation only
 - **Tlalucs Odem Pestgestank** — `2W6` TRUE_DAMAGE; Mächtige Magie `+1W6`; separate timed global `-4` after failed Zähigkeit resistance
 - **Wand aus Flammen** — `4W6` TRUE_DAMAGE; Mächtige Magie `+2W6`; one-time approximation only
@@ -34,6 +34,8 @@ This inventory contains the compendium entries whose currently supported behavio
 
 ## Structured persistent zone markers
 
+- **Aeolitus Windgebraus** — instant 16-step, 45-degree caster cone. Each non-caster target receives KK 16; a failed resistance applies the canonical `Position4` condition. **Langer Atem** changes this into a persistent cone for the caster's KO captured as Scene rounds and triggers on creation, entry, and round start; concentration remains a GM-managed early dismissal. **Sturm** additionally creates a traceable `Zurückgestoßen` marker and private manual-reposition instruction after a failed resistance. **Winde der anderen Art** is a narrative `-4` form.
+
 - **Dunkelheit** — stationary 4-step circle for 64 Initiativephasen; applies a visible, marker-only Active Effect to non-caster occupants. It does not alter Foundry scene lighting or token vision. The moving _Begleiter_ variant remains manual.
 
 ## Healing (intentionally excluded from the damage list)
@@ -46,7 +48,7 @@ This inventory contains the compendium entries whose currently supported behavio
 
 ## Intentional approximation and deferral boundaries
 
-Pandämonium, Seelenfeuer, and Wand aus Flammen deliberately apply their configured damage once only. Their zone, contact, crossing, repeated-damage, and other trigger rules still require manual handling.
+Seelenfeuer and Wand aus Flammen deliberately apply their configured damage once only. Their zone, contact, crossing, repeated-damage, and other trigger rules still require manual handling. Pandämonium is the reviewed exception: its passive DOT ticks once at the affected actor's turn end while that token remains in the Zone.
 
 The reviewed numeric effects above deliberately do not extend coverage to Armatrutz, Rondras Rüstung, Attributo, Krötenkuss, Entzug von Travias Gaben, Warzen sprießen, Sensattaco, Ackersegen, or Feuersegen. They require derived armor protection, direct main-attribute behavior, contact/condition mechanics, or an ambiguous/manual rules interpretation.
 

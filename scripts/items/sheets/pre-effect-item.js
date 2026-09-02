@@ -35,6 +35,7 @@ export class PreEffectItemSheet extends IlarisItemSheet {
             waffe: await this._buildSummonItemOptions('waffe'),
             gegenstand: await this._buildSummonItemOptions('gegenstand'),
         }
+        context.summonCreatureOptions = await this._buildSummonCreatureOptions()
         context.avoidTestAttributeOptions = CONFIG.ILARIS.attribute || []
         context.damageTypeOptions = this._getDamageTypeOptions()
         context.ilarisModifierPhases = IlarisModifierPhaseLabels
@@ -61,6 +62,10 @@ export class PreEffectItemSheet extends IlarisItemSheet {
                     ...configured,
                     marker: { ...defaults.marker, ...(configured.marker || {}) },
                     condition: { ...defaults.condition, ...(configured.condition || {}) },
+                    tableManagedDisplacement: {
+                        ...defaults.tableManagedDisplacement,
+                        ...(configured.tableManagedDisplacement || {}),
+                    },
                     changes: toPreEffectArray(configured.changes),
                     ilarisModifiers: toPreEffectArray(configured.ilarisModifiers),
                 }
@@ -163,6 +168,32 @@ export class PreEffectItemSheet extends IlarisItemSheet {
         return groups
     }
 
+    /** Build selectable creature Actor sources from the configured creature compendia. */
+    async _buildSummonCreatureOptions() {
+        const groups = []
+        try {
+            const packIds = JSON.parse(
+                game.settings.get('Ilaris', IlarisGameSettingNames.kreaturenPacks) || '[]',
+            )
+            for (const packId of packIds) {
+                const pack = game.packs.get(packId)
+                if (!pack || pack.metadata?.type !== 'Actor') continue
+                await pack.getIndex({ fields: ['type'] })
+                const actors = Array.from(pack.index)
+                    .filter((entry) => entry._id && entry.name && entry.type === 'kreatur')
+                    .map((entry) => ({
+                        name: entry.name,
+                        uuid: `Compendium.${pack.collection}.Actor.${entry._id}`,
+                    }))
+                    .sort((left, right) => left.name.localeCompare(right.name, 'de'))
+                if (actors.length) groups.push({ packName: pack.metadata?.label || packId, actors })
+            }
+        } catch (error) {
+            console.warn('Ilaris | Failed to build summon creature options:', error)
+        }
+        return groups
+    }
+
     /** @override */
     _onRender(context, options) {
         super._onRender(context, options)
@@ -221,6 +252,31 @@ export class PreEffectItemSheet extends IlarisItemSheet {
             return
         }
 
+        if (button.closest('.add-summon-creature-override')) {
+            if (preEffectIndex < 0) return
+            const preEffects = this._clonePreEffects()
+            const summonCreature = preEffects[preEffectIndex]?.summonCreature
+            if (!summonCreature) return
+            summonCreature.overrides = toPreEffectArray(summonCreature.overrides)
+            summonCreature.overrides.push(this._defaultSummonCreatureOverride())
+            this.document.update({ 'system.preEffects': preEffects })
+            return
+        }
+
+        if (button.closest('.add-domination-check')) {
+            if (preEffectIndex < 0) return
+            const preEffects = this._clonePreEffects()
+            const summonCreature = preEffects[preEffectIndex]?.summonCreature
+            if (!summonCreature) return
+            summonCreature.dominationChecks ??= { enabled: false, entries: [] }
+            summonCreature.dominationChecks.entries = toPreEffectArray(
+                summonCreature.dominationChecks.entries,
+            )
+            summonCreature.dominationChecks.entries.push(this._defaultDominationCheck())
+            this.document.update({ 'system.preEffects': preEffects })
+            return
+        }
+
         if (button.closest('.delete-pre-effect')) {
             if (preEffectIndex < 0) return
             const preEffects = this._clonePreEffects()
@@ -259,17 +315,40 @@ export class PreEffectItemSheet extends IlarisItemSheet {
             return
         }
 
-        if (!button.closest('.delete-summon-item-override')) return
-        const overrideCard = button.closest('.summon-item-override-card')
+        if (button.closest('.delete-domination-check')) {
+            const dominationCard = button.closest('.domination-check-card')
+            const dominationIndex = [
+                ...preEffectCard.querySelectorAll('.domination-check-card'),
+            ].indexOf(dominationCard)
+            if (preEffectIndex < 0 || dominationIndex < 0) return
+            const preEffects = this._clonePreEffects()
+            const dominationChecks = preEffects[preEffectIndex]?.summonCreature?.dominationChecks
+            if (!dominationChecks) return
+            dominationChecks.entries = toPreEffectArray(dominationChecks.entries)
+            dominationChecks.entries.splice(dominationIndex, 1)
+            this.document.update({ 'system.preEffects': preEffects })
+            return
+        }
+
+        const isItemOverride = button.closest('.delete-summon-item-override')
+        const isCreatureOverride = button.closest('.delete-summon-creature-override')
+        if (!isItemOverride && !isCreatureOverride) return
+        const overrideCard = button.closest(
+            isItemOverride ? '.summon-item-override-card' : '.summon-creature-override-card',
+        )
         const overrideIndex = [
-            ...preEffectCard.querySelectorAll('.summon-item-override-card'),
+            ...preEffectCard.querySelectorAll(
+                isItemOverride ? '.summon-item-override-card' : '.summon-creature-override-card',
+            ),
         ].indexOf(overrideCard)
         if (preEffectIndex < 0 || overrideIndex < 0) return
         const preEffects = this._clonePreEffects()
-        const summonItem = preEffects[preEffectIndex]?.summonItem
-        if (!summonItem) return
-        summonItem.overrides = toPreEffectArray(summonItem.overrides)
-        summonItem.overrides.splice(overrideIndex, 1)
+        const summon = isItemOverride
+            ? preEffects[preEffectIndex]?.summonItem
+            : preEffects[preEffectIndex]?.summonCreature
+        if (!summon) return
+        summon.overrides = toPreEffectArray(summon.overrides)
+        summon.overrides.splice(overrideIndex, 1)
         this.document.update({ 'system.preEffects': preEffects })
     }
 
@@ -325,6 +404,7 @@ export class PreEffectItemSheet extends IlarisItemSheet {
                 charges: { base: 1, amplifiedByMaechtigeMagie: false, maechtigBonus: 0 },
             },
             summonItem: this._defaultSummonItem(),
+            summonCreature: this._defaultSummonCreature(),
             avoidTest: {
                 enabled: false,
                 fertigkeit: '',
@@ -348,6 +428,7 @@ export class PreEffectItemSheet extends IlarisItemSheet {
             ilarisModifiers: [],
             marker: { enabled: false, id: '', label: '' },
             condition: { enabled: false, statusId: '' },
+            tableManagedDisplacement: { enabled: false },
         }
     }
 
@@ -369,7 +450,39 @@ export class PreEffectItemSheet extends IlarisItemSheet {
         return { enabled: false, sourceKind: 'waffe', sourceUuid: '', overrides: [] }
     }
 
+    _defaultSummonCreature() {
+        return {
+            enabled: false,
+            kreaturentypen: [],
+            sourceUuid: '',
+            lifetime: 'permanent',
+            overrides: [],
+            boundResourceCost: { enabled: false, resource: 'gasp', amount: 0 },
+            dominationChecks: { enabled: false, entries: [] },
+        }
+    }
+
+    _defaultDominationCheck() {
+        return {
+            kreaturentyp: '',
+            difficulty: 12,
+            probeType: 'attribut',
+            attribut: '',
+            fertigkeit: '',
+            talent: '',
+        }
+    }
+
     _defaultSummonItemOverride() {
+        return {
+            path: '',
+            value: '',
+            amplifiedByMaechtigeMagie: false,
+            maechtigBonus: '',
+        }
+    }
+
+    _defaultSummonCreatureOverride() {
         return {
             path: '',
             value: '',

@@ -45,6 +45,7 @@ beforeEach(() => {
         },
         users: [],
     }
+    global.CONST = { DOCUMENT_OWNERSHIP_LEVELS: { OWNER: 3 } }
     global.foundry.utils.fromUuid = jest.fn((uuid) => {
         if (uuid === 'Item.spell') return { name: 'Spell', uuid, system: {} }
         if (uuid === 'Actor.caster') return { uuid }
@@ -144,6 +145,62 @@ describe('resist result listener', () => {
         )
     })
 
+    it('routes Zone movement resistance to the neutral marker lifecycle without applying a pre-effect', async () => {
+        const actor = {
+            id: 'target',
+            name: 'Target',
+            system: {},
+            effects: [],
+            createEmbeddedDocuments: jest.fn(async (_type, [data]) => {
+                const marker = { id: 'movement-marker', ...data, update: jest.fn() }
+                actor.effects.push(marker)
+                return [marker]
+            }),
+            deleteEmbeddedDocuments: jest.fn(async (_type, ids) => {
+                actor.effects = actor.effects.filter((effect) => !ids.includes(effect.id))
+            }),
+        }
+        const region = {
+            id: 'zone-region',
+            parent: { tokens: new Map([['target-token', { id: 'target-token' }]]) },
+        }
+        global.game.actors.get.mockReturnValue(actor)
+        global.game.scenes = { get: jest.fn(() => ({ regions: new Map([[region.id, region]]) })) }
+        registerResistResolutionListener()
+        const dialog = {
+            _resistContext: {
+                spellUuid: 'Item.spell',
+                preEffectData: preEffect({
+                    target: { actorId: 'target' },
+                    zoneMovementResistance: {
+                        sceneId: 'scene-a',
+                        regionId: 'zone-region',
+                        tokenId: 'target-token',
+                        applicationId: 'cast-a',
+                        spellUuid: 'Item.spell',
+                        spellName: 'Pandämonium',
+                        origin: { x: 10, y: 20 },
+                    },
+                }),
+            },
+        }
+
+        await hookCallbacks['Ilaris.postSkillRoll'](dialog, { rollResult: { success: false } })
+
+        expect(effectCreate).not.toHaveBeenCalled()
+        expect(actor.createEmbeddedDocuments).toHaveBeenCalledWith('ActiveEffect', [
+            expect.objectContaining({
+                changes: [],
+                flags: expect.objectContaining({
+                    ilaris: expect.objectContaining({
+                        zoneMovementResistanceMarker: true,
+                        zoneMovementOrigin: { x: 10, y: 20 },
+                    }),
+                }),
+            }),
+        ])
+    })
+
     it('applies diminished values when a diminished resist succeeds', async () => {
         registerResistResolutionListener()
         const dialog = {
@@ -205,6 +262,78 @@ describe('resist result listener', () => {
             ],
             expect.any(Object),
         )
+    })
+
+    it('keeps a failed Sturm outcome traceable and asks the table to reposition manually', async () => {
+        const targetActor = {
+            id: 'target',
+            uuid: 'Actor.target',
+            name: 'Target',
+            system: {},
+            update: jest.fn(),
+            testUserPermission: jest.fn(() => true),
+        }
+        global.game.actors.get.mockReturnValue(targetActor)
+        global.game.users = [
+            { id: 'owner', active: true, isGM: false },
+            { id: 'gm', active: true, isGM: true },
+        ]
+        registerResistResolutionListener()
+        const dialog = {
+            _resistContext: {
+                preEffectData: preEffect({
+                    castSkill: 'Elementar',
+                    spellModificationId: 'sturm',
+                    resistanceOutcomes: {
+                        failure: {
+                            enabled: true,
+                            changes: [],
+                            ilarisModifiers: [],
+                            marker: {
+                                enabled: true,
+                                id: 'zurueckgestossen',
+                                label: 'Zurückgestoßen',
+                            },
+                            condition: { enabled: false, statusId: '' },
+                            tableManagedDisplacement: { enabled: true },
+                        },
+                    },
+                }),
+                spellUuid: 'Item.spell',
+            },
+        }
+
+        await hookCallbacks['Ilaris.postSkillRoll'](dialog, { rollResult: { success: false } })
+
+        expect(effectCreate).toHaveBeenCalledWith(
+            [
+                expect.objectContaining({
+                    flags: expect.objectContaining({
+                        ilaris: expect.objectContaining({
+                            spellUuid: 'Item.spell',
+                            spellModificationId: 'sturm',
+                            castSkill: 'Elementar',
+                            resistanceOutcome: 'failure',
+                            markerId: 'zurueckgestossen',
+                        }),
+                    }),
+                }),
+            ],
+            expect.any(Object),
+        )
+        expect(ChatMessage.create).toHaveBeenCalledWith(
+            expect.objectContaining({
+                content: expect.stringContaining('Zurückstoßen (Spielleitung)'),
+                whisper: ['owner', 'gm'],
+                flags: expect.objectContaining({
+                    ilaris: expect.objectContaining({
+                        tableManagedDisplacement: true,
+                        spellModificationId: 'sturm',
+                    }),
+                }),
+            }),
+        )
+        expect(targetActor.update).not.toHaveBeenCalled()
     })
 
     it('applies an explicit success payload instead of diminished values', async () => {

@@ -31,6 +31,9 @@ export function createItemTypeDataModels(TypeDataModel, h) {
         text: h.string(''),
         maechtig: h.string(''),
         schwierigkeit: h.string(''),
+        magicResistance: h.schema({
+            enabled: h.bool(false),
+        }),
         modifikationen: h.string(''),
         vorbereitung: h.string(''),
         ziel: h.string(''),
@@ -46,7 +49,6 @@ export function createItemTypeDataModels(TypeDataModel, h) {
         zone: h.object(null),
         spellModifications: h.arrayOfObjects(),
         spellModificationGroups: h.arrayOfObjects(),
-        spellModificationPreset: h.string(''),
     })
 
     class NahkampfwaffeItemDataModel extends TypeDataModel {

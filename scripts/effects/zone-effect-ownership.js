@@ -2,6 +2,7 @@ import { getConditionSources, removeConditionSource } from './status-conditions.
 
 const pendingRemovals = new Map()
 const pendingTraversalMarkerCreates = new Map()
+const pendingMovementMarkerCreates = new Map()
 
 function actorEffects(actor) {
     if (Array.isArray(actor?.effects)) return actor.effects
@@ -136,6 +137,102 @@ export async function removeZoneTraversalMarkersForRegion(actor, ownership = {})
             const flags = effect?.flags?.ilaris
             return (
                 flags?.zoneTraversalMarker === true &&
+                flags.zoneRegionId === ownership.regionId &&
+                flags.zoneApplicationId === ownership.applicationId &&
+                flags.spellUuid === ownership.spellUuid
+            )
+        })
+        .map((effect) => effect.id)
+        .filter(Boolean)
+    if (ids.length) await actor.deleteEmbeddedDocuments('ActiveEffect', ids)
+    return ids
+}
+
+/** Match one neutral marker created after a failed Zone movement resistance. */
+export function isZoneMovementResistanceMarker(effect, ownership = {}) {
+    const flags = effect?.flags?.ilaris
+    return Boolean(
+        flags?.zoneMovementResistanceMarker === true &&
+        flags.zoneRegionId === ownership.regionId &&
+        flags.zoneApplicationId === ownership.applicationId &&
+        flags.targetTokenId === ownership.tokenId &&
+        flags.spellUuid === ownership.spellUuid,
+    )
+}
+
+/** Create/update the neutral marker owned by one failed Zone movement check. */
+export async function upsertZoneMovementResistanceMarker(
+    actor,
+    ownership,
+    { name, origin = '', movementOrigin = {} } = {},
+) {
+    if (!actor?.createEmbeddedDocuments) return null
+    const existing = actorEffects(actor).find((effect) =>
+        isZoneMovementResistanceMarker(effect, ownership),
+    )
+    if (existing) {
+        await existing.update?.({ 'flags.ilaris.zoneMovementOrigin': movementOrigin })
+        return existing
+    }
+    const key = removalKey(actor, { ...ownership, preEffectIndex: 'movement-resistance-marker' })
+    const pending = pendingMovementMarkerCreates.get(key)
+    if (pending) return pending
+    const creation = actor
+        .createEmbeddedDocuments('ActiveEffect', [
+            {
+                name: name || 'Bewegung fehlgeschlagen',
+                origin,
+                changes: [],
+                duration: {},
+                system: {
+                    ilarisTiming: {
+                        durationType: 'infinite',
+                        expiresOn: 'turnEnd',
+                        remaining: 0,
+                        originalValue: 0,
+                    },
+                },
+                flags: {
+                    ilaris: {
+                        zoneMovementResistanceMarker: true,
+                        zoneRegionId: ownership.regionId,
+                        zoneApplicationId: ownership.applicationId,
+                        targetTokenId: ownership.tokenId,
+                        spellUuid: ownership.spellUuid,
+                        zoneMovementOrigin: movementOrigin,
+                    },
+                },
+            },
+        ])
+        .then(([marker]) => marker || null)
+    pendingMovementMarkerCreates.set(key, creation)
+    try {
+        return await creation
+    } finally {
+        if (pendingMovementMarkerCreates.get(key) === creation)
+            pendingMovementMarkerCreates.delete(key)
+    }
+}
+
+/** Remove only movement markers with the exact Zone/Token provenance. */
+export async function removeZoneMovementResistanceMarkers(actor, ownership = {}) {
+    if (!actor?.deleteEmbeddedDocuments) return []
+    const ids = actorEffects(actor)
+        .filter((effect) => isZoneMovementResistanceMarker(effect, ownership))
+        .map((effect) => effect.id)
+        .filter(Boolean)
+    if (ids.length) await actor.deleteEmbeddedDocuments('ActiveEffect', ids)
+    return ids
+}
+
+/** Remove all movement markers created by one Region application. */
+export async function removeZoneMovementResistanceMarkersForRegion(actor, ownership = {}) {
+    if (!actor?.deleteEmbeddedDocuments) return []
+    const ids = actorEffects(actor)
+        .filter((effect) => {
+            const flags = effect?.flags?.ilaris
+            return (
+                flags?.zoneMovementResistanceMarker === true &&
                 flags.zoneRegionId === ownership.regionId &&
                 flags.zoneApplicationId === ownership.applicationId &&
                 flags.spellUuid === ownership.spellUuid

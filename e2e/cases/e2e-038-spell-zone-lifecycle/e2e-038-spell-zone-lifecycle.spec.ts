@@ -89,6 +89,171 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
         expect(result.faxius).toBeNull()
     })
 
+    test('resolves Aeolitus forms and snapshots Langer Atem KO into the created Region', async ({
+        page,
+    }) => {
+        const result = await page.evaluate(
+            async ({ actorName, packId }) => {
+                const actor = game.actors?.getName(actorName) as any
+                const scene = canvas.scene as any
+                const pack = game.packs?.get(packId)
+                const spell = (await pack?.getDocuments())?.find(
+                    (entry: any) => entry.name === 'Aeolitus Windgebraus',
+                ) as any
+                if (!actor || !scene || !spell)
+                    throw new Error('Aeolitus, HatAlles oder Szene fehlt.')
+                const { resolveSpellModificationContext } =
+                    await import('/systems/Ilaris/scripts/items/data/spell-modifications.js')
+                const { createZoneRegionData } =
+                    await import('/systems/Ilaris/scripts/combat/zones/zone-region-adapter.js')
+                const { createPersistentZone } =
+                    await import('/systems/Ilaris/scripts/combat/zones/zone-lifecycle.js')
+                const langerAtem = resolveSpellModificationContext(spell, ['langer-atem'])
+                const sturm = resolveSpellModificationContext(spell, ['sturm'])
+                if (!langerAtem.valid || !langerAtem.zone)
+                    throw new Error(langerAtem.errors.join(' ') || 'Langer Atem ist ungültig.')
+                const regionData = createZoneRegionData(
+                    langerAtem.zone,
+                    {
+                        x: canvas.dimensions.sceneX + canvas.grid.size * 10,
+                        y: canvas.dimensions.sceneY + canvas.grid.size * 10,
+                        direction: 0,
+                    },
+                    { flags: { Ilaris: { e2eZone: true } } },
+                )
+                const region = await createPersistentZone({
+                    scene,
+                    regionData,
+                    dialog: {
+                        item: spell,
+                        actor,
+                        zoneCasterTokenId: '',
+                        armedInputValues: {},
+                        maneuverDurationBonus: 0,
+                        maechtigeMagieQs: 0,
+                        getSelectedSpellModificationId: () => 'langer-atem',
+                    },
+                    zone: langerAtem.zone,
+                    preEffects: langerAtem.preEffects,
+                })
+                const zone = region?.flags?.Ilaris?.zone as any
+                return {
+                    base: resolveSpellModificationContext(spell, []).zone,
+                    langerAtem: langerAtem.zone,
+                    sturmFailure: sturm.preEffects[0]?.resistanceOutcomes?.failure,
+                    casterKO: actor.system.attribute.KO.wert,
+                    remaining: zone?.remaining,
+                    originalValue: zone?.originalValue,
+                    duration: zone?.profile?.duration,
+                }
+            },
+            { actorName: ACTOR_NAME, packId: SPELL_PACK },
+        )
+
+        expect(result.base).toMatchObject({ shape: 'cone', distance: 16, angle: 45 })
+        expect(result.langerAtem).toMatchObject({
+            lifecycle: 'persistent',
+            duration: { source: 'casterAttribute', attribute: 'KO' },
+            trigger: { triggerOnCreate: true, onEnter: true, onRoundStart: true },
+        })
+        expect(result.remaining).toBe(result.casterKO)
+        expect(result.originalValue).toBe(result.casterKO)
+        expect(result.duration).toEqual({
+            type: 'sceneRounds',
+            remaining: result.casterKO,
+            originalValue: result.casterKO,
+        })
+        expect(result.sturmFailure).toMatchObject({
+            condition: { enabled: true, statusId: 'Position4' },
+            marker: { enabled: true, id: 'zurueckgestossen' },
+            tableManagedDisplacement: { enabled: true },
+        })
+    })
+
+    test('renders Aeolitus Zone authoring controls in the concrete sheet order', async ({
+        page,
+    }) => {
+        const itemId = await page.evaluate(async (packId) => {
+            const pack = game.packs?.get(packId)
+            const source = (await pack?.getDocuments())?.find(
+                (entry: any) => entry.name === 'Aeolitus Windgebraus',
+            ) as any
+            if (!source) throw new Error('Aeolitus Windgebraus fehlt.')
+            const data = source.toObject()
+            delete data._id
+            data.name = 'E2E Aeolitus-Autorenschaft'
+            const [item] = await Item.createDocuments([data])
+            item.sheet.render(true)
+            return item.id
+        }, SPELL_PACK)
+        const itemWindow = page
+            .locator('.window-app, .application')
+            .filter({ hasText: 'E2E Aeolitus-Autorenschaft' })
+            .last()
+
+        try {
+            await expect(itemWindow).toBeVisible({ timeout: 15000 })
+            const zoneEditor = itemWindow.locator('.zone-profile-editor')
+            const formEditor = itemWindow.locator('.spell-modification-editor')
+            const preEffects = itemWindow.locator('.pre-effects-section')
+            await expect(zoneEditor).toBeVisible()
+            await expect(formEditor).toBeVisible()
+            await expect(preEffects).toBeVisible()
+            expect(
+                await itemWindow.evaluate((window) => {
+                    const zone = window.querySelector('.zone-profile-editor')
+                    const form = window.querySelector('.spell-modification-editor')
+                    const effects = window.querySelector('.pre-effects-section')
+                    return Boolean(
+                        zone &&
+                        form &&
+                        effects &&
+                        zone.compareDocumentPosition(form) & Node.DOCUMENT_POSITION_FOLLOWING &&
+                        form.compareDocumentPosition(effects) & Node.DOCUMENT_POSITION_FOLLOWING,
+                    )
+                }),
+            ).toBe(true)
+            await expect(
+                zoneEditor.locator('select[name="system.zone.duration.source"]'),
+            ).toBeVisible()
+            await expect(formEditor.locator('select[name$=".zone.duration.source"]')).toHaveCount(3)
+
+            const failure = preEffects.locator('.outcome-payload[data-outcome="failure"]').first()
+            await failure.locator('input[name$=".resistanceOutcomes.failure.enabled"]').check()
+            await expect(failure.getByText('Zurückstoßen (Spielleitung)')).toBeVisible()
+            await itemWindow.screenshot({ path: 'test-results/aeolitus-zone-authoring-light.png' })
+
+            const uiConfig = await page.evaluate(() =>
+                foundry.utils.deepClone(game.settings.get('core', 'uiConfig')),
+            )
+            try {
+                await page.evaluate(async (config) => {
+                    await game.settings.set('core', 'uiConfig', {
+                        ...config,
+                        colorScheme: { ...(config.colorScheme ?? {}), applications: 'dark' },
+                    })
+                }, uiConfig)
+                await expect(page.locator('body.theme-dark')).toBeVisible()
+                await itemWindow.screenshot({
+                    path: 'test-results/aeolitus-zone-authoring-dark.png',
+                })
+            } finally {
+                await page.evaluate(
+                    (config) => game.settings.set('core', 'uiConfig', config),
+                    uiConfig,
+                )
+            }
+        } finally {
+            await page
+                .evaluate(async (id) => {
+                    const item = game.items.get(id)
+                    await item?.sheet?.close()
+                    await item?.delete()
+                }, itemId)
+                .catch(() => {})
+        }
+    })
+
     test('resolves a placed Pestgestank cone against only its contained token', async ({
         page,
     }) => {
@@ -983,7 +1148,31 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
                 )
                 await first.delete()
                 // Foundry does not await asynchronous deleteRegion hook listeners.
-                await new Promise((resolve) => setTimeout(resolve, 500))
+                // Wait for the owned effect to disappear instead of assuming a fixed
+                // delay is enough on every host.
+                await new Promise<void>((resolve, reject) => {
+                    const deadline = Date.now() + 15000
+                    const check = () => {
+                        if (
+                            !ownedEffects().some(
+                                (effect: any) => effect.flags?.ilaris?.zoneRegionId === first.id,
+                            )
+                        ) {
+                            resolve()
+                            return
+                        }
+                        if (Date.now() >= deadline) {
+                            reject(
+                                new Error(
+                                    'Passive effect wurde nach dem Löschen der Region nicht entfernt.',
+                                ),
+                            )
+                            return
+                        }
+                        setTimeout(check, 50)
+                    }
+                    check()
+                })
                 const afterFirstDeletion = ownedEffects().map(
                     (effect: any) => effect.flags.ilaris.zoneRegionId,
                 )

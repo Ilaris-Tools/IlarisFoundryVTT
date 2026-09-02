@@ -10,8 +10,8 @@ zone definition -> placement -> successful cast -> lifecycle manager -> existing
 
 This change covers an instant cone and a persistent triggered rectangle. Passive zones, beginning-of-turn triggers, periodic effects, and precise wall crossing remain separate follow-up changes.
 
-Deferred proposal-sized follow-up work is recorded in the
-[Zone follow-up roadmap](../../../../docs/develop/zone-follow-up-roadmap.md).
+Deferred proposal-sized follow-up work was tracked separately and has since
+been completed or superseded.
 
 ## Goals / Non-Goals
 

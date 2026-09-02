@@ -17,6 +17,13 @@
         "operator": "ADD",
         "target": "",
         "affectedByInput": true
+      },
+      "1": {
+        "type": "MAECHTIGE_MAGIE",
+        "value": 1,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
       }
     },
     "gruppe": "2",

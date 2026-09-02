@@ -8,6 +8,9 @@
     "text": "Bei deinem Opfer trübt sich ein Sinn deiner Wahl. Alle Tätigkeiten, die den Einsatz dieses Sinnes benötigen, sind um –4 erschwert.",
     "maechtig": "Der Malus steigt um –4.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "",
     "vorbereitung": "4 Aktionen",
     "ziel": "Einzelperson",

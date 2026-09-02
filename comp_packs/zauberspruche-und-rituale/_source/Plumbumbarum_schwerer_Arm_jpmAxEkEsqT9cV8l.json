@@ -8,6 +8,9 @@
     "text": "Alle AT des Ziels sind um –4 erschwert.",
     "maechtig": "Erhöht den Malus um –2.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "Demotivation (–8; die Erschwernis wirkt auch auf Zauberproben.)",
     "vorbereitung": "1 Aktion",
     "ziel": "Einzelwesen",

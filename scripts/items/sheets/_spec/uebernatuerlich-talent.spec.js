@@ -23,6 +23,7 @@ describe('UebernatuerlichTalentSheet shared Pre-Effect composition', () => {
             },
             preEffects: PreEffectItemSheet.PARTS.preEffects,
         })
+        expect(Object.keys(UebernatuerlichTalentSheet.PARTS)).toEqual(['form', 'preEffects'])
     })
 
     it('keeps the round-start Zone opt-in directly after the entry trigger in the concrete editor', () => {
@@ -33,13 +34,24 @@ describe('UebernatuerlichTalentSheet shared Pre-Effect composition', () => {
         const createIndex = template.indexOf('system.zone.trigger.triggerOnCreate')
         const enterIndex = template.indexOf('system.zone.trigger.onEnter')
         const roundIndex = template.indexOf('system.zone.trigger.onRoundStart')
+        const resistanceIndex = template.indexOf('system.zone.movementResistance.enabled')
+        const removalIndex = template.indexOf('clear-zone-profile')
         const modificationIndex = template.indexOf('spell-modification-editor')
 
         expect(createIndex).toBeGreaterThan(-1)
         expect(enterIndex).toBeGreaterThan(createIndex)
         expect(roundIndex).toBeGreaterThan(enterIndex)
-        expect(modificationIndex).toBeGreaterThan(roundIndex)
+        expect(resistanceIndex).toBeGreaterThan(roundIndex)
+        expect(removalIndex).toBeGreaterThan(resistanceIndex)
+        expect(modificationIndex).toBeGreaterThan(removalIndex)
         expect(template).toContain('Zu Rundenbeginn ausloesen')
+        expect(
+            template.indexOf(
+                'system.spellModifications.{{@index}}.zone.movementResistance.enabled',
+            ),
+        ).toBeGreaterThan(
+            template.indexOf('system.spellModifications.{{@index}}.zone.trigger.onRoundStart'),
+        )
     })
 
     it('exposes LLM generation only for a configured GM', async () => {
@@ -202,6 +214,8 @@ describe('UebernatuerlichTalentSheet summon-item options', () => {
         expect(template).toContain('summonItem.sourceKind')
         expect(template).toContain('ilaris-summon-item-sources-waffe')
         expect(template).toContain('ilaris-summon-item-sources-gegenstand')
+        expect(template).toContain('ilaris-summon-creature-sources')
+        expect(template).toContain('add-summon-creature-override')
         expect(template).toContain('@root.hasLLMPreEffectGeneration')
     })
 })
@@ -326,5 +340,11 @@ describe('UebernatuerlichTalentSheet structured spell forms', () => {
         )
         expect(template).toContain('spell-modification-editor')
         expect(template).toContain('add-spell-modification-pre-effect')
+        expect(template).toContain('Dauerquelle')
+        expect(template).toContain('system.spellModifications.{{@index}}.zone.duration.source')
+        expect(template).toContain('Zurückstoßen (Spielleitung)')
+        expect(template).toContain('add-spell-modification-domination-check')
+        expect(template).toContain('add-spell-modification-summon-creature-override')
+        expect(template).toContain('ilaris-summon-creature-sources')
     })
 })
