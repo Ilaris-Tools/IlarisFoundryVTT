@@ -9,6 +9,8 @@ export const IlarisGameSettingNames = {
     weaponSpaceRequirement: 'weaponSpaceRequirement',
     fertigkeitenPacks: 'fertigkeitenPacks',
     waffenPacks: 'waffenPacks',
+    gegenstandPacks: 'gegenstandPacks',
+    kreaturenPacks: 'kreaturenPacks',
     talentePacks: 'talentePacks',
     manoeverPacks: 'manoeverPacks',
     vorteilePacks: 'vorteilePacks',

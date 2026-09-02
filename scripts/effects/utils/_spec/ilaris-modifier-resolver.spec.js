@@ -1,5 +1,6 @@
 import {
     getIlarisComparisonMagnitude,
+    parseIlarisModifierValue,
     resolveIlarisModifiers,
 } from '../ilaris-modifier-resolver.js'
 import { IlarisModifierTarget } from '../ilaris-modifier-constants.js'
@@ -207,7 +208,30 @@ describe('getIlarisComparisonMagnitude', () => {
     })
 
     it('rejects unsupported formulas instead of silently comparing them', () => {
-        expect(() => getIlarisComparisonMagnitude({ value: '1W20' })).toThrow('Unsupported')
+        expect(() => getIlarisComparisonMagnitude({ value: '1W8' })).toThrow('Unsupported')
+    })
+})
+
+describe('parseIlarisModifierValue', () => {
+    it('accepts additive W3, W6, and W20 terms with their expected values', () => {
+        expect(parseIlarisModifierValue('+1W20+2')).toEqual({
+            raw: '+1W20+2',
+            numericValue: 2,
+            diceFormula: '+1W20',
+            expectedValue: 12.5,
+        })
+        expect(parseIlarisModifierValue('2W3+1W6-4')).toEqual({
+            raw: '2W3+1W6-4',
+            numericValue: -4,
+            diceFormula: '2W3+1W6',
+            expectedValue: 3.5,
+        })
+    })
+
+    it('continues to reject unsupported dice and non-linear expressions', () => {
+        expect(() => parseIlarisModifierValue('1W8')).toThrow('Unsupported')
+        expect(() => parseIlarisModifierValue('2*1W6')).toThrow('Unsupported')
+        expect(() => parseIlarisModifierValue('1W20/2')).toThrow('Unsupported')
     })
 })
 

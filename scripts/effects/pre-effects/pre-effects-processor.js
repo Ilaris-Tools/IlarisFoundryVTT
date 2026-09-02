@@ -6,6 +6,12 @@ import {
     targetFromMainAttributePath,
 } from '../utils/ilaris-modifier-constants.js'
 import { materializeArmedCombat } from './armed-combat-effects.js'
+import { summonItemFromPreEffect } from './summoned-items.js'
+import { summonCreatureFromPreEffect } from './summoned-creatures.js'
+import { addConditionSource } from '../status-conditions.js'
+import { isPassiveZoneEffect } from '../zone-effect-ownership.js'
+
+const pendingPassiveZoneCreations = new Map()
 
 /** Normalize Foundry v14 ObjectField data to a real array. */
 export function toArray(val) {
@@ -28,6 +34,53 @@ function getSupernaturalEffectStackingMode() {
 function getActorEffects(targetActor) {
     if (Array.isArray(targetActor?.effects)) return targetActor.effects
     return Array.from(targetActor?.effects?.values?.() || [])
+}
+
+function passiveZoneCreationKey(targetActor, ownership) {
+    return [
+        targetActor?.uuid || targetActor?.id || '',
+        ownership.regionId,
+        ownership.applicationId,
+        ownership.tokenId,
+        ownership.spellUuid,
+        ownership.preEffectIndex,
+    ].join(':')
+}
+
+function getActorItems(targetActor) {
+    if (Array.isArray(targetActor?.items)) return targetActor.items
+    return Array.from(targetActor?.items?.values?.() || [])
+}
+
+function getSelectedWeaponSlot(armedInputValues) {
+    const selector = armedInputValues?.selector
+    if (selector === 'Hauptwaffe') return 'hauptwaffe'
+    if (selector === 'Nebenwaffe') return 'nebenwaffe'
+    return ''
+}
+
+/** Apply the bounded non-effect maneuver operations after a pre-effect resolves. */
+export async function applyPreEffectOperation(targetActor, preEffect, armedInputValues = {}) {
+    if (preEffect?.operation !== 'deselectEquippedWeapon') return
+
+    const slot = getSelectedWeaponSlot(armedInputValues)
+    if (!slot) {
+        ui?.notifications?.warn('Entwaffnen benötigt die Auswahl Hauptwaffe oder Nebenwaffe.')
+        return
+    }
+
+    const weapon = getActorItems(targetActor).find(
+        (item) =>
+            (item.type === 'nahkampfwaffe' || item.type === 'fernkampfwaffe') &&
+            item.system?.[slot],
+    )
+    if (!weapon) {
+        ui?.notifications?.warn(
+            `${targetActor.name} führt keine Waffe als ${slot === 'hauptwaffe' ? 'Hauptwaffe' : 'Nebenwaffe'}.`,
+        )
+        return
+    }
+    await weapon.update({ [`system.${slot}`]: false })
 }
 
 function matchesPreviousSpellApplication(effect, spellUuid, applicationId) {
@@ -62,11 +115,17 @@ export function materializePreEffectValue(change, maechtigeQs, field = 'value') 
     return value
 }
 
-function materializeIlarisModifier(modifier, maechtigeQs) {
+function materializeIlarisModifier(modifier, maechtigeQs, armedInputValues = {}) {
+    const baseValue = materializePreEffectValue(modifier, maechtigeQs)
+    const numericInput = Number(armedInputValues.inputValue)
+    const value =
+        modifier.scaleWithInput && Number.isFinite(numericInput)
+            ? String(Number(baseValue) * numericInput)
+            : baseValue
     return {
         phase: modifier.phase || 'roll',
         target: modifier.target || 'probe',
-        value: materializePreEffectValue(modifier, maechtigeQs),
+        value,
         stacking: modifier.stacking || 'add',
         comparisonValue:
             modifier.comparisonValue === undefined || modifier.comparisonValue === ''
@@ -76,10 +135,11 @@ function materializeIlarisModifier(modifier, maechtigeQs) {
     }
 }
 
-function getEffectPayload(preEffect, maechtigeQs) {
+function getEffectPayload(preEffect, maechtigeQs, armedInputValues = {}) {
     const changes = []
+    const dotDamageTypes = []
     const ilarisModifiers = toArray(preEffect.ilarisModifiers).map((modifier) =>
-        materializeIlarisModifier(modifier, maechtigeQs),
+        materializeIlarisModifier(modifier, maechtigeQs, armedInputValues),
     )
 
     for (const change of toArray(preEffect.changes)) {
@@ -98,8 +158,10 @@ function getEffectPayload(preEffect, maechtigeQs) {
             })
             continue
         }
+        const materializedValue = materializePreEffectValue(change, maechtigeQs)
         changes.push({
             key: change.key || '',
+            ...(change.type === 'dot' ? { type: 'dot' } : {}),
             mode:
                 change.type === 'custom'
                     ? 10
@@ -108,37 +170,53 @@ function getEffectPayload(preEffect, maechtigeQs) {
                       : change.type === 'override'
                         ? 1
                         : 2,
-            value: materializePreEffectValue(change, maechtigeQs),
+            value: materializedValue,
             priority: change.priority || null,
         })
+        if (change.type === 'dot')
+            dotDamageTypes.push({
+                key: change.key || '',
+                damageType: change.damageType || 'PROFAN',
+            })
     }
-    return { changes, ilarisModifiers }
+    return { changes, ilarisModifiers, dotDamageTypes }
 }
 
 /** Apply all pre-effects from a spell to its targets. */
-export async function applyPreEffects(rollResult, dialog, armedInputValues = {}) {
-    const item = dialog.item
-    const preEffects = toArray(item?.system?.preEffects)
+export async function applyPreEffects(rollResult, dialog, armedInputValues = {}, context = {}) {
+    const item = context.sourceItem || dialog.item
+    const preEffects = toArray(context.preEffects || item?.system?.preEffects)
     if (!preEffects.length) return
 
-    const caster = dialog.actor
+    const caster = context.sourceActor || dialog.actor
+    const sourceType = context.sourceType || 'uebernatuerlich'
     const speaker = dialog.speaker
     const maneuverDurationBonus = dialog.maneuverDurationBonus || 0
     const maechtigeQs = dialog.maechtigeMagieQs || 0
+    const castSkill = context.castSkill || dialog.getResolvedCastSkill?.() || ''
+    const triggeringRollTotal = Number(rollResult?.roll?.total)
 
     const targets = dialog.selectedActors?.length ? dialog.selectedActors : [{ actorId: caster.id }]
+    const summonedCreaturePreEffects = new Set()
     for (const target of targets) {
         const { targetActor } = resolveTargetActorForDamage(target)
         if (!targetActor) continue
         const isSelfCast = caster.id === targetActor.id
-        const applicationId = foundry.utils.randomID()
+        const passiveZone = context.passiveZone || null
+        const applicationId = passiveZone
+            ? `${passiveZone.applicationId}:${target.tokenId}`
+            : context.applicationId
+              ? `${context.applicationId}:${targetActor.id}`
+              : foundry.utils.randomID()
 
         for (const [preEffectIndex, preEffect] of preEffects.entries()) {
-            const avoidTest = preEffect.avoidTest || {}
+            const appliedPreEffect = { ...preEffect, castSkill }
+            const avoidTest = appliedPreEffect.avoidTest || {}
             if (avoidTest.enabled) {
                 await sendResistPromptForEffect(
                     targetActor,
-                    preEffect,
+                    target,
+                    appliedPreEffect,
                     item,
                     caster,
                     speaker,
@@ -148,18 +226,49 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {})
                     preEffectIndex,
                     applicationId,
                     armedInputValues,
+                    sourceType,
+                    triggeringRollTotal,
+                    context.spellModificationId || '',
+                    context.zoneRegionId || '',
+                    passiveZone,
+                    target.tokenId || '',
                 )
                 continue
             }
 
             const effectiveDuration =
-                preEffect.baseDuration + maneuverDurationBonus + (isSelfCast ? 1 : 0)
-            if (preEffect.instant) {
-                await applyInstantPreEffect(targetActor, preEffect, maechtigeQs, speaker)
+                appliedPreEffect.baseDuration + maneuverDurationBonus + (isSelfCast ? 1 : 0)
+            if (appliedPreEffect.summonItem?.enabled || appliedPreEffect.summonItem?.sourceUuid) {
+                await summonItemFromPreEffect({
+                    targetActor,
+                    preEffect: appliedPreEffect,
+                    caster,
+                    spellItem: item,
+                    effectiveDuration,
+                    maechtigeQs,
+                    preEffectIndex,
+                    applicationId,
+                    spellModificationId: context.spellModificationId || '',
+                })
+            } else if (appliedPreEffect.summonCreature?.enabled) {
+                if (summonedCreaturePreEffects.has(preEffectIndex)) continue
+                summonedCreaturePreEffects.add(preEffectIndex)
+                await summonCreatureFromPreEffect({
+                    caster,
+                    preEffect: appliedPreEffect,
+                    selectedCreatureUuid: appliedPreEffect.summonCreature.selectedCreatureUuid,
+                    effectiveDuration: appliedPreEffect.baseDuration + maneuverDurationBonus,
+                    maechtigeQs,
+                    spellItem: item,
+                    preEffectIndex,
+                    applicationId,
+                })
+            } else if (appliedPreEffect.instant) {
+                await applyInstantPreEffect(targetActor, appliedPreEffect, maechtigeQs, speaker)
             } else {
                 await createActiveEffectFromPreEffect(
                     targetActor,
-                    preEffect,
+                    appliedPreEffect,
                     caster,
                     item,
                     effectiveDuration,
@@ -167,6 +276,11 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {})
                     preEffectIndex,
                     applicationId,
                     armedInputValues,
+                    sourceType,
+                    context.spellModificationId || '',
+                    context.zoneRegionId || '',
+                    passiveZone,
+                    target.tokenId || '',
                 )
             }
         }
@@ -175,6 +289,7 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {})
 
 async function sendResistPromptForEffect(
     targetActor,
+    target,
     preEffect,
     spellItem,
     caster,
@@ -185,6 +300,12 @@ async function sendResistPromptForEffect(
     preEffectIndex,
     applicationId,
     armedInputValues,
+    sourceType,
+    triggeringRollTotal,
+    spellModificationId,
+    zoneRegionId,
+    passiveZone,
+    targetTokenId,
 ) {
     const serialized = {
         ...preEffect,
@@ -194,9 +315,20 @@ async function sendResistPromptForEffect(
         casterUuid: caster.uuid,
         spellUuid: spellItem.uuid,
         targetActorId: targetActor.id,
+        target: {
+            actorId: target?.actorId || targetActor.id,
+            tokenId: target?.tokenId || '',
+            actorLink: target?.actorLink ?? true,
+        },
         preEffectIndex,
         applicationId,
         armedInputValues,
+        sourceType,
+        spellModificationId,
+        zoneRegionId,
+        passiveZone,
+        targetTokenId,
+        ...(Number.isFinite(triggeringRollTotal) ? { triggeringRollTotal } : {}),
     }
     await sendResistPrompt(targetActor, serialized, spellItem.name, speaker)
 }
@@ -237,61 +369,184 @@ export async function createActiveEffectFromPreEffect(
     preEffectIndex = 0,
     applicationId = foundry.utils.randomID(),
     armedInputValues = {},
+    sourceType = 'uebernatuerlich',
+    spellModificationId = '',
+    zoneRegionId = '',
+    passiveZone = null,
+    targetTokenId = '',
 ) {
     let payload
     try {
-        payload = getEffectPayload(preEffect, maechtigeQs)
+        payload = getEffectPayload(preEffect, maechtigeQs, armedInputValues)
     } catch (error) {
         ui?.notifications?.error(error.message)
         return
     }
-    const { changes, ilarisModifiers } = payload
+    const { changes, ilarisModifiers, dotDamageTypes } = payload
     const ilarisArmedCombat = materializeArmedCombat(
         preEffect.armedCombat,
         armedInputValues,
         maechtigeQs,
     )
-    if (changes.length === 0 && ilarisModifiers.length === 0 && !ilarisArmedCombat) return
+    await applyPreEffectOperation(targetActor, preEffect, armedInputValues)
+    const durationType = passiveZone ? 'infinite' : preEffect.durationType || 'ownerTurns'
+
+    // Older pre-effects may only contain a statusId. In newly authored
+    // pre-effects, an explicitly disabled condition must not be applied.
+    const conditionStatusId =
+        preEffect.condition?.enabled === false ? '' : preEffect.condition?.statusId
+    if (conditionStatusId) {
+        await addConditionSource(targetActor, conditionStatusId, {
+            id: `${applicationId}:${preEffectIndex}`,
+            type: 'preEffect',
+            origin: spellItem.uuid,
+            sourceItemUuid: spellItem.uuid,
+            spellUuid: spellItem.uuid,
+            spellName: spellItem.name,
+            casterUuid: caster.uuid,
+            preEffectIndex,
+            applicationId,
+            castSkill: preEffect.castSkill || '',
+            resistanceOutcome: preEffect.resistanceOutcome || '',
+            ...(passiveZone
+                ? {
+                      passiveZone: {
+                          regionId: passiveZone.regionId,
+                          applicationId,
+                          tokenId: targetTokenId,
+                          spellUuid: spellItem.uuid,
+                          preEffectIndex,
+                      },
+                  }
+                : {}),
+            ...(durationType === 'ownerTurns'
+                ? {
+                      timing: {
+                          durationType,
+                          expiresOn: 'turnEnd',
+                          remaining: effectiveDuration,
+                      },
+                  }
+                : {}),
+        })
+    }
+
+    const ilarisEnding = preEffect.ilarisEnding?.type
+        ? { ...preEffect.ilarisEnding, sourceActorUuid: caster.uuid }
+        : {}
+    const ilarisMarker = preEffect.marker?.enabled === true
+    const markerId = ilarisMarker ? preEffect.marker?.id || '' : ''
+    const markerLabel = ilarisMarker ? preEffect.marker?.label || '' : ''
+    if (
+        changes.length === 0 &&
+        ilarisModifiers.length === 0 &&
+        !ilarisArmedCombat &&
+        !ilarisEnding.type &&
+        !ilarisMarker
+    )
+        return
 
     const effectData = {
-        name: spellItem.name,
+        name: markerLabel ? `${markerLabel} — ${spellItem.name}` : spellItem.name,
         origin: caster.uuid,
         changes,
-        duration: { turns: effectiveDuration },
+        duration: durationType === 'ownerTurns' ? { turns: effectiveDuration } : {},
         system: {
             ilarisSource: 'uebernatuerlich',
             ilarisModifiers,
             ilarisArmedCombat,
+            ilarisEnding,
+            ilarisMarker,
             ilarisTiming: {
-                durationType: 'ownerTurns',
+                durationType,
                 expiresOn: 'turnEnd',
-                remaining: effectiveDuration,
-                originalValue: effectiveDuration,
+                remaining: durationType === 'infinite' ? 0 : effectiveDuration,
+                originalValue: durationType === 'infinite' ? 0 : effectiveDuration,
             },
         },
         flags: {
             ilaris: {
-                sourceType: 'uebernatuerlich',
+                sourceType,
                 spellName: spellItem.name,
                 spellUuid: spellItem.uuid,
+                sourceItemUuid: spellItem.uuid,
                 casterUuid: caster.uuid,
+                sourceActorUuid: caster.uuid,
+                maneuverUuid: sourceType === 'maneuver' ? spellItem.uuid : '',
                 fertigkeiten: spellItem.system?.fertigkeiten || '',
+                castSkill: preEffect.castSkill || '',
                 preEffectIndex,
                 applicationId,
+                resistanceOutcome: preEffect.resistanceOutcome || '',
+                markerId,
+                spellModificationId,
+                zoneRegionId: passiveZone?.regionId || zoneRegionId,
+                zoneApplicationId: passiveZone ? applicationId : '',
+                passiveZone: Boolean(passiveZone),
+                targetTokenId:
+                    targetTokenId || preEffect.target?.tokenId || preEffect.targetTokenId || '',
+                dotDamageTypes,
             },
         },
     }
 
+    const createEffect = async () => {
+        try {
+            if (
+                sourceType === 'maneuver' &&
+                getActorEffects(targetActor).some(
+                    (effect) =>
+                        effect?.flags?.ilaris?.sourceType === 'maneuver' &&
+                        effect.flags.ilaris.applicationId === applicationId &&
+                        effect.flags.ilaris.preEffectIndex === preEffectIndex,
+                )
+            )
+                return
+            if (
+                passiveZone &&
+                getActorEffects(targetActor).some((effect) =>
+                    isPassiveZoneEffect(effect, {
+                        regionId: passiveZone.regionId,
+                        applicationId,
+                        tokenId: targetTokenId,
+                        spellUuid: spellItem.uuid,
+                        preEffectIndex,
+                    }),
+                )
+            )
+                return
+            if (!passiveZone)
+                await replacePreviousSpellApplication(targetActor, spellItem.uuid, applicationId)
+            await ActiveEffect.createDocuments([effectData], { parent: targetActor })
+            console.log(
+                'Ilaris | Created pre-effect ActiveEffect on',
+                targetActor.name,
+                ':',
+                effectData.name,
+            )
+        } catch (error) {
+            console.error('Ilaris | Failed to create pre-effect ActiveEffect:', error)
+        }
+    }
+
+    if (!passiveZone) return createEffect()
+    const ownership = {
+        regionId: passiveZone.regionId,
+        applicationId,
+        tokenId: targetTokenId,
+        spellUuid: spellItem.uuid,
+        preEffectIndex,
+    }
+    const key = passiveZoneCreationKey(targetActor, ownership)
+    const existing = pendingPassiveZoneCreations.get(key)
+    if (existing) return existing
+
+    const creation = createEffect()
+    pendingPassiveZoneCreations.set(key, creation)
     try {
-        await replacePreviousSpellApplication(targetActor, spellItem.uuid, applicationId)
-        await ActiveEffect.createDocuments([effectData], { parent: targetActor })
-        console.log(
-            'Ilaris | Created pre-effect ActiveEffect on',
-            targetActor.name,
-            ':',
-            effectData.name,
-        )
-    } catch (error) {
-        console.error('Ilaris | Failed to create pre-effect ActiveEffect:', error)
+        return await creation
+    } finally {
+        if (pendingPassiveZoneCreations.get(key) === creation)
+            pendingPassiveZoneCreations.delete(key)
     }
 }

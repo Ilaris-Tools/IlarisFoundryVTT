@@ -4,6 +4,7 @@ import {
     createNahkampfwaffeDefaults,
     createFernkampfwaffeDefaults,
 } from '../../items/model-data/shared.js'
+import { startOpposedEscape } from '../../effects/opposed-escape.js'
 
 const { HandlebarsApplicationMixin } = foundry.applications.api
 const { ActorSheetV2 } = foundry.applications.sheets
@@ -32,6 +33,7 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             itemCreate: IlarisActorSheet.onItemCreate,
             itemEdit: IlarisActorSheet.onItemEdit,
             itemDelete: IlarisActorSheet.onItemDelete,
+            escapeEffect: IlarisActorSheet.onEscapeEffect,
             toggleBool: IlarisActorSheet.onToggleBool,
             syncItems: IlarisActorSheet.onSyncItems,
         },
@@ -626,6 +628,10 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             console.error('ILARIS | Error deleting item:', err)
             ui.notifications.error('Fehler beim Löschen des Items.')
         }
+    }
+
+    static async onEscapeEffect(event, target) {
+        await startOpposedEscape(this.actor, target.dataset.itemid)
     }
 
     /**

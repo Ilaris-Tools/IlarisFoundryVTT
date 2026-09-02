@@ -27,6 +27,8 @@ Automatic pre-effect system for übernatürlich items (Zauber, Liturgie, Anrufun
 
 Each pre-effect entry SHALL contain: `baseDuration` (integer turns), `instant` (boolean: skip ActiveEffect creation), `changes` (array of change objects, each with: `key`, `type`, `value`, `amplifiedByMaechtigeMagie` boolean, `maechtigBonus` string, `damageType` string, `diminishedValue` string, `diminishedMaechtigBonus` string, `priority` number), and optional `avoidTest` (enabled, fertigkeit, talent, attribut, diminishedOnly, resistDifficulty). `avoidTest.talent` SHALL be an optional profane talent name associated with `avoidTest.fertigkeit`. `resistDifficulty` SHALL default to 12 (system default difficulty) when not explicitly set. `damageType` SHALL be `"PROFAN"` (wounds) or `"STUMPF"` (Erschöpfung), only used for instant pre-effects targeting health.
 
+A non-instant Pre-Effect MAY define optional `resistanceOutcomes.success` and `resistanceOutcomes.failure` payloads. An enabled payload SHALL contain replacement `changes`, `ilarisModifiers`, `marker`, and `condition` fields. A marker SHALL contain `enabled`, `id`, and `label`; new enabled marker authoring SHALL require its stable id and German label, while legacy enabled markers without them remain valid.
+
 #### Scenario: Instant pre-effect resolves damage via existing pipeline
 
 - **WHEN** a pre-effect has `instant: true`
@@ -52,9 +54,15 @@ Each pre-effect entry SHALL contain: `baseDuration` (integer turns), `instant` (
 - **WHEN** an existing pre-effect has avoidTest.fertigkeit but omits avoidTest.talent
 - **THEN** the pre-effect SHALL remain valid and the resistance dialog SHALL open without a preselected talent
 
+#### Scenario: Legacy Pre-Effect omits resistance outcomes
+
+- **WHEN** an existing Pre-Effect has no `resistanceOutcomes` object
+- **THEN** it SHALL remain valid without source migration
+- **AND** the system SHALL retain its current root-result and `diminishedOnly` behavior
+
 ### Requirement: Avoid/resist test
 
-When a pre-effect has `avoidTest.enabled: true`, the target SHALL receive a whispered chat prompt with a resist button after the spell succeeds. The `avoidTest.fertigkeit`, `avoidTest.talent`, and `avoidTest.attribut` fields on the item sheet SHALL be populated from profane compendium data and fixed config respectively.
+When a pre-effect has `avoidTest.enabled: true`, the target SHALL receive a whispered chat prompt with a resist button after the spell succeeds. The `avoidTest.fertigkeit`, `avoidTest.talent`, and `avoidTest.attribut` fields on the item sheet SHALL be populated from profane compendium data and fixed config respectively. The sheet SHALL present the ordinary Pre-Effect configuration before resistance controls, followed by optional, clearly labelled success and failure result panels.
 
 #### Scenario: Resist prompt sent to target
 
@@ -93,18 +101,24 @@ When a pre-effect has `avoidTest.enabled: true`, the target SHALL receive a whis
 
 #### Scenario: Successful resist avoids effect
 
-- **WHEN** the target succeeds their resist test and `diminishedOnly` is `false`
+- **WHEN** the target succeeds their resist test, no enabled success outcome is authored, and `diminishedOnly` is `false`
 - **THEN** the pre-effect SHALL NOT be applied
 
 #### Scenario: Successful resist with diminishedOnly
 
-- **WHEN** the target succeeds their resist test and `diminishedOnly` is `true`
+- **WHEN** the target succeeds their resist test, no enabled success outcome is authored, and `diminishedOnly` is `true`
 - **THEN** the effect SHALL be applied with `diminishedValue` replacing `change.value` and `diminishedMaechtigBonus` replacing `change.maechtigBonus` (or `''` if not set)
 
 #### Scenario: Failed resist applies full effect
 
-- **WHEN** the target fails their resist test
+- **WHEN** the target fails their resist test and no enabled failure outcome is authored
 - **THEN** the pre-effect SHALL be applied with full `change.value`
+
+#### Scenario: Explicit outcome panels are ordered after resistance configuration
+
+- **WHEN** a GM edits a spell or maneuver Pre-Effect with resistance enabled
+- **THEN** the shared card SHALL show normal effect controls first, followed by Widerstand controls
+- **AND** it SHALL show optional panels labelled `Bei misslungener Widerstandsprobe` and `Bei gelungener Widerstandsprobe` after those controls
 
 ### Requirement: Effect creation flow in UebernatuerlichDialog
 
@@ -161,7 +175,7 @@ When the caster is also the target, +1 turn SHALL be added to the pre-effect dur
 
 ### Requirement: Effect origin tracking
 
-Each created [ActiveEffect](https://foundryvtt.com/api/v14/classes/foundry.documents.ActiveEffect.html) SHALL record its origin using Foundry V14's `origin` field plus Ilaris-specific flags. Every non-instant Pre-Effect SHALL additionally record its source component index and the application identity shared by all persistent effects from that target and cast.
+Each created [ActiveEffect](https://foundryvtt.com/api/v14/classes/foundry.documents.ActiveEffect.html) SHALL record its origin using Foundry V14's `origin` field plus Ilaris-specific flags. Every non-instant Pre-Effect SHALL additionally record its source component index and the application identity shared by all persistent effects from that target and cast. An outcome-created effect SHALL retain the same source metadata and additionally record its resolved resistance outcome. A marker outcome SHALL also record its stable marker id. Every supernatural outcome effect SHALL record `sourceItemUuid` and the concrete `castSkill` selected before its originating roll; `spellUuid` SHALL remain for compatibility.
 
 #### Scenario: Origin records caster UUID
 
@@ -171,9 +185,16 @@ Each created [ActiveEffect](https://foundryvtt.com/api/v14/classes/foundry.docum
 #### Scenario: Flags record spell metadata and application identity
 
 - **WHEN** a non-instant ActiveEffect is created from Pre-Effect entry `N`
-- **THEN** `flags.ilaris` SHALL contain `sourceType: "uebernatuerlich"`,
-  `spellName`, `spellUuid`, `casterUuid`, `fertigkeiten`,
-  `preEffectIndex: N`, and an `applicationId`
+- **THEN** `flags.ilaris` SHALL contain `sourceType: "uebernatuerlich"`, `spellName`, `spellUuid`, `casterUuid`, `fertigkeiten`, `preEffectIndex: N`, and an `applicationId`
+- **AND** it SHALL contain `sourceItemUuid` equal to the source spell Item UUID
+- **AND** it SHALL contain the exact resolved `castSkill` for that cast
+
+#### Scenario: Outcome flags extend rather than replace spell provenance
+
+- **WHEN** an explicit resistance outcome creates an ActiveEffect
+- **THEN** `flags.ilaris` SHALL retain every spell metadata and application field required for its parent Pre-Effect
+- **AND** it SHALL add `resistanceOutcome: "success"` or `"failure"`
+- **AND** it SHALL add `markerId` when the selected result is a marker
 
 ### Requirement: Persistent same-spell recasts follow the world stacking mode
 
@@ -224,12 +245,30 @@ tests.
 
 ### Requirement: Resist resolution via FertigkeitDialog
 
-Resist tests SHALL be resolved by opening FertigkeitDialog with resist metadata attached as `_resistContext`, then listening for the existing `Ilaris.postSkillRoll` hook. Each Mächtige Magie quality stage (QS) the caster has active SHALL increase the resist difficulty by 4. The dialog SHALL display the target difficulty ("Erschwernis") and a resist-specific title.
+Resist tests SHALL be resolved by opening FertigkeitDialog with resist metadata attached as `_resistContext`, then listening for the existing `Ilaris.postSkillRoll` hook. `avoidTest.resistDifficultySource` SHALL select the difficulty source: a missing or invalid value is `fixed`, while `triggeringRoll` uses the serialized final triggering-roll total. In `fixed` mode, `resistDifficulty` SHALL default to 12 only when it is absent or null; its explicit numeric value, including `0`, SHALL be retained. Each Mächtige Magie/Liturgie quality stage (QS) the caster has active SHALL increase a fixed-source difficulty by 4 and SHALL NOT alter a triggering-roll difficulty. The dialog SHALL display the resolved target difficulty (`Erschwernis`) and a resist-specific title.
 
-#### Scenario: Mächtige Magie increases resist difficulty
+#### Scenario: Fixed difficulty defaults to 12 and receives Mächtige Magie
 
-- **WHEN** a resist test is opened and the caster has Mächtige Magie/Liturgie with QS > 0
-- **THEN** FertigkeitDialog SHALL be opened with `options.success_val = avoidTest.resistDifficulty + (QS × 4)`, where `resistDifficulty` defaults to 12 if not set
+- **WHEN** a resist test uses the `fixed` source and `resistDifficulty` is absent or null
+- **THEN** FertigkeitDialog SHALL be opened with `options.success_val = 12 + (QS × 4)`
+
+#### Scenario: Explicit fixed zero is not a source sentinel
+
+- **WHEN** a resist test uses the `fixed` source and `resistDifficulty` is `0`
+- **THEN** FertigkeitDialog SHALL use `options.success_val = 0 + (QS × 4)`
+- **AND** the system SHALL NOT substitute the default merely because the value is zero
+
+#### Scenario: Triggering roll supplies the exact difficulty
+
+- **WHEN** a resist test uses `resistDifficultySource: "triggeringRoll"` and its prompt contains a finite triggering-roll total
+- **THEN** FertigkeitDialog SHALL use that total as `options.success_val`
+- **AND** the system SHALL NOT add a fixed difficulty or a Mächtige Magie/Liturgie QS bonus
+
+#### Scenario: Missing triggering roll falls back safely
+
+- **WHEN** a resist test uses `resistDifficultySource: "triggeringRoll"` but its prompt does not contain a finite triggering-roll total
+- **THEN** the system SHALL show a localized warning
+- **AND** FertigkeitDialog SHALL use the documented default difficulty of 12
 
 #### Scenario: Resist context attached to dialog
 
@@ -268,7 +307,7 @@ Resist tests SHALL be resolved by opening FertigkeitDialog with resist metadata 
 
 ### Requirement: Pre-effects GUI on item sheet
 
-The übernatürlich item sheet SHALL render the `preEffects` array as an editable list with inline form fields, using a new `PARTS` entry and Handlebars template.
+The übernatürlich item sheet SHALL render the `preEffects` array as an editable list with inline form fields by extending the shared `PreEffectItemSheet` and supplying its supernatural `form` Handlebars part. The shared base SHALL provide the Pre-Effect named part and editor lifecycle; the resulting authoring controls and persisted data SHALL remain the standard Pre-Effect structure.
 
 #### Scenario: Pre-effects section renders on sheet
 
@@ -404,3 +443,150 @@ source item.
 ### Requirement: Pre-effects support armed combat configuration
 
 An übernatürlich pre-effect MAY define `armedCombat` input, scope, contribution, and charges. The item sheet and cast dialog SHALL author and collect its bounded numeric inputs; a successful cast SHALL materialize them in the generated ActiveEffect.
+
+#### Scenario: Armed configuration materializes a consumable effect
+
+- **WHEN** a successful cast uses a pre-effect with configured `armedCombat` inputs, scope, contribution, and charges
+- **THEN** the system SHALL materialize those bounded values in the generated ActiveEffect
+
+### Requirement: Pre-effect authoring exposes resistance difficulty sources
+
+The übernatürlich item-sheet Pre-Effect editor SHALL persist `avoidTest.resistDifficultySource` with `fixed` as its default. When an avoid test is enabled, it SHALL present the German selector `Schwierigkeit aus` with the choices `Fester Wert` (`fixed`) and `Ergebnis der auslösenden Probe` (`triggeringRoll`). The numeric `resistDifficulty` field SHALL remain available for the fixed source and show its default value of 12.
+
+#### Scenario: New avoid test defaults to a fixed difficulty
+
+- **WHEN** a GM creates a Pre-Effect with an avoid test
+- **THEN** its `avoidTest.resistDifficultySource` SHALL be `fixed`
+- **AND** its `avoidTest.resistDifficulty` SHALL be 12
+
+#### Scenario: GM selects triggering-roll difficulty
+
+- **WHEN** a GM selects `Ergebnis der auslösenden Probe` for an enabled avoid test
+- **THEN** the sheet SHALL persist `avoidTest.resistDifficultySource: "triggeringRoll"`
+- **AND** the numeric fixed field SHALL not be presented as the active source of that test's difficulty
+
+### Requirement: Resistance prompts carry a triggering-roll snapshot
+
+The pre-effect processor SHALL serialize the finite total of the roll supplied to `applyPreEffects` as `triggeringRollTotal` in the existing resistance prompt. The prompt SHALL continue to use the existing [ChatMessage](https://foundryvtt.com/api/v14/classes/foundry.documents.ChatMessage.html) transport and shall not re-evaluate or look up the source roll when the target clicks its button.
+
+#### Scenario: Supernatural roll total is copied into the prompt
+
+- **WHEN** a successful supernatural pre-effect with an avoid test receives a roll result containing `roll.total`
+- **THEN** its resistance prompt data SHALL contain that total as `triggeringRollTotal`
+
+#### Scenario: Calls without a roll do not invent a triggering total
+
+- **WHEN** a pre-effect caller supplies no Roll or a non-finite `roll.total`
+- **THEN** the resistance prompt data SHALL omit `triggeringRollTotal`
+- **AND** fixed-source resistance behaviour SHALL remain available
+
+### Requirement: Pre-effects support a generic summon-item operation
+
+An übernatürlich Item pre-effect SHALL optionally define a `summonItem`
+configuration containing a source Item UUID, `sourceKind`, owner-turn base
+duration, and optional clone-data overrides. The configured source SHALL
+resolve only from the catalog selected by `sourceKind`: `waffe` uses
+`waffenPacks` and a weapon Item, while `gegenstand` uses `gegenstandPacks` and
+a Gegenstand Item. Successful pre-effect processing SHALL apply the operation
+to every selected target and SHALL reject a missing, invalid, or unavailable
+source without creating a clone or marker.
+
+#### Scenario: Pre-effect sheet offers configured source Items
+
+- **WHEN** a GM configures a summon-item pre-effect
+- **THEN** the GM SHALL choose whether the source is a `Waffe` or `Gegenstand`
+- **AND** the sheet SHALL offer only matching Item sources from that selected catalog
+- **AND** it SHALL persist the chosen source UUID rather than a display name
+
+#### Scenario: Invalid source prevents a partial summon
+
+- **WHEN** a successful summon-item pre-effect references an Item outside the configured catalog or a missing source
+- **THEN** the system SHALL notify the user of the unavailable source
+- **AND** it SHALL create neither an owned Item nor an expiry marker
+
+### Requirement: Summon-item overrides materialize Mächtige Magie on the clone
+
+Each configured summon-item data override SHALL support `value`,
+`amplifiedByMaechtigeMagie`, and `maechtigBonus`. The processor SHALL
+materialize the override once per Mächtige Magie quality stage before creating
+the clone, without applying that override to the target Actor or unrelated
+Items.
+
+#### Scenario: Clone receives materialized damage override
+
+- **WHEN** a summon-item TP override has value `2W20`, Mächtige Magie bonus `+1W20`, and two quality stages
+- **THEN** the clone SHALL receive `2W20+1W20+1W20` as its configured TP value
+- **AND** the target Actor's other Item data SHALL remain unchanged
+
+### Requirement: Pre-effect processor materializes passive Zone applications
+
+The Pre-Effect processor SHALL accept explicit passive-Zone context from the Region lifecycle service. For a valid non-instant, non-resistance Pre-Effect it SHALL create an infinite-timing ActiveEffect with passive Zone provenance and SHALL preserve token-safe target context.
+
+#### Scenario: Passive Pre-Effect creates an infinite ActiveEffect
+
+- **WHEN** a persistent passive Zone applies a valid non-instant Pre-Effect to a contained Token
+- **THEN** the processor SHALL create an ActiveEffect with `system.ilarisTiming.durationType: "infinite"`
+- **AND** it SHALL retain the originating Region and Token identifiers
+
+#### Scenario: Passive mode does not route a resistance prompt
+
+- **WHEN** a passive Zone encounters a Pre-Effect with `avoidTest.enabled: true`
+- **THEN** the processor SHALL not create an ActiveEffect or resistance prompt for it
+- **AND** the existing triggered-resistance Zone behavior SHALL remain available for a triggered Zone
+
+### Requirement: Explicit marker-only Pre-Effects are visible ActiveEffects
+
+The Pre-Effect processor SHALL treat `marker.enabled: true` as an explicit request to create a visible ActiveEffect even when the Pre-Effect has no mechanical changes. It SHALL retain `system.ilarisMarker: true` on the created effect. An otherwise empty Pre-Effect without the marker flag SHALL remain a no-op.
+
+#### Scenario: Marker-only passive Zone effect is created
+
+- **WHEN** a passive Zone applies a non-instant Pre-Effect with `marker.enabled: true` and no mechanical changes
+- **THEN** the processor SHALL create one visible infinite-timing ActiveEffect with passive Zone provenance
+- **AND** the effect SHALL carry `system.ilarisMarker: true`
+
+### Requirement: Zone targets enter the existing pre-effect pipeline after success
+
+The supernatural pre-effect processor SHALL accept token-aware targets resolved from an instant Region and SHALL apply each pre-effect once per resolved target only after the originating spell succeeds. Non-zone target behavior SHALL remain unchanged.
+
+#### Scenario: Instant zone uses token actors
+
+- **WHEN** a successful instant zone resolves two intersecting tokens
+- **THEN** `applyPreEffects` SHALL process two targets carrying `tokenId`, `actorId`, and `actorLink`
+
+#### Scenario: Zone effects remain deferred on failure
+
+- **WHEN** an instant or persistent zone spell fails
+- **THEN** the processor SHALL not apply pre-effects and no persistent zone SHALL be created
+
+### Requirement: Persistent zone triggers reuse resistance routing
+
+Persistent zone creation, entry, and re-entry events SHALL invoke the existing pre-effect and resist-handler paths with serialized source zone context. A resistance result SHALL affect only the triggering token actor.
+
+#### Scenario: Entry resistance resolves for one token
+
+- **WHEN** one token enters a persistent zone with `avoidTest.enabled === true`
+- **THEN** the existing resist prompt flow SHALL be used with the zone's spell and token metadata
+
+### Requirement: Pre-effects resolve from the effective spell form
+
+After a successful supernatural cast, the processor SHALL apply the effective pre-effect list resolved from selected structured forms rather than unconditionally reading the source Item's `system.preEffects`. Existing resistance, timing, Ilaris modifier, provenance, and [ActiveEffect](https://foundryvtt.com/api/v14/classes/foundry.documents.ActiveEffect.html) behavior SHALL apply unchanged to each resolved entry.
+
+#### Scenario: Attributo applies selected form effects
+
+- **WHEN** a player successfully casts Attributo with an attribute replacement form
+- **THEN** the processor SHALL apply that form's effective pre-effects
+
+#### Scenario: Form identity is retained in provenance
+
+- **WHEN** a structured form creates a persistent ActiveEffect
+- **THEN** Ilaris source metadata SHALL record the source spell and selected form id
+
+### Requirement: Pre-Effect failure materialization dispatches table-managed notices
+
+When a selected resistance failure result contains an enabled `tableManagedDisplacement`, the Pre-Effect processor SHALL materialize its normal condition and marker result first, then create the outcome's one whispered manual-displacement notice. It SHALL use the resolved target Token context and preserve the source Item, selected form, caster, application, and cast-skill metadata used by the marker.
+
+#### Scenario: Zone-triggered failure retains Token-safe notice context
+
+- **WHEN** a Zone target with an unlinked Token Actor fails a qualifying resistance
+- **THEN** the marker and instruction SHALL refer to that Token Actor
+- **AND** the system SHALL not resolve a world Actor merely because it shares the source Actor ID

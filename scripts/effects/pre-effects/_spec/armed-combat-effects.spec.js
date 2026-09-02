@@ -68,4 +68,74 @@ describe('armed combat effects', () => {
         )
         expect(actor.deleteEmbeddedDocuments).toHaveBeenCalledWith('ActiveEffect', ['armed'])
     })
+
+    it.each(['a miss', 'a successful defense'])(
+        'consumes a matching charge after %s without adding damage',
+        async (_outcome) => {
+            // The resolver receives both outcomes as confirmedHit: false.
+            const effect = { id: 'armed', system: { ilarisArmedCombat: { remainingCharges: 2 } } }
+            const actor = {
+                effects: new Map([['armed', effect]]),
+                updateEmbeddedDocuments: jest.fn(),
+                deleteEmbeddedDocuments: jest.fn(),
+            }
+            const context = {
+                effects: [{ effectId: 'armed', damage: { units: 3, perInput: 'W6' } }],
+            }
+
+            await expect(resolveArmedAttack(actor, context, { confirmedHit: false })).resolves.toBe(
+                '',
+            )
+
+            expect(actor.updateEmbeddedDocuments).toHaveBeenCalledWith('ActiveEffect', [
+                { _id: 'armed', 'system.ilarisArmedCombat.remainingCharges': 1 },
+            ])
+            expect(actor.deleteEmbeddedDocuments).not.toHaveBeenCalled()
+        },
+    )
+
+    it('only arms Phexens Wurfstern itself and deletes its item with the linked marker', async () => {
+        const sourceEffect = {
+            id: 'phex-charge',
+            parent: {
+                documentName: 'Item',
+                id: 'wurfstern',
+                flags: { ilaris: { applicationId: 'phex' } },
+            },
+            system: {
+                ilarisArmedCombat: {
+                    scope: 'ranged',
+                    remainingCharges: 1,
+                    sourceItemOnly: true,
+                    onExhaust: 'deleteOwningItem',
+                },
+            },
+        }
+        const marker = {
+            id: 'summon-marker',
+            flags: {
+                ilaris: {
+                    sourceType: 'summonItemMarker',
+                    applicationId: 'phex',
+                    summonedItemId: 'wurfstern',
+                },
+            },
+        }
+        const actor = {
+            appliedEffects: [sourceEffect],
+            effects: [marker],
+            deleteEmbeddedDocuments: jest.fn(),
+            updateEmbeddedDocuments: jest.fn(),
+        }
+
+        expect(getArmedAttackContext(actor, 'ranged', 'other-weapon').effects).toEqual([])
+        const context = getArmedAttackContext(actor, 'ranged', 'wurfstern')
+        await expect(resolveArmedAttack(actor, context, { confirmedHit: false })).resolves.toBe('')
+
+        expect(actor.deleteEmbeddedDocuments).toHaveBeenCalledWith('ActiveEffect', [
+            'summon-marker',
+        ])
+        expect(actor.deleteEmbeddedDocuments).toHaveBeenCalledWith('Item', ['wurfstern'])
+        expect(actor.updateEmbeddedDocuments).not.toHaveBeenCalled()
+    })
 })

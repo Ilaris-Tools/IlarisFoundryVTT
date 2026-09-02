@@ -3,6 +3,99 @@
   "type": "zauber",
   "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
   "system": {
+    "spellModificationGroups": [
+      { "id": "antiMagicForm", "label": "Antimagieform", "required": true }
+    ],
+    "spellModifications": [
+      {
+        "id": "gegenzauber",
+        "name": "Gegenzauber",
+        "description": "Vorbereitung 0 Aktionen. Konterprobe (12) gegen einen Zauber in Vorbereitung. Die weitere Abwicklung erfolgt durch Spielleitung und Spieler.",
+        "group": "antiMagicForm",
+        "effectMode": "replace",
+        "profile": {
+          "difficulty": 0,
+          "cost": { "mode": "set", "value": 4 },
+          "target": "Zauber in Vorbereitung",
+          "range": "16 Schritt",
+          "duration": "augenblicklich"
+        },
+        "preEffects": []
+      },
+      {
+        "id": "magie-unterdruecken",
+        "name": "Magie unterdrücken",
+        "description": "Vorbereitung 16 Aktionen. Unterdrückt zukünftige Zauber der Fertigkeit Dämonisch in einer Zone.",
+        "group": "antiMagicForm",
+        "effectMode": "replace",
+        "profile": {
+          "difficulty": 0,
+          "cost": { "mode": "set", "value": 8 },
+          "target": "Zone",
+          "range": "8 Schritt",
+          "duration": "1 Stunde"
+        },
+        "zone": {
+          "shape": "circle",
+          "distance": 16,
+          "placement": { "anchor": "free", "range": 8, "pivot": "center" },
+          "lifecycle": "persistent",
+          "effectMode": "passive",
+          "duration": { "remaining": 960, "originalValue": 960 },
+          "trigger": { "triggerOnCreate": true, "onEnter": true },
+          "targeting": { "includeCaster": true }
+        },
+        "preEffects": [
+          {
+            "baseDuration": 0,
+            "durationType": "infinite",
+            "instant": false,
+            "changes": [],
+            "ilarisModifiers": [
+              {
+                "phase": "roll",
+                "target": "probe",
+                "value": "-8",
+                "stacking": "strongest-supernatural",
+                "selector": { "fertigkeit": "Dämonisch" },
+                "amplifiedByMaechtigeMagie": true,
+                "maechtigBonus": "-4"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "zauber-aufheben",
+        "name": "Zauber aufheben",
+        "description": "Vorbereitung 16 Aktionen. Konterprobe (12) gegen einen bereits gewirkten Zauber. Die Aufhebung wird durch Spielleitung und Spieler verwaltet.",
+        "group": "antiMagicForm",
+        "effectMode": "replace",
+        "profile": {
+          "difficulty": 0,
+          "permanentCost": "Halbe Basiskosten des Zielzaubers",
+          "target": "Zauber",
+          "range": "8 Schritt",
+          "duration": "augenblicklich"
+        },
+        "preEffects": []
+      },
+      {
+        "id": "wesenheit-bannen",
+        "name": "Wesenheit bannen",
+        "description": "Vorbereitung 16 Aktionen. Bannung einer beschworenen Wesenheit. Schwierigkeit und Ergebnis werden durch Spielleitung und Spieler verwaltet.",
+        "group": "antiMagicForm",
+        "effectMode": "replace",
+        "profile": {
+          "difficulty": 0,
+          "permanentCost": "Halbe Basiskosten der Beschwörung",
+          "target": "beschworenes Wesen",
+          "range": "8 Schritt",
+          "duration": "augenblicklich"
+        },
+        "preEffects": []
+      }
+    ],
     "fertigkeiten": "Antimagie, Dämonisch",
     "fertigkeit_ausgewaehlt": "auto",
     "text": "Wirkt gegen Zauber der Fertigkeit Dämonisch sowie gegen Dämonen und Untote, in die keine gAsP geflossen sind. Spezielle Antimagie-Modifikationen siehe S. 126.",

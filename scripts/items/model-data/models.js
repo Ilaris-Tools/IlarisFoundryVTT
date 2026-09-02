@@ -31,6 +31,9 @@ export function createItemTypeDataModels(TypeDataModel, h) {
         text: h.string(''),
         maechtig: h.string(''),
         schwierigkeit: h.string(''),
+        magicResistance: h.schema({
+            enabled: h.bool(false),
+        }),
         modifikationen: h.string(''),
         vorbereitung: h.string(''),
         ziel: h.string(''),
@@ -41,6 +44,11 @@ export function createItemTypeDataModels(TypeDataModel, h) {
         pw: h.number(0),
         gruppe: h.number(-1),
         preEffects: h.arrayOfObjects(),
+        // `null` deliberately represents the absence of zone automation.
+        // Keeping this optional avoids turning every supernatural Item into a zone.
+        zone: h.object(null),
+        spellModifications: h.arrayOfObjects(),
+        spellModificationGroups: h.arrayOfObjects(),
     })
 
     class NahkampfwaffeItemDataModel extends TypeDataModel {
@@ -185,10 +193,12 @@ export function createItemTypeDataModels(TypeDataModel, h) {
                 input: h.schema({
                     label: h.string('Checkbox'),
                     field: h.string('CHECKBOX'),
+                    choices: h.arrayOfStrings(),
                     min: h.number(0),
                     max: h.number(0),
                 }),
                 modifications: h.arrayOfObjects(),
+                preEffects: h.arrayOfObjects(),
                 gruppe: h.number(0),
                 probe: h.string(''),
                 gegenprobe: h.string(''),

@@ -8,6 +8,9 @@
     "text": "Dein Ziel erstarrt zu einer unzerstörbaren Statue, der auch Gifte oder Krankheiten nichts anhaben können. Die Statue fühlt und hört nichts, kann aber sehen und riechen.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "",
     "vorbereitung": "2 Aktionen",
     "ziel": "Einzelwesen",

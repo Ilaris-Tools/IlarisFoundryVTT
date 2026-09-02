@@ -53,12 +53,7 @@ The system SHALL provide `FernkampfAngriffDialog` extending `CombatDialog` for r
 
 ### Requirement: Supernatural combat dialog (UebernatuerlichDialog)
 
-The system SHALL provide `UebernatuerlichDialog` extending `CombatDialog` for
-supernatural abilities including energy cost tracking, Blutmagie, Verbotene
-Pforten, and player/GM-managed contextual Vorteil conditions. The dialog SHALL
-pass selected, session-local condition tags to the roll-phase Ilaris modifier
-resolver for its supernatural Probe and show any applied ordinary contribution
-in its summary.
+The system SHALL provide `UebernatuerlichDialog` extending `CombatDialog` for supernatural abilities including energy cost tracking, Blutmagie, Verbotene Pforten, and player/GM-managed contextual Vorteil conditions. The dialog SHALL pass selected, session-local condition tags to the roll-phase Ilaris modifier resolver for its supernatural Probe and show any applied ordinary contribution in its summary. When `useTargetSelection` is enabled and the item has a normalized zone profile, the dialog SHALL show one `Zone platzieren` control above the right-column `Würfelaktionen`, create and retain an inert draft Region before rolling, enable roll actions only while that draft exists, and defer all zone effects or persistence until a successful cast. When that setting is disabled, zone automation SHALL not run and the spell retains its manual outcome path.
 
 #### Scenario: Energy cost enforcement
 
@@ -75,6 +70,28 @@ in its summary.
 - **WHEN** the player or GM selects a relevant condition in the supernatural dialog
 - **THEN** its matching ordinary Vorteil Probe modifier SHALL affect that dialog's preview and roll
 - **AND** the selection SHALL not be persisted on the Actor or Item
+
+#### Scenario: Zone placement precedes the roll
+
+- **WHEN** a supernatural item has a normalized zone profile and target automation is enabled
+- **THEN** the dialog SHALL show `Zone platzieren` above `Würfelaktionen` and keep roll actions unavailable until placement is confirmed
+- **AND** the confirmed shape SHALL remain visible as an inert draft Region until the spell is resolved, replaced, cancelled, or the dialog is closed
+
+#### Scenario: Zone placement can be redone
+
+- **WHEN** the user activates `Zone platzieren` while a draft is present
+- **THEN** the dialog SHALL discard the current draft and reopen zone placement without rolling or paying energy
+
+#### Scenario: Zone automation is disabled with target selection
+
+- **WHEN** `useTargetSelection` is disabled
+- **THEN** a zone spell SHALL not open template placement or resolve automatic zone targets
+- **AND** the dialog SHALL retain the existing manual outcome path
+
+#### Scenario: Zone placement requires a caster token and active scene
+
+- **WHEN** zone automation is enabled but the caster token or active Scene cannot be resolved
+- **THEN** the dialog SHALL notify the user and abort before rolling or charging energy
 
 ### Requirement: Target selection
 
@@ -130,7 +147,7 @@ The system SHALL route defense prompts and damage application to the correct cli
 
 ### Requirement: Maneuver integration
 
-The system SHALL integrate maneuvers (Manöver) into all three combat dialog types via `handleModifications()`.
+The system SHALL integrate maneuvers (Manöver) into all three combat dialog types via `handleModifications()`. Maneuver damage-type changes SHALL retain their registry key through damage application, and unmodified melee and ranged attacks SHALL initialize with the registered `PROFAN` key.
 
 #### Scenario: Maneuvers modify attack parameters
 
@@ -141,6 +158,17 @@ The system SHALL integrate maneuvers (Manöver) into all three combat dialog typ
 
 - **WHEN** a maneuver with an energy or health cost is used
 - **THEN** the cost SHALL be deducted from the attacker
+
+#### Scenario: Maneuver damage type reaches damage application by key
+
+- **WHEN** a selected maneuver uses `CHANGE_DAMAGE_TYPE` with a configured registry value
+- **THEN** `applyDamageToTarget()` SHALL receive that registry value rather than its display label
+- **AND** the configured damage-type behavior SHALL determine the affected health pool and armor handling
+
+#### Scenario: Ordinary attacks start as Profan damage
+
+- **WHEN** a melee or ranged attack resolves without a damage-type-changing maneuver
+- **THEN** the damage application path SHALL receive `PROFAN`
 
 ### Requirement: Configurable weapon-damage multiplier roll behavior
 
@@ -292,6 +320,45 @@ entries SHALL be collapsed by default.
 - **AND** activating it SHALL reveal each suppressed modifier and the stronger
   contribution that suppressed it
 
+### Requirement: Combat resolves armed attack snapshots
+
+Melee and ranged dialogs SHALL serialize matching armed-effect snapshots through defense handling, consume charges once after each matching attack resolution, and apply snapshot damage only on confirmed hits.
+
+#### Scenario: Armed snapshot resolves once after the final outcome
+
+- **WHEN** an attack has a matching armed-effect snapshot with available charges
+- **THEN** the combat flow SHALL carry that snapshot through defense resolution
+- **AND** it SHALL consume one charge after the matching attack resolution
+- **AND** it SHALL apply its damage contribution only on a confirmed hit
+
+### Requirement: Melee outcome resolution activates selected maneuver pre-effects
+
+The melee combat dialogs SHALL evaluate selected maneuver pre-effects only at their final attack-versus-defense resolution. They SHALL pass the dialog's existing selected targets and the maneuver user's Actor to the generic pre-effect service. They SHALL not invoke maneuver effects from an intermediate attack roll that can still be defeated by a defense.
+
+#### Scenario: A confirmed melee hit dispatches offensive pre-effects once
+
+- **WHEN** a melee attacker wins a final resolution with a selected `onConfirmedHit` maneuver pre-effect
+- **THEN** the dialog SHALL dispatch that maneuver pre-effect once for the resolved defender
+
+#### Scenario: A successful defense dispatches defensive pre-effects once
+
+- **WHEN** a melee defender wins a final resolution with a selected `onSuccessfulDefense` maneuver pre-effect
+- **THEN** the defense flow SHALL dispatch that maneuver pre-effect once for the attacking actor
+
+### Requirement: Maneuver pre-effects retain their activating roll
+
+The combat dialog SHALL pass the final result of the roll that satisfied a maneuver pre-effect's activation to the common pre-effect processor when it creates a resistance prompt. The processor SHALL make that result available as the resistance prompt's `triggeringRollTotal`; it SHALL use the evaluated [Roll](https://foundryvtt.com/api/v14/classes/foundry.dice.Roll.html) total and shall not repeat the roll.
+
+#### Scenario: Confirmed-hit maneuver uses the attack total
+
+- **WHEN** an `onConfirmedHit` maneuver Pre-Effect with a triggering-roll resistance source is dispatched after a confirmed hit
+- **THEN** its target's resistance prompt SHALL contain the attack roll's final total
+
+#### Scenario: Successful-defense maneuver uses the defense total
+
+- **WHEN** an `onSuccessfulDefense` maneuver Pre-Effect with a triggering-roll resistance source is dispatched after a successful defense
+- **THEN** its target's resistance prompt SHALL contain the defense roll's final total
+
 ## Data Model
 
 ### CombatDialog context
@@ -310,7 +377,3 @@ entries SHALL be collapsed by default.
 - [weapons](../weapons/spec.md) — Weapon TP computation and Eigenschaft modifiers
 - [active-effects](../active-effects/spec.md) — Target effects triggered on hit
 - [settings](../settings/spec.md) — `useSceneEnvironment`, `useTargetSelection`, `realFumbleCrits`
-
-### Requirement: Combat resolves armed attack snapshots
-
-Melee and ranged dialogs SHALL serialize matching armed-effect snapshots through defense handling, consume charges once after each matching attack resolution, and apply snapshot damage only on confirmed hits.

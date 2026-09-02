@@ -11,31 +11,43 @@ const DEFAULT_DAMAGE_TYPE_BEHAVIOR = {
 }
 let cachedDamageTypesRaw
 let cachedDamageTypes = []
+let hasCachedDamageTypes = false
 const warnedDamageTypes = new Set()
 
-/**
- * Returns the behavior flags configured for a damage type.
- *
- * @param {string} damageType - The configured damage type key
- * @returns {{healing: boolean, targetsErschoepfung: boolean, bypassesArmor: boolean}}
- */
-export function getDamageTypeBehavior(damageType) {
+function readDamageTypes() {
+    let raw = ''
     try {
-        const raw = game.settings.get(
+        raw = game.settings.get(
             ConfigureGameSettingsCategories.Ilaris,
             IlarisGameSettingNames.damageTypes,
         )
-        if (raw !== cachedDamageTypesRaw) {
-            const parsed = JSON.parse(raw || '[]')
-            cachedDamageTypes = Array.isArray(parsed) ? parsed : []
-            cachedDamageTypesRaw = raw
-        }
+        if (hasCachedDamageTypes && raw === cachedDamageTypesRaw) return
+
+        const parsed = JSON.parse(raw || '[]')
+        cachedDamageTypes = Array.isArray(parsed) ? parsed : []
+        cachedDamageTypesRaw = raw
+        hasCachedDamageTypes = true
+        warnedDamageTypes.clear()
     } catch (error) {
         console.warn('Ilaris | Failed to parse damageTypes setting:', error)
         cachedDamageTypes = []
+        cachedDamageTypesRaw = raw
+        hasCachedDamageTypes = true
+        warnedDamageTypes.clear()
     }
+}
+
+/**
+ * Resolve a requested damage-type key against the world registry.
+ *
+ * @param {string} damageType - The requested configured type key
+ * @returns {{value: string, label: string, exists: boolean, behavior: {healing: boolean, targetsErschoepfung: boolean, bypassesArmor: boolean}}}
+ */
+export function resolveDamageType(damageType) {
+    readDamageTypes()
 
     const configuredType = cachedDamageTypes.find((type) => type.value === damageType)
+    const profan = cachedDamageTypes.find((type) => type.value === 'PROFAN')
     if (!configuredType && !warnedDamageTypes.has(damageType)) {
         warnedDamageTypes.add(damageType)
         ui?.notifications?.warn(
@@ -44,14 +56,31 @@ export function getDamageTypeBehavior(damageType) {
         )
     }
 
+    const effectiveType = configuredType || profan
     return {
-        healing: configuredType?.behavior?.healing ?? DEFAULT_DAMAGE_TYPE_BEHAVIOR.healing,
-        targetsErschoepfung:
-            configuredType?.behavior?.targetsErschoepfung ??
-            DEFAULT_DAMAGE_TYPE_BEHAVIOR.targetsErschoepfung,
-        bypassesArmor:
-            configuredType?.behavior?.bypassesArmor ?? DEFAULT_DAMAGE_TYPE_BEHAVIOR.bypassesArmor,
+        value: configuredType?.value || 'PROFAN',
+        label: effectiveType?.label || 'Profan',
+        exists: !!configuredType,
+        behavior: {
+            healing: effectiveType?.behavior?.healing ?? DEFAULT_DAMAGE_TYPE_BEHAVIOR.healing,
+            targetsErschoepfung:
+                effectiveType?.behavior?.targetsErschoepfung ??
+                DEFAULT_DAMAGE_TYPE_BEHAVIOR.targetsErschoepfung,
+            bypassesArmor:
+                effectiveType?.behavior?.bypassesArmor ??
+                DEFAULT_DAMAGE_TYPE_BEHAVIOR.bypassesArmor,
+        },
     }
+}
+
+/**
+ * Returns the behavior flags configured for a damage type.
+ *
+ * @param {string} damageType - The configured damage type key
+ * @returns {{healing: boolean, targetsErschoepfung: boolean, bypassesArmor: boolean}}
+ */
+export function getDamageTypeBehavior(damageType) {
+    return resolveDamageType(damageType).behavior
 }
 /**
  * Applies the specified operator to the current value
@@ -210,11 +239,12 @@ export function processModification(
             rollValues.text_dm = rollValues.text_dm.concat(text)
             break
         case 'CHANGE_DAMAGE_TYPE':
+            const resolvedDamageType = resolveDamageType(modification.value)
             text = `${manoeverName}${
                 trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''
-            }: Schadenstyp zu ${CONFIG.ILARIS.schadenstypen[modification.value]}\n`
+            }: Schadenstyp zu ${resolvedDamageType.label}\n`
             rollValues.text_dm = rollValues.text_dm.concat(text)
-            rollValues.damageType = CONFIG.ILARIS.schadenstypen[modification.value]
+            rollValues.damageType = resolvedDamageType.value
             break
         case 'ARMOR_BREAKING':
             text = `${manoeverName}${
@@ -441,11 +471,12 @@ export async function routeDamageToOwner(
  * Exported so it can be called by the socket handler in hooks.js
  */
 export async function _applyDamageDirectly(targetActor, damage, damageType, trueDamage, speaker) {
-    const behavior = getDamageTypeBehavior(damageType)
+    const resolvedDamageType = resolveDamageType(damageType)
+    const behavior = resolvedDamageType.behavior
     const healthKey = behavior.targetsErschoepfung ? 'erschoepfung' : 'wunden'
     const statKey = `system.gesundheit.${healthKey}`
     const ignoresArmor = trueDamage || behavior.bypassesArmor
-    const damageTypeLabel = CONFIG.ILARIS.schadenstypen[damageType] ?? 'Profan'
+    const damageTypeLabel = resolvedDamageType.label
 
     // Get WS and WS* of the target
     const useLepSystem = game.settings.get(
