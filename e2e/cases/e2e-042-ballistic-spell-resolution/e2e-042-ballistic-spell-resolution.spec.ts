@@ -58,6 +58,53 @@ async function createTarget(page: import('@playwright/test').Page) {
         { casterName: CASTER_NAME, targetName: TARGET_NAME },
     )
     await page.waitForFunction((tokenId) => Boolean(canvas.tokens?.get(tokenId)), targetTokenId)
+
+    // Explicitly guarantee the unlinked target token actor can resolve the
+    // Akrobatik ranged-defense option instead of relying on the shared source
+    // actor's mutable skills. The temporary token is removed in cleanup.
+    await page.evaluate(async (tokenId) => {
+        const tokenActor = canvas.tokens?.get(tokenId)?.actor as any
+        if (!tokenActor) throw new Error('Ballistik-Ziel-Akteur fehlt.')
+
+        const create: any[] = []
+        if (
+            !tokenActor.items.some(
+                (item: any) => item.type === 'fertigkeit' && item.name === 'Athletik',
+            )
+        ) {
+            create.push({
+                name: 'Athletik',
+                type: 'fertigkeit',
+                system: {
+                    basis: 0,
+                    fw: 0,
+                    pw: 0,
+                    pwt: 0,
+                    attribut_0: 'GE',
+                    attribut_1: 'KK',
+                    attribut_2: 'KO',
+                    gruppe: 2,
+                    text: '',
+                },
+            })
+        }
+        if (
+            !tokenActor.items.some(
+                (item: any) =>
+                    item.type === 'talent' &&
+                    item.name === 'Akrobatik' &&
+                    item.system?.fertigkeit === 'Athletik',
+            )
+        ) {
+            create.push({
+                name: 'Akrobatik',
+                type: 'talent',
+                system: { text: '', fertigkeit: 'Athletik' },
+            })
+        }
+        if (create.length) await tokenActor.createEmbeddedDocuments('Item', create)
+    }, targetTokenId)
+
     await page.evaluate((tokenId) => {
         canvas.tokens?.get(tokenId)?.setTarget(true, { releaseOthers: true })
     }, targetTokenId)
@@ -155,21 +202,27 @@ test.describe('E2E-042 · Ballistische Zauberauflösung', () => {
             return (canvas.tokens?.get(tokenId)?.actor as any)?.system?.gesundheit?.wunden ?? 0
         }, targetTokenId)
         const actorSheet = await openActorSheet(page, CASTER_NAME)
-        const spell = await page.evaluate(
-            ({ casterName, spellName }) => {
-                return (game.actors.getName(casterName) as any)?.items.find(
-                    (item: any) => item.name === spellName,
-                )
-            },
-            { casterName: CASTER_NAME, spellName: SPELL_NAME },
-        )
         await openSpellDialog(actorSheet, SPELL_NAME)
         const dialog = page.locator('.application.uebernatuerlich-dialog').last()
         await expect(dialog).toBeVisible()
         await actorSheet.getByRole('button', { name: 'Close Window' }).click()
         await expect(actorSheet).not.toBeVisible()
         const modifier = dialog.locator('input[id^="modifikator-"]')
-        await modifier.fill(String(2 - Number(spell.system.pw ?? 0)))
+        // Land the attack just above the spell difficulty (deterministic d20 of
+        // 10 with randomUniform 0.5) so the defense prompt renders while the
+        // Akrobatik defense (d20 20 with randomUniform 0.01) can still beat it.
+        const attackModifier = await page.evaluate(
+            ({ casterName, spellName }) => {
+                const caster = game.actors.getName(casterName) as any
+                const spell = caster?.items.find((item: any) => item.name === spellName)
+                const difficulty = Number.parseInt(spell?.system?.schwierigkeit, 10) || 0
+                const pw = Number(spell?.system?.pw ?? 0)
+                const globalermod = Number(caster?.system?.abgeleitete?.globalermod ?? 0)
+                return difficulty + 1 - 10 - pw - globalermod
+            },
+            { casterName: CASTER_NAME, spellName: SPELL_NAME },
+        )
+        await modifier.fill(String(attackModifier))
         await modifier.dispatchEvent('change')
         await page.evaluate(() => {
             ;(CONFIG.Dice as any).randomUniform = () => 0.5
