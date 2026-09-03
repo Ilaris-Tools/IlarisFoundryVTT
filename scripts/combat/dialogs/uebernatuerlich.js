@@ -401,6 +401,9 @@ export class UebernatuerlichDialog extends CombatDialog {
         const zonePlacementEnabled = this._hasZonePlacementRequirement()
         return {
             ...context,
+            castSkillOptions: this.castSkillContext.options,
+            castSkillSelectionRequired: this.castSkillContext.requiresSelection,
+            selectedCastSkill: this.getResolvedCastSkill(),
             choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: '1',
             choices_verbotene_pforten: {
