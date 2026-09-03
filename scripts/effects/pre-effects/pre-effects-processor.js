@@ -196,7 +196,10 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {},
     const castSkill = context.castSkill || dialog.getResolvedCastSkill?.() || ''
     const triggeringRollTotal = Number(rollResult?.roll?.total)
 
-    const targets = dialog.selectedActors?.length ? dialog.selectedActors : [{ actorId: caster.id }]
+    const explicitTargets = Array.isArray(context.targets) ? context.targets : null
+    const targets =
+        explicitTargets ||
+        (dialog.selectedActors?.length ? dialog.selectedActors : [{ actorId: caster.id }])
     const summonedCreaturePreEffects = new Set()
     for (const target of targets) {
         const { targetActor } = resolveTargetActorForDamage(target)

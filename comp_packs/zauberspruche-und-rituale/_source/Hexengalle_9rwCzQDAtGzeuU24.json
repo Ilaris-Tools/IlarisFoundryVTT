@@ -8,6 +8,7 @@
     "text": "Du spuckst auf deinen Gegner. Dein Speichel verwandelt sich in ätzende Säure und das getroffene Opfer erleidet 2W6 SP und wird bei misslungener Konterprobe (Zähigkeit, 16) bis zu seiner übernächsten Initiativephase handlungsunfähig. Ballistischer Zauber.",
     "maechtig": "Die SP steigen um 1W6.",
     "schwierigkeit": "12",
+    "ballistic": { "enabled": true },
     "modifikationen": "Drachenspeichel (–4; der Zauber wirkt auch gegen unbelebte Ziele.)",
     "vorbereitung": "0 Aktionen",
     "ziel": "selbst",

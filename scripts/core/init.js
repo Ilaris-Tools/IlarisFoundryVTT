@@ -578,6 +578,12 @@ function setupIlarisSocket() {
                 applyArmedAttackResolutionToDialog(data.data)
                 break
             }
+            case 'resolveBallisticSpellDefense': {
+                const { resolveBallisticDefenseOutcome } =
+                    await import('../combat/ballistic-spell-resolution.js')
+                await resolveBallisticDefenseOutcome(data.data)
+                break
+            }
             case 'createPersistentZone': {
                 const { createPersistentZoneFromRequest } =
                     await import('../combat/zones/zone-lifecycle.js')

@@ -14,6 +14,7 @@ import {
     resolveArmedAttack,
 } from '../../effects/pre-effects/armed-combat-effects.js'
 import { applyPreEffects, toArray } from '../../effects/pre-effects/pre-effects-processor.js'
+import { dispatchBallisticDefenseOutcome } from '../ballistic-spell-resolution.js'
 
 export class AngriffDialog extends CombatDialog {
     /** @override */
@@ -535,6 +536,13 @@ export class AngriffDialog extends CombatDialog {
             speaker: ChatMessage.getSpeaker({ actor: this.actor }),
             style: CONST.CHAT_MESSAGE_STYLES.OTHER,
         })
+
+        if (this.attackRoll?.ilarisBallisticSpell) {
+            await dispatchBallisticDefenseOutcome({
+                ...this.attackRoll.ilarisBallisticSpell,
+                defended: defenderWins,
+            })
+        }
 
         // Clean up the stored rolls
         const armedContext = this.attackRoll?.ilarisArmedAttackContext

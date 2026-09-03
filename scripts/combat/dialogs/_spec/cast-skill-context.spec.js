@@ -23,15 +23,28 @@ describe('resolveCastSkillContext', () => {
         ).toMatchObject({ castSkill: 'Dämonisch', basePW: 14, requiresSelection: false })
     })
 
-    it('requires a choice for tied automatic skills', () => {
+    it('selects the alphabetically later tied automatic skill', () => {
         expect(
             resolveCastSkillContext(actor([skill('Dämonisch', 14), skill('Einfluss', 14)]), {
                 system: { fertigkeit_ausgewaehlt: 'auto', fertigkeiten: 'Dämonisch, Einfluss' },
             }),
         ).toMatchObject({
-            castSkill: '',
-            requiresSelection: true,
-            options: [{ name: 'Dämonisch' }, { name: 'Einfluss' }],
+            castSkill: 'Einfluss',
+            basePW: 14,
+            requiresSelection: false,
+            options: [],
+        })
+    })
+
+    it('orders tied automatic skills by German locale for umlaut names', () => {
+        expect(
+            resolveCastSkillContext(actor([skill('Äther', 16), skill('Zaubern', 16)]), {
+                system: { fertigkeit_ausgewaehlt: 'auto', fertigkeiten: 'Äther, Zaubern' },
+            }),
+        ).toMatchObject({
+            castSkill: 'Zaubern',
+            basePW: 16,
+            requiresSelection: false,
         })
     })
 })

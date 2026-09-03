@@ -8,6 +8,7 @@
     "text": "Ein kräftiger Windstoß breitet sich von deinem Mund kegelförmig (45°) 16 Schritt weit aus und verursacht Niederschmettern, wenn eine Konterprobe (KK, 16) misslingt. Ballistischer Zauber.",
     "maechtig": "",
     "schwierigkeit": "12",
+    "ballistic": { "enabled": true },
     "modifikationen": "Langer Atem (–8, 8 AsP; der Windstoß hält KO Initiativphasen lang an. Erfordert Konzentration.)\nSturm (–4; bei misslungener Konterprobe verursacht der Zauber auch Zurückstoßen (S. 98).\nWinde der anderen Art (–4; der Wind bringt lieblichen Duft oder widerlichen Gestank.)",
     "vorbereitung": "0 Aktionen",
     "ziel": "Zone",

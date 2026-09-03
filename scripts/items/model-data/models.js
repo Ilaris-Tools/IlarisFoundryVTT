@@ -34,6 +34,9 @@ export function createItemTypeDataModels(TypeDataModel, h) {
         magicResistance: h.schema({
             enabled: h.bool(false),
         }),
+        ballistic: h.schema({
+            enabled: h.bool(false),
+        }),
         modifikationen: h.string(''),
         vorbereitung: h.string(''),
         ziel: h.string(''),

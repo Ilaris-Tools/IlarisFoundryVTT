@@ -8,6 +8,7 @@
     "text": "Eine Flammenlanze fügt dem Ziel 4W6 TP zu und verursacht Nachbrennen (S. 98). Ballistischer Zauber.",
     "maechtig": "Die TP steigen um 2W6.",
     "schwierigkeit": "12",
+    "ballistic": { "enabled": true },
     "modifikationen": "Gezielter Strahl (–4; du kannst die Trefferzone bestimmen.)",
     "vorbereitung": "1 Aktion",
     "ziel": "Einzelwesen, Einzelobjekt",

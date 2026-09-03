@@ -262,4 +262,24 @@ describe('structured spell modifications', () => {
             }).modifications[0].profile.magicResistance,
         ).toEqual({ enabled: false })
     })
+
+    test('retains the explicit ballistic profile through base and selected spell forms', () => {
+        const source = item({
+            ...baseSystem,
+            ballistic: { enabled: true },
+            spellModifications: [{ id: 'ordinary', profile: { ballistic: { enabled: false } } }],
+        })
+
+        expect(resolveSpellModificationContext(source, []).profile.ballistic).toEqual({
+            enabled: true,
+        })
+        expect(resolveSpellModificationContext(source, ['ordinary']).profile.ballistic).toEqual({
+            enabled: false,
+        })
+        expect(
+            normalizeSpellModifications({
+                spellModifications: [{ id: 'invalid', profile: { ballistic: { enabled: 'ja' } } }],
+            }).modifications[0].profile.ballistic,
+        ).toEqual({ enabled: false })
+    })
 })

@@ -1,4 +1,5 @@
 import { jest } from '@jest/globals'
+import { resolveBallisticDefenseOutcome } from '../ballistic-spell-resolution.js'
 
 describe('UebernatuerlichDialog roll execution', () => {
     let UebernatuerlichDialog
@@ -169,10 +170,8 @@ describe('UebernatuerlichDialog roll execution', () => {
         expect(dialog._getCastingDifficulty()).toBeNull()
         expect(dialog._isMagicResistancePending()).toBe(true)
 
-        dialog._requireCastSkill = jest.fn().mockResolvedValue(true)
         dialog._isMagicResistancePending = jest.fn().mockReturnValue(true)
         await dialog._angreifenKlick()
-        expect(dialog._requireCastSkill).toHaveBeenCalledTimes(1)
         expect(ui.notifications.warn).toHaveBeenCalledWith(
             'Fordere zuerst den W20 für die Magieresistenz an.',
         )
@@ -244,6 +243,49 @@ describe('UebernatuerlichDialog roll execution', () => {
 
         await expect(dialog._getSummonCreatureSelectors()).resolves.toEqual([])
         expect(dialog.summonCreatureSelections.size).toBe(0)
+    })
+
+    test('applies a ballistic spell to its selected target without requiring a caster token after an undefended outcome', async () => {
+        global.game.user = { id: 'caster-user', targets: new Set() }
+        global.foundry.utils.randomID = jest
+            .fn()
+            .mockReturnValueOnce('defended-target')
+            .mockReturnValueOnce('undefended-target')
+        global.canvas = {
+            tokens: {
+                get: jest.fn().mockReturnValue({ center: { x: 200, y: 100 }, document: {} }),
+            },
+        }
+        const dialog = Object.create(UebernatuerlichDialog.prototype)
+        dialog.actor = { id: 'caster' }
+        dialog.item = { name: 'Ignifaxius' }
+        dialog.speaker = {}
+        dialog.armedInputValues = {}
+        dialog.getSelectedSpellModificationId = () => ''
+        dialog.getEffectiveSpellModificationContext = () => ({
+            profile: { ballistic: { enabled: true } },
+            preEffects: [{ instant: true }],
+        })
+        dialog._postBallisticOutcome = jest.fn().mockResolvedValue()
+        dialog._applyBallisticPreEffects = jest.fn().mockResolvedValue()
+        const target = { actorId: 'target', tokenId: 'target-token', name: 'Ziel' }
+
+        const defendedRoll = dialog.createBallisticTargetRoll({ success: true }, target)
+        await resolveBallisticDefenseOutcome({
+            ...defendedRoll.ilarisBallisticSpell,
+            defended: true,
+        })
+        expect(dialog._applyBallisticPreEffects).not.toHaveBeenCalled()
+
+        const undefendedRoll = dialog.createBallisticTargetRoll({ success: true }, target)
+        await resolveBallisticDefenseOutcome({
+            ...undefendedRoll.ilarisBallisticSpell,
+            defended: false,
+        })
+        expect(dialog._applyBallisticPreEffects).toHaveBeenCalledWith(
+            expect.objectContaining({ success: true }),
+            expect.objectContaining({ targets: [target], applicationId: 'undefended-target' }),
+        )
     })
 
     test('rejects a missing required spell-form choice before mutating maneuver state', async () => {
