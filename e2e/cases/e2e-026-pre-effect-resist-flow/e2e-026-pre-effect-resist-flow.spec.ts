@@ -90,6 +90,7 @@ async function openResistDialog(page: any) {
     }
 
     await openChatSidebar(page)
+    await declineBallisticDefense(page)
     await page.waitForFunction(() => document.querySelectorAll('.resist-button').length > 0, {
         timeout: 20000,
     })
@@ -97,6 +98,18 @@ async function openResistDialog(page: any) {
     const fertigkeitDialog = page.locator('.application.fertigkeit-dialog').last()
     await expect(fertigkeitDialog).toBeVisible({ timeout: 15000 })
     return fertigkeitDialog
+}
+
+async function declineBallisticDefense(page: any) {
+    await page.waitForFunction(
+        () => document.querySelectorAll('.defend-button[data-weapon-id="no-defense"]').length > 0,
+        undefined,
+        { timeout: 20000 },
+    )
+    await page.evaluate(() => {
+        const buttons = document.querySelectorAll('.defend-button[data-weapon-id="no-defense"]')
+        ;(buttons[buttons.length - 1] as HTMLElement).click()
+    })
 }
 
 async function resolveResist(page: any, success: boolean) {
@@ -332,6 +345,7 @@ test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
 
         // Resist prompt is fire-and-forget after the roll message — open chat and wait for the button.
         await openChatSidebar(page)
+        await declineBallisticDefense(page)
         await page.waitForFunction(() => document.querySelectorAll('.resist-button').length > 0, {
             timeout: 20000,
         })

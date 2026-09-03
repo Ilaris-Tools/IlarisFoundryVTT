@@ -41,6 +41,31 @@ function expectDamageChange(preEffect, { value, damageType, maechtigBonus = '' }
 }
 
 describe('reviewed supported spell pre-effect source data', () => {
+    it('authors an explicit ballistic profile for every reviewed ballistic spell source', () => {
+        const filenames = [
+            'Aeolitus_Windgebraus_ea5T01US3ahXmt6l.json',
+            'Aquafaxius_qGTl4hle6tGQfRUU.json',
+            'Archofaxius_6GQHnvM8eDMRRWv7.json',
+            'Frigifaxius_cP98ftTImKT0OZbC.json',
+            'Hexengalle_9rwCzQDAtGzeuU24.json',
+            'Humofaxius_JRqMeGLxJ7dcjdv0.json',
+            'Ignifaxius_Flammenstrahl_MnFJNJi1yZSxCSGt.json',
+            'Orcanofaxius_JrEkhIUW0Pv4wbmd.json',
+            'Zorn_der_Elemente_21x0U7hhMfXNlQiz.json',
+        ]
+
+        for (const filename of filenames) {
+            expect(readSpell(filename).system.ballistic).toEqual({ enabled: true })
+        }
+
+        expect(
+            readSpell('Ignifaxius_Flammenstrahl_MnFJNJi1yZSxCSGt.json').system.preEffects?.[0],
+        ).toMatchObject({
+            instant: true,
+            changes: [expect.objectContaining({ damageType: 'FEUER', value: '4W6' })],
+        })
+    })
+
     it('authors target Magieresistenz only for the audited single-Actor sources', () => {
         const eligibleTargets = new Set(['Einzelperson', 'Einzelwesen', 'einzelnes Tier', 'Tier'])
         const spells = readdirSync(spellSourceDirectory)

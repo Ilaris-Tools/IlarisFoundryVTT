@@ -66,6 +66,7 @@ export class UebernatuerlichTalentSheet extends PreEffectItemSheet {
                 range: '',
                 duration: '',
                 magicResistance: { enabled: false },
+                ballistic: { enabled: false },
             },
             zone: null,
             preEffects: [],

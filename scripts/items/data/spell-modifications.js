@@ -41,7 +41,13 @@ function normalizeProfile(profile) {
         range: asText(source.range),
         duration: asText(source.duration),
         magicResistance: normalizeMagicResistance(source.magicResistance),
+        ballistic: normalizeBallistic(source.ballistic),
     }
+}
+
+function normalizeBallistic(value, { absentValue = null } = {}) {
+    if (value === undefined) return absentValue
+    return { enabled: value?.enabled === true }
 }
 
 /** Normalize Foundry ObjectField values to structurally safe form data. */
@@ -90,6 +96,7 @@ function baseProfile(system = {}) {
         magicResistance: normalizeMagicResistance(system.magicResistance, {
             absentValue: { enabled: false },
         }),
+        ballistic: normalizeBallistic(system.ballistic, { absentValue: { enabled: false } }),
     }
 }
 
@@ -163,6 +170,17 @@ export function resolveSpellModificationContext(item, selectedIds = []) {
             } else {
                 profile.magicResistance = form.profile.magicResistance
                 overrideOwners.set('magicResistance', form.id)
+            }
+        }
+        if (form.profile.ballistic !== null) {
+            if (
+                overrideOwners.has('ballistic') &&
+                JSON.stringify(profile.ballistic) !== JSON.stringify(form.profile.ballistic)
+            ) {
+                addError(errors, 'Mehrere Zaubermodifikationen überschreiben Ballistik.')
+            } else {
+                profile.ballistic = form.profile.ballistic
+                overrideOwners.set('ballistic', form.id)
             }
         }
         if (form.effectMode === 'extend') preEffects.push(...clone(form.preEffects))
