@@ -85,6 +85,18 @@ test.describe('E2E-006 Fertigkeit Wuerfeldialog Profan', () => {
                 )
                 .first()
             await expect(firstFertigkeitRollable).toBeVisible({ timeout: 15000 })
+            const expectedSkillId = await page.evaluate(() => {
+                const actor = game.actors?.getName('HatAlles') as any
+                return actor?.profan?.fertigkeiten?.[0]?.id ?? null
+            })
+            expect(
+                expectedSkillId,
+                'Die erste profane Fertigkeit muss eine Item-ID besitzen',
+            ).toBeTruthy()
+            await expect(firstFertigkeitRollable).toHaveAttribute(
+                'data-fertigkeit',
+                expectedSkillId!,
+            )
             await firstFertigkeitRollable.click()
 
             // Wait for the FertigkeitDialog to open

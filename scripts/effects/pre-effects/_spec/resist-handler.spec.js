@@ -1,3 +1,10 @@
+const effectCreate = jest.fn().mockResolvedValue([])
+let hookCallbacks
+
+jest.mock('../../../skills/skills-api.js', () => ({
+    openSkillDialog: jest.fn().mockResolvedValue({}),
+}))
+
 import {
     registerResistHandler,
     registerResistResolutionListener,
@@ -5,8 +12,7 @@ import {
     resolveResistTargetActor,
 } from '../resist-handler.js'
 
-const effectCreate = jest.fn().mockResolvedValue([])
-let hookCallbacks
+const mockOpenSkillDialog = jest.requireMock('../../../skills/skills-api.js').openSkillDialog
 
 function preEffect(overrides = {}) {
     return {
@@ -50,6 +56,8 @@ beforeEach(() => {
         if (uuid === 'Actor.caster') return { uuid }
         return null
     })
+    mockOpenSkillDialog.mockClear()
+    mockOpenSkillDialog.mockResolvedValue({})
 })
 
 describe('resist result listener', () => {
@@ -206,5 +214,114 @@ describe('resolveInitialResistTalent', () => {
 
     it('falls back to no talent when the target does not own the configured talent', () => {
         expect(resolveInitialResistTalent([{ name: 'Laufen' }], 'Akrobatik')).toBe('')
+    })
+})
+
+describe('skill-based resist dialog', () => {
+    it('forwards the matched skill Item ID and retains an owned configured talent', async () => {
+        global.ui = { notifications: { warn: jest.fn() } }
+        const skill = {
+            id: 'athletik-id',
+            name: 'Athletik',
+            system: { pw: 10, talente: [{ name: 'Akrobatik' }] },
+        }
+        const actor = {
+            id: 'target',
+            name: 'Target',
+            system: {},
+            profan: { fertigkeiten: [skill] },
+        }
+        global.game.actors.get.mockReturnValue(actor)
+        registerResistHandler()
+
+        const button = {
+            dataset: {
+                actorId: 'target',
+                preEffectData: encodeURIComponent(
+                    JSON.stringify({
+                        eventId: 'event-1',
+                        spellUuid: 'Item.spell',
+                        spellName: 'Ignifaxius',
+                        avoidTest: {
+                            fertigkeit: 'Athletik',
+                            talent: 'Akrobatik',
+                            resistDifficulty: 12,
+                        },
+                    }),
+                ),
+            },
+            disabled: false,
+            addEventListener: jest.fn((_, callback) => {
+                button.clickHandler = callback
+            }),
+        }
+        const htmlDOM = {
+            querySelectorAll: jest.fn(() => [button]),
+            closest: jest.fn(() => ({ classList: { remove: jest.fn(), add: jest.fn() } })),
+        }
+
+        hookCallbacks.renderChatMessageHTML({}, htmlDOM)
+        await button.clickHandler.call(button)
+
+        expect(mockOpenSkillDialog).toHaveBeenCalledWith(
+            actor,
+            expect.objectContaining({
+                probeType: 'fertigkeit',
+                fertigkeitKey: 'athletik-id',
+                pw: 10,
+                talentList: { 0: 'Akrobatik' },
+                initialTalent: 'Akrobatik',
+            }),
+        )
+    })
+
+    it('forwards the skill Item ID and falls back to no talent when unowned', async () => {
+        global.ui = { notifications: { warn: jest.fn() } }
+        const skill = {
+            id: 'athletik-id',
+            name: 'Athletik',
+            system: { pw: 10, talente: [{ name: 'Laufen' }] },
+        }
+        const actor = {
+            id: 'target',
+            name: 'Target',
+            system: {},
+            profan: { fertigkeiten: [skill] },
+        }
+        global.game.actors.get.mockReturnValue(actor)
+        registerResistHandler()
+
+        const button = {
+            dataset: {
+                actorId: 'target',
+                preEffectData: encodeURIComponent(
+                    JSON.stringify({
+                        eventId: 'event-1',
+                        avoidTest: {
+                            fertigkeit: 'Athletik',
+                            talent: 'Akrobatik',
+                            resistDifficulty: 12,
+                        },
+                    }),
+                ),
+            },
+            disabled: false,
+            addEventListener: jest.fn((_, callback) => {
+                button.clickHandler = callback
+            }),
+        }
+        const htmlDOM = {
+            querySelectorAll: jest.fn(() => [button]),
+            closest: jest.fn(() => ({ classList: { remove: jest.fn(), add: jest.fn() } })),
+        }
+
+        hookCallbacks.renderChatMessageHTML({}, htmlDOM)
+        await button.clickHandler.call(button)
+
+        expect(mockOpenSkillDialog).toHaveBeenCalledWith(
+            actor,
+            expect.objectContaining({ fertigkeitKey: 'athletik-id', initialTalent: '' }),
+        )
+        expect(global.ui.notifications.warn).not.toHaveBeenCalled()
     })
 })

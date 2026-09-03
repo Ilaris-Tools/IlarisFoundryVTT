@@ -450,7 +450,12 @@ test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
                     }
                 }
                 await spell.update({ 'system.preEffects': preEffects })
-                return { skill: skill.name, talent: talent.name }
+                return {
+                    skill: skill.name,
+                    talent: talent.name,
+                    pw: skill.system.pw,
+                    pwt: skill.system.pwt,
+                }
             },
             { name: ACTOR_NAME, spellName: SPELL_NAME, difficulty: RESIST_DIFFICULTY },
         )
@@ -460,10 +465,13 @@ test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
             configured.talent,
         )
         await expect(dialog).toContainText(configured.skill)
+        await expect(dialog.locator('.modifier-item.base-value')).toContainText(
+            String(configured.pwt),
+        )
     })
 
     test('uses ohne Talent when the target lacks the configured talent', async ({ page }) => {
-        await page.evaluate(
+        const configured = await page.evaluate(
             async ({ name, spellName, difficulty }) => {
                 const actor = game.actors.getName(name)
                 const skill = actor?.profan?.fertigkeiten?.find(
@@ -484,11 +492,15 @@ test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
                     }
                 }
                 await spell.update({ 'system.preEffects': preEffects })
+                return { pw: skill.system.pw }
             },
             { name: ACTOR_NAME, spellName: SPELL_NAME, difficulty: RESIST_DIFFICULTY },
         )
 
         const dialog = await openResistDialog(page)
         await expect(dialog.locator('select[id^="talent-"]')).toHaveValue('-2')
+        await expect(dialog.locator('.modifier-item.base-value')).toContainText(
+            String(configured.pw),
+        )
     })
 })

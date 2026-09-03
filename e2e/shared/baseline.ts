@@ -39,6 +39,44 @@ export const E2E_BASELINE = {
     },
 } as const
 
+/**
+ * Restores the explicitly declared E2E world-setting defaults after an interrupted
+ * E2E case left a setting behind. This deliberately touches no other world state;
+ * {@link assertE2EBaseline} remains responsible for validating all dependencies.
+ */
+export async function restoreE2EBaselineSettings(
+    page: import('@playwright/test').Page,
+): Promise<void> {
+    const unrestored = await page.evaluate(async (baseline) => {
+        const failures: string[] = []
+
+        for (const [settingName, expectedValue] of Object.entries(baseline.settingDefaults)) {
+            try {
+                if (game.settings.get(baseline.world.systemId, settingName) !== expectedValue) {
+                    await game.settings.set(baseline.world.systemId, settingName, expectedValue)
+                }
+
+                if (game.settings.get(baseline.world.systemId, settingName) !== expectedValue) {
+                    failures.push(
+                        `${baseline.world.systemId}.${settingName}=${String(expectedValue)}`,
+                    )
+                }
+            } catch {
+                failures.push(`${baseline.world.systemId}.${settingName}=${String(expectedValue)}`)
+            }
+        }
+
+        return failures
+    }, E2E_BASELINE)
+
+    if (unrestored.length > 0) {
+        throw new Error(
+            `Unable to restore E2E baseline setting defaults: ${unrestored.join(', ')}. ` +
+                'Join as a GM or reset the published baseline world.',
+        )
+    }
+}
+
 export async function assertE2EBaseline(page: import('@playwright/test').Page): Promise<void> {
     const missing = await page.evaluate((baseline) => {
         const missingDependencies: string[] = []

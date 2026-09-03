@@ -66,7 +66,7 @@ export async function wuerfelwurf(target, actor) {
         } else {
             // Regular skill (fertigkeit)
             const fertigkeit = target.dataset.fertigkeit
-            const fertigkeitData = actor.profan.fertigkeiten[fertigkeit]
+            const fertigkeitData = actor.items.get(fertigkeit)
             const fertigkeitName = fertigkeitData.name
             const pw = fertigkeitData.system.pw
 
