@@ -170,6 +170,12 @@ let itemTemplates = {
         system: {},
         logMessage: 'Neue Liturgie',
     },
+    anrufung: {
+        name: 'Anrufung',
+        type: 'anrufung',
+        system: {},
+        logMessage: 'Neue Anrufung',
+    },
     eigenheit: {
         name: 'eigenheit',
         type: 'eigenheit',
@@ -545,6 +551,7 @@ let vorteilsgruppen = [
     { value: '6', label: 'Karma' },
     { value: '7', label: 'Geweihte Traditionen' },
     { value: '8', label: 'Tiergeist' },
+    { value: '9', label: 'Pakt Traditionen' },
 ]
 ILARIS.vorteilsgruppen = vorteilsgruppen
 

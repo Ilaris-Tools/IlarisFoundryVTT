@@ -73,8 +73,8 @@ The healing branch (negative damage) in `_applyDamageDirectly` SHALL have unit t
 
 #### Scenario: LEP system healing restores HP
 
-- **WHEN** the LEP system is active and damage is `-10`
-- **THEN** LEP SHALL be increased by 10, capped at `wunden_max`
+- **WHEN** the LEP system is active and a healing amount of 10 is applied
+- **THEN** accumulated damage (`gesundheit.wunden`) SHALL be reduced by 10, floored at 0 (under LEP, `wunden` counts damage points and `hp = max_hp - wunden`)
 
 #### Scenario: Healing sends correct chat message
 

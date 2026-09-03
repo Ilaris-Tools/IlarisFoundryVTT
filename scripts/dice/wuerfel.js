@@ -21,7 +21,13 @@ export async function wuerfelwurf(target, actor) {
     } else if (rolltype == 'fernkampf_diag') {
         let item = actor.items.get(target.dataset.itemid)
         await openCombatDialog(actor, item, 'ranged')
-    } else if (rolltype == 'magie_diag' || rolltype == 'karma_diag') {
+    } else if (
+        rolltype == 'magie_diag' ||
+        rolltype == 'karma_diag' ||
+        rolltype == 'anrufung_diag'
+    ) {
+        // magie_diag/karma_diag/anrufung_diag all just open the same supernatural dialog;
+        // could be collapsed into one 'supernatural_diag' rolltype value.
         let item = actor.items.get(target.dataset.itemid)
         await openCombatDialog(actor, item, 'supernatural')
     } else if (rolltype == 'fertigkeit_diag') {
