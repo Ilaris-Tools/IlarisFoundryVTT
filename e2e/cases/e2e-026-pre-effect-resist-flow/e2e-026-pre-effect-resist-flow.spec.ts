@@ -348,7 +348,7 @@ test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
         await expect(fertigkeitDialog).toContainText(String(RESIST_DIFFICULTY))
     })
 
-    test('tied automatic casting requires a visible Fertigkeit choice before rolling', async ({
+    test('tied automatic casting rolls immediately without a Fertigkeit choice', async ({
         page,
     }) => {
         const tiedSkills = await page.evaluate(
@@ -380,13 +380,9 @@ test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
         const actorWindow = await openActorSheet(page, ACTOR_NAME)
         await openSpellDialog(actorWindow, SPELL_NAME)
         const spellDialog = page.locator('.application.uebernatuerlich-dialog').last()
-        const selector = spellDialog.locator('[name="ilaris-cast-skill"]')
-        await expect(selector).toBeVisible()
-        await expect(spellDialog.locator('[data-action="angreifen"]')).toHaveCount(0)
-
-        await selector.selectOption(tiedSkills[0])
+        await expect(spellDialog.locator('[name="ilaris-cast-skill"]')).toHaveCount(0)
         await expect(spellDialog.locator('[data-action="angreifen"]')).toBeVisible()
-        await spellDialog.screenshot({ path: 'test-results/tied-cast-skill-selector.png' })
+        await spellDialog.screenshot({ path: 'test-results/tied-cast-skill-resolved.png' })
     })
 
     test('failed resist visibly applies only the configured marker outcome', async ({ page }) => {

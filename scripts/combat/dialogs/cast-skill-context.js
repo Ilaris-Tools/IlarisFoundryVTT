@@ -11,6 +11,8 @@ function actorSkills(actor) {
     return Array.isArray(skills) ? skills : []
 }
 
+const germanCollator = new Intl.Collator('de', { sensitivity: 'base', numeric: true })
+
 /** Resolve the concrete supernatural skill that supplies a cast's PW. */
 export function resolveCastSkillContext(actor, item) {
     const selected = item?.system?.fertigkeit_ausgewaehlt
@@ -33,7 +35,14 @@ export function resolveCastSkillContext(actor, item) {
             requiresSelection: false,
             basePW: best[0].pw,
         }
-    if (best.length > 1)
-        return { castSkill: '', options: best, requiresSelection: true, basePW: best[0].pw }
+    if (best.length > 1) {
+        const sorted = [...best].sort((a, b) => germanCollator.compare(a.name, b.name))
+        return {
+            castSkill: sorted[sorted.length - 1].name,
+            options: [],
+            requiresSelection: false,
+            basePW: best[0].pw,
+        }
+    }
     return { castSkill: '', options: [], requiresSelection: false }
 }

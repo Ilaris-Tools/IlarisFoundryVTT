@@ -169,10 +169,8 @@ describe('UebernatuerlichDialog roll execution', () => {
         expect(dialog._getCastingDifficulty()).toBeNull()
         expect(dialog._isMagicResistancePending()).toBe(true)
 
-        dialog._requireCastSkill = jest.fn().mockResolvedValue(true)
         dialog._isMagicResistancePending = jest.fn().mockReturnValue(true)
         await dialog._angreifenKlick()
-        expect(dialog._requireCastSkill).toHaveBeenCalledTimes(1)
         expect(ui.notifications.warn).toHaveBeenCalledWith(
             'Fordere zuerst den W20 für die Magieresistenz an.',
         )

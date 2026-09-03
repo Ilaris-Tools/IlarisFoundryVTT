@@ -117,12 +117,6 @@ export class UebernatuerlichDialog extends CombatDialog {
                 await this.updateModifierDisplay()
             })
         })
-        this.element
-            .querySelector('[name="ilaris-cast-skill"]')
-            ?.addEventListener('change', async (event) => {
-                this.castSkill = event.currentTarget.value || ''
-                await this.render()
-            })
         this.element.querySelectorAll('.summon-creature-type').forEach((input) => {
             input.addEventListener('change', () => {
                 const index = Number(input.dataset.preEffectIndex)
@@ -191,18 +185,8 @@ export class UebernatuerlichDialog extends CombatDialog {
         return this.castSkill || ''
     }
 
-    _isCastSkillMissing() {
-        return this.castSkillContext.requiresSelection && !this.getResolvedCastSkill()
-    }
-
     getIlarisFertigkeitContext() {
         return this.getResolvedCastSkill() || super.getIlarisFertigkeitContext()
-    }
-
-    async _requireCastSkill() {
-        if (!this._isCastSkillMissing()) return true
-        ui.notifications.warn('Wähle zuerst die Fertigkeit für diesen Zauber.')
-        return false
     }
 
     /**
@@ -416,9 +400,6 @@ export class UebernatuerlichDialog extends CombatDialog {
         const zonePlacementEnabled = this._hasZonePlacementRequirement()
         return {
             ...context,
-            castSkillOptions: this.castSkillContext.options,
-            castSkillSelectionRequired: this.castSkillContext.requiresSelection,
-            selectedCastSkill: this.getResolvedCastSkill(),
             choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: '1',
             choices_verbotene_pforten: {
@@ -449,7 +430,6 @@ export class UebernatuerlichDialog extends CombatDialog {
     /* -------------------------------------------- */
 
     async _angreifenKlick() {
-        if (!(await this._requireCastSkill())) return
         if (this._isMagicResistancePending()) {
             ui.notifications.warn('Fordere zuerst den W20 für die Magieresistenz an.')
             return
@@ -530,7 +510,6 @@ export class UebernatuerlichDialog extends CombatDialog {
     }
 
     async _energieAbrechnenKlick(isSuccess) {
-        if (!(await this._requireCastSkill())) return
         if (this._isMagicResistancePending()) {
             ui.notifications.warn('Fordere zuerst den W20 für die Magieresistenz an.')
             return
@@ -618,11 +597,7 @@ export class UebernatuerlichDialog extends CombatDialog {
     }
 
     _isRollDisabled() {
-        return (
-            this._isZonePlacementMissing() ||
-            this._isCastSkillMissing() ||
-            this._isMagicResistancePending()
-        )
+        return this._isZonePlacementMissing() || this._isMagicResistancePending()
     }
 
     _getMagicResistanceTemplateContext() {
