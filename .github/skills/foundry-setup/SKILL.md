@@ -86,6 +86,20 @@ npm run pack-all
 - Verify `@foundryvtt/foundryvtt-cli` is installed
 - Check for file permission issues on `comp_packs/` directories
 
+### Step 6 (alternative): Headless Foundry in ephemeral/agent environments
+
+In sandboxed agent environments (Claude Code web, Copilot coding agent, CI)
+without a local Foundry installation, use the agent-agnostic e2e environment
+instead of Steps 6's local launch:
+
+```bash
+node utils/foundry-env/remote-lifecycle.mjs Start   # download, license, start Foundry + baseline e2e world
+npm run test:e2e       # run the Playwright suite against it
+```
+
+Requires the Foundry secrets described in `utils/foundry-env/README.md`;
+without them the script exits with code 3 (soft skip).
+
 ### Step 6: (Optional) Launch Foundry
 
 ```bash
