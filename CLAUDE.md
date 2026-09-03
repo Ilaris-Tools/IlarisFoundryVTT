@@ -18,3 +18,14 @@ Attach or provide those files when the chat cannot access the repository.
 - Use `.claude/commands/opsx-*.prompt.md` for Claude-specific command mechanics. Those prompts supplement, but do not replace, `AGENTS.md`.
 
 When instructions conflict, preserve the shared workflow policy in `AGENTS.md` unless that file documents an explicit exception.
+
+## Git workflow
+
+Base all work on `develop` and target pull requests at `develop`; `main` is the production branch and only receives release merges. See the "Git Workflow" section in [AGENTS.md](AGENTS.md) and [CONTRIBUTING.md](CONTRIBUTING.md).
+
+For a disposable credentialed Foundry VM in Claude Web, use
+`.claude/hooks/foundry-env.mjs` or run `npm run foundry:cloud -- <E2E paths>`.
+The adapter runs only when injected `FOUNDRY_*` credentials are configured and
+never reads a secrets file; see
+[`utils/foundry-env/README.md`](utils/foundry-env/README.md). Normal local E2E
+work continues to use an already-running external server.

@@ -1,8 +1,7 @@
 import { defineConfig, devices } from '@playwright/test'
+import { resolvePlaywrightBrowserConfig } from './scripts/testing/playwright-browser-config.js'
 
-const browserChannel =
-    process.env.PLAYWRIGHT_CHROMIUM_CHANNEL ?? (process.platform === 'win32' ? 'msedge' : 'chrome')
-const headless = ['1', 'true'].includes((process.env.E2E_CI_HEADLESS ?? '').toLowerCase())
+const browser = resolvePlaywrightBrowserConfig()
 
 export default defineConfig({
     testDir: './e2e/cases',
@@ -14,7 +13,7 @@ export default defineConfig({
     workers: 1,
     reporter: 'line',
     use: {
-        headless,
+        headless: browser.headless,
         baseURL: process.env.E2E_FOUNDRY_URL ?? 'http://localhost:30000',
         viewport: { width: 1366, height: 768 },
         actionTimeout: 15000,
@@ -27,7 +26,9 @@ export default defineConfig({
             name: 'chromium',
             use: {
                 ...devices['Desktop Chrome'],
-                channel: browserChannel,
+                ...(browser.executablePath
+                    ? { executablePath: browser.executablePath }
+                    : { channel: browser.channel }),
                 viewport: { width: 1366, height: 768 },
             },
         },
