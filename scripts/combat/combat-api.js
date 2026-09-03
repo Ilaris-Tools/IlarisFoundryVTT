@@ -217,7 +217,7 @@ export async function handleAkrobatikDefense(actor, rollResult, html) {
                     }
 
                     // Get roll mode
-                    let rollmode = game.settings.get('core', 'rollMode')
+                    let rollmode = game.settings.get('core', 'messageMode')
                     const rollModeInput = dialog.element.querySelector(`#rollMode-${dialogId}`)
                     if (rollModeInput) {
                         rollmode = rollModeInput.value

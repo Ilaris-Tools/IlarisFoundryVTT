@@ -63,6 +63,15 @@ describe('UebernatuerlichDialog summary context', () => {
             uebernatuerlich: {
                 zauber: [],
             },
+            getEnergyState(key) {
+                const paths = {
+                    asp: 'system.abgeleitete.asp_stern',
+                    kap: 'system.abgeleitete.kap_stern',
+                    gup: 'system.abgeleitete.gup_stern',
+                }
+                const currentPath = paths[key]
+                return { current: foundry.utils.getProperty(this, currentPath), currentPath }
+            },
         }
 
         const item = {

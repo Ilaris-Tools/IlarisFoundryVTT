@@ -310,6 +310,7 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             'fernkampf_diag',
             'magie_diag',
             'karma_diag',
+            'anrufung_diag',
             'uefert_diag',
             'fertigkeit_diag',
         ]
@@ -362,7 +363,7 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         ) {
             label = target.dataset.fertigkeit
             pw = target.dataset.pw
-        } else if (rolltype === 'zauber' || rolltype === 'liturgie') {
+        } else if (rolltype === 'zauber' || rolltype === 'liturgie' || rolltype === 'anrufung') {
             label = target.dataset.talent
             pw = target.dataset.pw
         }

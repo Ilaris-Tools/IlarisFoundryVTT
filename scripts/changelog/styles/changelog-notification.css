@@ -1,6 +1,6 @@
 /* Changelog Notification Dialog Styling */
 
-.ilaris-changelog-notification .window-content {
+.ilaris-changelog-window-content {
     padding: 16px;
     overflow: hidden;
 }
@@ -9,10 +9,22 @@
     color: #ff9800;
 }
 
+.ilaris-changelog-window-content > .dialog-form,
+.ilaris-changelog-window-content .dialog-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.ilaris-changelog-window-content .form-footer {
+    flex: 0 0 auto;
+}
+
 .ilaris-changelog-content {
     display: flex;
+    flex: 1;
     flex-direction: column;
-    height: 100%;
     min-height: 0;
     line-height: 1.6;
 }

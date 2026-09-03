@@ -3,6 +3,7 @@ import {
     registerResistResolutionListener,
     resolveResistDifficulty,
     resolveInitialResistTalent,
+    resolveResistTargetActor,
 } from '../resist-handler.js'
 
 const effectCreate = jest.fn().mockResolvedValue([])
@@ -490,6 +491,33 @@ describe('resist result listener', () => {
 
         expect(global.ui.notifications.warn).toHaveBeenCalled()
         expect(button.disabled).toBe(false)
+    })
+})
+
+describe('resolveResistTargetActor', () => {
+    it('resolves synthetic token actors via UUID', async () => {
+        const tokenActor = { name: 'Unlinked Goblin', uuid: 'Scene.s1.Token.t1.Actor.a1' }
+        global.foundry.utils.fromUuid = jest.fn((uuid) =>
+            uuid === 'Scene.s1.Token.t1.Actor.a1' ? tokenActor : null,
+        )
+
+        const resolved = await resolveResistTargetActor({
+            targetActorUuid: 'Scene.s1.Token.t1.Actor.a1',
+        })
+
+        expect(resolved).toBe(tokenActor)
+        expect(global.game.actors.get).not.toHaveBeenCalled()
+    })
+
+    it('falls back to the world collection for legacy payloads', async () => {
+        const resolved = await resolveResistTargetActor({ targetActorId: 'target' })
+
+        expect(resolved).toEqual(expect.objectContaining({ id: 'target' }))
+    })
+
+    it('returns null when nothing resolves', async () => {
+        expect(await resolveResistTargetActor({})).toBeNull()
+        expect(await resolveResistTargetActor({ targetActorId: 'missing' })).toBeNull()
     })
 })
 
