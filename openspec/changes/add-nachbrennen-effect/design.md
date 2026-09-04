@@ -25,11 +25,17 @@ generic damage-over-time effect and not a duplicate status document.
 
 ### Keep the trigger on damage-type behavior
 
-Extend the existing optional `behavior` object with a string
-`elementalSideEffect`. Direct damage resolves the configured type before
+Extend the existing optional `behavior` object with an `elementalSideEffect`
+string or `null`. Every built-in damage type will author that field explicitly:
+`FEUER` uses `nachbrennen`; all other built-ins use `null`. Direct damage resolves the configured type before
 dispatching. This allows a world to rebind or omit the behavior and prevents
 hard-coding `FEUER` in the Pre-Effect processor. An `Ignifaxius`-only branch
 was rejected because later fire consumers would duplicate it.
+
+The setting editor owns the value: it SHALL expose `elementalSideEffect` as an
+editable optional value, so a world can remove or rebind `nachbrennen` without
+source-code changes. An unregistered non-empty value is inert and reported as
+a configuration warning rather than silently treated as Nachbrennen.
 
 ### Model pending burn as a source-owned Ilaris condition
 

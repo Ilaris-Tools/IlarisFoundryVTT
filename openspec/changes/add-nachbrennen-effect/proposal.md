@@ -9,7 +9,9 @@ behavior instead of carrying independent timers.
 ## What Changes
 
 - Add `elementalSideEffect` as an optional behavior of a configured damage
-  type and author the standard fire type to trigger `nachbrennen`.
+  type, author explicit default values for every built-in type, and bind only
+  the standard fire type to `nachbrennen`. The behavior value is world-editable
+  in the damage-type configuration.
 - Add one reusable `nachbrennen` resolver: fire damage asks the affected actor
   for a KO-20 countercheck; a failure creates a visible, target-owned pending
   application lasting four owner initiative phases; expiry applies exactly one
@@ -87,3 +89,26 @@ removes no released capability.
 - Regression-check direct damage, configured damage types, condition-source
   stacking, and the ballistic _Ignifaxius_ path. Capture screenshots of the
   pending effect and completion chat card in the current supported UI theme.
+
+## Proposal Self-Review
+
+**Decision: PASS**
+
+- **Scope:** limited to a named configured damage side effect, its reusable
+  target-owned condition source, and the existing damage/effect/status UI.
+- **Affected requirements:** the proposal supplies delta requirements for
+  configurable damage types, spell pre-effect data, condition-source
+  lifecycle, and the new Nachbrennen behavior; each implemented scenario is
+  covered by focused unit or E2E evidence.
+- **API evidence:** the v14 Actor embedded-document methods, ActiveEffect
+  duration/expiry model, ChatMessage, and `combatTurn` signature are linked
+  above and were verified before implementation; existing `foundry.utils`
+  helpers are reused.
+- **Testing impact:** full Jest, focused source/condition tests, E2E-043,
+  E2E-031, E2E-025, and E2E-042 are required before handoff.
+- **Migration / rollback:** missing behavior data remains inert; rollback
+  removes the named source through normal effect management with no data
+  migration.
+- **UI ordering:** not applicable. The change adds no sheet part or ordering;
+  it uses the existing effect row, countercheck dialog, setting editor, and
+  chat surface.

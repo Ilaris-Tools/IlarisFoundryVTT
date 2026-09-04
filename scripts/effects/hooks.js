@@ -10,6 +10,7 @@ import {
 } from './pre-effects/resist-handler.js'
 import { registerOpposedEscapeHandler } from './opposed-escape.js'
 import { registerStatusConditionLifecycle } from './status-conditions.js'
+import { registerNachbrennenEffect } from './nachbrennen-effect.js'
 import { registerZoneLifecycleHooks } from '../combat/zones/zone-lifecycle.js'
 import { registerZoneAdministrationHooks } from '../combat/zones/zone-administration-hooks.js'
 import {
@@ -22,6 +23,7 @@ Hooks.once('init', () => {
     registerResistResolutionListener()
     registerOpposedEscapeHandler()
     registerStatusConditionLifecycle()
+    registerNachbrennenEffect()
     registerZoneLifecycleHooks()
     registerZoneAdministrationHooks()
     registerSummonDominationResolutionListener()

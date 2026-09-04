@@ -8,7 +8,9 @@ A world-scoped setting `damageTypes` SHALL store a JSON array of `{value, label,
 
 - **WHEN** the setting is first used (no prior value)
 - **THEN** it SHALL default to 13 types: PROFAN, STUMPF, MAGISCH, GEWEIHT, DAEMONISCH, FEUER, EIS, ERZ, HUMUS, LUFT, WASSER, HEALING_WOUND, HEALING_EXHAUSTION
-- **AND** FEUER SHALL have `behavior: {"elementalSideEffect":"nachbrennen"}`
+- **AND** every default type SHALL explicitly define `behavior.elementalSideEffect`
+- **AND** FEUER SHALL set `behavior.elementalSideEffect` to `"nachbrennen"`
+- **AND** every other default type SHALL set `behavior.elementalSideEffect` to `null`
 - **AND** STUMPF SHALL have `behavior: {"targetsErschoepfung": true}`
 - **AND** HEALING_WOUND SHALL have `behavior: {"healing": true}`
 - **AND** HEALING_EXHAUSTION SHALL have `behavior: {"healing": true, "targetsErschoepfung": true}`
@@ -17,6 +19,12 @@ A world-scoped setting `damageTypes` SHALL store a JSON array of `{value, label,
 
 - **WHEN** a GM adds a custom type with an `elementalSideEffect` through the settings UI
 - **THEN** the saved setting SHALL preserve that named side effect alongside existing behavior flags
+
+#### Scenario: GM can rebind a default damage type side effect
+
+- **WHEN** a GM changes a default type's `elementalSideEffect` value in the settings UI
+- **THEN** subsequent resolved damage of that type SHALL use the saved value
+- **AND** an empty or `null` value SHALL dispatch no elemental side effect
 
 #### Scenario: Legacy types without behavior still work
 
