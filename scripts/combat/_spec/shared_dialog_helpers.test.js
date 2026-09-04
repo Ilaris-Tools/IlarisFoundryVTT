@@ -899,6 +899,11 @@ describe('applyOperator', () => {
 // @spec openspec/changes/add-pre-effect-unit-tests/specs/pre-effect-unit-tests/spec.md
 // ---------------------------------------------------------------
 
+jest.mock('../../effects/nachbrennen-effect.js', () => ({
+    resolveElementalSideEffect: jest.fn(),
+}))
+
+import { resolveElementalSideEffect } from '../../effects/nachbrennen-effect.js'
 import { _applyDamageDirectly, getDamageTypeBehavior } from '../dialogs/shared-dialog-helpers.js'
 
 const defaultDamageTypes = JSON.stringify([
@@ -940,6 +945,7 @@ describe('getDamageTypeBehavior', () => {
             healing: true,
             targetsErschoepfung: true,
             bypassesArmor: false,
+            elementalSideEffect: null,
         })
     })
 
@@ -948,6 +954,7 @@ describe('getDamageTypeBehavior', () => {
             healing: false,
             targetsErschoepfung: false,
             bypassesArmor: false,
+            elementalSideEffect: null,
         })
         expect(global.ui.notifications.warn).toHaveBeenCalledTimes(1)
 
@@ -965,6 +972,7 @@ describe('getDamageTypeBehavior', () => {
             healing: false,
             targetsErschoepfung: false,
             bypassesArmor: false,
+            elementalSideEffect: null,
         })
         expect(global.ui.notifications.warn).toHaveBeenCalledTimes(1)
     })
@@ -979,6 +987,7 @@ describe('getDamageTypeBehavior', () => {
             healing: false,
             targetsErschoepfung: false,
             bypassesArmor: false,
+            elementalSideEffect: null,
         })
     })
 
@@ -992,6 +1001,7 @@ describe('getDamageTypeBehavior', () => {
             healing: false,
             targetsErschoepfung: false,
             bypassesArmor: false,
+            elementalSideEffect: null,
         })
     })
 
@@ -1254,5 +1264,25 @@ describe('_applyDamageDirectly — Healing', () => {
         await _applyDamageDirectly(targetActor, -5, 'PROFAN', false, {})
 
         expect(mockUpdate).not.toHaveBeenCalled()
+    })
+
+    it('dispatches a configured side effect after resolving direct damage', async () => {
+        resolveElementalSideEffect.mockClear()
+        ChatMessage.create.mockClear()
+        global.game.settings.get.mockImplementation((_namespace, key) => {
+            if (key === 'lepSystem') return false
+            if (key === 'damageTypes') {
+                return '[{"value":"FEUER","label":"Feuer","behavior":{"elementalSideEffect":"nachbrennen"}}]'
+            }
+            return undefined
+        })
+        targetActor = createTargetActor({ wunden: 0, ws: 5, wsStern: 5 })
+
+        await _applyDamageDirectly(targetActor, 6, 'FEUER', false, {})
+
+        expect(resolveElementalSideEffect).toHaveBeenCalledWith(targetActor, 'nachbrennen')
+        expect(resolveElementalSideEffect.mock.invocationCallOrder[0]).toBeGreaterThan(
+            ChatMessage.create.mock.invocationCallOrder[0],
+        )
     })
 })

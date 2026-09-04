@@ -347,4 +347,16 @@ describe('UebernatuerlichTalentSheet structured spell forms', () => {
         expect(template).toContain('add-spell-modification-summon-creature-override')
         expect(template).toContain('ilaris-summon-creature-sources')
     })
+
+    it('renders spell-modification pre-effect controls with correct nested indices', () => {
+        const template = readFileSync(
+            join(process.cwd(), 'scripts', 'items', 'templates', 'uebernatuerlich_talent.hbs'),
+            'utf8',
+        )
+
+        expect(template).toContain(
+            'name="system.spellModifications.{{@../index}}.preEffects.{{@index}}.avoidTest.enabled"',
+        )
+        expect(template).not.toContain('system.spellModifications..preEffects')
+    })
 })

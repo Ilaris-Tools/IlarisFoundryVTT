@@ -82,7 +82,7 @@ Die Tests laufen absichtlich seriell mit einem Worker. Bei einem Fehler bleiben 
 
 ### Pre-effect scenarios
 
-E2E-025 and E2E-026 use `HatAlles` as both caster and selectable target and require its existing `Ignifaxius Flammenstrahl` item. They clone and temporarily replace that embedded item's `preEffects` with the reviewed marker, alternate-resistance, and Pandämonium-style one-time damage configurations, then restore the actor snapshot. The baseline therefore needs no additional spell items for these scenarios.
+E2E-025 uses `HatAlles` as both caster and selectable target. It imports `Fulminictus Donnerkeil` (a non-ballistic instant-damage spell) from the compendium per test, then clones and temporarily replaces its `preEffects` with the reviewed marker and Pandämonium-style one-time damage configurations before restoring the actor snapshot. E2E-026 uses `HatAlles` as both caster and selectable target with its existing `Ignifaxius Flammenstrahl` item and temporarily replaces its `preEffects` for the alternate-resistance configuration. The baseline therefore needs no additional spell items for these scenarios.
 
 Before running them, ensure that `e2e-gm` is not already connected. The runner intentionally refuses an occupied account; use a free configured E2E user instead of a personal game client.
 

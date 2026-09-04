@@ -137,6 +137,9 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         await expect(failure).toContainText('Bei misslungener Widerstandsprobe')
         await expect(success).toContainText('Bei gelungener Widerstandsprobe')
         await expect(failure.locator('input[name$=".marker.id"]')).toBeHidden()
+        await expect(
+            failure.locator('input[name="system.preEffects.0.resistanceOutcomes.failure.enabled"]'),
+        ).toBeVisible()
 
         await failure.locator('input[name$=".resistanceOutcomes.failure.enabled"]').check()
         await expect(failure.locator('input[name$=".marker.id"]')).toBeVisible()
@@ -318,6 +321,9 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         await expect(
             finalWindow.locator('input[name$="summonItem.sourceUuid"]').first(),
         ).toHaveValue(ringUuid)
+        await finalWindow.locator('.summon-item-section').first().screenshot({
+            path: 'test-results/summon-item-source-kind-persisted.png',
+        })
     })
 
     test('adds, persists, and deletes a pre-effect entry', async ({ page }) => {
@@ -402,6 +408,9 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         )
 
         await reopenedModifier.locator('input[name$=".value"]').fill('3')
+        await reopenedModifier.screenshot({
+            path: 'test-results/ilaris-modifier-selector-persisted.png',
+        })
         await reopenedModifier.locator('input[name$=".value"]').dispatchEvent('change')
         await page.waitForFunction(
             ({ id }) => {

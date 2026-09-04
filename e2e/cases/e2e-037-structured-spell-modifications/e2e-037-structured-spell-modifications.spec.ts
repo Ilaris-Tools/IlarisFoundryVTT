@@ -224,14 +224,15 @@ test.describe('E2E-037 · Structured spell modifications', () => {
                 (entry: any) => entry.name === 'Dämonenbann',
             ) as any
             if (!actor || !source) throw new Error('Dämonenbann oder HatAlles fehlt.')
-            if (actor.items.some((item: any) => item.name === source.name)) return ''
-            const [item] = await actor.createEmbeddedDocuments('Item', [source.toObject()])
+            const itemData = source.toObject()
+            itemData.name = 'E2E Dämonenbann'
+            const [item] = await actor.createEmbeddedDocuments('Item', [itemData])
             return item.id
         }, SPELL_PACK)
 
         try {
             const actorWindow = await openActorSheet(page, ACTOR_NAME)
-            await openSpellDialog(actorWindow, 'Dämonenbann')
+            await openSpellDialog(actorWindow, 'E2E Dämonenbann')
             const dialog = page
                 .locator('.window-app, .application')
                 .filter({ hasText: 'Dämonenbann' })
@@ -242,7 +243,14 @@ test.describe('E2E-037 · Structured spell modifications', () => {
                 section.getByRole('heading', { name: 'Zaubermodifikationen' }),
             ).toBeVisible()
             await expect(section.locator('.spell-modification')).toHaveCount(4)
-            await section.locator('.spell-modification[value="magie-unterdruecken"]').check()
+            const suppressionOption = section.locator(
+                'label.spell-modification-option:has(input[value="magie-unterdruecken"])',
+            )
+            await expect(suppressionOption).toBeVisible()
+            await suppressionOption.click()
+            await expect(
+                section.locator('.spell-modification[value="magie-unterdruecken"]'),
+            ).toBeChecked()
             await expect(section).toContainText(
                 'Kosten 8, Ziel Zone, Reichweite 8 Schritt, Dauer 1 Stunde',
             )
@@ -416,7 +424,9 @@ test.describe('E2E-037 · Structured spell modifications', () => {
                     daemonisch: modifierValue(target, 'Dämonisch'),
                     otherSkill: modifierValue(target, 'Antimagie'),
                     caster: modifierValue(caster, 'Dämonisch'),
-                    outsideEffects: Array.from(outsideActor.effects ?? []).length,
+                    outsideOwnedEffects: Array.from(outsideActor.effects ?? []).filter(
+                        (effect: any) => effect.flags?.ilaris?.zoneRegionId === base.region.id,
+                    ).length,
                 }
                 await base.region.delete()
                 await waitFor(
@@ -464,7 +474,7 @@ test.describe('E2E-037 · Structured spell modifications', () => {
             daemonisch: -8,
             otherSkill: 0,
             caster: -8,
-            outsideEffects: 0,
+            outsideOwnedEffects: 0,
         })
         expect(result.amplified).toEqual({ daemonisch: -12, effectValue: '-8-4' })
         expect(result.cleanup).toBe(true)

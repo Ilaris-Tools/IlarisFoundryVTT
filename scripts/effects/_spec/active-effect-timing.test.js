@@ -93,6 +93,13 @@ describe('IlarisActiveEffect.isExpiryEvent', () => {
         expect(effect._isExpiryCalled).toBe(false)
     })
 
+    test('returns false for condition-ledger effects with durationless shared records', () => {
+        const effect = new IlarisActiveEffect()
+        effect.system = { ilarisCondition: { statusId: 'Nachbrennen', sources: [] } }
+        expect(effect.isExpiryEvent('combatTurn')).toBe(false)
+        expect(effect._isExpiryCalled).toBe(false)
+    })
+
     test('delegates to super for effects without ilarisTiming', () => {
         const effect = new IlarisActiveEffect()
         effect.system = {}
@@ -115,6 +122,13 @@ describe('IlarisActiveEffect.updateDuration', () => {
         const effect = new IlarisActiveEffect()
         effect.system = { ilarisTiming: { durationType: 'ownerTurns' } }
         effect.updateDuration({})
+        expect(effect._updateDurationCalled).toBe(true)
+    })
+
+    test('supplies an empty context when Foundry refreshes duration without one', () => {
+        const effect = new IlarisActiveEffect()
+        effect.system = { ilarisCondition: { statusId: 'Nachbrennen', sources: [] } }
+        effect.updateDuration()
         expect(effect._updateDurationCalled).toBe(true)
     })
 

@@ -210,7 +210,14 @@ export class IlarisActiveEffect extends ActiveEffect {
      * @override
      */
     isExpiryEvent(event, context) {
-        if (this.system?.ilarisTiming?.durationType === 'ownerTurns') return false
+        // Condition sources have their own owner-phase timing in the condition
+        // ledger. Their shared ActiveEffect is deliberately durationless, so it
+        // must never enter Foundry's duration registry (whose context is optional).
+        if (
+            this.system?.ilarisTiming?.durationType === 'ownerTurns' ||
+            this.system?.ilarisCondition
+        )
+            return false
         return super.isExpiryEvent(event, context)
     }
 
@@ -220,7 +227,10 @@ export class IlarisActiveEffect extends ActiveEffect {
      * owner-turn counter in system.ilarisTiming.
      * @override
      */
-    updateDuration(context) {
+    updateDuration(context = {}) {
+        // Foundry v14 documents this context as optional. Supplying the empty
+        // object keeps durationless ledger effects out of the combat-duration
+        // path when Foundry refreshes them without contextual turn data.
         return super.updateDuration(context)
     }
 }

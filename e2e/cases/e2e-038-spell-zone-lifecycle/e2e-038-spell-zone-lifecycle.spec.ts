@@ -2,6 +2,7 @@
 import { expect, test } from '@playwright/test'
 import { E2E_BASELINE } from '../../shared/baseline'
 import {
+    clickResistButton,
     clearChatLog,
     enableTargetSelectionForTest,
     foundryConfig,
@@ -254,62 +255,140 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
         }
     })
 
+    test('toggling a spell-modification resistance checkbox does not add a pre-effect', async ({
+        page,
+    }) => {
+        const itemId = await page.evaluate(async (packId) => {
+            const pack = game.packs?.get(packId)
+            const source = (await pack?.getDocuments())?.find(
+                (entry: any) => entry.name === 'Aeolitus Windgebraus',
+            ) as any
+            if (!source) throw new Error('Aeolitus Windgebraus fehlt.')
+            const data = source.toObject()
+            delete data._id
+            data.name = 'E2E Aeolitus-Widerstandsprobe'
+            const [item] = await Item.createDocuments([data])
+            item.sheet.render(true)
+            return item.id
+        }, SPELL_PACK)
+        const itemWindow = page
+            .locator('.window-app, .application')
+            .filter({ hasText: 'E2E Aeolitus-Widerstandsprobe' })
+            .last()
+
+        try {
+            await expect(itemWindow).toBeVisible({ timeout: 15000 })
+            const formEditor = itemWindow.locator('.spell-modification-editor')
+            await expect(formEditor).toBeVisible()
+
+            const preEffectCards = formEditor.locator('.spell-modification-pre-effect-card')
+            const initialCount = await preEffectCards.count()
+            expect(initialCount).toBeGreaterThan(0)
+
+            const avoidTest = formEditor.locator('input[name$=".avoidTest.enabled"]').first()
+            await expect(avoidTest).toBeVisible()
+            await avoidTest.uncheck()
+            await expect(preEffectCards).toHaveCount(initialCount)
+            await avoidTest.check()
+            await expect(preEffectCards).toHaveCount(initialCount)
+
+            await page.waitForFunction(
+                (id) => {
+                    const item = game.items.get(id) as any
+                    const mods = Array.isArray(item?.system?.spellModifications)
+                        ? item.system.spellModifications
+                        : Object.values(item?.system?.spellModifications ?? {})
+                    const form = mods.find((entry: any) => entry?.id === 'sturm')
+                    return Array.isArray(form?.preEffects) && form.preEffects.length === 1
+                },
+                itemId,
+                { timeout: 10000 },
+            )
+        } finally {
+            await page
+                .evaluate(async (id) => {
+                    const item = game.items.get(id)
+                    await item?.sheet?.close()
+                    await item?.delete()
+                }, itemId)
+                .catch(() => {})
+        }
+    })
+
     test('resolves a placed Pestgestank cone against only its contained token', async ({
         page,
     }) => {
-        const result = await page.evaluate(async (actorName) => {
-            const actor = game.actors?.getName(actorName) as any
-            const scene = canvas.scene as any
-            const gridSize = canvas.grid.size
-            if (!actor || !scene || !gridSize) throw new Error('Akteur, Szene oder Grid fehlt.')
-            const origin = {
-                x: canvas.dimensions.sceneX + gridSize * 6,
-                y: canvas.dimensions.sceneY + gridSize * 6,
-            }
-            const [inside, outside] = await scene.createEmbeddedDocuments('Token', [
-                {
-                    name: 'E2E Zonen-Ziel innen',
-                    actorId: actor.id,
-                    x: origin.x + gridSize * 2 - gridSize / 2,
-                    y: origin.y - gridSize / 2,
-                    flags: { Ilaris: { e2eZone: true } },
-                },
-                {
-                    name: 'E2E Zonen-Ziel außen',
-                    actorId: actor.id,
-                    x: origin.x - gridSize * 3 - gridSize / 2,
-                    y: origin.y - gridSize / 2,
-                    flags: { Ilaris: { e2eZone: true } },
-                },
-            ])
-            const { createZoneRegionData } =
-                await import('/systems/Ilaris/scripts/combat/zones/zone-region-adapter.js')
-            const { resolveZoneTargets } =
-                await import('/systems/Ilaris/scripts/combat/zones/zone-targets.js')
-            const [region] = await scene.createEmbeddedDocuments('Region', [
-                createZoneRegionData(
+        let created: { regionId: string; tokenIds: string[] } | null = null
+        try {
+            const result = await page.evaluate(async (actorName) => {
+                const actor = game.actors?.getName(actorName) as any
+                const scene = canvas.scene as any
+                const gridSize = canvas.grid.size
+                if (!actor || !scene || !gridSize) throw new Error('Akteur, Szene oder Grid fehlt.')
+                const origin = {
+                    x: canvas.dimensions.sceneX + gridSize * 6,
+                    y: canvas.dimensions.sceneY + gridSize * 6,
+                }
+                const [inside, outside] = await scene.createEmbeddedDocuments('Token', [
                     {
-                        shape: 'cone',
-                        distance: 4,
-                        angle: 45,
-                        placement: { anchor: 'free', pivot: 'tip', range: 8 },
-                        targeting: { includeCaster: true },
+                        name: 'E2E Zonen-Ziel innen',
+                        actorId: actor.id,
+                        x: origin.x + gridSize * 2 - gridSize / 2,
+                        y: origin.y - gridSize / 2,
+                        flags: { Ilaris: { e2eZone: true } },
                     },
-                    { ...origin, direction: 0 },
-                    { flags: { Ilaris: { e2eZone: true } } },
-                ),
-            ])
-            if (!region) throw new Error('Pestgestank-Region wurde nicht erzeugt.')
-            await new Promise((resolve) => setTimeout(resolve, 250))
-            return {
-                insideId: inside.id,
-                outsideId: outside.id,
-                targetIds: resolveZoneTargets(region).map((target: any) => target.tokenId),
-            }
-        }, ACTOR_NAME)
+                    {
+                        name: 'E2E Zonen-Ziel außen',
+                        actorId: actor.id,
+                        x: origin.x - gridSize * 3 - gridSize / 2,
+                        y: origin.y - gridSize / 2,
+                        flags: { Ilaris: { e2eZone: true } },
+                    },
+                ])
+                const { createZoneRegionData } =
+                    await import('/systems/Ilaris/scripts/combat/zones/zone-region-adapter.js')
+                const { resolveZoneTargets } =
+                    await import('/systems/Ilaris/scripts/combat/zones/zone-targets.js')
+                const [region] = await scene.createEmbeddedDocuments('Region', [
+                    createZoneRegionData(
+                        {
+                            shape: 'cone',
+                            distance: 4,
+                            angle: 45,
+                            placement: { anchor: 'free', pivot: 'tip', range: 8 },
+                            targeting: { includeCaster: true },
+                        },
+                        { ...origin, direction: 0 },
+                        { flags: { Ilaris: { e2eZone: true } } },
+                    ),
+                ])
+                if (!region) throw new Error('Pestgestank-Region wurde nicht erzeugt.')
+                await new Promise((resolve) => setTimeout(resolve, 250))
+                return {
+                    insideId: inside.id,
+                    outsideId: outside.id,
+                    regionId: region.id,
+                    tokenIds: [inside.id, outside.id],
+                    targetIds: resolveZoneTargets(region).map((target: any) => target.tokenId),
+                }
+            }, ACTOR_NAME)
+            created = { regionId: result.regionId, tokenIds: result.tokenIds }
 
-        expect(result.targetIds).toContain(result.insideId)
-        expect(result.targetIds).not.toContain(result.outsideId)
+            expect(result.targetIds).toContain(result.insideId)
+            expect(result.targetIds).not.toContain(result.outsideId)
+        } finally {
+            if (!created) return
+            await page
+                .evaluate(async ({ regionId, tokenIds }) => {
+                    const scene = canvas.scene as any
+                    if (scene?.regions?.has(regionId))
+                        await scene.deleteEmbeddedDocuments('Region', [regionId])
+                    const ownedTokenIds = tokenIds.filter((id) => scene?.tokens?.has(id))
+                    if (ownedTokenIds.length)
+                        await scene.deleteEmbeddedDocuments('Token', ownedTokenIds)
+                }, created)
+                .catch(() => {})
+        }
     })
 
     test('cancels a draft Region and creates only its replacement before a cast', async ({
@@ -929,7 +1008,14 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
                         ],
                     })
                     if (!region) throw new Error('Dornengrenze wurde nicht erzeugt.')
-                    return { regionId: region.id, tokenId: targetToken.id, origin }
+                    return {
+                        regionId: region.id,
+                        tokenId: targetToken.id,
+                        origin,
+                        effectIds: Array.from(targetToken.actor?.effects ?? []).map(
+                            (effect: any) => effect.id,
+                        ),
+                    }
                 },
                 {
                     casterName: ACTOR_NAME,
@@ -950,6 +1036,32 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
                     }).length
                 }, tokenId)
             await expect.poll(() => promptCountForTarget(result.tokenId)).toBe(1)
+
+            // This Token is explicitly unlinked. Opening the real player-visible
+            // Widerstandsprobe proves the prompt click retains its synthetic Actor.
+            await clickResistButton(playerPage)
+            const resistDialog = playerPage.locator('.application.fertigkeit-dialog').last()
+            await expect(resistDialog).toBeVisible({ timeout: 15000 })
+            await resistDialog.screenshot({
+                path: 'test-results/unlinked-zone-resistance-dialog.png',
+            })
+            await playerPage.evaluate(() => {
+                const dialog = Array.from(
+                    (foundry.applications as any).instances?.values() ?? [],
+                ).find((app: any) => app._resistContext) as any
+                if (!dialog) throw new Error('Widerstandsdialog für unlinked Zone-Token fehlt.')
+                Hooks.callAll('Ilaris.postSkillRoll', dialog, { rollResult: { success: false } })
+            })
+            await expect
+                .poll(() =>
+                    playerPage.evaluate(({ tokenId, effectIds }) => {
+                        const actor = canvas.tokens?.get(tokenId)?.actor as any
+                        return Array.from(actor?.effects ?? []).some(
+                            (effect: any) => !effectIds.includes(effect.id),
+                        )
+                    }, result),
+                )
+                .toBe(true)
 
             await page.evaluate(async ({ tokenId, origin }) => {
                 const token = canvas.scene?.tokens.get(tokenId) as any

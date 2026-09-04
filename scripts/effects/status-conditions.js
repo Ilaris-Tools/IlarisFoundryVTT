@@ -54,6 +54,12 @@ function getNormalizedSources(effect, statusId) {
     return sources.length ? sources : [{ id: `legacy-${statusId}`, type: 'manual' }]
 }
 
+const completedNachbrennenSources = new Set()
+
+function nachbrennenCompletionKey(actor, effect, source) {
+    return `${actor.uuid || actor.id || 'actor'}:${effect.id}:${source.id}`
+}
+
 function buildConditionData(statusId, source) {
     const template = foundry.utils.deepClone(getStatusTemplate(statusId))
     if (!template) throw new Error(`Unbekannter Status-Effekt: ${statusId}`)
@@ -159,6 +165,7 @@ export async function reduceConditionSourcesForCombatant(combatant, expiresOn) {
         if (!condition?.statusId) continue
         const sources = getConditionSources(effect)
         const nextSources = []
+        const completedSources = []
         let changed = false
         for (const source of sources) {
             const timing = source.timing
@@ -170,6 +177,12 @@ export async function reduceConditionSourcesForCombatant(combatant, expiresOn) {
             changed = true
             if (remaining > 0) {
                 nextSources.push({ ...source, timing: { ...timing, remaining } })
+            } else if (source.type === 'nachbrennen') {
+                const key = nachbrennenCompletionKey(actor, effect, source)
+                if (!completedNachbrennenSources.has(key)) {
+                    completedNachbrennenSources.add(key)
+                    completedSources.push(source)
+                }
             }
         }
         if (!changed) continue
@@ -177,6 +190,10 @@ export async function reduceConditionSourcesForCombatant(combatant, expiresOn) {
             await effect.update({ 'system.ilarisCondition.sources': nextSources })
         } else {
             await actor.deleteEmbeddedDocuments('ActiveEffect', [effect.id])
+        }
+        for (const source of completedSources) {
+            const { completeNachbrennen } = await import('./nachbrennen-effect.js')
+            await completeNachbrennen(actor, source)
         }
     }
 }

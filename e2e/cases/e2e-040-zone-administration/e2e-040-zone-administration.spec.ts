@@ -193,7 +193,6 @@ test.describe('E2E-040 · Zone administration', () => {
         savedUiConfig = await page.evaluate(() =>
             foundry.utils.deepClone(game.settings.get('core', 'uiConfig')),
         )
-        await cleanupZoneAdministrationFixture(page)
         fixture = null
     })
 

@@ -143,6 +143,30 @@ describe('status condition service', () => {
         expect(actor.deleteEmbeddedDocuments).toHaveBeenCalledWith('ActiveEffect', ['condition'])
     })
 
+    it('extinguishes only the Nachbrennen source while retaining an unrelated source', async () => {
+        const effect = {
+            id: 'condition',
+            system: {
+                ilarisCondition: {
+                    statusId: 'Nachbrennen',
+                    sources: [
+                        { id: 'burning', type: 'nachbrennen' },
+                        { id: 'unrelated', type: 'manual' },
+                    ],
+                },
+            },
+            update: jest.fn().mockResolvedValue(undefined),
+        }
+        const actor = createActor({ effects: [effect] })
+
+        await removeConditionSource(actor, effect, 'burning')
+
+        expect(effect.update).toHaveBeenCalledWith({
+            'system.ilarisCondition.sources': [{ id: 'unrelated', type: 'manual' }],
+        })
+        expect(actor.deleteEmbeddedDocuments).not.toHaveBeenCalled()
+    })
+
     it('does not let a manual toggle remove an automated-only condition', async () => {
         const effect = {
             id: 'condition',

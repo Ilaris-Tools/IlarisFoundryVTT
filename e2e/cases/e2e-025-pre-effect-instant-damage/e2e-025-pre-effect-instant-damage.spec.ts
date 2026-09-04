@@ -8,7 +8,9 @@
  *   1. Updates the target actor's wounds
  *   2. Creates a chat message describing the damage
  *
- * Uses Ignifaxius (or first discovered spell with instant pre-effects).
+ * Uses Fulminictus Donnerkeil, imported from the compendium source (a
+ * non-ballistic instant-damage spell) so the instant Pre-Effects apply
+ * directly after a successful targeted cast.
  * The test actor is both caster and target.
  */
 
@@ -28,7 +30,8 @@ import {
 } from '../../shared/fixtures/foundry'
 
 const ACTOR_NAME = 'HatAlles'
-const SPELL_NAME = 'Ignifaxius'
+const SPELL_NAME = 'Fulminictus Donnerkeil'
+const SPELL_PACK = 'Ilaris.zauberspruche-und-rituale'
 
 test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
     let snapshot: ActorDefaultSnapshot
@@ -47,6 +50,25 @@ test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
                 'system.gesundheit.erschoepfung': 0,
             })
         }, ACTOR_NAME)
+
+        // Import the naturally non-ballistic instant-damage spell from the
+        // packed compendium source. It is not part of the baseline actor, so
+        // the actor snapshot restore removes it again in afterEach.
+        await page.evaluate(
+            async ({ name, packId, spellName }) => {
+                const actor = game.actors.getName(name)
+                if (actor?.items.some((item) => item.name === spellName)) return
+                const pack = game.packs?.get(packId)
+                const source = (await pack?.getDocuments?.())?.find(
+                    (item) => item.name === spellName,
+                )
+                if (!source) throw new Error('Fulminictus fehlt im Kompendium.')
+                const itemData = foundry.utils.deepClone(source.toObject())
+                delete itemData._id
+                await actor.createEmbeddedDocuments('Item', [itemData])
+            },
+            { name: ACTOR_NAME, packId: SPELL_PACK, spellName: SPELL_NAME },
+        )
 
         await clearChatLog(page)
     })

@@ -1,5 +1,6 @@
 import { readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
+import { DEFAULT_DAMAGE_TYPES } from '../../../settings/damage-types.js'
 
 const spellSourceDirectory = join(
     process.cwd(),
@@ -64,6 +65,16 @@ describe('reviewed supported spell pre-effect source data', () => {
             instant: true,
             changes: [expect.objectContaining({ damageType: 'FEUER', value: '4W6' })],
         })
+    })
+
+    it('binds Ignifaxius fire damage to the configured Nachbrennen damage type', () => {
+        const ignifaxius = readSpell('Ignifaxius_Flammenstrahl_MnFJNJi1yZSxCSGt.json')
+        const fireType = DEFAULT_DAMAGE_TYPES.find((type) => type.value === 'FEUER')
+
+        expect(ignifaxius.system.preEffects?.[0]?.changes?.[0]).toMatchObject({
+            damageType: 'FEUER',
+        })
+        expect(fireType?.behavior.elementalSideEffect).toBe('nachbrennen')
     })
 
     it('authors target Magieresistenz only for the audited single-Actor sources', () => {

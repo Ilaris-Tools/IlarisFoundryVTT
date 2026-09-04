@@ -19,26 +19,93 @@
         </select>
         {{/if}}
         <div>
-            <div class="flexrow">
-                <label>Mächtig:</label>
-                <textarea rows="10" name="system.maechtig">{{item.system.maechtig}}</textarea>
-            </div>
-            <div class="flexrow">
-                <label>Schwierigkeit:</label>
-                <input
-                    name="system.schwierigkeit"
-                    value="{{item.system.schwierigkeit}}"
-                    type="text"
-                    data-dtype="String"
-                />
-            </div>
-            <div class="flexrow">
-                <label><input type="checkbox" name="system.magicResistance.enabled" {{checked item.system.magicResistance.enabled}} /> Ziel-Magieresistenz</label>
-            </div>
-            <div class="flexrow">
-                <label>Modifikationen:</label>
-                <textarea name="system.modifikationen">{{item.system.modifikationen}}</textarea>
-            </div>
+            <section>
+                <div class="flexrow">
+                    <label>Mächtig:</label>
+                    <textarea rows="10" name="system.maechtig">{{item.system.maechtig}}</textarea>
+                </div>
+                <div class="flexrow">
+                    <label>Schwierigkeit:</label>
+                    <input
+                        name="system.schwierigkeit"
+                        value="{{item.system.schwierigkeit}}"
+                        type="text"
+                        data-dtype="String"
+                    />
+                </div>
+                <div class="flexrow">
+                    <label><input type="checkbox" name="system.magicResistance.enabled" {{checked item.system.magicResistance.enabled}} /> Ziel-Magieresistenz</label>
+                </div>
+                <div class="flexrow">
+                    <label>Modifikationen:</label>
+                    <textarea name="system.modifikationen">{{item.system.modifikationen}}</textarea>
+                </div>
+                <div class="flexrow">
+                    <label>Vorbereitung:</label>
+                    <input
+                        name="system.vorbereitung"
+                        value="{{item.system.vorbereitung}}"
+                        type="text"
+                        data-dtype="String"
+                    />
+                </div>
+                <div class="flexrow">
+                    <label>Ziel:</label>
+                    <input
+                        name="system.ziel"
+                        value="{{item.system.ziel}}"
+                        type="text"
+                        data-dtype="String"
+                    />
+                </div>
+                <div class="flexrow">
+                    <label>Reichweite:</label>
+                    <input
+                        name="system.reichweite"
+                        value="{{item.system.reichweite}}"
+                        type="text"
+                        data-dtype="String"
+                    />
+                </div>
+                <div class="flexrow">
+                    <label>Wirkungsdauer:</label>
+                    <input
+                        name="system.wirkungsdauer"
+                        value="{{item.system.wirkungsdauer}}"
+                        type="text"
+                        data-dtype="String"
+                    />
+                </div>
+                <div class="flexrow">
+                    <label>Kosten:</label>
+                    <input
+                        name="system.kosten"
+                        value="{{item.system.kosten}}"
+                        type="text"
+                        data-dtype="String"
+                    />
+                </div>
+                <div class="flexrow">
+                    <label>Fertigkeiten:</label>
+                    <input
+                        name="system.fertigkeiten"
+                        value="{{item.system.fertigkeiten}}"
+                        type="text"
+                        data-dtype="String"
+                    />
+                </div>
+                <div class="flexrow">
+                    <label>Erlernen:</label>
+                    <input
+                        name="system.erlernen"
+                        value="{{item.system.erlernen}}"
+                        type="text"
+                        data-dtype="String"
+                    />
+                </div>
+                <label>Beschreibung:</label>
+                <textarea name="system.text">{{item.system.text}}</textarea>
+            </section>
             <section class="zone-profile-editor">
                 <h3>Zonenautomatisierung</h3>
                 <p class="hint">Optional. Ohne Form bleibt dieses Talent vollstaendig manuell.</p>
@@ -167,71 +234,6 @@
                 {{/each}}
                 <datalist id="spell-modification-groups">{{#each item.system.spellModificationGroups}}<option value="{{id}}">{{label}}</option>{{/each}}</datalist>
             </section>
-            <div class="flexrow">
-                <label>Vorbereitung:</label>
-                <input
-                    name="system.vorbereitung"
-                    value="{{item.system.vorbereitung}}"
-                    type="text"
-                    data-dtype="String"
-                />
-            </div>
-            <div class="flexrow">
-                <label>Ziel:</label>
-                <input
-                    name="system.ziel"
-                    value="{{item.system.ziel}}"
-                    type="text"
-                    data-dtype="String"
-                />
-            </div>
-            <div class="flexrow">
-                <label>Reichweite:</label>
-                <input
-                    name="system.reichweite"
-                    value="{{item.system.reichweite}}"
-                    type="text"
-                    data-dtype="String"
-                />
-            </div>
-            <div class="flexrow">
-                <label>Wirkungsdauer:</label>
-                <input
-                    name="system.wirkungsdauer"
-                    value="{{item.system.wirkungsdauer}}"
-                    type="text"
-                    data-dtype="String"
-                />
-            </div>
-            <div class="flexrow">
-                <label>Kosten:</label>
-                <input
-                    name="system.kosten"
-                    value="{{item.system.kosten}}"
-                    type="text"
-                    data-dtype="String"
-                />
-            </div>
-            <div class="flexrow">
-                <label>Fertigkeiten:</label>
-                <input
-                    name="system.fertigkeiten"
-                    value="{{item.system.fertigkeiten}}"
-                    type="text"
-                    data-dtype="String"
-                />
-            </div>
-            <div class="flexrow">
-                <label>Erlernen:</label>
-                <input
-                    name="system.erlernen"
-                    value="{{item.system.erlernen}}"
-                    type="text"
-                    data-dtype="String"
-                />
-            </div>
-            <label>Beschreibung:</label>
-            <textarea name="system.text">{{item.system.text}}</textarea>
         </div>
     </div>
     <div>

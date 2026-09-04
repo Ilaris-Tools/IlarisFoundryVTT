@@ -3,11 +3,13 @@ import {
     ConfigureGameSettingsCategories,
     IlarisGameSettingNames,
 } from '../../settings/configure-game-settings.model.js'
+import { resolveElementalSideEffect } from '../../effects/nachbrennen-effect.js'
 
 const DEFAULT_DAMAGE_TYPE_BEHAVIOR = {
     healing: false,
     targetsErschoepfung: false,
     bypassesArmor: false,
+    elementalSideEffect: null,
 }
 let cachedDamageTypesRaw
 let cachedDamageTypes = []
@@ -69,6 +71,9 @@ export function resolveDamageType(damageType) {
             bypassesArmor:
                 effectiveType?.behavior?.bypassesArmor ??
                 DEFAULT_DAMAGE_TYPE_BEHAVIOR.bypassesArmor,
+            elementalSideEffect:
+                effectiveType?.behavior?.elementalSideEffect ??
+                DEFAULT_DAMAGE_TYPE_BEHAVIOR.elementalSideEffect,
         },
     }
 }
@@ -77,7 +82,7 @@ export function resolveDamageType(damageType) {
  * Returns the behavior flags configured for a damage type.
  *
  * @param {string} damageType - The configured damage type key
- * @returns {{healing: boolean, targetsErschoepfung: boolean, bypassesArmor: boolean}}
+ * @returns {{healing: boolean, targetsErschoepfung: boolean, bypassesArmor: boolean, elementalSideEffect: string|null}}
  */
 export function getDamageTypeBehavior(damageType) {
     return resolveDamageType(damageType).behavior
@@ -595,6 +600,10 @@ export async function _applyDamageDirectly(targetActor, damage, damageType, true
                 style: CONST.CHAT_MESSAGE_STYLES.OTHER,
             })
         }
+    }
+
+    if (damageAmount > 0) {
+        await resolveElementalSideEffect(targetActor, behavior.elementalSideEffect)
     }
 }
 

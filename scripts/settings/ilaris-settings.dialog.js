@@ -3,6 +3,7 @@ import {
     IlarisAutomatisierungSettingNames,
     ConfigureGameSettingsCategories,
 } from './configure-game-settings.model.js'
+import { normalizeDamageType, serializeDefaultDamageTypes } from './damage-types.js'
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api
 const TAB_IDS = {
@@ -172,6 +173,7 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                     healing: type.behavior?.healing === true,
                     targetsErschoepfung: type.behavior?.targetsErschoepfung === true,
                     bypassesArmor: type.behavior?.bypassesArmor === true,
+                    elementalSideEffect: type.behavior?.elementalSideEffect || null,
                 },
             }))
         } catch (e) {
@@ -290,16 +292,7 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
             return null
         }
 
-        return {
-            value,
-            label,
-            behavior: {
-                healing: formData.healing === true || formData.healing === 'on',
-                targetsErschoepfung:
-                    formData.targetsErschoepfung === true || formData.targetsErschoepfung === 'on',
-                bypassesArmor: formData.bypassesArmor === true || formData.bypassesArmor === 'on',
-            },
-        }
+        return normalizeDamageType({ ...formData, value, label })
     }
 
     _generateAllPacksContext() {
@@ -620,7 +613,7 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                 { name: IlarisGameSettingNames.supernaturalEffectStacking, value: 'ilaris' },
                 {
                     name: IlarisGameSettingNames.damageTypes,
-                    value: '[{"value":"PROFAN","label":"Profan (Wunden)","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"STUMPF","label":"Stumpf (Erschöpfung)","behavior":{"healing":false,"targetsErschoepfung":true,"bypassesArmor":false}},{"value":"MAGISCH","label":"Magisch","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"GEWEIHT","label":"Geweiht","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"DAEMONISCH","label":"Dämonisch","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"FEUER","label":"Feuer","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"EIS","label":"Eis","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"ERZ","label":"Erz","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"HUMUS","label":"Humus","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"LUFT","label":"Luft","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"WASSER","label":"Wasser","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"HEALING_WOUND","label":"Heilung (Wunden)","behavior":{"healing":true,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"HEALING_EXHAUSTION","label":"Heilung (Erschöpfung)","behavior":{"healing":true,"targetsErschoepfung":true,"bypassesArmor":false}},{"value":"TRUE_DAMAGE","label":"SP-Schaden","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":true}}]',
+                    value: serializeDefaultDamageTypes(),
                 },
                 { name: IlarisAutomatisierungSettingNames.useSceneEnvironment, value: true },
                 { name: IlarisAutomatisierungSettingNames.useTargetSelection, value: false },

@@ -140,6 +140,58 @@ describe('condition source expiry', () => {
         })
         expect(actor.deleteEmbeddedDocuments).not.toHaveBeenCalled()
     })
+
+    it('completes Nachbrennen once after four owner turns and retains an unrelated source', async () => {
+        const effect = {
+            id: 'condition',
+            system: {
+                ilarisCondition: {
+                    statusId: 'Nachbrennen',
+                    sources: [
+                        { id: 'unrelated', type: 'manual' },
+                        {
+                            id: 'burning',
+                            type: 'nachbrennen',
+                            timing: {
+                                durationType: 'ownerTurns',
+                                expiresOn: 'turnStart',
+                                remaining: 4,
+                            },
+                        },
+                    ],
+                },
+            },
+            update: jest.fn().mockImplementation(async (data) => {
+                effect.system.ilarisCondition.sources = data['system.ilarisCondition.sources']
+            }),
+        }
+        const actor = {
+            id: 'target',
+            uuid: 'Actor.target',
+            name: 'Ziel',
+            effects: [effect],
+            system: { gesundheit: { wunden: 2 } },
+            update: jest.fn().mockResolvedValue(undefined),
+            deleteEmbeddedDocuments: jest.fn().mockResolvedValue([]),
+        }
+        global.ChatMessage = {
+            create: jest.fn().mockResolvedValue(undefined),
+            getSpeaker: jest.fn(() => ({ actor: 'target' })),
+        }
+        global.CONST = { CHAT_MESSAGE_STYLES: { OTHER: 0 } }
+
+        await reduceConditionSourcesForCombatant({ actor }, 'turnStart')
+        await reduceConditionSourcesForCombatant({ actor }, 'turnStart')
+        await reduceConditionSourcesForCombatant({ actor }, 'turnStart')
+        await reduceConditionSourcesForCombatant({ actor }, 'turnStart')
+        await reduceConditionSourcesForCombatant({ actor }, 'turnStart')
+
+        expect(actor.update).toHaveBeenCalledTimes(1)
+        expect(actor.update).toHaveBeenCalledWith({ 'system.gesundheit.wunden': 3 })
+        expect(ChatMessage.create).toHaveBeenCalledTimes(1)
+        expect(effect.system.ilarisCondition.sources).toEqual([{ id: 'unrelated', type: 'manual' }])
+        expect(actor.deleteEmbeddedDocuments).not.toHaveBeenCalled()
+    })
 })
 
 describe('infinite passive Zone DOT timing', () => {

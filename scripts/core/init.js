@@ -412,6 +412,16 @@ Hooks.once('init', () => {
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/falling-orange.svg',
         },
+        Nachbrennen: {
+            id: 'Nachbrennen',
+            name: 'Nachbrennen',
+            order: 600,
+            duration: [],
+            changes: [],
+            isTemporary: 0,
+            img: 'systems/Ilaris/assets/images/icon/ilaris-fvtt_magic_white.svg',
+            tint: STATUS_EFFECT_COLORS.ORANGE,
+        },
 
         // ── Nahkampf ───────────────────────────────────────────────────────────
         Nahkampf1: {

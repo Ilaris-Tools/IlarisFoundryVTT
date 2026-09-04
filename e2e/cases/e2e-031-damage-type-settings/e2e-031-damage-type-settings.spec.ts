@@ -57,6 +57,7 @@ test.describe('E2E-031 · Damage Type Settings', () => {
             .last()
         await expect(editDialog).toBeVisible({ timeout: 10000 })
         await editDialog.locator('input[name="label"]').fill('Profan (bearbeitet)')
+        await editDialog.locator('input[name="elementalSideEffect"]').fill('nachbrennen')
         await editDialog.locator('button:has-text("Übernehmen")').click()
 
         await expect(settingsDialog.locator('.damage-type-row').first()).toContainText(
@@ -83,7 +84,9 @@ test.describe('E2E-031 · Damage Type Settings', () => {
         await page.waitForFunction(
             ({ namespace, key }) => {
                 return JSON.parse(game.settings.get(namespace, key)).some(
-                    (type: any) => type.label === 'Profan (bearbeitet)',
+                    (type: any) =>
+                        type.label === 'Profan (bearbeitet)' &&
+                        type.behavior?.elementalSideEffect === 'nachbrennen',
                 )
             },
             damageTypesSetting,
@@ -101,6 +104,38 @@ test.describe('E2E-031 · Damage Type Settings', () => {
         await expect(reopenedDialog.locator('.damage-type-row').first()).toContainText(
             'Profan (bearbeitet)',
         )
+        const reopenedProfanRow = reopenedDialog
+            .locator('.damage-type-row')
+            .filter({ hasText: 'Profan (bearbeitet)' })
+            .first()
+        await reopenedProfanRow.locator('.edit-damage-type').click()
+        const clearSideEffectDialog = page
+            .locator('.application, .window-app')
+            .filter({ hasText: 'Schadenstyp bearbeiten' })
+            .last()
+        await expect(
+            clearSideEffectDialog.locator('input[name="elementalSideEffect"]'),
+        ).toHaveValue('nachbrennen')
+        await clearSideEffectDialog.locator('input[name="elementalSideEffect"]').fill('')
+        await clearSideEffectDialog.locator('button:has-text("Übernehmen")').click()
+        await reopenedDialog.locator('button[data-action="saveSettings"]').click()
+        await page.waitForFunction(
+            () =>
+                JSON.parse(game.settings.get('Ilaris', 'damageTypes')).find(
+                    (type: any) => type.label === 'Profan (bearbeitet)',
+                )?.behavior?.elementalSideEffect === null,
+            undefined,
+            { timeout: 10000 },
+        )
+
+        await page.evaluate(() => {
+            const menu = game.settings.menus.get('Ilaris.ilarisSettingsMenu')
+            if (!menu?.type) throw new Error('Ilaris settings menu is not registered')
+            new menu.type().render({ force: true })
+        })
+        const finalDialog = page.locator('.settings-dialog').last()
+        await expect(finalDialog).toBeVisible({ timeout: 15000 })
+        await finalDialog.locator('nav [data-tab="GENERAL"]').click()
         const persistedCustom = await page.evaluate(() => {
             return JSON.parse(game.settings.get('Ilaris', 'damageTypes')).find(
                 (type: any) => type.value === 'TEST_HEALING',
@@ -111,7 +146,7 @@ test.describe('E2E-031 · Damage Type Settings', () => {
             behavior: { healing: true, targetsErschoepfung: true },
         })
 
-        const customRow = reopenedDialog
+        const customRow = finalDialog
             .locator('.damage-type-row')
             .filter({ hasText: 'Testheilung' })
             .first()
@@ -119,7 +154,7 @@ test.describe('E2E-031 · Damage Type Settings', () => {
         await expect(
             reopenedDialog.locator('.damage-type-row').filter({ hasText: 'Testheilung' }),
         ).toHaveCount(0)
-        await reopenedDialog.locator('button[data-action="saveSettings"]').click()
+        await finalDialog.locator('button[data-action="saveSettings"]').click()
         await page.waitForFunction(
             () =>
                 !JSON.parse(game.settings.get('Ilaris', 'damageTypes')).some(
