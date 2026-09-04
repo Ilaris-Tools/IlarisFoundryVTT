@@ -6,6 +6,7 @@ import {
     ConfigureGameSettingsCategories,
 } from '../settings/configure-game-settings.model.js'
 import { callIlarisHookWithGlobalMirror } from './hooks/global_combat_hooks.js'
+import { dispatchBallisticDefenseOutcome } from './ballistic-spell-resolution.js'
 
 /**
  * Opens a combat dialog for the given actor and item.
@@ -270,6 +271,12 @@ export async function handleAkrobatikDefense(actor, rollResult, html) {
                         sound: CONFIG.sounds.dice,
                         rollMode: rollmode,
                     })
+                    if (rollResult.ilarisBallisticSpell) {
+                        await dispatchBallisticDefenseOutcome({
+                            ...rollResult.ilarisBallisticSpell,
+                            defended: success,
+                        })
+                    }
                 },
             },
             {
@@ -309,6 +316,14 @@ export async function openDefenseForTarget(
     attackType,
     htmlDOM,
 ) {
+    if (weaponId === 'no-defense' && rollResult.ilarisBallisticSpell) {
+        await dispatchBallisticDefenseOutcome({
+            ...rollResult.ilarisBallisticSpell,
+            defended: false,
+        })
+        return null
+    }
+
     // Akrobatik defense manages its own UI state
     if (weaponId === 'akrobatik') {
         await handleAkrobatikDefense(actor, rollResult, htmlDOM)

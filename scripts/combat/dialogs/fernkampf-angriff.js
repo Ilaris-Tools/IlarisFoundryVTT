@@ -7,6 +7,11 @@ import {
     callIlarisHookAllWithGlobalMirror,
     callIlarisHookWithGlobalMirror,
 } from '../hooks/global_combat_hooks.js'
+import {
+    getArmedAttackBonus,
+    getArmedAttackContext,
+    resolveArmedAttack,
+} from '../../effects/pre-effects/armed-combat-effects.js'
 
 export class FernkampfAngriffDialog extends CombatDialog {
     /** @override */
@@ -120,8 +125,9 @@ export class FernkampfAngriffDialog extends CombatDialog {
      * Creates attack roll summary
      */
     getAttackSummaryContext(baseFK, statusMods, nahkampfMods, diceFormula) {
+        const ilaris = this.getIlarisModifierResult('at')
         const maneuverMod = this.mod_at || 0
-        const totalMod = maneuverMod + statusMods + nahkampfMods
+        const totalMod = maneuverMod + statusMods + nahkampfMods + ilaris.value
         const finalFK = baseFK + totalMod
         const formattedDice = formatDiceFormula(diceFormula)
         const finalFormula =
@@ -135,6 +141,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
             },
             this._buildSignedModifierData(statusMods, 'Status (Wunden/Furcht)'),
             this._buildSignedModifierData(nahkampfMods, 'Token Status'),
+            ...this.getIlarisModifierRows(ilaris),
         ].filter((row) => row)
 
         const maneuverSection = this._buildModifierSectionData(this.text_at, {
@@ -150,6 +157,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
             sections: maneuverSection ? [maneuverSection] : [],
             totalRow,
             showDivider: Boolean(maneuverSection || totalRow),
+            suppression: this.getIlarisSuppressionContext(ilaris),
         }
     }
 
@@ -157,15 +165,25 @@ export class FernkampfAngriffDialog extends CombatDialog {
      * Creates damage roll summary
      */
     getDamageSummaryContext() {
+        const ilaris = this.getIlarisModifierResult('damage')
         const baseDamage = this.getBaseDamageFormula()
         const maneuverMod = this.mod_dm || 0
         const hasDamageFormula = Boolean(baseDamage)
         let finalFormula = 'Kein Schadenwert'
-        if (hasDamageFormula && maneuverMod === 0) {
+        if (
+            hasDamageFormula &&
+            maneuverMod === 0 &&
+            ilaris.value === 0 &&
+            !ilaris.diceFormulas.length
+        ) {
             finalFormula = baseDamage
         } else if (hasDamageFormula) {
-            const sign = maneuverMod > 0 ? '+' : ''
-            finalFormula = `${baseDamage} ${sign}${maneuverMod}`
+            finalFormula = this.appendIlarisDamageFormula(
+                maneuverMod
+                    ? `${baseDamage} ${maneuverMod > 0 ? '+' : ''}${maneuverMod}`
+                    : baseDamage,
+                ilaris,
+            )
         }
 
         const modifierSection = this._buildModifierSectionData(this.text_dm, {
@@ -194,9 +212,11 @@ export class FernkampfAngriffDialog extends CombatDialog {
                     value: hasDamageFormula ? `${baseDamage}` : 'Nicht gesetzt',
                     cssClass: 'modifier-item base-value',
                 },
+                ...this.getIlarisModifierRows(ilaris),
             ],
             sections: modifierSection ? [modifierSection] : [],
             showDivider: Boolean(modifierSection),
+            suppression: this.getIlarisSuppressionContext(ilaris),
         }
     }
 
@@ -211,7 +231,10 @@ export class FernkampfAngriffDialog extends CombatDialog {
         }
 
         const damageMod = signed(this.mod_dm)
-        return damageMod ? `${baseDamage} ${damageMod}` : baseDamage
+        const formula = this.appendIlarisDamageFormula(
+            damageMod ? `${baseDamage} ${damageMod}` : baseDamage,
+        )
+        return this.armedDamageFormula ? `${formula} + ${this.armedDamageFormula}` : formula
     }
 
     /* -------------------------------------------- */
@@ -225,11 +248,16 @@ export class FernkampfAngriffDialog extends CombatDialog {
         await this.updateManoeverMods()
         this.updateStatusMods()
         super.eigenschaftenText()
+        const ilaris = this.getIlarisModifierResult('at')
+        this.armedAttackContext = getArmedAttackContext(this.actor, 'ranged', this.item.id)
+        const armedAttackBonus = getArmedAttackBonus(this.armedAttackContext)
+        this.text_at = `${this.text_at}${this.getIlarisModifierText(ilaris)}\n`
 
         let label = `Fernkampf (${this.item.name})`
         let formula = `${diceFormula} ${signed(this._getFKValue())} \
             ${signed(this.at_abzuege_mod)} \
-            ${signed(this.mod_at)}`
+            ${signed(this.mod_at)} \
+            ${signed(ilaris.value)} ${signed(armedAttackBonus)}`
 
         // Use the new evaluation function
         const rollResult = await evaluate_roll_with_crit(
@@ -242,6 +270,16 @@ export class FernkampfAngriffDialog extends CombatDialog {
         )
 
         this.attackType = 'ranged'
+        rollResult.ilarisArmedAttackContext = this.armedAttackContext
+        if (!rollResult.success || !this.selectedActors?.length) {
+            this.armedDamageFormula = await resolveArmedAttack(
+                this.actor,
+                this.armedAttackContext,
+                {
+                    confirmedHit: rollResult.success,
+                },
+            )
+        }
         super._updateSchipsStern()
         await this.handleTargetSelection(rollResult, 'ranged')
         callIlarisHookAllWithGlobalMirror('Ilaris.postAngriff', rollResult, this)
@@ -320,7 +358,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
         let trefferzone = 0
         let schaden = this.item.getTp()
         let fumble_val = 1
-        let damageType = 'NORMAL'
+        let damageType = 'PROFAN'
         let trueDamage = false
 
         // Kombinierte Aktion kbak
@@ -458,6 +496,8 @@ export class FernkampfAngriffDialog extends CombatDialog {
                     check = dynamicManoever.inputValue.value
                 } else if (dynamicManoever.inputValue.field == 'NUMBER') {
                     number = dynamicManoever.inputValue.value
+                } else if (dynamicManoever.inputValue.field == 'SELECTOR') {
+                    number = 1
                 } else {
                     trefferZoneInput = dynamicManoever.inputValue.value
                 }

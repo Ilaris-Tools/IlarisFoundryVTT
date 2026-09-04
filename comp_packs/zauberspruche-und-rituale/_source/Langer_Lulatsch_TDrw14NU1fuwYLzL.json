@@ -8,6 +8,9 @@
     "text": "Dein Opfer dehnt sich entweder auf seine dreifache Größe aus oder schrumpft auf ein Drittel. Das Gewicht des Opfers bleibt gleich. Alle seine körperlichen Tätigkeiten sind um –4 erschwert.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "Langfinger/Wurstfinger (–4 pro Gliedmaß; der Zauber betrifft nur einzelne Gliedmaßen.)",
     "vorbereitung": "1 Aktion",
     "ziel": "Einzelperson",

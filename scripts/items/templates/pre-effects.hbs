@@ -1,9 +1,32 @@
 <section class="pre-effects-section">
     <h3>Pre-Effects</h3>
     <div class="pre-effects-list" data-section="preEffects">
-        {{#each item.system.preEffects}}
+        {{#each preEffects as |preEffect preEffectIndex|}}
         <fieldset class="pre-effect-card">
             <legend>Pre-Effect</legend>
+            {{#if @root.isManeuverPreEffect}}
+            <div class="form-group">
+                <label>Auslöser:</label>
+                <select name="system.preEffects.{{@index}}.activation">
+                    <option value="onConfirmedHit" {{#if (ifEq activation "onConfirmedHit")}}selected{{/if}}>Bestätigter Treffer</option>
+                    <option value="onSuccessfulDefense" {{#if (ifEq activation "onSuccessfulDefense")}}selected{{/if}}>Erfolgreiche Verteidigung</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Manöver-Operation:</label>
+                <select name="system.preEffects.{{@index}}.operation">
+                    <option value="">— Keine —</option>
+                    <option value="deselectEquippedWeapon" {{#if (ifEq operation "deselectEquippedWeapon")}}selected{{/if}}>Ausgewählte Waffe abwählen</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Befreiungsprobe:</label>
+                <select name="system.preEffects.{{@index}}.ilarisEnding.type">
+                    <option value="">— Keine —</option>
+                    <option value="opposedEscape" {{#if (ifEq ilarisEnding.type "opposedEscape")}}selected{{/if}}>GE oder KK</option>
+                </select>
+            </div>
+            {{/if}}
             <button type="button" class="delete-pre-effect">✕</button>
 
             <div class="form-group">
@@ -12,10 +35,36 @@
             </div>
 
             <div class="form-group">
+                <label><input type="checkbox" name="system.preEffects.{{@index}}.condition.enabled" {{checked condition.enabled}} /> Zustand anwenden</label>
+                <select name="system.preEffects.{{@index}}.condition.statusId">
+                    <option value="">-- Zustand wÃ¤hlen --</option>
+                    {{#each ../statusEffectOptions}}
+                    <option value="{{id}}" {{#if (ifEq id ../condition.statusId)}}selected{{/if}}>{{name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label>
                     <input type="checkbox" name="system.preEffects.{{@index}}.instant" {{checked instant}} />
                     Sofort (kein Effekt, direkter Schaden)
                 </label>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="system.preEffects.{{@index}}.marker.enabled" {{checked marker.enabled}} />
+                    Hinweis-Effekt ohne WerteÃ¤nderung
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label>Marker-ID:</label>
+                <input type="text" name="system.preEffects.{{@index}}.marker.id" value="{{marker.id}}" />
+            </div>
+            <div class="form-group">
+                <label>Marker-Anzeige:</label>
+                <input type="text" name="system.preEffects.{{@index}}.marker.label" value="{{marker.label}}" />
             </div>
 
             <div class="changes-list">
@@ -77,6 +126,216 @@
                 {{/each}}
                 {{/if}}
                 <button type="button" class="add-change">+ Änderung hinzufügen</button>
+            </div>
+
+            <div class="ilaris-modifiers-list">
+                <h4>Ilaris-Modifikatoren</h4>
+                {{#each ilarisModifiers}}
+                <fieldset class="ilaris-modifier-card">
+                    <legend>Ilaris-Modifikator</legend>
+                    <button type="button" class="delete-ilaris-modifier">✕</button>
+                    <div class="form-group">
+                        <label>Phase:</label>
+                        <select name="system.preEffects.{{@../index}}.ilarisModifiers.{{@index}}.phase">
+                            {{selectOptions @root.ilarisModifierPhases selected=phase}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ziel:</label>
+                        <select name="system.preEffects.{{@../index}}.ilarisModifiers.{{@index}}.target">
+                            {{selectOptions @root.ilarisModifierTargets selected=target}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Wert:</label>
+                        <input type="text" name="system.preEffects.{{@../index}}.ilarisModifiers.{{@index}}.value" value="{{value}}" placeholder="z. B. +2 oder +1W6" />
+                    </div>
+                    <div class="form-group">
+                        <label>Stapelung:</label>
+                        <select name="system.preEffects.{{@../index}}.ilarisModifiers.{{@index}}.stacking">
+                            {{selectOptions @root.ilarisModifierStacking selected=stacking}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Vergleichswert:</label>
+                        <input type="text" name="system.preEffects.{{@../index}}.ilarisModifiers.{{@index}}.comparisonValue" value="{{comparisonValue}}" />
+                    </div>
+                    <div class="form-group">
+                        <label>Fertigkeiten:</label>
+                        <input type="text" name="system.preEffects.{{@../index}}.ilarisModifiers.{{@index}}.selector.fertigkeit" value="{{selector.fertigkeit}}" placeholder="Kommagetrennt" />
+                    </div>
+                    <div class="form-group">
+                        <label>Talente:</label>
+                        <input type="text" name="system.preEffects.{{@../index}}.ilarisModifiers.{{@index}}.selector.talent" value="{{selector.talent}}" placeholder="Kommagetrennt" />
+                    </div>
+                    <div class="form-group">
+                        <label>Situation:</label>
+                        <input type="text" name="system.preEffects.{{@../index}}.ilarisModifiers.{{@index}}.selector.situation" value="{{selector.situation}}" placeholder="z. B. sozialesDuell" />
+                    </div>
+                    <div class="form-group">
+                        <label><input type="checkbox" name="system.preEffects.{{@../index}}.ilarisModifiers.{{@index}}.amplifiedByMaechtigeMagie" {{checked amplifiedByMaechtigeMagie}} /> Verstärkt durch Mächtige Magie</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Mächtig Bonus:</label>
+                        <input type="text" name="system.preEffects.{{@../index}}.ilarisModifiers.{{@index}}.maechtigBonus" value="{{maechtigBonus}}" placeholder="z. B. +2" />
+                    </div>
+                    <div class="form-group">
+                        <label>Abgeschwächter Wert:</label>
+                        <input type="text" name="system.preEffects.{{@../index}}.ilarisModifiers.{{@index}}.diminishedValue" value="{{diminishedValue}}" />
+                    </div>
+                    <div class="form-group">
+                        <label>Abgeschwächter Mächtig-Bonus:</label>
+                        <input type="text" name="system.preEffects.{{@../index}}.ilarisModifiers.{{@index}}.diminishedMaechtigBonus" value="{{diminishedMaechtigBonus}}" />
+                    </div>
+                </fieldset>
+                {{/each}}
+                <button type="button" class="add-ilaris-modifier">+ Ilaris-Modifikator hinzufügen</button>
+            </div>
+
+            <div class="summon-item-section">
+                <h4>Gegenstand beschwören</h4>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="system.preEffects.{{@index}}.summonItem.enabled" {{checked summonItem.enabled}} />
+                        Aktiviert
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Art:</label>
+                    <select name="system.preEffects.{{@index}}.summonItem.sourceKind">
+                        <option value="waffe" {{#unless (ifEq summonItem.sourceKind "gegenstand")}}selected{{/unless}}>Waffe</option>
+                        <option value="gegenstand" {{#if (ifEq summonItem.sourceKind "gegenstand")}}selected{{/if}}>Gegenstand</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Quelle:</label>
+                    {{#if (ifEq summonItem.sourceKind "gegenstand")}}
+                    <input type="text" name="system.preEffects.{{@index}}.summonItem.sourceUuid" value="{{summonItem.sourceUuid}}" list="ilaris-summon-item-sources-gegenstand" placeholder="Gegenstand suchen …" />
+                    {{else}}
+                    <input type="text" name="system.preEffects.{{@index}}.summonItem.sourceUuid" value="{{summonItem.sourceUuid}}" list="ilaris-summon-item-sources-waffe" placeholder="Waffe suchen …" />
+                    {{/if}}
+                </div>
+                <div class="summon-item-overrides-list">
+                    <h5>Werte auf der beschworenen Kopie</h5>
+                    {{#each summonItem.overrides}}
+                    <fieldset class="summon-item-override-card">
+                        <legend>Überschreibung</legend>
+                        <button type="button" class="delete-summon-item-override">✕</button>
+                        <div class="form-group">
+                            <label>Datenpfad:</label>
+                            <input type="text" name="system.preEffects.{{@../index}}.summonItem.overrides.{{@index}}.path" value="{{path}}" placeholder="z. B. system.tp" />
+                        </div>
+                        <div class="form-group">
+                            <label>Wert:</label>
+                            <input type="text" name="system.preEffects.{{@../index}}.summonItem.overrides.{{@index}}.value" value="{{value}}" />
+                        </div>
+                        <div class="form-group">
+                            <label><input type="checkbox" name="system.preEffects.{{@../index}}.summonItem.overrides.{{@index}}.amplifiedByMaechtigeMagie" {{checked amplifiedByMaechtigeMagie}} /> Verstärkt durch Mächtige Magie</label>
+                        </div>
+                        <div class="form-group">
+                            <label>Mächtig-Bonus:</label>
+                            <input type="text" name="system.preEffects.{{@../index}}.summonItem.overrides.{{@index}}.maechtigBonus" value="{{maechtigBonus}}" placeholder="z. B. +1W20" />
+                        </div>
+                    </fieldset>
+                    {{/each}}
+                    <button type="button" class="add-summon-item-override">+ Überschreibung hinzufügen</button>
+                </div>
+            </div>
+
+            <div class="summon-creature-section">
+                <h4>Kreatur beschwören</h4>
+                <div class="form-group">
+                    <label><input type="checkbox" name="system.preEffects.{{@index}}.summonCreature.enabled" {{checked summonCreature.enabled}} /> Aktiviert</label>
+                </div>
+                {{#if summonCreature.enabled}}
+                <div class="form-group">
+                    <label>Erlaubte Kreaturentypen:</label>
+                    <input type="text" name="system.preEffects.{{@index}}.summonCreature.kreaturentypen" value="{{summonCreature.kreaturentypen}}" placeholder="z. B. daemon, elementar" />
+                </div>
+                <div class="form-group"><label>Feste Kreaturenquelle (optional):</label><input type="text" name="system.preEffects.{{@index}}.summonCreature.sourceUuid" value="{{summonCreature.sourceUuid}}" list="ilaris-summon-creature-sources" placeholder="Kreatur suchen …" /></div>
+                <div class="form-group"><label>Lebensdauer:</label><select name="system.preEffects.{{@index}}.summonCreature.lifetime"><option value="permanent" {{#unless (ifEq summonCreature.lifetime "timed")}}selected{{/unless}}>Permanent</option><option value="timed" {{#if (ifEq summonCreature.lifetime "timed")}}selected{{/if}}>Zauberdauer</option></select></div>
+                <div class="summon-creature-overrides-list">
+                    <h5>Werte des beschworenen Schwarms</h5>
+                    {{#each summonCreature.overrides}}
+                    <fieldset class="summon-creature-override-card">
+                        <legend>Überschreibung</legend>
+                        <button type="button" class="delete-summon-creature-override">✕</button>
+                        <div class="form-group"><label>Datenpfad:</label><input type="text" name="system.preEffects.{{@../index}}.summonCreature.overrides.{{@index}}.path" value="{{path}}" placeholder="z. B. items.0.system.at" /></div>
+                        <div class="form-group"><label>Zusatzwert:</label><input type="text" name="system.preEffects.{{@../index}}.summonCreature.overrides.{{@index}}.value" value="{{value}}" /></div>
+                        <div class="form-group"><label><input type="checkbox" name="system.preEffects.{{@../index}}.summonCreature.overrides.{{@index}}.amplifiedByMaechtigeMagie" {{checked amplifiedByMaechtigeMagie}} /> Verstärkt durch Mächtige Magie</label></div>
+                        <div class="form-group"><label>Mächtig-Bonus je QS:</label><input type="text" name="system.preEffects.{{@../index}}.summonCreature.overrides.{{@index}}.maechtigBonus" value="{{maechtigBonus}}" placeholder="z. B. +1" /></div>
+                    </fieldset>
+                    {{/each}}
+                    <button type="button" class="add-summon-creature-override">+ Überschreibung hinzufügen</button>
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" name="system.preEffects.{{@index}}.summonCreature.boundResourceCost.enabled" {{checked summonCreature.boundResourceCost.enabled}} /> gAsP/gKaP binden</label>
+                </div>
+                {{#if summonCreature.boundResourceCost.enabled}}
+                <div class="form-group">
+                    <label>Ressource:</label>
+                    <select name="system.preEffects.{{@index}}.summonCreature.boundResourceCost.resource">
+                        <option value="gasp" {{#unless (ifEq summonCreature.boundResourceCost.resource "gkap")}}selected{{/unless}}>gAsP</option>
+                        <option value="gkap" {{#if (ifEq summonCreature.boundResourceCost.resource "gkap")}}selected{{/if}}>gKaP</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Menge:</label><input type="number" min="1" name="system.preEffects.{{@index}}.summonCreature.boundResourceCost.amount" value="{{summonCreature.boundResourceCost.amount}}" /></div>
+                {{/if}}
+                <div class="form-group"><label><input type="checkbox" name="system.preEffects.{{@index}}.summonCreature.dominationChecks.enabled" {{checked summonCreature.dominationChecks.enabled}} /> Beherrschungsprobe konfigurieren</label></div>
+                {{#if summonCreature.dominationChecks.enabled}}
+                <div class="domination-checks-list">
+                    <h5>Beherrschungsproben nach Kreaturentyp</h5>
+                    {{#each summonCreature.dominationChecks.entries}}
+                    <fieldset class="domination-check-card">
+                        <legend>Beherrschungsprobe</legend>
+                        <button type="button" class="delete-domination-check">✕</button>
+                        <div class="form-group"><label>Kreaturentyp:</label><input type="text" name="system.preEffects.{{@../index}}.summonCreature.dominationChecks.entries.{{@index}}.kreaturentyp" value="{{kreaturentyp}}" placeholder="z. B. daemon" /></div>
+                        <div class="form-group"><label>Schwierigkeit:</label><input type="number" min="0" name="system.preEffects.{{@../index}}.summonCreature.dominationChecks.entries.{{@index}}.difficulty" value="{{difficulty}}" /></div>
+                        <div class="form-group"><label>Probe:</label><select name="system.preEffects.{{@../index}}.summonCreature.dominationChecks.entries.{{@index}}.probeType"><option value="attribut" {{#if (ifEq probeType "attribut")}}selected{{/if}}>Attribut</option><option value="fertigkeit" {{#if (ifEq probeType "fertigkeit")}}selected{{/if}}>Fertigkeit</option></select></div>
+                        {{#if (ifEq probeType "attribut")}}
+                        <div class="form-group"><label>Attribut:</label><select name="system.preEffects.{{@../index}}.summonCreature.dominationChecks.entries.{{@index}}.attribut"><option value="">— Wählen —</option>{{#each @root.avoidTestAttributeOptions}}<option value="{{value}}" {{#if (ifEq value ../attribut)}}selected{{/if}}>{{label}}</option>{{/each}}</select></div>
+                        {{else}}
+                        <div class="form-group"><label>Fertigkeit:</label><input type="text" name="system.preEffects.{{@../index}}.summonCreature.dominationChecks.entries.{{@index}}.fertigkeit" value="{{fertigkeit}}" /></div>
+                        <div class="form-group"><label>Talent (optional):</label><input type="text" name="system.preEffects.{{@../index}}.summonCreature.dominationChecks.entries.{{@index}}.talent" value="{{talent}}" /></div>
+                        {{/if}}
+                    </fieldset>
+                    {{/each}}
+                    <button type="button" class="add-domination-check">+ Beherrschungsprobe hinzufügen</button>
+                </div>
+                {{/if}}
+                {{/if}}
+            </div>
+
+            <div class="armed-combat-section">
+                <h4>Bewaffneter Kampfeffekt</h4>
+                <div class="form-group">
+                    <label><input type="checkbox" name="system.preEffects.{{@index}}.armedCombat.enabled" {{checked armedCombat.enabled}} /> Aktiviert</label>
+                </div>
+                <div class="form-group">
+                    <label>Auslösung:</label>
+                    <select name="system.preEffects.{{@index}}.armedCombat.trigger">
+                        <option value="nextSuccessfulAttack" {{#if (ifEq armedCombat.trigger "nextSuccessfulAttack")}}selected{{/if}}>Nächster erfolgreicher Angriff</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Angriffsart:</label>
+                    <select name="system.preEffects.{{@index}}.armedCombat.scope">
+                        <option value="any" {{#if (ifEq armedCombat.scope "any")}}selected{{/if}}>Beliebig</option>
+                        <option value="melee" {{#if (ifEq armedCombat.scope "melee")}}selected{{/if}}>Nahkampf</option>
+                        <option value="ranged" {{#if (ifEq armedCombat.scope "ranged")}}selected{{/if}}>Fernkampf</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>AT-Bonus:</label><input type="number" name="system.preEffects.{{@index}}.armedCombat.attackBonus" value="{{armedCombat.attackBonus}}" /></div>
+                <div class="form-group"><label>Eingabeschlüssel:</label><input type="text" name="system.preEffects.{{@index}}.armedCombat.inputs.0.key" value="{{armedCombat.inputs.0.key}}" placeholder="z. B. previousHits" /></div>
+                <div class="form-group"><label>Eingabelabel:</label><input type="text" name="system.preEffects.{{@index}}.armedCombat.inputs.0.label" value="{{armedCombat.inputs.0.label}}" /></div>
+                <div class="form-group"><label>Standard:</label><input type="number" name="system.preEffects.{{@index}}.armedCombat.inputs.0.default" value="{{armedCombat.inputs.0.default}}" /></div>
+                <div class="form-group"><label>Minimum:</label><input type="number" name="system.preEffects.{{@index}}.armedCombat.inputs.0.min" value="{{armedCombat.inputs.0.min}}" /></div>
+                <div class="form-group"><label>Maximum:</label><input type="number" name="system.preEffects.{{@index}}.armedCombat.inputs.0.max" value="{{armedCombat.inputs.0.max}}" /></div>
+                <div class="form-group"><label>Schaden-Eingabe:</label><input type="text" name="system.preEffects.{{@index}}.armedCombat.damage.input" value="{{armedCombat.damage.input}}" /></div>
+                <div class="form-group"><label>Schaden je Einheit:</label><input type="text" name="system.preEffects.{{@index}}.armedCombat.damage.perInput" value="{{armedCombat.damage.perInput}}" placeholder="W6" /></div>
+                <div class="form-group"><label>Ladungen:</label><input type="number" min="1" name="system.preEffects.{{@index}}.armedCombat.charges.base" value="{{armedCombat.charges.base}}" /></div>
+                <div class="form-group"><label><input type="checkbox" name="system.preEffects.{{@index}}.armedCombat.charges.amplifiedByMaechtigeMagie" {{checked armedCombat.charges.amplifiedByMaechtigeMagie}} /> Verstärkt durch Mächtige Magie/Liturgie</label></div>
+                <div class="form-group"><label>Ladungen je QS:</label><input type="number" min="0" name="system.preEffects.{{@index}}.armedCombat.charges.maechtigBonus" value="{{armedCombat.charges.maechtigBonus}}" /></div>
             </div>
 
             <div class="avoid-test-section">
@@ -143,20 +402,86 @@
                     </div>
                     <div class="form-group">
                         <label>
-                            <input type="checkbox" name="system.preEffects.{{@index}}.avoidTest.diminishedOnly" {{checked avoidTest.diminishedOnly}} />
+                            <input type="checkbox" name="system.preEffects.{{@index}}.avoidTest.diminishedOnly" {{checked avoidTest.diminishedOnly}} {{#if resistanceOutcomes.success.enabled}}disabled{{/if}} />
                             Nur abgeschwächt (Diminished Only)
                         </label>
                     </div>
                     <div class="form-group">
+                        <label>Schwierigkeit aus:</label>
+                        <select name="system.preEffects.{{@index}}.avoidTest.resistDifficultySource">
+                            <option value="fixed" {{#unless (ifEq avoidTest.resistDifficultySource "triggeringRoll")}}selected{{/unless}}>Fester Wert</option>
+                            <option value="triggeringRoll" {{#if (ifEq avoidTest.resistDifficultySource "triggeringRoll")}}selected{{/if}}>Ergebnis der auslösenden Probe</option>
+                        </select>
+                    </div>
+                    {{#unless (ifEq avoidTest.resistDifficultySource "triggeringRoll")}}
+                    <div class="form-group">
                         <label>Erschwernis:</label>
                         <input type="number" name="system.preEffects.{{@index}}.avoidTest.resistDifficulty" value="{{avoidTest.resistDifficulty}}" data-dtype="Number" placeholder="12" />
                     </div>
+                    {{/unless}}
                 </div>
             </div>
-        </fieldset>
-        {{/each}}
-        <button type="button" class="add-pre-effect">+ Pre-Effect hinzufügen</button>
-        {{#if @root.hasLLMConfig}}
+            <div class="resistance-outcomes-section">
+                <h4>Wirkung nach Widerstand</h4>
+                {{#with resistanceOutcomes.failure}}
+                <fieldset class="outcome-payload" data-outcome="failure">
+                    <legend>Bei misslungener Widerstandsprobe</legend>
+                    <div class="form-group"><label><input type="checkbox" name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.failure.enabled" {{checked enabled}} /> Eigene Wirkung verwenden</label></div>
+                    {{#if enabled}}
+                    <div class="form-group"><label><input type="checkbox" name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.failure.marker.enabled" {{checked marker.enabled}} /> Hinweis-Effekt</label></div>
+                    <div class="form-group"><label>Marker-ID:</label><input type="text" name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.failure.marker.id" value="{{marker.id}}" /></div>
+                    <div class="form-group"><label>Marker-Anzeige:</label><input type="text" name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.failure.marker.label" value="{{marker.label}}" /></div>
+                    <div class="form-group"><label><input type="checkbox" name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.failure.tableManagedDisplacement.enabled" {{checked tableManagedDisplacement.enabled}} /> Zurückstoßen (Spielleitung)</label><p class="hint">Wendet die konfigurierte Wirkung an und informiert Zielbesitzende sowie Spielleitungen, dass die Token-Position manuell angepasst wird.</p></div>
+                    <div class="form-group"><label><input type="checkbox" name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.failure.condition.enabled" {{checked condition.enabled}} /> Zustand anwenden</label><select name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.failure.condition.statusId"><option value="">-- Zustand wählen --</option>{{#each @root.statusEffectOptions}}<option value="{{id}}" {{#if (ifEq id ../condition.statusId)}}selected{{/if}}>{{name}}</option>{{/each}}</select></div>
+                    {{#each changes}}<fieldset class="change-card"><button type="button" class="delete-change">✕</button><div class="form-group"><label>Key:</label><input type="text" name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.failure.changes.{{@index}}.key" value="{{key}}" /></div><div class="form-group"><label>Wert:</label><input type="text" name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.failure.changes.{{@index}}.value" value="{{value}}" /></div></fieldset>{{/each}}
+                    <button type="button" class="add-change">+ Änderung hinzufügen</button>
+                    {{#each ilarisModifiers}}<fieldset class="ilaris-modifier-card"><button type="button" class="delete-ilaris-modifier">✕</button><div class="form-group"><label>Ziel:</label><select name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.failure.ilarisModifiers.{{@index}}.target">{{selectOptions @root.ilarisModifierTargets selected=target}}</select></div><div class="form-group"><label>Wert:</label><input type="text" name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.failure.ilarisModifiers.{{@index}}.value" value="{{value}}" /></div></fieldset>{{/each}}
+                    <button type="button" class="add-ilaris-modifier">+ Ilaris-Modifikator hinzufügen</button>
+                    {{/if}}
+                </fieldset>
+                {{/with}}
+                {{#with resistanceOutcomes.success}}
+                <fieldset class="outcome-payload" data-outcome="success">
+                    <legend>Bei gelungener Widerstandsprobe</legend>
+                    <div class="form-group"><label><input type="checkbox" name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.success.enabled" {{checked enabled}} /> Eigene Wirkung verwenden</label></div>
+                    {{#if enabled}}
+                    <div class="form-group"><label><input type="checkbox" name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.success.marker.enabled" {{checked marker.enabled}} /> Hinweis-Effekt</label></div>
+                    <div class="form-group"><label>Marker-ID:</label><input type="text" name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.success.marker.id" value="{{marker.id}}" /></div>
+                    <div class="form-group"><label>Marker-Anzeige:</label><input type="text" name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.success.marker.label" value="{{marker.label}}" /></div>
+                    <div class="form-group"><label><input type="checkbox" name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.success.condition.enabled" {{checked condition.enabled}} /> Zustand anwenden</label><select name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.success.condition.statusId"><option value="">-- Zustand wählen --</option>{{#each @root.statusEffectOptions}}<option value="{{id}}" {{#if (ifEq id ../condition.statusId)}}selected{{/if}}>{{name}}</option>{{/each}}</select></div>
+                    {{#each changes}}<fieldset class="change-card"><button type="button" class="delete-change">✕</button><div class="form-group"><label>Key:</label><input type="text" name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.success.changes.{{@index}}.key" value="{{key}}" /></div><div class="form-group"><label>Wert:</label><input type="text" name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.success.changes.{{@index}}.value" value="{{value}}" /></div></fieldset>{{/each}}
+                    <button type="button" class="add-change">+ Änderung hinzufügen</button>
+                    {{#each ilarisModifiers}}<fieldset class="ilaris-modifier-card"><button type="button" class="delete-ilaris-modifier">✕</button><div class="form-group"><label>Ziel:</label><select name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.success.ilarisModifiers.{{@index}}.target">{{selectOptions @root.ilarisModifierTargets selected=target}}</select></div><div class="form-group"><label>Wert:</label><input type="text" name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.success.ilarisModifiers.{{@index}}.value" value="{{value}}" /></div></fieldset>{{/each}}
+                    <button type="button" class="add-ilaris-modifier">+ Ilaris-Modifikator hinzufügen</button>
+                    {{/if}}
+                </fieldset>
+                {{/with}}
+            </div>
+            </fieldset>
+            {{/each}}
+            <datalist id="ilaris-summon-item-sources-waffe">
+                {{#each @root.summonItemOptions.waffe}}
+                    {{#each items}}
+                    <option value="{{uuid}}" label="{{name}} ({{type}}, {{../packName}})"></option>
+                    {{/each}}
+                {{/each}}
+            </datalist>
+            <datalist id="ilaris-summon-item-sources-gegenstand">
+                {{#each @root.summonItemOptions.gegenstand}}
+                    {{#each items}}
+                    <option value="{{uuid}}" label="{{name}} ({{type}}, {{../packName}})"></option>
+                    {{/each}}
+                {{/each}}
+            </datalist>
+            <datalist id="ilaris-summon-creature-sources">
+                {{#each @root.summonCreatureOptions}}
+                    {{#each actors}}
+                    <option value="{{uuid}}" label="{{name}} ({{../packName}})"></option>
+                    {{/each}}
+                {{/each}}
+            </datalist>
+            <button type="button" class="add-pre-effect">+ Pre-Effect hinzufügen</button>
+        {{#if @root.hasLLMPreEffectGeneration}}
         <button type="button" class="generate-pre-effect">🤖 Generieren</button>
         {{/if}}
     </div>

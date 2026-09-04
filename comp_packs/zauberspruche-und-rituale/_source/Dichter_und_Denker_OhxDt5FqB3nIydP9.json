@@ -8,6 +8,9 @@
     "text": "Dein Opfer kann sich nur noch in Reimen ausdrücken. Zauber können nur noch gewirkt werden, wenn ihm ein passender Reim auf den Zaubernamen einfällt.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "",
     "vorbereitung": "2 Aktionen",
     "ziel": "Einzelperson",

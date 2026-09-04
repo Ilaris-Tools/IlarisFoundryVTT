@@ -9,6 +9,9 @@
     "text": "Das verzauberte Tier flieht vor dir.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "Schrecken des Schwarms (–4; du verscheuchst einen Schwarm Kleintiere.)",
     "vorbereitung": "0 Aktionen",
     "ziel": "einzelnes Tier",

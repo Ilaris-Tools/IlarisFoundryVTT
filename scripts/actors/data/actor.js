@@ -4,6 +4,11 @@ import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
 } from '../../settings/configure-game-settings.model.js'
+import {
+    IlarisModifierPhase,
+    IlarisModifierTarget,
+} from '../../effects/utils/ilaris-modifier-constants.js'
+import { resolveIlarisModifiers } from '../../effects/utils/ilaris-modifier-resolver.js'
 import { sortByName, sortByGruppe } from '../../../utils/sort-functions.js'
 import {
     createHeldActorSystemDefaults,
@@ -145,6 +150,36 @@ export class IlarisActor extends Actor {
     prepareData() {
         console.log('prepareData')
         super.prepareData()
+        this._applyIlarisPrepareModifiers()
+    }
+
+    /**
+     * Apply explicit semantic preparation values immediately after Foundry has
+     * prepared native ActiveEffect changes. HeldActor/KreaturActor calculate
+     * their dependent values after `super.prepareData()`, so this boundary
+     * keeps the modifier transient and prevents attribute-derived cascades.
+     *
+     * @private
+     */
+    _applyIlarisPrepareModifiers() {
+        const gs = resolveIlarisModifiers({
+            actor: this,
+            phase: IlarisModifierPhase.Prepare,
+            target: IlarisModifierTarget.GS,
+        })
+        const mr = resolveIlarisModifiers({
+            actor: this,
+            phase: IlarisModifierPhase.Prepare,
+            target: IlarisModifierTarget.MR,
+        })
+        this._ilarisPrepareModifierLedger = { gs, mr }
+
+        if (gs.value !== 0 && this.system?.abgeleitete) {
+            this.system.abgeleitete.gs = Number(this.system.abgeleitete.gs || 0) + gs.value
+        }
+        if (mr.value !== 0 && this.system?.abgeleitete) {
+            this.system.abgeleitete.mr = Number(this.system.abgeleitete.mr || 0) + mr.value
+        }
     }
     // Not used?
     // prepareEmbeddedEntities() {

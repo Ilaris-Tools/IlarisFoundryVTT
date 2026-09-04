@@ -95,22 +95,57 @@ An E2E test SHALL verify that the GM can configure pre-effects on an übernatür
 
 ### Requirement: E2E test verifies buff ActiveEffect creation
 
-An E2E test SHALL verify that casting a spell with a non-instant pre-effect correctly creates an ActiveEffect on the target actor with every configured change and exact duration/timing data.
+An E2E test SHALL verify that casting a spell with a non-instant pre-effect correctly creates an ActiveEffect on the target actor with its configured native changes, semantic Ilaris modifiers, source classification, and duration.
 
 #### Scenario: Buff spell creates ActiveEffect on target
 
-- **WHEN** a spell with `instant: false` and one or more changes is cast successfully
+- **WHEN** a spell with `instant: false` and one or more changes or Ilaris
+  modifiers is cast successfully
 - **THEN** an ActiveEffect SHALL be created on the target with `system.ilarisTiming.durationType: "ownerTurns"`
 
-#### Scenario: ActiveEffect contains all configured changes
+#### Scenario: ActiveEffect preserves configured native changes
 
-- **WHEN** the ActiveEffect is created
-- **THEN** its `changes` array SHALL contain every source pre-effect entry with the expected key, mode, value, and priority
+- **WHEN** the ActiveEffect is created from a pre-effect with native changes
+- **THEN** its `changes` array SHALL contain all configured native change
+  entries
+
+#### Scenario: ActiveEffect preserves configured semantic modifiers
+
+- **WHEN** the ActiveEffect is created from a pre-effect with Ilaris modifiers
+- **THEN** its `system.ilarisModifiers` array SHALL contain all configured
+  semantic modifier entries
+- **AND** it SHALL carry the übernatürlich source classification
+
+#### Scenario: Semantic modifier is materialized at application time
+
+- **WHEN** a semantic pre-effect modifier is amplified by Mächtige
+  Magie/Liturgie or reduced by a diminished-only resist result
+- **THEN** the created ActiveEffect SHALL contain the corresponding applied
+  amplified or diminished modifier value
 
 #### Scenario: ActiveEffect has correct base duration
 
 - **WHEN** the ActiveEffect is created
-- **THEN** `duration.turns`, `system.ilarisTiming.remaining`, and `system.ilarisTiming.original` SHALL match the effective pre-effect duration
+- **THEN** its duration SHALL match the pre-effect's `baseDuration` (in turns)
+
+### Requirement: E2E test verifies competing supernatural buffs
+
+An E2E test SHALL verify that two active spell buffs with an overlapping
+context use only the stronger contribution in Ilaris rule mode and both
+contributions in Foundry stack mode.
+
+#### Scenario: Stronger spell bonus wins in Ilaris mode
+
+- **WHEN** a GM creates two active competing übernatürliche modifiers for the
+  same combat context in a world using Ilaris rule mode
+- **THEN** the combat or probe result SHALL include only the stronger
+  übernatürliche contribution
+
+#### Scenario: World mode restores additive behavior
+
+- **WHEN** the GM changes the world setting to Foundry stack mode
+- **THEN** the same two active modifiers SHALL both contribute without
+  recreating either effect
 
 ### Requirement: E2E coverage verifies reviewed compendium pre-effect data
 

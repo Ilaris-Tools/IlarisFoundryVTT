@@ -60,6 +60,28 @@
     margin: 0;
 }
 
+.ilaris.combat-dialog [data-application-part="summaries"] .zone-placement-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.ilaris.combat-dialog [data-application-part="summaries"] .zone-placement-control button {
+  flex: 1;
+}
+
+.ilaris.combat-dialog [data-application-part="summaries"] .zone-placement-ready {
+  color: var(--color-text-dark-primary);
+  white-space: nowrap;
+}
+
+.ilaris.combat-dialog [data-application-part="summaries"] .zone-roll-disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 /* Multiple summaries layout */
 .ilaris.combat-dialog [data-application-part="summaries"] .all-summaries {
   display: flex;

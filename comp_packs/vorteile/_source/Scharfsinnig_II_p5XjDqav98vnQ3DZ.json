@@ -7,7 +7,31 @@
     "text": "Proben bei einer Ermittlung oder Recherche sind um +2 erleichtert.\n\nBei Recherchen erhältst du einen zusätzlichen Informationsgrad, wenn der gewertete Würfel eine 12 oder höher zeigt."
   },
   "_id": "p5XjDqav98vnQ3DZ",
-  "effects": [],
+  "effects": [
+    {
+      "_id": "ScharfII00000001",
+      "_key": "!items.effects!p5XjDqav98vnQ3DZ.ScharfII00000001",
+      "name": "Ermittlung & Recherche",
+      "icon": "icons/svg/aura.svg",
+      "disabled": false,
+      "duration": {},
+      "transfer": true,
+      "changes": [],
+      "system": {
+        "ilarisSource": "ordinary",
+        "ilarisModifiers": [
+          {
+            "phase": "roll",
+            "target": "probe",
+            "value": "2",
+            "stacking": "add",
+            "selector": { "situation": ["ermittlungRecherche"] }
+          }
+        ]
+      },
+      "flags": {}
+    }
+  ],
   "_stats": {
     "coreVersion": "12.331",
     "systemId": null,

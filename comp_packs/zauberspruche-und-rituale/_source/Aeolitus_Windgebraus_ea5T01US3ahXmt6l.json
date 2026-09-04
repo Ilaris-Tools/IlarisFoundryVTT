@@ -8,6 +8,7 @@
     "text": "Ein kräftiger Windstoß breitet sich von deinem Mund kegelförmig (45°) 16 Schritt weit aus und verursacht Niederschmettern, wenn eine Konterprobe (KK, 16) misslingt. Ballistischer Zauber.",
     "maechtig": "",
     "schwierigkeit": "12",
+    "ballistic": { "enabled": true },
     "modifikationen": "Langer Atem (–8, 8 AsP; der Windstoß hält KO Initiativphasen lang an. Erfordert Konzentration.)\nSturm (–4; bei misslungener Konterprobe verursacht der Zauber auch Zurückstoßen (S. 98).\nWinde der anderen Art (–4; der Wind bringt lieblichen Duft oder widerlichen Gestank.)",
     "vorbereitung": "0 Aktionen",
     "ziel": "Zone",
@@ -15,6 +16,96 @@
     "wirkungsdauer": "augenblicklich",
     "kosten": "4 AsP",
     "erlernen": "Elf 8; Geo 12; Ach, Alch, Dru, Mag 14; Sch, Srl 18",
+    "zone": {
+      "shape": "cone",
+      "distance": 16,
+      "angle": 45,
+      "placement": { "anchor": "caster", "range": 0, "pivot": "tip" },
+      "lifecycle": "instant",
+      "trigger": { "triggerOnCreate": true },
+      "targeting": { "includeCaster": false }
+    },
+    "preEffects": [
+      {
+        "baseDuration": 0,
+        "durationType": "infinite",
+        "instant": false,
+        "changes": [],
+        "ilarisModifiers": [],
+        "condition": { "enabled": true, "statusId": "Position4" },
+        "avoidTest": {
+          "enabled": true,
+          "fertigkeit": "",
+          "talent": "",
+          "attribut": "KK",
+          "diminishedOnly": false,
+          "resistDifficulty": 16,
+          "resistDifficultySource": "fixed"
+        }
+      }
+    ],
+    "spellModifications": [
+      {
+        "id": "langer-atem",
+        "name": "Langer Atem",
+        "description": "Der Windstoß hält KO Szenenrunden lang an. Konzentration und ein vorzeitiges Ende werden von der Spielleitung verwaltet.",
+        "effectMode": "inherit",
+        "profile": { "difficulty": -8, "cost": { "mode": "set", "value": 8 } },
+        "zone": {
+          "lifecycle": "persistent",
+          "duration": { "source": "casterAttribute", "attribute": "KO" },
+          "trigger": { "triggerOnCreate": true, "onEnter": true, "onRoundStart": true }
+        },
+        "preEffects": []
+      },
+      {
+        "id": "sturm",
+        "name": "Sturm",
+        "description": "Bei misslungener Konterprobe verursacht der Zauber zusätzlich Zurückstoßen. Die Spielleitung positioniert den Token nach den Regeln manuell.",
+        "effectMode": "replace",
+        "profile": { "difficulty": -4 },
+        "preEffects": [
+          {
+            "baseDuration": 0,
+            "durationType": "infinite",
+            "instant": false,
+            "changes": [],
+            "ilarisModifiers": [],
+            "avoidTest": {
+              "enabled": true,
+              "fertigkeit": "",
+              "talent": "",
+              "attribut": "KK",
+              "diminishedOnly": false,
+              "resistDifficulty": 16,
+              "resistDifficultySource": "fixed"
+            },
+            "resistanceOutcomes": {
+              "failure": {
+                "enabled": true,
+                "changes": [],
+                "ilarisModifiers": [],
+                "condition": { "enabled": true, "statusId": "Position4" },
+                "marker": {
+                  "enabled": true,
+                  "id": "zurueckgestossen",
+                  "label": "Zurückgestoßen"
+                },
+                "tableManagedDisplacement": { "enabled": true }
+              }
+            }
+          }
+        ]
+      },
+      {
+        "id": "winde-der-anderen-art",
+        "name": "Winde der anderen Art",
+        "description": "Der Wind bringt lieblichen Duft oder widerlichen Gestank; die konkrete Wirkung wird am Spieltisch verwaltet.",
+        "effectMode": "inherit",
+        "profile": { "difficulty": -4 },
+        "preEffects": []
+      }
+    ],
     "pw": 0,
     "gruppe": 0
   },

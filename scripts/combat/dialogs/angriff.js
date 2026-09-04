@@ -1,12 +1,20 @@
 import { evaluate_roll_with_crit, postRollToChat } from '../../dice/wuerfel_misc.js'
 import { signed } from '../../dice/chatutilities.js'
 import { handleModifications } from './shared-dialog-helpers.js'
-import { CombatDialog } from './combat-dialog.js'
+import { applyArmedAttackResolutionToDialog, CombatDialog } from './combat-dialog.js'
 import { formatDiceFormula } from '../../core/utilities.js'
 import {
     callIlarisHookAllWithGlobalMirror,
     callIlarisHookWithGlobalMirror,
 } from '../hooks/global_combat_hooks.js'
+import {
+    getArmedAttackBonus,
+    getArmedAttackContext,
+    getArmedDamageFormula,
+    resolveArmedAttack,
+} from '../../effects/pre-effects/armed-combat-effects.js'
+import { applyPreEffects, toArray } from '../../effects/pre-effects/pre-effects-processor.js'
+import { dispatchBallisticDefenseOutcome } from '../ballistic-spell-resolution.js'
 
 export class AngriffDialog extends CombatDialog {
     /** @override */
@@ -163,8 +171,9 @@ export class AngriffDialog extends CombatDialog {
      * Creates attack roll summary
      */
     getAttackSummaryContext(baseAT, statusMods, nahkampfMods, diceFormula) {
+        const ilaris = this.getIlarisModifierResult('at')
         const maneuverMod = this.mod_at || 0
-        const totalMod = maneuverMod + statusMods + nahkampfMods
+        const totalMod = maneuverMod + statusMods + nahkampfMods + ilaris.value
         const finalAT = baseAT + totalMod
         const formattedDice = formatDiceFormula(diceFormula)
         const finalFormula =
@@ -187,10 +196,12 @@ export class AngriffDialog extends CombatDialog {
                 },
                 this._buildSignedModifierData(statusMods, 'Status (Wunden/Furcht)'),
                 this._buildSignedModifierData(nahkampfMods, 'Token Status'),
+                ...this.getIlarisModifierRows(ilaris),
             ].filter((row) => row),
             sections: maneuverSection ? [maneuverSection] : [],
             totalRow: this._buildTotalModifierData(totalMod),
             showDivider: Boolean(maneuverSection || totalMod),
+            suppression: this.getIlarisSuppressionContext(ilaris),
         }
     }
 
@@ -198,9 +209,10 @@ export class AngriffDialog extends CombatDialog {
      * Creates defense roll summary
      */
     getDefenseSummaryContext(baseVT, statusMods, nahkampfMods, diceFormula) {
+        const ilaris = this.getIlarisModifierResult('vt')
         const vtStatusMods = this.vt_abzuege_mod || 0
         const maneuverMod = this.mod_vt || 0
-        const totalMod = maneuverMod + vtStatusMods + nahkampfMods
+        const totalMod = maneuverMod + vtStatusMods + nahkampfMods + ilaris.value
         const finalVT = baseVT + totalMod
         const formattedDice = formatDiceFormula(diceFormula)
         const finalFormula =
@@ -222,10 +234,12 @@ export class AngriffDialog extends CombatDialog {
                 },
                 this._buildSignedModifierData(vtStatusMods, 'Status (Wunden/Furcht)'),
                 this._buildSignedModifierData(nahkampfMods, 'Token Status'),
+                ...this.getIlarisModifierRows(ilaris),
             ].filter((row) => row),
             sections: maneuverSection ? [maneuverSection] : [],
             totalRow: this._buildTotalModifierData(totalMod),
             showDivider: Boolean(maneuverSection || totalMod),
+            suppression: this.getIlarisSuppressionContext(ilaris),
         }
     }
 
@@ -233,15 +247,25 @@ export class AngriffDialog extends CombatDialog {
      * Creates damage roll summary
      */
     getDamageSummaryContext() {
+        const ilaris = this.getIlarisModifierResult('damage')
         const baseDamage = this.getBaseDamageFormula()
         const maneuverMod = this.mod_dm || 0
         const hasDamageFormula = Boolean(baseDamage)
         let finalFormula = 'Kein Schadenwert'
-        if (hasDamageFormula && maneuverMod === 0) {
+        if (
+            hasDamageFormula &&
+            maneuverMod === 0 &&
+            ilaris.value === 0 &&
+            !ilaris.diceFormulas.length
+        ) {
             finalFormula = baseDamage
         } else if (hasDamageFormula) {
-            const sign = maneuverMod > 0 ? '+' : ''
-            finalFormula = `${baseDamage} ${sign}${maneuverMod}`
+            finalFormula = this.appendIlarisDamageFormula(
+                maneuverMod
+                    ? `${baseDamage} ${maneuverMod > 0 ? '+' : ''}${maneuverMod}`
+                    : baseDamage,
+                ilaris,
+            )
         }
 
         const canClick = hasDamageFormula && !(this.isDefenseMode && !this.riposte)
@@ -271,9 +295,11 @@ export class AngriffDialog extends CombatDialog {
                     value: hasDamageFormula ? `${baseDamage}` : 'Nicht gesetzt',
                     cssClass: 'modifier-item base-value',
                 },
+                ...this.getIlarisModifierRows(ilaris),
             ],
             sections: modifierSection ? [modifierSection] : [],
             showDivider: Boolean(modifierSection),
+            suppression: this.getIlarisSuppressionContext(ilaris),
         }
     }
 
@@ -288,7 +314,11 @@ export class AngriffDialog extends CombatDialog {
         }
 
         const damageMod = signed(this.mod_dm)
-        return damageMod ? `${baseDamage} ${damageMod}` : baseDamage
+        const formula = this.appendIlarisDamageFormula(
+            damageMod ? `${baseDamage} ${damageMod}` : baseDamage,
+        )
+        const armedDamage = this.armedDamageFormula || ''
+        return armedDamage ? `${formula} + ${armedDamage}` : formula
     }
 
     /* -------------------------------------------- */
@@ -302,12 +332,17 @@ export class AngriffDialog extends CombatDialog {
         await this.updateManoeverMods()
         this.updateStatusMods()
         super.eigenschaftenText()
+        const ilaris = this.getIlarisModifierResult('at')
+        this.armedAttackContext = getArmedAttackContext(this.actor, 'melee', this.item.id)
+        const armedAttackBonus = getArmedAttackBonus(this.armedAttackContext)
+        this.text_at = `${this.text_at}${this.getIlarisModifierText(ilaris)}\n`
 
         let label = `Attacke (${this.item.name})`
         let formula = `${diceFormula} ${signed(this.item.system.at)} \
             ${signed(this.at_abzuege_mod)} \
             ${signed(this.item.actor.system.modifikatoren.nahkampfmod)} \
-            ${signed(this.mod_at)}`
+            ${signed(this.mod_at)} \
+            ${signed(ilaris.value)} ${signed(armedAttackBonus)}`
 
         // Use the new evaluation function
         const rollResult = await evaluate_roll_with_crit(
@@ -319,6 +354,18 @@ export class AngriffDialog extends CombatDialog {
             true, // crit_eval
         )
         this.attackType = 'melee'
+        rollResult.ilarisManeuverPreEffects = this._selectedManeuverPreEffects()
+        rollResult.ilarisArmedAttackContext = this.armedAttackContext
+        rollResult.ilarisAttackDialogId = this.dialogId
+        if (!rollResult.success || !this.selectedActors?.length) {
+            this.armedDamageFormula = await resolveArmedAttack(
+                this.actor,
+                this.armedAttackContext,
+                {
+                    confirmedHit: rollResult.success,
+                },
+            )
+        }
         super._updateSchipsStern()
         this.updateModifierDisplay()
         await this.handleTargetSelection(rollResult, 'melee')
@@ -332,9 +379,13 @@ export class AngriffDialog extends CombatDialog {
         this.updateStatusMods()
         let label = `Verteidigung (${this.item.name})`
         let diceFormula = this.getDiceFormula()
+        const ilaris = this.getIlarisModifierResult('vt')
+        this.text_vt = `${this.text_vt}${this.getIlarisModifierText(ilaris)}\n`
         let formula = `${diceFormula} ${signed(this.item.system.vt)} ${signed(
             this.vt_abzuege_mod,
-        )} ${signed(this.item.actor.system.modifikatoren.verteidigungmod)} ${signed(this.mod_vt)}`
+        )} ${signed(this.item.actor.system.modifikatoren.verteidigungmod)} ${signed(this.mod_vt)} ${signed(
+            ilaris.value,
+        )}`
 
         // Use the new evaluation function
         const rollResult = await evaluate_roll_with_crit(
@@ -486,11 +537,90 @@ export class AngriffDialog extends CombatDialog {
             style: CONST.CHAT_MESSAGE_STYLES.OTHER,
         })
 
+        if (this.attackRoll?.ilarisBallisticSpell) {
+            await dispatchBallisticDefenseOutcome({
+                ...this.attackRoll.ilarisBallisticSpell,
+                defended: defenderWins,
+            })
+        }
+
         // Clean up the stored rolls
+        const armedContext = this.attackRoll?.ilarisArmedAttackContext
+        const armedDamage = await resolveArmedAttack(this.attackingActor, armedContext, {
+            confirmedHit: !defenderWins && this.attackRoll?.success !== false,
+        })
+        await this._dispatchManeuverPreEffects(
+            defenderWins
+                ? this._selectedManeuverPreEffects()
+                : this.attackRoll?.ilarisManeuverPreEffects,
+            defenderWins ? 'onSuccessfulDefense' : 'onConfirmedHit',
+            defenderWins ? this.actor : this.lastDefenseRoll.actor,
+            defenderWins ? this.actor : this.attackingActor,
+            defenderWins ? this.lastDefenseRoll : this.attackRoll,
+        )
+        if (armedDamage) {
+            this.attackRoll.ilarisArmedDamageFormula = armedDamage
+            const payload = {
+                dialogId: this.attackRoll.ilarisAttackDialogId,
+                damageFormula: armedDamage,
+            }
+            applyArmedAttackResolutionToDialog(payload)
+            game.socket.emit('system.Ilaris', { type: 'armedAttackResolved', data: payload })
+        }
         this.lastDefenseRoll = null
         this.attackRoll = null
         super._updateSchipsStern()
         this.updateModifierDisplay()
+    }
+
+    _selectedManeuverPreEffects() {
+        return (this.item.manoever || [])
+            .filter((maneuver) => Boolean(maneuver.inputValue?.value))
+            .map((maneuver) => ({
+                id: maneuver.id,
+                name: maneuver.name,
+                uuid: maneuver.uuid || `Item.${maneuver.id}`,
+                applicationId: foundry.utils.randomID(),
+                system: { preEffects: toArray(maneuver.system?.preEffects) },
+                inputValue: maneuver.inputValue,
+            }))
+            .filter((maneuver) => maneuver.system.preEffects.length)
+    }
+
+    async _dispatchManeuverPreEffects(
+        maneuvers,
+        activation,
+        targetActor,
+        sourceActor,
+        triggeringRollResult,
+    ) {
+        for (const maneuver of maneuvers || []) {
+            const preEffects = maneuver.system.preEffects.filter(
+                (effect) => effect.activation === activation,
+            )
+            if (!preEffects.length) continue
+            await applyPreEffects(
+                triggeringRollResult ?? { success: true },
+                {
+                    item: maneuver,
+                    actor: sourceActor,
+                    speaker: ChatMessage.getSpeaker({ actor: sourceActor }),
+                    selectedActors: [{ actorId: targetActor.id }],
+                },
+                {
+                    selector:
+                        maneuver.inputValue?.field === 'SELECTOR' ? maneuver.inputValue.value : '',
+                    inputValue: maneuver.inputValue?.value,
+                },
+                {
+                    sourceItem: maneuver,
+                    sourceActor,
+                    sourceType: 'maneuver',
+                    preEffects,
+                    applicationId: maneuver.applicationId,
+                },
+            )
+        }
     }
 
     async _schadenKlick() {
@@ -575,7 +705,7 @@ export class AngriffDialog extends CombatDialog {
         let nodmg = { name: '', value: false }
         let trefferzone = 0
         let schaden = this.item.getTp()
-        let damageType = 'NORMAL'
+        let damageType = 'PROFAN'
         let trueDamage = false
 
         // Collect all modifications from all maneuvers
@@ -589,6 +719,10 @@ export class AngriffDialog extends CombatDialog {
                     check = dynamicManoever.inputValue.value
                 } else if (dynamicManoever.inputValue.field == 'NUMBER') {
                     number = dynamicManoever.inputValue.value
+                } else if (dynamicManoever.inputValue.field == 'SELECTOR') {
+                    // A selector activates ordinary modifications once; its raw
+                    // value remains on inputValue for outcome pre-effects.
+                    number = 1
                 } else {
                     trefferZoneInput = dynamicManoever.inputValue.value
                 }

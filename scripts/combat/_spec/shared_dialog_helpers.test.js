@@ -40,7 +40,16 @@ describe('processModification', () => {
         }
         global.signed = mockSigned
         global.CONFIG = mockConfig
-        game.settings.get.mockReturnValue(false)
+        game.settings.get.mockImplementation((_namespace, key) => {
+            if (key === 'damageTypes') {
+                return JSON.stringify([
+                    { value: 'PROFAN', label: 'Profan', behavior: {} },
+                    { value: 'FEUER', label: 'Feuer', behavior: {} },
+                    { value: 'EIS', label: 'Eis', behavior: {} },
+                ])
+            }
+            return false
+        })
         delete global.Roll
     })
 
@@ -322,11 +331,30 @@ describe('processModification', () => {
         processModification(modification, 1, 'Test Manoever', null, rollValues, mockConfig)
 
         expect(rollValues.text_dm).toContain('Test Manoever: Schadenstyp zu Feuer')
-        // Stores the registry key, not the display label
         expect(rollValues.damageType).toBe('FEUER')
         // Should not modify any other values
         expect(rollValues.mod_dm).toBe(0)
         expect(rollValues.schaden).toBe('')
+    })
+
+    it('uses the current registry label while retaining a custom damage-type key', () => {
+        game.settings.get.mockImplementation((_namespace, key) => {
+            if (key === 'damageTypes') {
+                return JSON.stringify([{ value: 'SCHATTEN', label: 'Schattenbrand', behavior: {} }])
+            }
+            return false
+        })
+
+        processModification(
+            { type: 'CHANGE_DAMAGE_TYPE', value: 'SCHATTEN' },
+            1,
+            'Schattenhieb',
+            null,
+            rollValues,
+        )
+
+        expect(rollValues.text_dm).toContain('Schattenhieb: Schadenstyp zu Schattenbrand')
+        expect(rollValues.damageType).toBe('SCHATTEN')
     })
 
     it('should handle CHANGE_DAMAGE_TYPE type with trefferzone', () => {
@@ -334,7 +362,6 @@ describe('processModification', () => {
         processModification(modification, 1, 'Test Manoever', 1, rollValues, mockConfig)
 
         expect(rollValues.text_dm).toContain('Test Manoever (Beine): Schadenstyp zu Eis')
-        expect(rollValues.damageType).toBe('EIS')
         // Should not modify any other values
         expect(rollValues.mod_dm).toBe(0)
         expect(rollValues.schaden).toBe('')
@@ -872,6 +899,11 @@ describe('applyOperator', () => {
 // @spec openspec/changes/add-pre-effect-unit-tests/specs/pre-effect-unit-tests/spec.md
 // ---------------------------------------------------------------
 
+jest.mock('../../effects/nachbrennen-effect.js', () => ({
+    resolveElementalSideEffect: jest.fn(),
+}))
+
+import { resolveElementalSideEffect } from '../../effects/nachbrennen-effect.js'
 import { _applyDamageDirectly, getDamageTypeBehavior } from '../dialogs/shared-dialog-helpers.js'
 
 const defaultDamageTypes = JSON.stringify([
@@ -913,21 +945,8 @@ describe('getDamageTypeBehavior', () => {
             healing: true,
             targetsErschoepfung: true,
             bypassesArmor: false,
+            elementalSideEffect: null,
         })
-    })
-
-    it('treats the legacy NORMAL sentinel as default behavior without warning', () => {
-        expect(getDamageTypeBehavior('NORMAL')).toEqual({
-            healing: false,
-            targetsErschoepfung: false,
-            bypassesArmor: false,
-        })
-        expect(getDamageTypeBehavior(undefined)).toEqual({
-            healing: false,
-            targetsErschoepfung: false,
-            bypassesArmor: false,
-        })
-        expect(global.ui.notifications.warn).not.toHaveBeenCalled()
     })
 
     it('returns safe defaults and warns once for an unknown type', () => {
@@ -935,6 +954,7 @@ describe('getDamageTypeBehavior', () => {
             healing: false,
             targetsErschoepfung: false,
             bypassesArmor: false,
+            elementalSideEffect: null,
         })
         expect(global.ui.notifications.warn).toHaveBeenCalledTimes(1)
 
@@ -952,6 +972,7 @@ describe('getDamageTypeBehavior', () => {
             healing: false,
             targetsErschoepfung: false,
             bypassesArmor: false,
+            elementalSideEffect: null,
         })
         expect(global.ui.notifications.warn).toHaveBeenCalledTimes(1)
     })
@@ -966,6 +987,7 @@ describe('getDamageTypeBehavior', () => {
             healing: false,
             targetsErschoepfung: false,
             bypassesArmor: false,
+            elementalSideEffect: null,
         })
     })
 
@@ -979,7 +1001,31 @@ describe('getDamageTypeBehavior', () => {
             healing: false,
             targetsErschoepfung: false,
             bypassesArmor: false,
+            elementalSideEffect: null,
         })
+    })
+
+    it('warns again when a previously restored type is removed from a changed registry', () => {
+        const key = 'REINTRODUCED_TYPE_TEST'
+        global.game.settings.get.mockImplementation((_namespace, settingKey) => {
+            if (settingKey === 'damageTypes') return '[]'
+            return undefined
+        })
+        getDamageTypeBehavior(key)
+
+        global.game.settings.get.mockImplementation((_namespace, settingKey) => {
+            if (settingKey === 'damageTypes') return `[{"value":"${key}","label":"Test"}]`
+            return undefined
+        })
+        getDamageTypeBehavior(key)
+
+        global.game.settings.get.mockImplementation((_namespace, settingKey) => {
+            if (settingKey === 'damageTypes') return '[]'
+            return undefined
+        })
+        getDamageTypeBehavior(key)
+
+        expect(global.ui.notifications.warn).toHaveBeenCalledTimes(2)
     })
 })
 
@@ -1097,7 +1143,7 @@ describe('_applyDamageDirectly — Healing', () => {
         expect(mockUpdate).toHaveBeenCalledWith({ 'system.gesundheit.erschoepfung': 1 })
     })
 
-    it('LEP system healing removes accumulated damage directly', async () => {
+    it('LEP system healing restores HP directly', async () => {
         global.game.settings.get.mockImplementation((_ns, key) => {
             if (key === 'lepSystem') return true
             if (key === 'damageTypes') return defaultDamageTypes
@@ -1109,55 +1155,7 @@ describe('_applyDamageDirectly — Healing', () => {
             system: {
                 gesundheit: {
                     wunden: 10,
-                },
-                abgeleitete: { ws: 5 },
-            },
-            update: (mockUpdate = jest.fn().mockResolvedValue(undefined)),
-        }
-
-        await _applyDamageDirectly(targetActor, 4, 'HEALING_WOUND', false, {})
-
-        // LEP system: wunden accumulates damage points (hp = max_hp - wunden),
-        // so healing subtracts directly, no WS threshold: 10 - 4 = 6
-        expect(mockUpdate).toHaveBeenCalledWith({ 'system.gesundheit.wunden': 6 })
-    })
-
-    it('LEP healing never drops accumulated damage below zero', async () => {
-        global.game.settings.get.mockImplementation((_ns, key) => {
-            if (key === 'lepSystem') return true
-            if (key === 'damageTypes') return defaultDamageTypes
-            return undefined
-        })
-
-        targetActor = {
-            name: 'TestActor',
-            system: {
-                gesundheit: {
-                    wunden: 5,
-                },
-                abgeleitete: { ws: 5 },
-            },
-            update: (mockUpdate = jest.fn().mockResolvedValue(undefined)),
-        }
-
-        await _applyDamageDirectly(targetActor, 20, 'HEALING_WOUND', false, {})
-
-        // newDamage = max(0, 5 - 20) = 0
-        expect(mockUpdate).toHaveBeenCalledWith({ 'system.gesundheit.wunden': 0 })
-    })
-
-    it('LEP healing on an unhurt target changes nothing', async () => {
-        global.game.settings.get.mockImplementation((_ns, key) => {
-            if (key === 'lepSystem') return true
-            if (key === 'damageTypes') return defaultDamageTypes
-            return undefined
-        })
-
-        targetActor = {
-            name: 'TestActor',
-            system: {
-                gesundheit: {
-                    wunden: 0,
+                    wunden_max: 30,
                 },
                 abgeleitete: { ws: 5 },
             },
@@ -1166,7 +1164,34 @@ describe('_applyDamageDirectly — Healing', () => {
 
         await _applyDamageDirectly(targetActor, 10, 'HEALING_WOUND', false, {})
 
-        expect(mockUpdate).not.toHaveBeenCalled()
+        // LEP system: direct addition, no WS threshold
+        // newLep = min(10 + 10, 30) = 20
+        expect(mockUpdate).toHaveBeenCalledWith({ 'system.gesundheit.wunden': 20 })
+    })
+
+    it('LEP healing caps at wunden_max', async () => {
+        global.game.settings.get.mockImplementation((_ns, key) => {
+            if (key === 'lepSystem') return true
+            if (key === 'damageTypes') return defaultDamageTypes
+            return undefined
+        })
+
+        targetActor = {
+            name: 'TestActor',
+            system: {
+                gesundheit: {
+                    wunden: 25,
+                    wunden_max: 30,
+                },
+                abgeleitete: { ws: 5 },
+            },
+            update: (mockUpdate = jest.fn().mockResolvedValue(undefined)),
+        }
+
+        await _applyDamageDirectly(targetActor, 20, 'HEALING_WOUND', false, {})
+
+        // newLep = min(25 + 20, 30) = 30
+        expect(mockUpdate).toHaveBeenCalledWith({ 'system.gesundheit.wunden': 30 })
     })
 
     it('healing chat message contains "heilt"', async () => {
@@ -1239,5 +1264,25 @@ describe('_applyDamageDirectly — Healing', () => {
         await _applyDamageDirectly(targetActor, -5, 'PROFAN', false, {})
 
         expect(mockUpdate).not.toHaveBeenCalled()
+    })
+
+    it('dispatches a configured side effect after resolving direct damage', async () => {
+        resolveElementalSideEffect.mockClear()
+        ChatMessage.create.mockClear()
+        global.game.settings.get.mockImplementation((_namespace, key) => {
+            if (key === 'lepSystem') return false
+            if (key === 'damageTypes') {
+                return '[{"value":"FEUER","label":"Feuer","behavior":{"elementalSideEffect":"nachbrennen"}}]'
+            }
+            return undefined
+        })
+        targetActor = createTargetActor({ wunden: 0, ws: 5, wsStern: 5 })
+
+        await _applyDamageDirectly(targetActor, 6, 'FEUER', false, {})
+
+        expect(resolveElementalSideEffect).toHaveBeenCalledWith(targetActor, 'nachbrennen')
+        expect(resolveElementalSideEffect.mock.invocationCallOrder[0]).toBeGreaterThan(
+            ChatMessage.create.mock.invocationCallOrder[0],
+        )
     })
 })

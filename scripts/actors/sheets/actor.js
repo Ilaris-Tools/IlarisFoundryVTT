@@ -4,6 +4,8 @@ import {
     createNahkampfwaffeDefaults,
     createFernkampfwaffeDefaults,
 } from '../../items/model-data/shared.js'
+import { startOpposedEscape } from '../../effects/opposed-escape.js'
+import { removeConditionSource } from '../../effects/status-conditions.js'
 
 const { HandlebarsApplicationMixin } = foundry.applications.api
 const { ActorSheetV2 } = foundry.applications.sheets
@@ -32,6 +34,7 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             itemCreate: IlarisActorSheet.onItemCreate,
             itemEdit: IlarisActorSheet.onItemEdit,
             itemDelete: IlarisActorSheet.onItemDelete,
+            escapeEffect: IlarisActorSheet.onEscapeEffect,
             toggleBool: IlarisActorSheet.onToggleBool,
             syncItems: IlarisActorSheet.onSyncItems,
         },
@@ -619,6 +622,16 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
         try {
             if (itemClass === 'effect') {
+                const effect = this.actor.appliedEffects.find((entry) => entry.id === itemID)
+                const nachbrennenSource = effect?.system?.ilarisCondition?.sources?.find(
+                    (source) => source.type === 'nachbrennen',
+                )
+                // The existing effect-row trash control is the extinguishing action.
+                // Preserve any independent source entries sharing this condition effect.
+                if (nachbrennenSource) {
+                    await removeConditionSource(this.actor, effect, nachbrennenSource.id)
+                    return
+                }
                 await this.actor.deleteEmbeddedDocuments('ActiveEffect', [itemID])
             } else {
                 await this.actor.deleteEmbeddedDocuments('Item', [itemID])
@@ -627,6 +640,10 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             console.error('ILARIS | Error deleting item:', err)
             ui.notifications.error('Fehler beim Löschen des Items.')
         }
+    }
+
+    static async onEscapeEffect(event, target) {
+        await startOpposedEscape(this.actor, target.dataset.itemid)
     }
 
     /**

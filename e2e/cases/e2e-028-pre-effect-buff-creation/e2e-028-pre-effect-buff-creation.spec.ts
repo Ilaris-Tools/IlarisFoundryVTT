@@ -27,6 +27,7 @@ import {
     openSpellDialog,
     restoreActorFromDefaultSnapshot,
     restoreFoundrySetting,
+    setFoundrySettingForTest,
 } from '../../shared/fixtures/foundry'
 
 const ACTOR_NAME = 'HatAlles'
@@ -35,9 +36,13 @@ const SPELL_NAME = 'Axxeleratus'
 test.describe('E2E-028 · Pre-Effect Buff ActiveEffect Creation', () => {
     let snapshot: ActorDefaultSnapshot
     let targetSelectionSetting: import('../../shared/fixtures/foundry').FoundrySettingSnapshot
+    let supernaturalStackingSetting:
+        | import('../../shared/fixtures/foundry').FoundrySettingSnapshot
+        | undefined
     let initialEffectIds: string[]
 
     test.beforeEach(async ({ page }) => {
+        supernaturalStackingSetting = undefined
         await loginAndJoinWorld(page, foundryConfig)
         targetSelectionSetting = await enableTargetSelectionForTest(page)
         snapshot = await captureActorDefaultSnapshot(page, ACTOR_NAME)
@@ -83,6 +88,9 @@ test.describe('E2E-028 · Pre-Effect Buff ActiveEffect Creation', () => {
             )
             .catch(() => {})
         await restoreFoundrySetting(page, targetSelectionSetting).catch(() => {})
+        if (supernaturalStackingSetting) {
+            await restoreFoundrySetting(page, supernaturalStackingSetting).catch(() => {})
+        }
         await clearChatLog(page).catch(() => {})
     })
 
@@ -211,8 +219,18 @@ test.describe('E2E-028 · Pre-Effect Buff ActiveEffect Creation', () => {
                     remaining: latest.system?.ilarisTiming?.remaining ?? null,
                     original: latest.system?.ilarisTiming?.originalValue ?? null,
                     changes: (latest._source?.changes ?? latest.changes ?? []).map(normalizeChange),
+                    ilarisSource: latest.system?.ilarisSource ?? null,
+                    ilarisModifiers: latest.system?.ilarisModifiers ?? [],
                     sourceType: latest.flags?.ilaris?.sourceType ?? null,
                     expectedChanges: (source?.changes ?? []).map(normalizeChange),
+                    expectedIlarisModifiers: (source?.ilarisModifiers ?? []).map(
+                        (modifier: any) => ({
+                            phase: modifier.phase,
+                            target: modifier.target,
+                            value: modifier.value,
+                            stacking: modifier.stacking,
+                        }),
+                    ),
                     expectedDuration: (source?.baseDuration ?? 0) + 1,
                 }
             },
@@ -222,9 +240,205 @@ test.describe('E2E-028 · Pre-Effect Buff ActiveEffect Creation', () => {
         expect(effectInfo).not.toBeNull()
         expect(effectInfo!.name).toContain(SPELL_NAME)
         expect(effectInfo!.durationType).toBe('ownerTurns')
+        expect(effectInfo!.ilarisSource).toBe('uebernatuerlich')
+        expect(effectInfo!.sourceType).toBe('uebernatuerlich')
         expect(effectInfo!.changes).toEqual(effectInfo!.expectedChanges)
+        expect(effectInfo!.ilarisModifiers).toEqual(
+            expect.arrayContaining(effectInfo!.expectedIlarisModifiers),
+        )
         expect(effectInfo!.turns).toBe(effectInfo!.expectedDuration)
         expect(effectInfo!.remaining).toBe(effectInfo!.expectedDuration)
         expect(effectInfo!.original).toBe(effectInfo!.expectedDuration)
+    })
+
+    test('materializes semantic amplification, keeps native changes, and redirects main attributes', async ({
+        page,
+    }) => {
+        const effectData = await page.evaluate(async (actorName) => {
+            const actor = game.actors.getName(actorName)
+            const spell = actor?.items.find((item: any) => item.name?.includes('Axxeleratus'))
+            if (!actor || !spell) throw new Error('Actor or Axxeleratus not found')
+            const existingEffectIds = new Set(actor.effects.map((effect: any) => effect.id))
+
+            const { createActiveEffectFromPreEffect } =
+                await import('/systems/Ilaris/scripts/effects/pre-effects/pre-effects-processor.js')
+            await createActiveEffectFromPreEffect(
+                actor,
+                {
+                    baseDuration: 3,
+                    instant: false,
+                    changes: [
+                        {
+                            key: 'system.attribute.GE.wert',
+                            type: 'add',
+                            value: '1',
+                            amplifiedByMaechtigeMagie: true,
+                            maechtigBonus: '+1',
+                        },
+                        {
+                            key: 'system.modifikatoren.manuellermod',
+                            type: 'add',
+                            value: '2',
+                        },
+                    ],
+                    ilarisModifiers: [
+                        {
+                            phase: 'roll',
+                            target: 'at',
+                            value: '2',
+                            stacking: 'strongest-supernatural',
+                            amplifiedByMaechtigeMagie: true,
+                            maechtigBonus: '+1',
+                            diminishedValue: '-2',
+                            diminishedMaechtigBonus: '-1',
+                        },
+                    ],
+                },
+                actor,
+                spell,
+                3,
+                2,
+            )
+
+            const latest = actor.effects.find((effect: any) => !existingEffectIds.has(effect.id))
+            if (!latest) throw new Error('Materialized effect not found')
+            return {
+                changes: Array.from(latest.changes ?? latest._source?.changes ?? []).map(
+                    (change: any) => ({ ...change }),
+                ),
+                ilarisModifiers: Array.from(latest.system?.ilarisModifiers ?? []).map(
+                    (modifier: any) => ({ ...modifier }),
+                ),
+            }
+        }, ACTOR_NAME)
+
+        expect(effectData.changes).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    key: 'system.modifikatoren.manuellermod',
+                    type: 'add',
+                    value: 2,
+                }),
+            ]),
+        )
+        expect(effectData.changes).not.toEqual(
+            expect.arrayContaining([expect.objectContaining({ key: 'system.attribute.GE.wert' })]),
+        )
+        expect(effectData.ilarisModifiers).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({ target: 'ge', value: '1+1+1' }),
+                expect.objectContaining({ target: 'at', value: '2+1+1' }),
+            ]),
+        )
+    })
+
+    // Existing actor and setting fixtures are sufficient; no new e2e/shared helper is needed.
+    test('recasts retain in Ilaris mode, replace their whole source in Foundry mode, and resolve semantic MR', async ({
+        page,
+    }) => {
+        supernaturalStackingSetting = await setFoundrySettingForTest(
+            page,
+            'Ilaris',
+            'supernaturalEffectStacking',
+            'ilaris',
+        )
+
+        const recastInfo = await page.evaluate(async (actorName) => {
+            const actor = game.actors.getName(actorName)
+            const spell = actor?.items.find((item: any) => item.name?.includes('Axxeleratus'))
+            if (!actor || !spell) throw new Error('Actor or Axxeleratus not found')
+            const { createActiveEffectFromPreEffect } =
+                await import('/systems/Ilaris/scripts/effects/pre-effects/pre-effects-processor.js')
+            const { resolveIlarisModifiers } =
+                await import('/systems/Ilaris/scripts/effects/utils/ilaris-modifier-resolver.js')
+            const preEffect = {
+                instant: false,
+                changes: [],
+                ilarisModifiers: [
+                    {
+                        phase: 'prepare',
+                        target: 'mr',
+                        value: '4',
+                        stacking: 'strongest-supernatural',
+                    },
+                ],
+            }
+            const matching = () =>
+                actor.effects.filter(
+                    (effect: any) => effect.flags?.ilaris?.spellUuid === spell.uuid,
+                )
+
+            await createActiveEffectFromPreEffect(
+                actor,
+                preEffect,
+                actor,
+                spell,
+                3,
+                0,
+                0,
+                'ilaris-first',
+            )
+            await createActiveEffectFromPreEffect(
+                actor,
+                preEffect,
+                actor,
+                spell,
+                3,
+                0,
+                0,
+                'ilaris-second',
+            )
+            const ilarisCount = matching().filter(
+                (effect: any) => effect.flags?.ilaris?.preEffectIndex === 0,
+            ).length
+            const ilarisMr = resolveIlarisModifiers({ actor, phase: 'prepare', target: 'mr' }).value
+
+            await game.settings.set('Ilaris', 'supernaturalEffectStacking', 'foundry')
+            await createActiveEffectFromPreEffect(
+                actor,
+                preEffect,
+                actor,
+                spell,
+                4,
+                0,
+                0,
+                'foundry-cast',
+            )
+            await createActiveEffectFromPreEffect(
+                actor,
+                preEffect,
+                actor,
+                spell,
+                4,
+                0,
+                1,
+                'foundry-cast',
+            )
+            const foundryReplacementCount = matching().length
+            const foundryApplicationIds = matching().map(
+                (effect: any) => effect.flags?.ilaris?.applicationId,
+            )
+            const foundryMr = resolveIlarisModifiers({
+                actor,
+                phase: 'prepare',
+                target: 'mr',
+            }).value
+
+            return {
+                ilarisCount,
+                ilarisMr,
+                foundryReplacementCount,
+                foundryApplicationIds,
+                foundryMr,
+            }
+        }, ACTOR_NAME)
+
+        expect(recastInfo).toEqual({
+            ilarisCount: 2,
+            ilarisMr: 4,
+            foundryReplacementCount: 2,
+            foundryApplicationIds: ['foundry-cast', 'foundry-cast'],
+            foundryMr: 8,
+        })
     })
 })

@@ -7,7 +7,34 @@
     "text": "In Rededuellen sind Proben auf Betören und Einschüchtern um +2 erleichtert.\n\nBei Proben auf Betören, Einschüchtern und Gebräuche gelten Patzer als gewöhnlich misslungen, außer sie entstehen durch eine ungewohnte Umgebung (S. 55)."
   },
   "_id": "NabIXyEgtnkg9OUQ",
-  "effects": [],
+  "effects": [
+    {
+      "_id": "EindrII000000001",
+      "_key": "!items.effects!NabIXyEgtnkg9OUQ.EindrII000000001",
+      "name": "Rededuell: Betören und Einschüchtern",
+      "icon": "icons/svg/aura.svg",
+      "disabled": false,
+      "duration": {},
+      "transfer": true,
+      "changes": [],
+      "system": {
+        "ilarisSource": "ordinary",
+        "ilarisModifiers": [
+          {
+            "phase": "roll",
+            "target": "probe",
+            "value": "2",
+            "stacking": "add",
+            "selector": {
+              "talent": ["Betören", "Einschüchtern"],
+              "situation": ["sozialesDuell"]
+            }
+          }
+        ]
+      },
+      "flags": {}
+    }
+  ],
   "_stats": {
     "coreVersion": "12.331",
     "systemId": null,

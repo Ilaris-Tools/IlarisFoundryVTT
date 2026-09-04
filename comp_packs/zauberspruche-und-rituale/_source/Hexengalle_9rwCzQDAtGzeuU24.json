@@ -8,6 +8,7 @@
     "text": "Du spuckst auf deinen Gegner. Dein Speichel verwandelt sich in ätzende Säure und das getroffene Opfer erleidet 2W6 SP und wird bei misslungener Konterprobe (Zähigkeit, 16) bis zu seiner übernächsten Initiativephase handlungsunfähig. Ballistischer Zauber.",
     "maechtig": "Die SP steigen um 1W6.",
     "schwierigkeit": "12",
+    "ballistic": { "enabled": true },
     "modifikationen": "Drachenspeichel (–4; der Zauber wirkt auch gegen unbelebte Ziele.)",
     "vorbereitung": "0 Aktionen",
     "ziel": "selbst",
@@ -46,19 +47,7 @@
       {
         "baseDuration": 2,
         "instant": false,
-        "changes": [
-          {
-            "key": "system.modifikatoren.manuellermod",
-            "type": "add",
-            "value": "0",
-            "amplifiedByMaechtigeMagie": false,
-            "maechtigBonus": "",
-            "damageType": "PROFAN",
-            "diminishedValue": "",
-            "diminishedMaechtigBonus": "",
-            "priority": null
-          }
-        ],
+        "changes": [],
         "avoidTest": {
           "enabled": true,
           "fertigkeit": "Zähigkeit",
@@ -66,6 +55,22 @@
           "attribut": "",
           "diminishedOnly": false,
           "resistDifficulty": 16
+        },
+        "resistanceOutcomes": {
+          "failure": {
+            "enabled": true,
+            "changes": [],
+            "ilarisModifiers": [],
+            "marker": { "enabled": true, "id": "handlungsunfaehig", "label": "Handlungsunfähig" },
+            "condition": { "enabled": false, "statusId": "" }
+          },
+          "success": {
+            "enabled": false,
+            "changes": [],
+            "ilarisModifiers": [],
+            "marker": { "enabled": false, "id": "", "label": "" },
+            "condition": { "enabled": false, "statusId": "" }
+          }
         }
       }
     ]

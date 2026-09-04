@@ -2,6 +2,7 @@ import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
 } from '../settings/configure-game-settings.model.js'
+import { targetFromMainAttributePath } from './utils/ilaris-modifier-constants.js'
 
 /**
  * Custom ActiveEffect class for Ilaris system
@@ -13,6 +14,18 @@ import {
  * - Set Effect Value to: damage amount (supports @references)
  */
 export class IlarisActiveEffect extends ActiveEffect {
+    /**
+     * Direct native main-attribute changes are legacy data. Applying them
+     * changes prepared attributes and can cascade into GS, carry capacity, or
+     * other derived values. New effects are redirected by the config and
+     * Pre-Effect processors; existing ones are safely ignored here.
+     * @override
+     */
+    shouldApplyChange(change, options) {
+        if (targetFromMainAttributePath(change?.key)) return false
+        return super.shouldApplyChange(change, options)
+    }
+
     /**
      * Resolves a formula string containing @ references using actor roll data
      * @param {string} formula - The formula string to resolve
@@ -79,10 +92,10 @@ export class IlarisActiveEffect extends ActiveEffect {
         for (const effect of effects) {
             if (effect.disabled || effect.isSuppressed) continue
 
-            for (const change of effect.system?.changes ?? []) {
+            for (const change of effect.changes ?? []) {
                 // Check for Custom mode and key starting with "system.gesundheit.wunden"
                 if (
-                    change.type === 'custom' &&
+                    change.type === 'dot' &&
                     change.key?.toLowerCase().startsWith('system.gesundheit.wunden')
                 ) {
                     dotEffects.push({ effect, change })
@@ -99,29 +112,38 @@ export class IlarisActiveEffect extends ActiveEffect {
      * @returns {Promise<void>}
      */
     static async applyDotDamage(actor, change, effect) {
-        const targetPath = change.key
-        if (
-            !targetPath ||
-            (!targetPath.startsWith('system.gesundheit.wunden') &&
-                !targetPath.startsWith('system.gesundheit.erschoepfungen'))
-        ) {
-            console.warn(`Ilaris | DOT change has invalid key: ${targetPath}`)
+        if (!change?.key?.startsWith('system.gesundheit.')) {
+            console.warn(`Ilaris | DOT change has invalid key: ${change?.key}`)
             return
         }
 
-        // Resolve formula if it contains @ references
-        let damageValue = change.value
-        if (typeof damageValue === 'string' && damageValue.includes('@')) {
-            const effectInstance = new IlarisActiveEffect()
-            const resolved = effectInstance.resolveFormulaValue(damageValue, actor)
-            damageValue = resolved ? parseFloat(resolved) : 0
-        } else {
-            damageValue = parseFloat(damageValue) || 0
+        let roll
+        try {
+            roll = new Roll(
+                String(change.value || '').replace(/[Ww]/g, 'd'),
+                actor.getRollData?.() || {},
+            )
+            await roll.evaluate()
+        } catch (error) {
+            console.warn('Ilaris | DOT formula is invalid:', change?.value, error)
+            ui?.notifications?.warn(
+                'Der Schaden-ueber-Zeit-Wert ist ungueltig und wurde nicht angewendet.',
+            )
+            return
         }
-
-        // Apply to the target path (wunden or erschoepfungen)
-        const current = foundry.utils.getProperty(actor, targetPath) ?? 0
-        await actor.update({ [targetPath]: current + damageValue })
+        const { _applyDamageDirectly } = await import('../combat/dialogs/shared-dialog-helpers.js')
+        const damageType =
+            effect.flags?.ilaris?.dotDamageTypes?.find((entry) => entry.key === change.key)
+                ?.damageType || 'PROFAN'
+        await _applyDamageDirectly(
+            actor,
+            roll.total,
+            damageType,
+            false,
+            ChatMessage.getSpeaker({ actor }),
+        )
+        const targetPath = change.key
+        const damageValue = roll.total
 
         // Send chat message about DOT damage
         const effectName = effect.name || 'Schaden über Zeit'
@@ -159,6 +181,8 @@ export class IlarisActiveEffect extends ActiveEffect {
      * @override
      */
     apply(actor, change) {
+        if (targetFromMainAttributePath(change?.key)) return {}
+
         // If change value contains @ references, resolve it as a formula
         if (typeof change.value === 'string' && change.value.includes('@')) {
             const resolvedValue = this.resolveFormulaValue(change.value, actor)
@@ -186,18 +210,27 @@ export class IlarisActiveEffect extends ActiveEffect {
      * @override
      */
     isExpiryEvent(event, context) {
-        if (this.system?.ilarisTiming?.durationType === 'ownerTurns') return false
+        // Condition sources have their own owner-phase timing in the condition
+        // ledger. Their shared ActiveEffect is deliberately durationless, so it
+        // must never enter Foundry's duration registry (whose context is optional).
+        if (
+            this.system?.ilarisTiming?.durationType === 'ownerTurns' ||
+            this.system?.ilarisCondition
+        )
+            return false
         return super.isExpiryEvent(event, context)
     }
 
     /**
-     * Prevent core from decrementing duration.turns for Ilaris-timed effects.
-     * Without this guard the core would independently decrement on every combatant's
-     * turn, creating a conflicting counter alongside the owner-scoped hooks.
+     * Return Foundry's derived duration record so the v14 ActiveEffect registry
+     * remains valid. isExpiryEvent above prevents native expiry; Ilaris owns the
+     * owner-turn counter in system.ilarisTiming.
      * @override
      */
-    updateDuration(context) {
-        if (this.system?.ilarisTiming?.durationType === 'ownerTurns') return
+    updateDuration(context = {}) {
+        // Foundry v14 documents this context as optional. Supplying the empty
+        // object keeps durationless ledger effects out of the combat-duration
+        // path when Foundry refreshes them without contextual turn data.
         return super.updateDuration(context)
     }
 }

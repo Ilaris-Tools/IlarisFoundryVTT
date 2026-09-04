@@ -1,0 +1,53 @@
+{
+  "name": "Armalion",
+  "type": "nahkampfwaffe",
+  "_id": "mpqeLctvVQjSMrdT",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "haerte": 0,
+    "beschaedigung": 0,
+    "aufbewahrungs_ort": "mitführend",
+    "bewahrt_auf": [],
+    "gewicht_summe": 0,
+    "gewicht": 0,
+    "preis": 0,
+    "quantity": 1,
+    "tp": "2W20+10",
+    "fertigkeit": "Klingenwaffen",
+    "talent": "Einhandklingenwaffen",
+    "rw": 0,
+    "hauptwaffe": false,
+    "nebenwaffe": false,
+    "eigenschaften": [
+      {
+        "key": "Wendig",
+        "parameters": []
+      }
+    ],
+    "text": "",
+    "wm_at": 2,
+    "wm_vt": 2,
+    "rw_mod": 0,
+    "computed": {}
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "I6YlRiEqRJwTfdEG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "Ilaris",
+    "systemVersion": "14.0.0",
+    "createdTime": 1785961132110,
+    "modifiedTime": 1785961195289,
+    "lastModifiedBy": "I6YlRiEqRJwTfdEG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!mpqeLctvVQjSMrdT"
+}

@@ -227,6 +227,8 @@ export function createKreaturActorSystemDefaults() {
         edit: false,
         kreaturentyp: 'humanoid',
         kurzbeschreibung: '',
+        summoningDifficulty: 12,
+        summoningCost: 12,
         kampfwerte: {
             ws: 0,
             ws_stern: 0,

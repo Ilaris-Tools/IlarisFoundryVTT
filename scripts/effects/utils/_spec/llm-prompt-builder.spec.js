@@ -67,8 +67,11 @@ describe('buildPreEffectPrompt', () => {
         expect(systemMsg).toContain('baseDuration')
         expect(systemMsg).toContain('instant')
         expect(systemMsg).toContain('changes')
+        expect(systemMsg).toContain('ilarisModifiers')
         expect(systemMsg).toContain('avoidTest')
         expect(systemMsg).toContain('amplifiedByMaechtigeMagie')
+        expect(systemMsg).toContain('strongest-supernatural')
+        expect(systemMsg).toContain('Hauptattribute')
     })
 
     it('system message lists all damage types', () => {

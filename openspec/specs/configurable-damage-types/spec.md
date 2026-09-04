@@ -79,7 +79,7 @@ The IlarisSettingsDialog General tab SHALL include a read-only list of configure
 
 ### Requirement: Pre-effects template uses configured damage types
 
-The pre-effects damage type `<select>` SHALL be populated from the `damageTypes` setting as its first consumer.
+The pre-effects damage type `<select>` and the maneuver `CHANGE_DAMAGE_TYPE` `<select>` SHALL be populated from the `damageTypes` setting as consumers of the shared registry.
 
 #### Scenario: Dropdown shows configured types
 
@@ -88,8 +88,13 @@ The pre-effects damage type `<select>` SHALL be populated from the `damageTypes`
 
 #### Scenario: Currently selected type is preserved
 
-- **WHEN** a pre-effect change has `damageType: "FEUER"` and the setting includes `{"value":"FEUER","label":"Feuer"}`
-- **THEN** the "Feuer" option SHALL be selected in the dropdown
+- **WHEN** a pre-effect change or maneuver modification has a `damageType` or `value` of `FEUER` and the setting includes `{"value":"FEUER","label":"Feuer"}`
+- **THEN** the "Feuer" option SHALL be selected in the corresponding dropdown
+
+#### Scenario: Maneuver dropdown shows configured types
+
+- **WHEN** a Manoever item sheet renders a `CHANGE_DAMAGE_TYPE` modification
+- **THEN** its damage type `<select>` SHALL contain one `<option>` per entry in the setting
 
 ### Requirement: E2E coverage for damage type settings CRUD
 

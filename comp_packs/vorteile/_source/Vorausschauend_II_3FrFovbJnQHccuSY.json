@@ -7,7 +7,34 @@
     "text": "In Rededuellen sind Proben auf Rhetorik und Überreden um +2 erleichtert.\n\nBei Proben auf Überreden, Rhetorik und Menschenkenntnis gelten Patzer als gewöhnlich misslungen, außer sie entstehen durch eine ungewohnte Umgebung (S. 55)."
   },
   "_id": "3FrFovbJnQHccuSY",
-  "effects": [],
+  "effects": [
+    {
+      "_id": "VorausII00000001",
+      "_key": "!items.effects!3FrFovbJnQHccuSY.VorausII00000001",
+      "name": "Rededuell: Rhetorik und Überreden",
+      "icon": "icons/svg/aura.svg",
+      "disabled": false,
+      "duration": {},
+      "transfer": true,
+      "changes": [],
+      "system": {
+        "ilarisSource": "ordinary",
+        "ilarisModifiers": [
+          {
+            "phase": "roll",
+            "target": "probe",
+            "value": "2",
+            "stacking": "add",
+            "selector": {
+              "talent": ["Rhetorik", "Überreden"],
+              "situation": ["sozialesDuell"]
+            }
+          }
+        ]
+      },
+      "flags": {}
+    }
+  ],
   "_stats": {
     "coreVersion": "12.331",
     "systemId": null,

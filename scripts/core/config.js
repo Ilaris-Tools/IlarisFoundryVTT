@@ -353,6 +353,7 @@ let manoever = {
     },
     selector_type: {
         CHECKBOX: 'Checkbox',
+        SELECTOR: 'Auswahl',
         NUMBER: 'Nummerneingabefeld',
         TREFFER_ZONE: 'Trefferzonenauswahl',
     },
