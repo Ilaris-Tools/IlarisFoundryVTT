@@ -16,4 +16,6 @@
 ## 4. Quality and Handoff
 
 - [x] 4.1 Run `npm run lint` and `openspec validate resolve-tied-cast-skills --strict`.
-- [ ] 4.2 Review the scoped diff, update this task list with completed evidence, and commit only the completed change files after all required validation passes.
+- [x] 4.2 Review the scoped diff, update this task list with completed evidence, and commit only the completed change files after all required validation passes.
+
+Validation evidence (2026-09-04): focused `cast-skill-context` Jest (4 tests), full Jest (70 suites / 835 tests), refreshed local Foundry E2E-026 run, `npm run lint`, and strict OpenSpec validation all passed. The scoped implementation diff removes only the dead tied-skill selector context fields from `UebernatuerlichDialog`.

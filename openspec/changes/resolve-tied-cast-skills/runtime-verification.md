@@ -4,7 +4,7 @@
 **Status:** `complete`
 **World:** `ilaris-e2e-world-v14363-r1`
 **Server:** `http://127.0.0.1:30000`
-**Source revision:** uncommitted `resolve-tied-cast-skills` worktree
+**Source revision:** `feature/effect-extension-2` worktree; refreshed on 2026-09-04 before the completion commit.
 
 ## Applicability
 
@@ -47,6 +47,6 @@ required before E2E completion.
 - **State corroboration:** the resolved `castSkill` is the alphabetically later tied skill; this is unit-covered in `cast-skill-context.spec.js` and confirmed by the `Basis PW` shown in the dialog.
 - **`page.evaluate` use:** fixture setup (temporary spell reconfiguration) only; the assertion path is a normal dialog open.
 - **Console/page errors:** none observed during the focused run.
-- **Evidence:** focused E2E-026 tied-skill case passed (46.1 s); screenshot `test-results/tied-cast-skill-resolved.png`.
+- **Evidence:** focused E2E-026 tied-skill case passed (46.1 s); the complete six-case E2E-026 suite was refreshed successfully on 2026-09-04; screenshot `test-results/tied-cast-skill-resolved.png`.
 - **Cleanup:** E2E-026 `afterEach` restores the `HatAlles` actor snapshot, created effects, target-selection setting, and chat log.
 - **Result / unverified boundary:** passed for the tied automatic path. The full E2E-026 suite (6 tests) was later re-run and passes after the ballistic defense step was added to the resist-flow cases (Ignifaxius is a ballistic spell, so its resist flow first shows the ranged-defense prompt). This change touches only the tied-skill resolution and the removed selector.
