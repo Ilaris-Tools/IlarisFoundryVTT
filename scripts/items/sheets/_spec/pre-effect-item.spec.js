@@ -1,12 +1,160 @@
+const { readFileSync } = require('node:fs')
+const { join } = require('node:path')
+
 global.foundry.applications.sheets = {
     ItemSheetV2: class ItemSheetV2 {
         _onRender() {}
     },
 }
 
-const { PreEffectItemSheet } = require('../pre-effect-item.js')
+const {
+    normalizePreEffectFormData,
+    normalizeSpellModificationFormData,
+    PreEffectItemSheet,
+} = require('../pre-effect-item.js')
 
 describe('PreEffectItemSheet', () => {
+    it('normalizes indexed Pre-Effect form data before document updates', () => {
+        const updateData = {
+            system: {
+                preEffects: {
+                    0: {
+                        summonItem: { sourceKind: 'gegenstand', overrides: {} },
+                        ilarisModifiers: {
+                            0: {
+                                phase: 'roll',
+                                target: 'at',
+                                selector: { fertigkeit: 'Klingenwaffen' },
+                            },
+                        },
+                        resistanceOutcomes: {
+                            failure: { changes: {}, ilarisModifiers: {} },
+                        },
+                    },
+                },
+            },
+        }
+
+        expect(normalizePreEffectFormData(updateData)).toMatchObject({
+            system: {
+                preEffects: [
+                    {
+                        summonItem: { sourceKind: 'gegenstand', overrides: [] },
+                        ilarisModifiers: [
+                            {
+                                phase: 'roll',
+                                target: 'at',
+                                selector: { fertigkeit: 'Klingenwaffen' },
+                            },
+                        ],
+                        resistanceOutcomes: {
+                            failure: { changes: [], ilarisModifiers: [] },
+                        },
+                    },
+                ],
+            },
+        })
+    })
+
+    it('normalizes object-indexed spellModifications and nested arrays before updates', () => {
+        const updateData = {
+            system: {
+                spellModificationGroups: {
+                    0: { id: 'attribute', label: 'Attribut', required: true },
+                },
+                spellModifications: {
+                    0: {
+                        id: 'ff',
+                        name: 'FF',
+                        description: 'Beschreibung',
+                        preEffects: {
+                            0: {
+                                baseDuration: 1,
+                                changes: { 0: { key: 'system.test', value: '1' } },
+                                ilarisModifiers: { 0: { target: 'at', value: '+1' } },
+                                summonItem: {
+                                    enabled: true,
+                                    overrides: { 0: { path: 'system.tp' } },
+                                },
+                                summonCreature: {
+                                    overrides: { 0: { path: 'items.0.system.at' } },
+                                    dominationChecks: {
+                                        entries: { 0: { kreaturentyp: 'daemon' } },
+                                    },
+                                },
+                                resistanceOutcomes: {
+                                    failure: {
+                                        changes: { 0: { key: 'system.fail' } },
+                                        ilarisModifiers: {},
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+                text: 'Regeltext',
+            },
+        }
+
+        expect(normalizeSpellModificationFormData(updateData)).toMatchObject({
+            system: {
+                spellModificationGroups: [{ id: 'attribute', label: 'Attribut', required: true }],
+                spellModifications: [
+                    {
+                        id: 'ff',
+                        name: 'FF',
+                        description: 'Beschreibung',
+                        preEffects: [
+                            {
+                                baseDuration: 1,
+                                changes: [{ key: 'system.test', value: '1' }],
+                                ilarisModifiers: [{ target: 'at', value: '+1' }],
+                                summonItem: {
+                                    enabled: true,
+                                    overrides: [{ path: 'system.tp' }],
+                                },
+                                summonCreature: {
+                                    overrides: [{ path: 'items.0.system.at' }],
+                                    dominationChecks: { entries: [{ kreaturentyp: 'daemon' }] },
+                                },
+                                resistanceOutcomes: {
+                                    failure: {
+                                        changes: [{ key: 'system.fail' }],
+                                        ilarisModifiers: [],
+                                    },
+                                },
+                            },
+                        ],
+                    },
+                ],
+                text: 'Regeltext',
+            },
+        })
+    })
+
+    it('renders outcome-payload controls with the correct pre-effect index', () => {
+        const template = readFileSync(
+            join(process.cwd(), 'scripts', 'items', 'templates', 'pre-effects.hbs'),
+            'utf8',
+        )
+
+        expect(template).toContain('{{#each preEffects as |preEffect preEffectIndex|}}')
+        expect(template).toContain(
+            'name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.failure.enabled"',
+        )
+        expect(template).toContain(
+            'name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.success.enabled"',
+        )
+        expect(template).toContain(
+            'name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.failure.changes.{{@index}}.key"',
+        )
+        expect(template).toContain(
+            'name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.success.ilarisModifiers.{{@index}}.target"',
+        )
+        expect(template).not.toContain('system.preEffects..resistanceOutcomes')
+        expect(template).not.toContain('{{@../../index}}.resistanceOutcomes')
+    })
+
     it('owns the shared pre-effects part and standard defaults', () => {
         const sheet = Object.create(PreEffectItemSheet.prototype)
 

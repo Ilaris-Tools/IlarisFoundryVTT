@@ -137,6 +137,9 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         await expect(failure).toContainText('Bei misslungener Widerstandsprobe')
         await expect(success).toContainText('Bei gelungener Widerstandsprobe')
         await expect(failure.locator('input[name$=".marker.id"]')).toBeHidden()
+        await expect(
+            failure.locator('input[name="system.preEffects.0.resistanceOutcomes.failure.enabled"]'),
+        ).toBeVisible()
 
         await failure.locator('input[name$=".resistanceOutcomes.failure.enabled"]').check()
         await expect(failure.locator('input[name$=".marker.id"]')).toBeVisible()

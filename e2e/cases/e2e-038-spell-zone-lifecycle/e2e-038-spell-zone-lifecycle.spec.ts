@@ -255,6 +255,66 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
         }
     })
 
+    test('toggling a spell-modification resistance checkbox does not add a pre-effect', async ({
+        page,
+    }) => {
+        const itemId = await page.evaluate(async (packId) => {
+            const pack = game.packs?.get(packId)
+            const source = (await pack?.getDocuments())?.find(
+                (entry: any) => entry.name === 'Aeolitus Windgebraus',
+            ) as any
+            if (!source) throw new Error('Aeolitus Windgebraus fehlt.')
+            const data = source.toObject()
+            delete data._id
+            data.name = 'E2E Aeolitus-Widerstandsprobe'
+            const [item] = await Item.createDocuments([data])
+            item.sheet.render(true)
+            return item.id
+        }, SPELL_PACK)
+        const itemWindow = page
+            .locator('.window-app, .application')
+            .filter({ hasText: 'E2E Aeolitus-Widerstandsprobe' })
+            .last()
+
+        try {
+            await expect(itemWindow).toBeVisible({ timeout: 15000 })
+            const formEditor = itemWindow.locator('.spell-modification-editor')
+            await expect(formEditor).toBeVisible()
+
+            const preEffectCards = formEditor.locator('.spell-modification-pre-effect-card')
+            const initialCount = await preEffectCards.count()
+            expect(initialCount).toBeGreaterThan(0)
+
+            const avoidTest = formEditor.locator('input[name$=".avoidTest.enabled"]').first()
+            await expect(avoidTest).toBeVisible()
+            await avoidTest.uncheck()
+            await expect(preEffectCards).toHaveCount(initialCount)
+            await avoidTest.check()
+            await expect(preEffectCards).toHaveCount(initialCount)
+
+            await page.waitForFunction(
+                (id) => {
+                    const item = game.items.get(id) as any
+                    const mods = Array.isArray(item?.system?.spellModifications)
+                        ? item.system.spellModifications
+                        : Object.values(item?.system?.spellModifications ?? {})
+                    const form = mods.find((entry: any) => entry?.id === 'sturm')
+                    return Array.isArray(form?.preEffects) && form.preEffects.length === 1
+                },
+                itemId,
+                { timeout: 10000 },
+            )
+        } finally {
+            await page
+                .evaluate(async (id) => {
+                    const item = game.items.get(id)
+                    await item?.sheet?.close()
+                    await item?.delete()
+                }, itemId)
+                .catch(() => {})
+        }
+    })
+
     test('resolves a placed Pestgestank cone against only its contained token', async ({
         page,
     }) => {

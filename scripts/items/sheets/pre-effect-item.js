@@ -17,12 +17,97 @@ export function toPreEffectArray(value) {
     return []
 }
 
+/** Normalize one Pre-Effect's nested array fields back to arrays. */
+export function normalizePreEffect(preEffect) {
+    if (!preEffect || typeof preEffect !== 'object') return preEffect
+
+    const normalizeOutcome = (outcome) => ({
+        ...outcome,
+        changes: toPreEffectArray(outcome.changes),
+        ilarisModifiers: toPreEffectArray(outcome.ilarisModifiers),
+    })
+
+    return {
+        ...preEffect,
+        changes: toPreEffectArray(preEffect.changes),
+        ilarisModifiers: toPreEffectArray(preEffect.ilarisModifiers),
+        summonItem: preEffect.summonItem && {
+            ...preEffect.summonItem,
+            overrides: toPreEffectArray(preEffect.summonItem.overrides),
+        },
+        summonCreature: preEffect.summonCreature && {
+            ...preEffect.summonCreature,
+            overrides: toPreEffectArray(preEffect.summonCreature.overrides),
+            dominationChecks: preEffect.summonCreature.dominationChecks && {
+                ...preEffect.summonCreature.dominationChecks,
+                entries: toPreEffectArray(preEffect.summonCreature.dominationChecks.entries),
+            },
+        },
+        resistanceOutcomes:
+            preEffect.resistanceOutcomes &&
+            Object.fromEntries(
+                Object.entries(preEffect.resistanceOutcomes).map(([outcome, value]) => [
+                    outcome,
+                    normalizeOutcome(value),
+                ]),
+            ),
+    }
+}
+
+/** Normalize indexed form data back to the array shapes used by Pre-Effect authoring. */
+export function normalizePreEffectFormData(updateData) {
+    if (!updateData.system?.preEffects) return updateData
+
+    return {
+        ...updateData,
+        system: {
+            ...updateData.system,
+            preEffects: toPreEffectArray(updateData.system.preEffects).map(normalizePreEffect),
+        },
+    }
+}
+
+/** Normalize indexed structured spell-modification form data back to arrays. */
+export function normalizeSpellModificationFormData(updateData) {
+    if (!updateData.system) return updateData
+    const system = { ...updateData.system }
+
+    if (system.spellModifications != null) {
+        system.spellModifications = toPreEffectArray(system.spellModifications).map(
+            (modification) => ({
+                ...modification,
+                preEffects: toPreEffectArray(modification.preEffects).map(normalizePreEffect),
+            }),
+        )
+    }
+    if (system.spellModificationGroups != null) {
+        system.spellModificationGroups = toPreEffectArray(system.spellModificationGroups)
+    }
+
+    return { ...updateData, system }
+}
+
 /** Shared ItemSheetV2 lifecycle for the standard system.preEffects editor. */
 export class PreEffectItemSheet extends IlarisItemSheet {
+    static DEFAULT_OPTIONS = {
+        ...IlarisItemSheet.DEFAULT_OPTIONS,
+        form: {
+            ...IlarisItemSheet.DEFAULT_OPTIONS.form,
+            handler: PreEffectItemSheet.#onSubmitForm,
+        },
+    }
+
     static PARTS = {
         preEffects: {
             template: 'systems/Ilaris/scripts/items/templates/pre-effects.hbs',
         },
+    }
+
+    /** Preserve Pre-Effect array fields after AppV2 expands dotted form paths. */
+    static async #onSubmitForm(event, form, formData) {
+        const expanded = foundry.utils.expandObject(formData.object)
+        const updateData = normalizePreEffectFormData(normalizeSpellModificationFormData(expanded))
+        await this.document.update(updateData)
     }
 
     /** @override */
