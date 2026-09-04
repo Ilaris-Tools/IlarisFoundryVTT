@@ -53,7 +53,7 @@ The system SHALL provide `FernkampfAngriffDialog` extending `CombatDialog` for r
 
 ### Requirement: Supernatural combat dialog (UebernatuerlichDialog)
 
-The system SHALL provide `UebernatuerlichDialog` extending `CombatDialog` for supernatural abilities including energy cost tracking, Blutmagie, Verbotene Pforten, and player/GM-managed contextual Vorteil conditions. The dialog SHALL pass selected, session-local condition tags to the roll-phase Ilaris modifier resolver for its supernatural Probe and show any applied ordinary contribution in its summary. When `useTargetSelection` is enabled and the item has a normalized zone profile, the dialog SHALL show one `Zone platzieren` control above the right-column `Würfelaktionen`, create and retain an inert draft Region before rolling, enable roll actions only while that draft exists, and defer all zone effects or persistence until a successful cast. When that setting is disabled, zone automation SHALL not run and the spell retains its manual outcome path.
+The system SHALL provide `UebernatuerlichDialog` extending `CombatDialog` for supernatural abilities including energy cost tracking, Blutmagie, Verbotene Pforten, and player/GM-managed contextual Vorteil conditions. The dialog SHALL pass selected, session-local condition tags to the roll-phase Ilaris modifier resolver for its supernatural Probe and show any applied ordinary contribution in its summary. When `useTargetSelection` is enabled and the item has a normalized zone profile, the dialog SHALL show one `Zone platzieren` control above the right-column `Würfelaktionen`, create and retain an inert draft Region before rolling, enable roll actions only while that draft exists, and defer all zone effects or persistence until a successful cast. When that setting is disabled, zone automation SHALL not run and the spell retains its manual outcome path. For an explicitly ballistic source, a successful targeted cast SHALL enter the ranged-defense outcome gate before it calls target Pre-Effects.
 
 #### Scenario: Energy cost enforcement
 
@@ -93,6 +93,11 @@ The system SHALL provide `UebernatuerlichDialog` extending `CombatDialog` for su
 - **WHEN** zone automation is enabled but the caster token or active Scene cannot be resolved
 - **THEN** the dialog SHALL notify the user and abort before rolling or charging energy
 
+#### Scenario: Ballistic cast keeps the normal dialog layout
+
+- **WHEN** a user opens and rolls an explicitly ballistic supernatural spell
+- **THEN** the dialog SHALL retain its existing target list, roll controls, and summaries while the defense outcome resolves in chat
+
 ### Requirement: Target selection
 
 The system SHALL provide `TargetSelectionDialog` for selecting nearby actors/tokens with distance calculation, syncing with Foundry's built-in targeting system.
@@ -128,7 +133,7 @@ The system SHALL mirror 10 combat hooks as `Ilaris.global.*` events for use by w
 
 ### Requirement: Multiplayer defense routing
 
-The system SHALL route defense prompts and damage application to the correct client using socket communication, preserving token context for unlinked actors.
+The system SHALL route defense and resistance prompts, plus their resulting damage or Pre-Effect application, to the correct client using socket or chat communication while preserving token context for unlinked [Actor](https://foundryvtt.com/api/v14/classes/foundry.documents.Actor.html) documents. Resistance target resolution SHALL prefer a structured token-aware target payload, then fall back to a serialized Actor UUID, and finally to a legacy world-actor id only when the prior forms cannot resolve an Actor.
 
 #### Scenario: Defense prompt sent to target's client
 
@@ -144,6 +149,23 @@ The system SHALL route defense prompts and damage application to the correct cli
 
 - **WHEN** a non-GM client needs to apply damage to a target they don't own
 - **THEN** the GM client SHALL handle the damage application via socket payload with full token metadata
+
+#### Scenario: Resistance prompt prefers structured target context
+
+- **WHEN** a resistance prompt contains `target.actorId`, `target.tokenId`, and `target.actorLink` for an unlinked Token Actor
+- **THEN** every prompt-click and result-application stage SHALL resolve that Token Actor before a world Actor with the same source id
+
+#### Scenario: UUID-only resistance prompt remains compatible
+
+- **WHEN** a resistance prompt lacks a resolvable structured target but contains `targetActorUuid`
+- **THEN** the system SHALL resolve that UUID with `foundry.utils.fromUuid`
+- **AND** it SHALL use the resolved Actor for the resistance dialog and result application
+
+#### Scenario: Legacy actor id remains a final fallback
+
+- **WHEN** a resistance prompt lacks a resolvable structured target and UUID but contains `targetActorId`
+- **THEN** the system SHALL resolve the world Actor with that id
+- **AND** it SHALL warn or stop safely when no target can be resolved
 
 ### Requirement: Maneuver integration
 
@@ -225,10 +247,11 @@ The combat modifier pipeline SHALL apply the world weapon-damage roll expansion 
 - **THEN** the chat message SHALL indicate healing (e.g., "heilt X Einschränkungen") instead of damage
 - **AND** `ChatMessage.create` SHALL receive `style: CONST.CHAT_MESSAGE_STYLES.OTHER`
 
-#### Scenario: Healing works with LEP system
+#### Scenario: LEP healing removes accumulated damage
 
-- **WHEN** the LEP system is active and `behavior.healing` is true
-- **THEN** LEP SHALL be increased by the damage amount, capped at the actor's maximum LEP
+- **WHEN** the LEP system is active and `behavior.healing` is true for a type targeting Wunden
+- **THEN** the system SHALL reduce `system.gesundheit.wunden` by the positive healing amount, floored at `0`
+- **AND** it SHALL not use a `wunden_max` field because LEP represents current health as maximum LEP minus accumulated `wunden` damage
 
 #### Scenario: HEALING_EXHAUSTION heals Erschöpfung
 
@@ -266,6 +289,16 @@ The combat modifier pipeline SHALL apply the world weapon-damage roll expansion 
 
 - **WHEN** healing would reduce wounds below 0
 - **THEN** wounds SHALL be capped at 0
+
+### Requirement: Akrobatik defense reads the active message-mode setting
+
+The Akrobatik defense dialog SHALL initialize its roll-mode control from [`ClientSettings#get`](https://foundryvtt.com/api/classes/foundry.helpers.ClientSettings.html#get) using the supported `core.messageMode` key.
+
+#### Scenario: Akrobatik defense opens without a per-dialog mode selection
+
+- **WHEN** an Akrobatik defense dialog is opened and its roll-mode input has no selected override
+- **THEN** the dialog SHALL use the current `core.messageMode` setting
+- **AND** it SHALL not access the removed `core.rollMode` setting
 
 ### Requirement: Combat resolves contextual Ilaris effect modifiers
 

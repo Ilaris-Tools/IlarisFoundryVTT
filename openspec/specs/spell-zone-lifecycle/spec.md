@@ -6,6 +6,21 @@ Canonical requirements synchronized from completed OpenSpec changes.
 
 ## Requirements
 
+### Requirement: Zone E2E assertions are ownership-scoped
+
+Zone runtime verification SHALL distinguish effects and documents owned by the
+test-created Region from unrelated persistent world state.
+
+#### Scenario: Outside actor state does not fail Dämonenbann cleanup
+
+- **WHEN** a Dämonenbann E2E fixture creates a temporary Region
+- **THEN** it SHALL assert only ActiveEffects whose zone provenance matches that Region
+
+#### Scenario: Cone containment selects only the inside fixture token
+
+- **WHEN** a Pestgestank cone is placed around deterministic inside and outside tokens
+- **THEN** zone targeting SHALL include the inside token and exclude the outside token
+
 ### Requirement: Structured zone profile
 
 Supernatural items and selected spell modifications SHALL support an optional normalized zone profile containing shape, dimensions, pivot, placement anchor, placement range, lifecycle, explicit duration, trigger timing, and a `targeting.includeCaster` policy. The profile SHALL remain absent for non-zone items. `targeting.includeCaster` SHALL default to `false` and SHALL filter only the source Token from automatic zone target resolution.

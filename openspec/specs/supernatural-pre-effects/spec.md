@@ -590,3 +590,118 @@ When a selected resistance failure result contains an enabled `tableManagedDispl
 - **WHEN** a Zone target with an unlinked Token Actor fails a qualifying resistance
 - **THEN** the marker and instruction SHALL refer to that Token Actor
 - **AND** the system SHALL not resolve a world Actor merely because it shares the source Actor ID
+
+### Requirement: Pre-effect editor preserves stored select values
+
+The übernatürlich item-sheet pre-effect editor SHALL render each change type and avoid-test attribute select with its stored value selected after a complete form submission.
+
+#### Scenario: Stored change type remains selected
+
+- **WHEN** a pre-effect change stores `type: 'custom'` and the item sheet is re-rendered
+- **THEN** the `custom (DOT)` change-type option SHALL be selected
+
+#### Scenario: Stored avoid-test attribute remains selected
+
+- **WHEN** a pre-effect stores `avoidTest.attribut: 'KO'` and the item sheet is re-rendered
+- **THEN** the `KO` avoid-test attribute option SHALL be selected
+
+### Requirement: Resistance targets use document UUIDs
+
+Resistance prompts SHALL serialize the target Actor's UUID and resolve it with [`foundry.utils.fromUuid`](https://foundryvtt.com/api/v14/modules/foundry.utils.html#fromUuid), so a synthetic Actor belonging to an unlinked Token can be resolved. Legacy world-actor IDs MAY be accepted only as a backward-compatible fallback.
+
+#### Scenario: Unlinked token actor receives a resistance prompt
+
+- **WHEN** a pre-effect requires a resistance test against an unlinked Token's synthetic [`Actor`](https://foundryvtt.com/api/v14/classes/foundry.documents.Actor.html)
+- **THEN** the prompt payload SHALL contain that Actor's UUID
+- **AND** the resist handler SHALL resolve that UUID before opening the FertigkeitDialog or applying the result
+
+#### Scenario: Resistance target cannot be resolved
+
+- **WHEN** the serialized target UUID and any legacy target ID cannot be resolved
+- **THEN** the handler SHALL show a German warning notification
+- **AND** it SHALL not open a FertigkeitDialog or apply an effect to an unintended actor
+
+### Requirement: Resistance prompt content is escaped
+
+The resistance chat prompt SHALL HTML-escape spell and test names before interpolating them into message content created through [`ChatMessage`](https://foundryvtt.com/api/v14/classes/foundry.documents.ChatMessage.html).
+
+#### Scenario: Spell name contains HTML-significant characters
+
+- **WHEN** a resistance prompt is created for a spell or test name containing `<`, `>`, `&`, quotes, or apostrophes
+- **THEN** the rendered prompt SHALL display those characters as text
+- **AND** the name SHALL not create executable or structural HTML
+
+### Requirement: Target-Magieresistenz gates supernatural success effects
+
+The system SHALL gate supernatural success effects on an accepted target-Magieresistenz difficulty.
+
+For an effective profile with an accepted automatic target-Magieresistenz
+challenge, `UebernatuerlichDialog` SHALL treat the resulting `MR + 1W20` total
+as its spell difficulty. Existing Pre-Effects SHALL run only after that spell
+roll succeeds; an unsuccessful result SHALL retain the existing no-effect and
+Zone-draft cleanup behavior.
+
+#### Scenario: Successful MR-gated cast applies its Pre-Effects
+
+- **WHEN** a marked spell has an accepted target-MR total and the caster's
+  evaluated spell roll meets or exceeds it
+- **THEN** the system SHALL apply energy through the existing success path
+- **AND** it SHALL dispatch the spell's configured Pre-Effects once
+
+#### Scenario: Failed MR-gated cast applies no Pre-Effects
+
+- **WHEN** a marked spell has an accepted target-MR total and the caster's
+  evaluated spell roll fails it
+- **THEN** the system SHALL use its existing failure path
+- **AND** it SHALL NOT dispatch configured Pre-Effects
+
+#### Scenario: No accepted target-MR result cannot dispatch Pre-Effects
+
+- **WHEN** an automatic target-MR challenge is pending, invalid, or stale
+- **THEN** the caster SHALL not be able to execute the spell roll
+- **AND** the system SHALL NOT charge energy or dispatch Pre-Effects
+
+### Requirement: Pre-effects support a generic summon-actor operation
+
+An übernatürlich Item pre-effect SHALL optionally define a `summonActor`
+configuration containing `enabled`, a creature Actor `sourceUuid`, a placement
+policy, `lifetime`, an `activationDelay`, and optional source-data overrides.
+The pre-effect processor SHALL dispatch this operation after a successful cast
+instead of creating an ordinary target ActiveEffect. It SHALL preserve the
+existing `summonItem` operation and SHALL not dispatch both operations from one
+pre-effect entry.
+
+#### Scenario: A configured actor summon uses the selected cast context
+
+- **WHEN** a successful pre-effect has an enabled `summonActor` operation
+- **THEN** the processor SHALL pass the caster, selected target Token context, cast skill, effective duration, Mächtige-Magie QS, pre-effect index, and application id to the actor-summon operation
+- **AND** it SHALL not create an ordinary target ActiveEffect for that operation
+
+#### Scenario: Existing Item summons remain unchanged
+
+- **WHEN** a successful pre-effect contains an enabled `summonItem` operation and no enabled `summonActor` operation
+- **THEN** the processor SHALL create the configured owned Item clone with its existing lifecycle
+- **AND** it SHALL not create a world Actor or Scene Token
+
+### Requirement: Targeted successful casts reach their Pre-Effect result path
+
+An eligible targeted supernatural cast SHALL expose a working visible roll
+action. A successful action SHALL create its normal roll chat result before
+the system dispatches the effective Pre-Effects.
+
+#### Scenario: Targeted instant spell creates its roll result
+
+- **WHEN** a user selects a valid target for an instant-damage spell and
+  activates the rendered roll action
+- **THEN** the system SHALL create the roll chat message
+- **AND** it SHALL then apply the effective instant Pre-Effect to that target
+
+### Requirement: Ballistic defense fixtures exercise both outcomes
+
+The ballistic E2E fixture SHALL provide an eligible Akrobatik defense option
+for its defended scenario without relying on pre-existing mutable actor state.
+
+#### Scenario: Successful Akrobatik defense prevents application
+
+- **WHEN** the fixture target successfully resolves its rendered Akrobatik defense
+- **THEN** the deferred target Pre-Effect SHALL not be applied

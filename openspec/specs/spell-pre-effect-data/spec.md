@@ -6,12 +6,13 @@ Pre-effect configurations authored on spells in the `zauberspruche-und-rituale` 
 
 ### Requirement: Damage spells have instant pre-effects
 
-Direct damage spells (elemental rays, single-target projectiles) in the `zauberspruche-und-rituale` compendium SHALL include pre-effect configurations that apply instant damage to the target's wounds.
+Direct damage spells (elemental rays, single-target projectiles) in the `zauberspruche-und-rituale` compendium SHALL include pre-effect configurations that apply instant damage to the target's wounds. A spell whose rule text declares it ballistic SHALL also author the normalized ballistic source marker; that marker SHALL cause no elemental side effect by itself. A configured elemental side effect SHALL be resolved only through the damage type after direct damage succeeds.
 
 #### Scenario: Ignifaxius applies 4W6 fire damage
 
-- **WHEN** a GM casts Ignifaxius and the spell succeeds
+- **WHEN** a GM casts Ignifaxius and the spell succeeds against an undefended visible target
 - **THEN** the target SHALL receive `4W6` instant damage to `system.gesundheit.wunden` via `_applyDamageDirectly` with `damageType: FEUER`
+- **AND** the configured FEUER side effect SHALL resolve Nachbrennen independently of the ballistic gate
 
 #### Scenario: Mächtige Magie amplifies damage
 
@@ -22,6 +23,11 @@ Direct damage spells (elemental rays, single-target projectiles) in the `zaubers
 
 - **WHEN** any \*faxius spell (Ignifaxius, Frigifaxius, Aquafaxius, Humofaxius, Archofaxius, Orcanofaxius) is examined
 - **THEN** each SHALL have `preEffects[0].instant: true`, `changes[0].key: "system.gesundheit.wunden"`, `changes[0].amplifiedByMaechtigeMagie: true`, and `damageType` matching the spell's element
+
+#### Scenario: Ballistic source is explicit
+
+- **WHEN** Ignifaxius or another reviewed ballistic source is examined
+- **THEN** it SHALL declare the ballistic marker without encoding a spell-name-specific resolution branch
 
 ### Requirement: Heal spells have instant pre-effects
 
@@ -111,6 +117,27 @@ Simple debuff spells (single-target, non-instant duration, stat penalty or condi
 
 - **WHEN** a debuff spell has `wirkungsdauer: "4 Initiativphasen"`
 - **THEN** the pre-effect `baseDuration` SHALL be `4`
+
+### Requirement: Krähenruf and Skelettarius author reviewed Actor summon data
+
+The creature compendium SHALL contain a _Krähenschwarm_ source Actor with the
+published _Krähenruf_ baseline combat values. _Krähenruf_ SHALL define a timed
+`casterAdjacent` actor summon lasting 16 initiative phases and source overrides
+that add one WS, AT, and TP per Mächtige-Magie QS. _Skelettarius Totenherr_
+SHALL define a permanent `selectedTarget` summon using the reviewed Skelett
+creature source and an activation delay of two global initiative phases.
+
+#### Scenario: Krähenruf has a complete timed summon source
+
+- **WHEN** _Krähenruf_ and _Krähenschwarm_ are examined in compendium `_source/`
+- **THEN** the spell SHALL reference the creature source by UUID with a 16-phase timed actor-summon pre-effect
+- **AND** the source SHALL contain WS 3, Koloss I, INI 6, GS 8, VT 3, RW 2, AT 10, TP `2W6–2`, and Zusätzliche AT I before its configured amplification
+
+#### Scenario: Skelettarius has a permanent delayed undead source
+
+- **WHEN** _Skelettarius Totenherr_ is examined in compendium `_source/`
+- **THEN** it SHALL reference the reviewed Skelett source by UUID with permanent selected-target placement
+- **AND** it SHALL configure an activation delay of two initiative phases
 
 ### Requirement: Reviewed resistance-outcome spell source data
 

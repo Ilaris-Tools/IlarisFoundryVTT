@@ -22,7 +22,7 @@ The system SHALL materialize at most one active condition effect for a given act
 
 ### Requirement: Independent condition sources
 
-The system SHALL persist each manual or automated cause of a condition as a stable source entry on the condition effect. A source removal SHALL remove only that entry and SHALL delete the embedded effect with [Actor#deleteEmbeddedDocuments](https://foundryvtt.com/api/v14/classes/foundry.documents.Actor.html#deleteEmbeddedDocuments) only after its final source has been removed.
+The system SHALL persist each manual or automated cause of a condition as a stable source entry on the condition effect. A source removal SHALL remove only that entry and SHALL delete the embedded effect with [Actor#deleteEmbeddedDocuments](https://foundryvtt.com/api/v14/classes/foundry.documents.Actor.html#deleteEmbeddedDocuments) only after its final source has been removed. A timed one-shot Nachbrennen source SHALL be independently removable before its rule completion.
 
 #### Scenario: Manual source survives maneuver-source removal
 
@@ -34,6 +34,12 @@ The system SHALL persist each manual or automated cause of a condition as a stab
 
 - **WHEN** the final source of a Position4 condition is removed
 - **THEN** the system SHALL delete only that Position4 embedded ActiveEffect
+
+#### Scenario: Nachbrennen removal preserves another source
+
+- **WHEN** a condition effect holds a pending Nachbrennen source and an independent source
+- **AND** the pending Nachbrennen source is removed as extinguished or completed
+- **THEN** the independent source SHALL remain on the condition effect
 
 ### Requirement: Manual picker source semantics
 
