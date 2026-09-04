@@ -4,6 +4,7 @@ import {
     resolveResistDifficulty,
     resolveInitialResistTalent,
     resolveResistTargetActor,
+    sendResistPrompt,
 } from '../resist-handler.js'
 
 const effectCreate = jest.fn().mockResolvedValue([])
@@ -46,6 +47,7 @@ beforeEach(() => {
         },
         users: [],
     }
+    global.canvas = { tokens: { get: jest.fn(() => null) } }
     global.CONST = { DOCUMENT_OWNERSHIP_LEVELS: { OWNER: 3 } }
     global.foundry.utils.fromUuid = jest.fn((uuid) => {
         if (uuid === 'Item.spell') return { name: 'Spell', uuid, system: {} }
@@ -93,6 +95,35 @@ describe('resist result listener', () => {
         await hookCallbacks['Ilaris.postSkillRoll'](dialog, { rollResult: { success: true } })
 
         expect(effectCreate).not.toHaveBeenCalled()
+    })
+
+    it('applies a resistance result to the structured unlinked Token Actor before its world Actor', async () => {
+        const tokenActor = {
+            id: 'synthetic-target',
+            name: 'Synthetic Target',
+            system: {},
+            effects: [],
+        }
+        const worldActor = { id: 'target', name: 'World Target', system: {}, effects: [] }
+        global.canvas.tokens.get.mockReturnValue({
+            actor: tokenActor,
+            document: { actorLink: false },
+        })
+        global.game.actors.get.mockReturnValue(worldActor)
+        registerResistResolutionListener()
+        const dialog = {
+            _resistContext: {
+                preEffectData: preEffect({
+                    target: { actorId: 'target', tokenId: 'token-1', actorLink: false },
+                }),
+                spellUuid: 'Item.spell',
+            },
+        }
+
+        await hookCallbacks['Ilaris.postSkillRoll'](dialog, { rollResult: { success: false } })
+
+        expect(effectCreate).toHaveBeenCalledWith(expect.any(Array), { parent: tokenActor })
+        expect(global.game.actors.get).not.toHaveBeenCalled()
     })
 
     it('resolves a wall traversal through its narrow Zone marker lifecycle', async () => {
@@ -492,11 +523,68 @@ describe('resist result listener', () => {
         expect(global.ui.notifications.warn).toHaveBeenCalled()
         expect(button.disabled).toBe(false)
     })
+
+    it('uses the structured unlinked Token Actor for the prompt click before its world Actor', async () => {
+        const tokenActor = { id: 'synthetic-target', name: 'Synthetic Target', system: {} }
+        global.ui = { notifications: { warn: jest.fn() } }
+        global.canvas.tokens.get.mockReturnValue({
+            actor: tokenActor,
+            document: { actorLink: false },
+        })
+        registerResistHandler()
+        const classList = { remove: jest.fn(), add: jest.fn() }
+        const button = {
+            dataset: {
+                preEffectData: encodeURIComponent(
+                    JSON.stringify({
+                        target: { actorId: 'target', tokenId: 'token-1', actorLink: false },
+                        avoidTest: {},
+                    }),
+                ),
+            },
+            disabled: false,
+            addEventListener: jest.fn((_, callback) => {
+                button.clickHandler = callback
+            }),
+        }
+        const htmlDOM = {
+            querySelectorAll: jest.fn(() => [button]),
+            closest: jest.fn(() => ({ classList })),
+        }
+
+        hookCallbacks.renderChatMessageHTML({}, htmlDOM)
+        await button.clickHandler.call(button)
+
+        expect(classList.add).toHaveBeenCalledWith('resist-handled')
+        expect(global.game.actors.get).not.toHaveBeenCalled()
+    })
 })
 
 describe('resolveResistTargetActor', () => {
+    it('prefers the structured unlinked Token Actor over UUID and world Actor fallbacks', async () => {
+        const tokenActor = { id: 'synthetic-target', name: 'Synthetic Target', system: {} }
+        global.canvas.tokens.get.mockReturnValue({
+            actor: tokenActor,
+            document: { actorLink: false },
+        })
+
+        const resolved = await resolveResistTargetActor({
+            target: { actorId: 'target', tokenId: 'token-1', actorLink: false },
+            targetActorUuid: 'Actor.target',
+            targetActorId: 'target',
+        })
+
+        expect(resolved).toBe(tokenActor)
+        expect(global.foundry.utils.fromUuid).not.toHaveBeenCalled()
+        expect(global.game.actors.get).not.toHaveBeenCalled()
+    })
+
     it('resolves synthetic token actors via UUID', async () => {
-        const tokenActor = { name: 'Unlinked Goblin', uuid: 'Scene.s1.Token.t1.Actor.a1' }
+        const tokenActor = {
+            name: 'Unlinked Goblin',
+            uuid: 'Scene.s1.Token.t1.Actor.a1',
+            documentName: 'Actor',
+        }
         global.foundry.utils.fromUuid = jest.fn((uuid) =>
             uuid === 'Scene.s1.Token.t1.Actor.a1' ? tokenActor : null,
         )
@@ -518,6 +606,41 @@ describe('resolveResistTargetActor', () => {
     it('returns null when nothing resolves', async () => {
         expect(await resolveResistTargetActor({})).toBeNull()
         expect(await resolveResistTargetActor({ targetActorId: 'missing' })).toBeNull()
+    })
+
+    it('does not use a non-Actor UUID document as a resistance target', async () => {
+        global.foundry.utils.fromUuid.mockResolvedValue({ documentName: 'Item' })
+
+        const resolved = await resolveResistTargetActor({
+            targetActorUuid: 'Item.spell',
+            targetActorId: 'target',
+        })
+
+        expect(resolved).toEqual(expect.objectContaining({ id: 'target' }))
+    })
+})
+
+describe('sendResistPrompt', () => {
+    it('serializes the Actor UUID beside the structured target payload', async () => {
+        const targetActor = {
+            id: 'target',
+            uuid: 'Scene.s1.Token.t1.Actor.target',
+            testUserPermission: jest.fn(() => false),
+        }
+        global.game.users = [{ id: 'gm', active: true, isGM: true }]
+
+        await sendResistPrompt(
+            targetActor,
+            { target: { actorId: 'target', tokenId: 'token-1', actorLink: false } },
+            'Testzauber',
+            {},
+        )
+
+        const content = global.ChatMessage.create.mock.calls[0][0].content
+        const serialized = content.match(/data-pre-effect-data="([^"]+)"/)[1]
+        const payload = JSON.parse(decodeURIComponent(serialized))
+        expect(payload.target).toEqual({ actorId: 'target', tokenId: 'token-1', actorLink: false })
+        expect(payload.targetActorUuid).toBe(targetActor.uuid)
     })
 })
 

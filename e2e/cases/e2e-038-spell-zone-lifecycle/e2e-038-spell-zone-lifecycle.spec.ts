@@ -2,6 +2,7 @@
 import { expect, test } from '@playwright/test'
 import { E2E_BASELINE } from '../../shared/baseline'
 import {
+    clickResistButton,
     clearChatLog,
     enableTargetSelectionForTest,
     foundryConfig,
@@ -929,7 +930,14 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
                         ],
                     })
                     if (!region) throw new Error('Dornengrenze wurde nicht erzeugt.')
-                    return { regionId: region.id, tokenId: targetToken.id, origin }
+                    return {
+                        regionId: region.id,
+                        tokenId: targetToken.id,
+                        origin,
+                        effectIds: Array.from(targetToken.actor?.effects ?? []).map(
+                            (effect: any) => effect.id,
+                        ),
+                    }
                 },
                 {
                     casterName: ACTOR_NAME,
@@ -950,6 +958,32 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
                     }).length
                 }, tokenId)
             await expect.poll(() => promptCountForTarget(result.tokenId)).toBe(1)
+
+            // This Token is explicitly unlinked. Opening the real player-visible
+            // Widerstandsprobe proves the prompt click retains its synthetic Actor.
+            await clickResistButton(playerPage)
+            const resistDialog = playerPage.locator('.application.fertigkeit-dialog').last()
+            await expect(resistDialog).toBeVisible({ timeout: 15000 })
+            await resistDialog.screenshot({
+                path: 'test-results/unlinked-zone-resistance-dialog.png',
+            })
+            await playerPage.evaluate(() => {
+                const dialog = Array.from(
+                    (foundry.applications as any).instances?.values() ?? [],
+                ).find((app: any) => app._resistContext) as any
+                if (!dialog) throw new Error('Widerstandsdialog für unlinked Zone-Token fehlt.')
+                Hooks.callAll('Ilaris.postSkillRoll', dialog, { rollResult: { success: false } })
+            })
+            await expect
+                .poll(() =>
+                    playerPage.evaluate(({ tokenId, effectIds }) => {
+                        const actor = canvas.tokens?.get(tokenId)?.actor as any
+                        return Array.from(actor?.effects ?? []).some(
+                            (effect: any) => !effectIds.includes(effect.id),
+                        )
+                    }, result),
+                )
+                .toBe(true)
 
             await page.evaluate(async ({ tokenId, origin }) => {
                 const token = canvas.scene?.tokens.get(tokenId) as any

@@ -3,6 +3,31 @@ import { toArray } from './pre-effects-processor.js'
 import { resolveTargetActorForDamage } from '../../combat/dialogs/shared-dialog-helpers.js'
 
 /**
+ * Resolve the Actor that receives a resistance prompt or result.
+ *
+ * Current prompts retain their token-aware target payload so unlinked Token
+ * Actors are selected before a world Actor with the same source id. Older
+ * rendered prompts may only carry a UUID or actor id, which remain safe
+ * compatibility fallbacks in that order.
+ *
+ * @param {object} preEffectData - Serialized resistance prompt payload
+ * @returns {Promise<Actor|null>}
+ */
+export async function resolveResistTargetActor(preEffectData = {}) {
+    if (preEffectData.target) {
+        const { targetActor } = resolveTargetActorForDamage(preEffectData.target)
+        if (targetActor) return targetActor
+    }
+
+    if (preEffectData.targetActorUuid) {
+        const document = await foundry.utils.fromUuid(preEffectData.targetActorUuid)
+        if (document?.documentName === 'Actor') return document
+    }
+
+    return game.actors.get(preEffectData.targetActorId) || null
+}
+
+/**
  * Register the resist test system: socket listener, click delegation, and resolution.
  */
 export function registerResistHandler() {
@@ -25,9 +50,7 @@ export function registerResistHandler() {
                         return
                     }
 
-                    const { targetActor: actor } = resolveTargetActorForDamage(
-                        preEffectData.target || { actorId: preEffectData.targetActorId },
-                    )
+                    const actor = await resolveResistTargetActor(preEffectData)
                     if (!actor) {
                         ui.notifications.warn('Akteur wurde nicht gefunden.')
                         clickedButton.disabled = false
@@ -231,9 +254,7 @@ async function processResistResult(dialog, payload, preEffectData) {
     const resistSuccess = payload?.rollResult?.success
 
     if (preEffectData?.traversal) {
-        const { targetActor } = resolveTargetActorForDamage(
-            preEffectData.target || { actorId: preEffectData.targetActorId },
-        )
+        const targetActor = await resolveResistTargetActor(preEffectData)
         if (!targetActor) return
         const { resolveZoneTraversalResistance } =
             await import('../../combat/zones/zone-lifecycle.js')
@@ -242,9 +263,7 @@ async function processResistResult(dialog, payload, preEffectData) {
     }
 
     if (preEffectData?.zoneMovementResistance) {
-        const { targetActor } = resolveTargetActorForDamage(
-            preEffectData.target || { actorId: preEffectData.targetActorId },
-        )
+        const targetActor = await resolveResistTargetActor(preEffectData)
         if (!targetActor) return
         const { resolveZoneMovementResistance } =
             await import('../../combat/zones/zone-lifecycle.js')
@@ -326,9 +345,7 @@ export function selectResistanceOutcome(preEffectData, outcome) {
  * Apply the pre-effect with full values (resist failed).
  */
 async function applyPreEffectFromResist(preEffectData) {
-    const { targetActor } = resolveTargetActorForDamage(
-        preEffectData.target || { actorId: preEffectData.targetActorId },
-    )
+    const targetActor = await resolveResistTargetActor(preEffectData)
     if (!targetActor) return
 
     const spellItem = await foundry.utils.fromUuid(preEffectData.spellUuid)
@@ -410,9 +427,7 @@ async function sendTableManagedDisplacementNotice(targetActor, preEffectData, sp
  * Apply diminished effect (resist succeeded with diminishedOnly).
  */
 async function applyDiminishedEffect(preEffectData) {
-    const { targetActor } = resolveTargetActorForDamage(
-        preEffectData.target || { actorId: preEffectData.targetActorId },
-    )
+    const targetActor = await resolveResistTargetActor(preEffectData)
     if (!targetActor) return
 
     const spellItem = await foundry.utils.fromUuid(preEffectData.spellUuid)
@@ -501,6 +516,7 @@ export async function sendResistPrompt(targetActor, preEffect, spellName, speake
         JSON.stringify({
             ...preEffect,
             eventId,
+            targetActorUuid: targetActor.uuid || '',
             targetActorId: targetActor.id,
             spellName,
         }),
