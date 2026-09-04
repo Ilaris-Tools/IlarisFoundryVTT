@@ -78,6 +78,22 @@ describe('zone administration registry', () => {
         await expect(updateZoneRemaining(scene, target.id, '2.5')).rejects.toThrow('ganze Zahl')
     })
 
+    test('updates only the selected Zone when another fixture Zone exists', async () => {
+        const target = region('target', 'Zielzone', persistentZone())
+        const comparison = region('comparison', 'Vergleichszone', persistentZone({ remaining: 4 }))
+        const scene = {
+            regions: new Map([
+                [target.id, target],
+                [comparison.id, comparison],
+            ]),
+        }
+
+        await updateZoneRemaining(scene, target.id, 6)
+
+        expect(target.update).toHaveBeenCalledWith({ 'flags.Ilaris.zone.remaining': 6 })
+        expect(comparison.update).not.toHaveBeenCalled()
+    })
+
     test('rejects permanent, stale, and malformed Region duration mutations', async () => {
         const permanent = region(
             'permanent',

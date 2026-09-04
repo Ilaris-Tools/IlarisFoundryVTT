@@ -52,6 +52,36 @@ describe('zone Region targets', () => {
         expect(currentToken.testInsideRegion).toHaveBeenCalled()
     })
 
+    test('includes only the token whose current geometry is contained', () => {
+        const insideToken = {
+            id: 'inside-token',
+            actor: { id: 'inside-actor', name: 'Inside Actor' },
+            actorLink: false,
+            testInsideRegion: jest.fn(() => true),
+        }
+        const outsideToken = {
+            id: 'outside-token',
+            actor: { id: 'outside-actor', name: 'Outside Actor' },
+            actorLink: false,
+            testInsideRegion: jest.fn(() => false),
+        }
+        global.canvas = {
+            tokens: { placeables: [{ document: insideToken }, { document: outsideToken }] },
+        }
+
+        expect(resolveZoneTargets({ tokens: new Set() })).toEqual([
+            {
+                tokenId: 'inside-token',
+                actorId: 'inside-actor',
+                actorLink: false,
+                name: 'Inside Actor',
+                distance: 'Zone',
+            },
+        ])
+        expect(insideToken.testInsideRegion).toHaveBeenCalled()
+        expect(outsideToken.testInsideRegion).toHaveBeenCalled()
+    })
+
     test('keeps a non-active Scene on its own Region token collection', () => {
         const regionToken = {
             id: 'other-scene-token',

@@ -318,59 +318,77 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
     test('resolves a placed Pestgestank cone against only its contained token', async ({
         page,
     }) => {
-        const result = await page.evaluate(async (actorName) => {
-            const actor = game.actors?.getName(actorName) as any
-            const scene = canvas.scene as any
-            const gridSize = canvas.grid.size
-            if (!actor || !scene || !gridSize) throw new Error('Akteur, Szene oder Grid fehlt.')
-            const origin = {
-                x: canvas.dimensions.sceneX + gridSize * 6,
-                y: canvas.dimensions.sceneY + gridSize * 6,
-            }
-            const [inside, outside] = await scene.createEmbeddedDocuments('Token', [
-                {
-                    name: 'E2E Zonen-Ziel innen',
-                    actorId: actor.id,
-                    x: origin.x + gridSize * 2 - gridSize / 2,
-                    y: origin.y - gridSize / 2,
-                    flags: { Ilaris: { e2eZone: true } },
-                },
-                {
-                    name: 'E2E Zonen-Ziel außen',
-                    actorId: actor.id,
-                    x: origin.x - gridSize * 3 - gridSize / 2,
-                    y: origin.y - gridSize / 2,
-                    flags: { Ilaris: { e2eZone: true } },
-                },
-            ])
-            const { createZoneRegionData } =
-                await import('/systems/Ilaris/scripts/combat/zones/zone-region-adapter.js')
-            const { resolveZoneTargets } =
-                await import('/systems/Ilaris/scripts/combat/zones/zone-targets.js')
-            const [region] = await scene.createEmbeddedDocuments('Region', [
-                createZoneRegionData(
+        let created: { regionId: string; tokenIds: string[] } | null = null
+        try {
+            const result = await page.evaluate(async (actorName) => {
+                const actor = game.actors?.getName(actorName) as any
+                const scene = canvas.scene as any
+                const gridSize = canvas.grid.size
+                if (!actor || !scene || !gridSize) throw new Error('Akteur, Szene oder Grid fehlt.')
+                const origin = {
+                    x: canvas.dimensions.sceneX + gridSize * 6,
+                    y: canvas.dimensions.sceneY + gridSize * 6,
+                }
+                const [inside, outside] = await scene.createEmbeddedDocuments('Token', [
                     {
-                        shape: 'cone',
-                        distance: 4,
-                        angle: 45,
-                        placement: { anchor: 'free', pivot: 'tip', range: 8 },
-                        targeting: { includeCaster: true },
+                        name: 'E2E Zonen-Ziel innen',
+                        actorId: actor.id,
+                        x: origin.x + gridSize * 2 - gridSize / 2,
+                        y: origin.y - gridSize / 2,
+                        flags: { Ilaris: { e2eZone: true } },
                     },
-                    { ...origin, direction: 0 },
-                    { flags: { Ilaris: { e2eZone: true } } },
-                ),
-            ])
-            if (!region) throw new Error('Pestgestank-Region wurde nicht erzeugt.')
-            await new Promise((resolve) => setTimeout(resolve, 250))
-            return {
-                insideId: inside.id,
-                outsideId: outside.id,
-                targetIds: resolveZoneTargets(region).map((target: any) => target.tokenId),
-            }
-        }, ACTOR_NAME)
+                    {
+                        name: 'E2E Zonen-Ziel außen',
+                        actorId: actor.id,
+                        x: origin.x - gridSize * 3 - gridSize / 2,
+                        y: origin.y - gridSize / 2,
+                        flags: { Ilaris: { e2eZone: true } },
+                    },
+                ])
+                const { createZoneRegionData } =
+                    await import('/systems/Ilaris/scripts/combat/zones/zone-region-adapter.js')
+                const { resolveZoneTargets } =
+                    await import('/systems/Ilaris/scripts/combat/zones/zone-targets.js')
+                const [region] = await scene.createEmbeddedDocuments('Region', [
+                    createZoneRegionData(
+                        {
+                            shape: 'cone',
+                            distance: 4,
+                            angle: 45,
+                            placement: { anchor: 'free', pivot: 'tip', range: 8 },
+                            targeting: { includeCaster: true },
+                        },
+                        { ...origin, direction: 0 },
+                        { flags: { Ilaris: { e2eZone: true } } },
+                    ),
+                ])
+                if (!region) throw new Error('Pestgestank-Region wurde nicht erzeugt.')
+                await new Promise((resolve) => setTimeout(resolve, 250))
+                return {
+                    insideId: inside.id,
+                    outsideId: outside.id,
+                    regionId: region.id,
+                    tokenIds: [inside.id, outside.id],
+                    targetIds: resolveZoneTargets(region).map((target: any) => target.tokenId),
+                }
+            }, ACTOR_NAME)
+            created = { regionId: result.regionId, tokenIds: result.tokenIds }
 
-        expect(result.targetIds).toContain(result.insideId)
-        expect(result.targetIds).not.toContain(result.outsideId)
+            expect(result.targetIds).toContain(result.insideId)
+            expect(result.targetIds).not.toContain(result.outsideId)
+        } finally {
+            if (!created) return
+            await page
+                .evaluate(async ({ regionId, tokenIds }) => {
+                    const scene = canvas.scene as any
+                    if (scene?.regions?.has(regionId))
+                        await scene.deleteEmbeddedDocuments('Region', [regionId])
+                    const ownedTokenIds = tokenIds.filter((id) => scene?.tokens?.has(id))
+                    if (ownedTokenIds.length)
+                        await scene.deleteEmbeddedDocuments('Token', ownedTokenIds)
+                }, created)
+                .catch(() => {})
+        }
     })
 
     test('cancels a draft Region and creates only its replacement before a cast', async ({
