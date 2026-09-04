@@ -131,15 +131,14 @@ selection SHALL NOT be used as a substitute for that snapshot.
 - **THEN** the dialog SHALL use and snapshot that skill as `castSkill` before
   it rolls
 
-#### Scenario: Tied automatic skills require a pre-roll selection
+#### Scenario: Tied automatic skills use the alphabetically later highest-PW skill
 
 - **WHEN** an automatic spell has multiple eligible supernatural skills tied
   for its highest casting value
-- **THEN** the casting dialog SHALL show a `Fertigkeit` selector before its
-  roll actions
-- **AND** it SHALL keep roll actions disabled until one tied skill is selected
-- **AND** every resulting outcome effect SHALL record the selected skill as
-  `castSkill`
+- **THEN** the dialog SHALL select and snapshot the alphabetically later
+  highest-PW skill as `castSkill` before it rolls
+- **AND** it SHALL not render a `Fertigkeit` selector or disable roll actions
+  pending a selection
 
 ### Requirement: A failure outcome can combine a condition, marker, and manual displacement
 
