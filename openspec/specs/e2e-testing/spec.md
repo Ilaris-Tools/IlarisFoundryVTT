@@ -235,6 +235,21 @@ E2E cases SHALL dismiss Foundry reload/restart confirmation dialogs they trigger
 - **WHEN** an E2E case continues after a settings save
 - **THEN** no open reload dialog SHALL intercept pointer events of later steps
 
+### Requirement: Login readiness waits
+
+The E2E login fixture SHALL wait for world readiness through a predicate (`game.ready && game.messages`) and SHALL NOT rely on `waitForLoadState('networkidle')` as a readiness signal. When a page already has an active game session, the fixture SHALL fast-path directly to the readiness wait instead of re-navigating and re-joining.
+
+#### Scenario: Fresh login waits on game readiness
+
+- **WHEN** an E2E test logs into the world
+- **THEN** the fixture SHALL wait until `game.ready` is true and the game data is available (e.g., `game.messages`) with a bounded timeout
+- **AND** it SHALL not depend on `networkidle` (Foundry WebSockets keep the network active)
+
+#### Scenario: Reused session fast-paths
+
+- **WHEN** the page already shows the game UI for the configured world
+- **THEN** the fixture SHALL skip navigation and login and SHALL only wait for world readiness
+
 - [importer](../importer/spec.md) — XML import tested by e2e-016
 - [combat](../combat/spec.md) — Combat dialogs tested by e2e-001 through e2e-012
 - [actor-sheets](../actor-sheets/spec.md) — Actor sheets tested by e2e-007, e2e-013

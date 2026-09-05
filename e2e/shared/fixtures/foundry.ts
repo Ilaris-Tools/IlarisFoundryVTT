@@ -54,22 +54,32 @@ async function isWorldUiVisible(page: Page): Promise<boolean> {
     return false
 }
 
+async function waitForWorldReady(page: Page) {
+    await page.waitForFunction(
+        () => typeof game !== 'undefined' && game.ready && !!game.messages,
+        undefined,
+        { timeout: 30000 },
+    )
+}
+
 export async function loginAndJoinWorld(page: Page, config: FoundryCredentials = foundryConfig) {
     await registerFoundryOverlayHandlers(page)
+
+    // Fast-path: reuse an already-connected session (no goto/login).
+    // Foundry keeps WebSockets open, so networkidle is never a readiness signal.
+    if (page.url().includes('/game') && (await isWorldUiVisible(page))) {
+        await waitForWorldReady(page)
+        return
+    }
 
     await page.goto(config.url, { waitUntil: 'domcontentloaded' })
 
     // Foundry redirects asynchronously from / to /join, /game, or /setup
     await page.waitForURL(/(\/join|\/game|\/setup)/, { timeout: 30000 })
-    await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {})
 
-    // Already in game (e.g. local dev session still active)
+    // Redirect landed in the active world
     if (page.url().includes('/game') && (await isWorldUiVisible(page))) {
-        await page.waitForFunction(
-            () => typeof game !== 'undefined' && game.ready && !!game.messages,
-            undefined,
-            { timeout: 30000 },
-        )
+        await waitForWorldReady(page)
         return
     }
 
@@ -139,11 +149,7 @@ export async function loginAndJoinWorld(page: Page, config: FoundryCredentials =
     // Final checks: world UI visible, URL is /game, and Foundry runtime fully ready.
     await page.waitForURL(/\/game/, { timeout: 60000 })
     await page.waitForSelector('#chat-log, #ui-left', { timeout: 45000 })
-    await page.waitForFunction(
-        () => typeof game !== 'undefined' && game.ready && !!game.messages,
-        undefined,
-        { timeout: 30000 },
-    )
+    await waitForWorldReady(page)
 
     await assertE2EBaseline(page)
 
