@@ -56,6 +56,16 @@ describe('PreEffectItemSheet', () => {
         })
     })
 
+    it('persists an inactive creature-summon branch without its hidden configuration', () => {
+        const normalized = normalizePreEffectFormData({
+            system: { preEffects: { 0: { summonCreature: { enabled: false } } } },
+        })
+
+        expect(normalized.system.preEffects).toMatchObject([
+            { summonCreature: { enabled: false, overrides: [] } },
+        ])
+    })
+
     it('normalizes object-indexed spellModifications and nested arrays before updates', () => {
         const updateData = {
             system: {
@@ -153,6 +163,21 @@ describe('PreEffectItemSheet', () => {
         )
         expect(template).not.toContain('system.preEffects..resistanceOutcomes')
         expect(template).not.toContain('{{@../../index}}.resistanceOutcomes')
+    })
+
+    it('keeps creature, domination, and probe fields behind their active branches', () => {
+        const template = readFileSync(
+            join(process.cwd(), 'scripts', 'items', 'templates', 'pre-effects.hbs'),
+            'utf8',
+        )
+
+        expect(template).toContain('{{#if summonCreature.enabled}}')
+        expect(template).toContain('{{#if summonCreature.dominationChecks.enabled}}')
+        expect(template).toContain('{{#if (ifEq probeType "attribut")}}')
+        expect(template).toContain('name="system.preEffects.{{@index}}.summonCreature.sourceUuid"')
+        expect(template).toContain(
+            'name="system.preEffects.{{@../index}}.summonCreature.dominationChecks.entries.{{@index}}.fertigkeit"',
+        )
     })
 
     it('owns the shared pre-effects part and standard defaults', () => {

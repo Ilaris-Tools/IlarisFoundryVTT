@@ -359,4 +359,18 @@ describe('UebernatuerlichTalentSheet structured spell forms', () => {
         )
         expect(template).not.toContain('system.spellModifications..preEffects')
     })
+
+    it('keeps structured creature, domination, and probe fields behind their active branches', () => {
+        const template = readFileSync(
+            join(process.cwd(), 'scripts', 'items', 'templates', 'uebernatuerlich_talent.hbs'),
+            'utf8',
+        )
+
+        expect(template).toContain('{{#if preEffect.summonCreature.enabled}}')
+        expect(template).toContain('{{#if preEffect.summonCreature.dominationChecks.enabled}}')
+        expect(template).toContain('{{#if (ifEq check.probeType "attribut")}}')
+        expect(template).toContain(
+            'name="system.spellModifications.{{@../index}}.preEffects.{{@index}}.summonCreature.sourceUuid"',
+        )
+    })
 })

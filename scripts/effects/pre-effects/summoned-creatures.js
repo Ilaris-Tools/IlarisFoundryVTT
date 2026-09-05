@@ -9,6 +9,8 @@ const ui = {
 
 const MAX_PLACEMENT_RING = 12
 const SUMMON_CREATURE_BASE_SOURCE_FLAG = 'summonCreatureBaseSourceUuid'
+const releasingSummonResources = new WeakMap()
+const releasedSummonResources = new WeakSet()
 
 function configuredCreaturePacks() {
     try {
@@ -115,16 +117,30 @@ export async function getCreatureSourceOptions(allowedTypes = []) {
         const pack = game.packs.get(packId)
         if (!pack || pack.metadata?.type !== 'Actor') continue
         try {
+            // A previously loaded default index may not include Ilaris system
+            // fields. Request the fields required for creature filtering even
+            // when the pack already has an index cache.
             const index =
-                pack.index?.size || Array.isArray(pack.index)
-                    ? pack.index
-                    : await pack.getIndex({ fields: ['type', 'system.kreaturentyp'] })
+                (await pack.getIndex?.({
+                    fields: [
+                        'type',
+                        'system.kreaturentyp',
+                        'system.summoningDifficulty',
+                        'system.summoningCost',
+                    ],
+                })) || pack.index
             for (const entry of index) {
                 const creatureType = entry.system?.kreaturentyp
                 if (entry.type !== 'kreatur' || !creatureType) continue
                 if (allowedTypes.length && !allowedTypes.includes(creatureType)) continue
                 options.push({
-                    uuid: `Compendium.${pack.collection}.Actor.${entry._id}`,
+                    // Foundry stores the canonical document UUID on `_uuid` in
+                    // compendium index entries. Fall back only for legacy or
+                    // minimal index records that do not provide one.
+                    uuid:
+                        entry._uuid ||
+                        entry.uuid ||
+                        `Compendium.${pack.collection}.Actor.${entry._id}`,
                     name: entry.name,
                     kreaturentyp: creatureType,
                     packName: pack.metadata?.label || packId,
@@ -143,8 +159,14 @@ export async function getCreatureSourceOptions(allowedTypes = []) {
 export async function resolveSummonCreatureSource(sourceUuid, allowedTypes = []) {
     if (!sourceUuid) return null
     const source = await fromUuid(sourceUuid)
-    if (!configuredCreaturePacks().has(source?.pack) || !isCreatureSource(source, allowedTypes))
-        return null
+    const configuredPacks = configuredCreaturePacks()
+    const sourceCollection = source?.pack || source?.compendium?.collection
+    const belongsToConfiguredPack =
+        configuredPacks.has(sourceCollection) ||
+        Array.from(configuredPacks).some((collection) =>
+            sourceUuid.startsWith(`Compendium.${collection}.Actor.`),
+        )
+    if (!belongsToConfiguredPack || !isCreatureSource(source, allowedTypes)) return null
     return source
 }
 
@@ -231,12 +253,20 @@ async function reserveBoundResource(caster, config) {
         return false
     }
     await caster.update({ [path]: current + bound.amount })
-    return { ...bound, casterUuid: caster.uuid }
+    return { ...bound, casterUuid: caster.uuid, casterId: caster.id }
 }
 
 async function releaseBoundResource(provenance) {
-    if (!provenance?.casterUuid || provenance.released) return
-    const caster = await fromUuid(provenance.casterUuid)
+    if ((!provenance?.casterUuid && !provenance?.casterId) || provenance.released) return
+    let caster = null
+    if (provenance.casterUuid) {
+        try {
+            caster = await fromUuid(provenance.casterUuid)
+        } catch (error) {
+            console.warn('Ilaris | Could not resolve bound summoner by UUID:', error)
+        }
+    }
+    caster ||= game.actors?.get?.(provenance.casterId)
     if (!caster) return
     const path = `system.abgeleitete.${provenance.resource}`
     const current = Number(caster.system?.abgeleitete?.[provenance.resource]) || 0
@@ -302,6 +332,18 @@ async function startDominationCheck(caster, source, config) {
     if (dialog) dialog._summonDominationContext = { creatureName: source.name }
 }
 
+export function findSummonerToken(scene, caster) {
+    const controlledToken = canvas?.tokens?.controlled?.find(
+        (token) => token.actor?.id === caster.id,
+    )?.document
+    if (controlledToken) return controlledToken
+
+    const matchingTokens = Array.from(scene?.tokens || []).filter(
+        (token) => token.actorId === caster.id || token.actor?.id === caster.id,
+    )
+    return matchingTokens.length === 1 ? matchingTokens[0] : null
+}
+
 /** Create one unlinked Scene Token from a selected creature compendium Actor. */
 export async function summonCreatureFromPreEffect({
     caster,
@@ -327,12 +369,10 @@ export async function summonCreatureFromPreEffect({
     }
 
     const scene = canvas?.scene
-    const casterToken = canvas?.tokens?.controlled?.find(
-        (token) => token.actor?.id === caster.id,
-    )?.document
+    const casterToken = findSummonerToken(scene, caster)
     if (!scene || !casterToken) {
         ui.notifications?.warn(
-            'Für die Beschwörung wird ein kontrollierter Token der beschwörenden Person benötigt.',
+            'Für die Beschwörung wird ein kontrollierter oder eindeutig zugeordneter Token der beschwörenden Person benötigt.',
         )
         return null
     }
@@ -460,9 +500,21 @@ export async function summonCreatureFromPreEffect({
 
 export async function releaseSummonedCreatureBoundResource(tokenDocument) {
     const provenance = tokenDocument?.flags?.ilaris?.summonCreature?.boundResource
-    if (!provenance || tokenDocument.getFlag?.('ilaris', 'summonCreatureResourceReleased')) return
-    await releaseBoundResource(provenance)
-    await tokenDocument.setFlag?.('ilaris', 'summonCreatureResourceReleased', true)
+    if (!provenance || releasedSummonResources.has(tokenDocument)) return
+    const inFlight = releasingSummonResources.get(tokenDocument)
+    if (inFlight) return inFlight
+
+    // The token is already being deleted, so a persisted flag would be both
+    // unnecessary and invalid for the lowercase legacy flag namespace. Keep
+    // the exactly-once marker in memory for the document lifecycle instead.
+    const release = releaseBoundResource(provenance)
+    releasingSummonResources.set(tokenDocument, release)
+    try {
+        await release
+        releasedSummonResources.add(tokenDocument)
+    } finally {
+        releasingSummonResources.delete(tokenDocument)
+    }
 }
 
 export function registerSummonDominationResolutionListener() {

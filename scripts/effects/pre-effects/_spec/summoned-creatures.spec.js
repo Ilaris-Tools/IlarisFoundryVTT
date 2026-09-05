@@ -1,9 +1,13 @@
 import {
     applySummonCreatureOverrides,
+    findSummonerToken,
     findSummonPlacement,
     getCreatureSourceOptions,
     getPlacementCandidates,
+    resolveSummonCreatureSource,
     releaseSummonedCreatureBoundResource,
+    dominationDialogOptions,
+    registerSummonDominationResolutionListener,
     resolveDominationCheck,
     summonCreatureFromPreEffect,
 } from '../summoned-creatures.js'
@@ -78,6 +82,29 @@ describe('summoned creatures', () => {
         global.ui = { notifications: { warn: jest.fn(), error: jest.fn() } }
     })
 
+    it('uses the sole active-scene token when the summoner is no longer controlled', () => {
+        const casterToken = { id: 'caster-token', actorId: 'caster' }
+        global.canvas = { tokens: { controlled: [] } }
+
+        expect(findSummonerToken({ tokens: [casterToken] }, { id: 'caster' })).toBe(casterToken)
+    })
+
+    it('requires explicit control when multiple active-scene tokens represent the summoner', () => {
+        global.canvas = { tokens: { controlled: [] } }
+
+        expect(
+            findSummonerToken(
+                {
+                    tokens: [
+                        { id: 'first-caster-token', actorId: 'caster' },
+                        { id: 'second-caster-token', actorId: 'caster' },
+                    ],
+                },
+                { id: 'caster' },
+            ),
+        ).toBeNull()
+    })
+
     it('filters configured Actor packs by creature type and creates Actor UUIDs', async () => {
         await expect(getCreatureSourceOptions(['daemon'])).resolves.toEqual([
             expect.objectContaining({
@@ -86,6 +113,82 @@ describe('summoned creatures', () => {
                 uuid: 'Compendium.Ilaris.kreaturen.Actor.daemon',
             }),
         ])
+    })
+
+    it('keeps the canonical _uuid supplied by a Foundry compendium index', async () => {
+        const pack = game.packs.get('Ilaris.kreaturen')
+        pack.getIndex = jest.fn().mockResolvedValue([
+            {
+                _id: 'daemon',
+                _uuid: 'Compendium.Ilaris.kreaturen.Actor.canonical-daemon',
+                name: 'Azzitai',
+                type: 'kreatur',
+                system: { kreaturentyp: 'daemon' },
+            },
+        ])
+
+        await expect(getCreatureSourceOptions(['daemon'])).resolves.toEqual([
+            expect.objectContaining({
+                uuid: 'Compendium.Ilaris.kreaturen.Actor.canonical-daemon',
+            }),
+        ])
+    })
+
+    it('accepts a selected creature whose configured pack is exposed through compendium metadata', async () => {
+        const source = {
+            documentName: 'Actor',
+            type: 'kreatur',
+            compendium: { collection: 'Ilaris.kreaturen' },
+            system: { kreaturentyp: 'untot' },
+        }
+        global.fromUuid = jest.fn().mockResolvedValue(source)
+
+        await expect(
+            resolveSummonCreatureSource('Compendium.Ilaris.kreaturen.Actor.skeleton', ['untot']),
+        ).resolves.toBe(source)
+    })
+
+    it('accepts a selected creature by its canonical configured-pack UUID', async () => {
+        const source = {
+            documentName: 'Actor',
+            type: 'kreatur',
+            pack: { collection: 'Ilaris.kreaturen' },
+            system: { kreaturentyp: 'untot' },
+        }
+        global.fromUuid = jest.fn().mockResolvedValue(source)
+
+        await expect(
+            resolveSummonCreatureSource('Compendium.Ilaris.kreaturen.Actor.skeleton', ['untot']),
+        ).resolves.toBe(source)
+    })
+
+    it('requests Ilaris creature fields when a pack already has its default index', async () => {
+        const pack = game.packs.get('Ilaris.kreaturen')
+        pack.index = [{ _id: 'daemon', name: 'Azzitai', type: 'kreatur' }]
+        pack.getIndex = jest.fn().mockResolvedValue([
+            {
+                _id: 'daemon',
+                name: 'Azzitai',
+                type: 'kreatur',
+                system: {
+                    kreaturentyp: 'daemon',
+                    summoningDifficulty: 16,
+                    summoningCost: 6,
+                },
+            },
+        ])
+
+        await expect(getCreatureSourceOptions(['daemon'])).resolves.toEqual([
+            expect.objectContaining({ summoningDifficulty: 16, summoningCost: 6 }),
+        ])
+        expect(pack.getIndex).toHaveBeenCalledWith({
+            fields: [
+                'type',
+                'system.kreaturentyp',
+                'system.summoningDifficulty',
+                'system.summoningCost',
+            ],
+        })
     })
 
     it('applies numeric values as numbers and formula values as additive terms without mutating the source', () => {
@@ -164,6 +267,67 @@ describe('summoned creatures', () => {
                 'daemon',
             ),
         ).toBeNull()
+    })
+
+    it('prepares attribute and skill domination probes with their fixed difficulty', () => {
+        global.CONFIG = { ILARIS: { label: { MU: 'Mut' } } }
+        const caster = {
+            system: { attribute: { MU: { pw: 9 } } },
+            profan: {
+                fertigkeiten: [
+                    {
+                        name: 'Willenskraft',
+                        system: {
+                            pw: 11,
+                            attribut_0: 'MU',
+                            attribut_1: 'KL',
+                            talente: [{ name: 'Beschwörung' }],
+                        },
+                    },
+                ],
+            },
+        }
+
+        expect(
+            dominationDialogOptions(caster, {
+                probeType: 'attribut',
+                attribut: 'MU',
+                difficulty: 15,
+            }),
+        ).toMatchObject({ probeType: 'attribut', fertigkeitName: 'Mut', pw: 9, success_val: 15 })
+        expect(
+            dominationDialogOptions(caster, {
+                probeType: 'fertigkeit',
+                fertigkeit: 'Willenskraft',
+                talent: 'Beschwörung',
+                difficulty: 18,
+            }),
+        ).toMatchObject({
+            probeType: 'fertigkeit',
+            fertigkeitName: 'Willenskraft',
+            pw: 11,
+            success_val: 18,
+            initialTalent: 'Beschwörung',
+        })
+    })
+
+    it('reports a domination result without changing the created summon', () => {
+        global.Hooks = { on: jest.fn() }
+        global.ui.notifications.info = jest.fn()
+        const token = { id: 'summoned-token' }
+        const dialog = { _summonDominationContext: { creatureName: 'Azzitai' } }
+
+        registerSummonDominationResolutionListener()
+        const callback = global.Hooks.on.mock.calls.find(
+            ([event]) => event === 'Ilaris.postSkillRoll',
+        )[1]
+        callback(dialog, { rollResult: { success: false } })
+
+        expect(global.ui.notifications.info).toHaveBeenCalledWith(
+            'Beherrschungsprobe für Azzitai: misslungen.',
+        )
+        expect(token).toEqual({ id: 'summoned-token' })
+        expect(dialog).not.toHaveProperty('_summonDominationContext')
     })
 
     it('searches adjacent positions first and skips occupied positions', () => {
@@ -495,11 +659,7 @@ describe('summoned creatures', () => {
 
         await releaseSummonedCreatureBoundResource(created)
         expect(caster.system.abgeleitete.gasp).toBe(1)
-        expect(created.setFlag).toHaveBeenCalledWith(
-            'ilaris',
-            'summonCreatureResourceReleased',
-            true,
-        )
+        expect(created.setFlag).not.toHaveBeenCalled()
     })
 
     it('does not create a token when the summoner cannot pay the binding resource', async () => {
@@ -542,5 +702,85 @@ describe('summoned creatures', () => {
         ).resolves.toBeNull()
 
         expect(canvas.scene.createEmbeddedDocuments).not.toHaveBeenCalled()
+    })
+
+    it('releases a gKaP reservation only once', async () => {
+        const caster = {
+            system: { abgeleitete: { gkap: 3 } },
+            update: jest.fn().mockImplementation(async (update) => {
+                caster.system.abgeleitete.gkap = update['system.abgeleitete.gkap']
+            }),
+        }
+        let released = false
+        const token = {
+            flags: {
+                ilaris: {
+                    summonCreature: {
+                        boundResource: { casterUuid: 'Actor.caster', resource: 'gkap', amount: 3 },
+                    },
+                },
+            },
+            getFlag: jest.fn(() => released),
+            setFlag: jest.fn(async () => {
+                released = true
+            }),
+        }
+        global.fromUuid = jest.fn().mockResolvedValue(caster)
+
+        await releaseSummonedCreatureBoundResource(token)
+        await releaseSummonedCreatureBoundResource(token)
+
+        expect(caster.system.abgeleitete.gkap).toBe(0)
+        expect(caster.update).toHaveBeenCalledTimes(1)
+        expect(token.setFlag).not.toHaveBeenCalled()
+    })
+
+    it('coalesces concurrent release lifecycle calls for the same token', async () => {
+        const caster = {
+            system: { abgeleitete: { gasp: 2 } },
+            update: jest.fn().mockImplementation(async (update) => {
+                caster.system.abgeleitete.gasp = update['system.abgeleitete.gasp']
+            }),
+        }
+        const token = {
+            flags: {
+                ilaris: {
+                    summonCreature: {
+                        boundResource: { casterUuid: 'Actor.caster', resource: 'gasp', amount: 2 },
+                    },
+                },
+            },
+            getFlag: jest.fn(() => false),
+            setFlag: jest.fn(),
+        }
+        global.fromUuid = jest.fn().mockResolvedValue(caster)
+
+        await Promise.all([
+            releaseSummonedCreatureBoundResource(token),
+            releaseSummonedCreatureBoundResource(token),
+        ])
+
+        expect(caster.system.abgeleitete.gasp).toBe(0)
+        expect(caster.update).toHaveBeenCalledTimes(1)
+        expect(token.setFlag).not.toHaveBeenCalled()
+    })
+
+    it('records release completion when the bound summoner is unavailable', async () => {
+        const token = {
+            flags: {
+                ilaris: {
+                    summonCreature: {
+                        boundResource: { casterUuid: 'Actor.missing', resource: 'gasp', amount: 2 },
+                    },
+                },
+            },
+            getFlag: jest.fn(() => false),
+            setFlag: jest.fn(),
+        }
+        global.fromUuid = jest.fn().mockResolvedValue(null)
+
+        await expect(releaseSummonedCreatureBoundResource(token)).resolves.toBeUndefined()
+
+        expect(token.setFlag).not.toHaveBeenCalled()
     })
 })

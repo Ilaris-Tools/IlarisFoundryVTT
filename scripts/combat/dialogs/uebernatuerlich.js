@@ -756,7 +756,7 @@ export class UebernatuerlichDialog extends CombatDialog {
     async _resolveSuccessfulSpellEffects(rollResult) {
         const context = this.getEffectiveSpellModificationContext()
         const preEffectContext = {
-            preEffects: context.preEffects,
+            preEffects: this._getPreEffectsForExecution(context.preEffects),
             spellModificationId: this.getSelectedSpellModificationId(),
         }
         if (this._usesBallisticTargetResolution(context)) return
@@ -800,6 +800,15 @@ export class UebernatuerlichDialog extends CombatDialog {
         if (context.preEffects.length)
             await applyPreEffects(rollResult, this, this.armedInputValues, preEffectContext)
         await this._discardZoneDraft()
+    }
+
+    _getPreEffectsForExecution(preEffects) {
+        const executionPreEffects = foundry.utils.deepClone(preEffects)
+        for (const [index, selection] of this.summonCreatureSelections) {
+            if (selection?.uuid && executionPreEffects[index]?.summonCreature)
+                executionPreEffects[index].summonCreature.selectedCreatureUuid = selection.uuid
+        }
+        return executionPreEffects
     }
 
     _isBallisticSpell() {
@@ -1035,8 +1044,14 @@ export class UebernatuerlichDialog extends CombatDialog {
 
     _getArmedInputs() {
         const inputs = []
-        for (const preEffect of this.getEffectiveSpellModificationContext().preEffects) {
-            for (const input of preEffect?.armedCombat?.inputs || []) {
+        const preEffects = this.getEffectiveSpellModificationContext().preEffects
+        for (const preEffect of Array.isArray(preEffects)
+            ? preEffects
+            : Object.values(preEffects || {})) {
+            const armedInputs = preEffect?.armedCombat?.inputs
+            for (const input of Array.isArray(armedInputs)
+                ? armedInputs
+                : Object.values(armedInputs || {})) {
                 if (input?.key && !inputs.some((entry) => entry.key === input.key))
                     inputs.push(input)
             }

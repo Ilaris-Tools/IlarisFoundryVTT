@@ -27,6 +27,7 @@
 - Snapshot the precise world state that a case changes. Track document IDs created by the case; never delete by broad name, type, pack, or collection scans.
 - Use `try`/`finally` for cleanup. Restore settings, user targets, tokens, Regions/templates, Active Effects, temporary items, and chat messages on success, failure, and interrupted execution.
 - Assert exact message/document deltas where appropriate rather than loose existence checks.
+- For token-deletion cleanup, read the system-owned provenance already present in `document.flags`; do not add a flag during deletion merely to mark cleanup complete. A `Document#getFlag`/`setFlag` scope must match the manifest system id exactly, while legacy raw flag namespaces may not.
 
 ## Feature selection guide
 

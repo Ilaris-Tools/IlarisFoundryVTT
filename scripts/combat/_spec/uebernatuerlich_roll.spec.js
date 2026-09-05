@@ -64,6 +64,41 @@ describe('UebernatuerlichDialog roll execution', () => {
         }
     })
 
+    test('reads armed inputs from Foundry ObjectField data without crashing the casting dialog', () => {
+        const dialog = Object.create(UebernatuerlichDialog.prototype)
+        dialog.getEffectiveSpellModificationContext = () => ({
+            preEffects: {
+                0: {
+                    armedCombat: {
+                        inputs: {
+                            0: { key: 'previousHits', min: 0, max: 8 },
+                        },
+                    },
+                },
+            },
+        })
+
+        expect(dialog._getArmedInputs()).toEqual([{ key: 'previousHits', min: 0, max: 8 }])
+    })
+
+    test('copies the current creature picker UUID into the successful-cast pre-effect snapshot', () => {
+        const dialog = Object.create(UebernatuerlichDialog.prototype)
+        dialog.summonCreatureSelections = new Map([
+            [0, { uuid: 'Compendium.Ilaris.kreaturen.Actor.Ib9MNRQ9ySd6ah7b' }],
+        ])
+        const preEffects = [{ summonCreature: { enabled: true, selectedCreatureUuid: '' } }]
+
+        expect(dialog._getPreEffectsForExecution(preEffects)).toEqual([
+            {
+                summonCreature: {
+                    enabled: true,
+                    selectedCreatureUuid: 'Compendium.Ilaris.kreaturen.Actor.Ib9MNRQ9ySd6ah7b',
+                },
+            },
+        ])
+        expect(preEffects[0].summonCreature.selectedCreatureUuid).toBe('')
+    })
+
     test('uses evaluate_roll_with_crit result and posts to chat before applying energy cost', async () => {
         const actor = {
             type: 'held',
@@ -243,6 +278,54 @@ describe('UebernatuerlichDialog roll execution', () => {
 
         await expect(dialog._getSummonCreatureSelectors()).resolves.toEqual([])
         expect(dialog.summonCreatureSelections.size).toBe(0)
+    })
+
+    test('prepares a dependent creature selector and replaces the effective spell profile', async () => {
+        global.game.settings.get.mockImplementation((scope, key) => {
+            if (scope === 'Ilaris' && key === 'kreaturenPacks') return '["Ilaris.kreaturen"]'
+            return false
+        })
+        global.game.packs = new Map([
+            [
+                'Ilaris.kreaturen',
+                {
+                    collection: 'Ilaris.kreaturen',
+                    metadata: { type: 'Actor', label: 'Kreaturen' },
+                    index: [
+                        {
+                            _id: 'azzitai',
+                            name: 'Azzitai',
+                            type: 'kreatur',
+                            system: {
+                                kreaturentyp: 'daemon',
+                                summoningDifficulty: 16,
+                                summoningCost: 6,
+                            },
+                        },
+                    ],
+                },
+            ],
+        ])
+        const context = {
+            profile: { difficulty: 12, cost: 4 },
+            preEffects: [{ summonCreature: { enabled: true, kreaturentypen: ['daemon'] } }],
+        }
+        const dialog = Object.create(UebernatuerlichDialog.prototype)
+        dialog.summonCreatureSelections = new Map()
+        dialog.spellModificationContext = context
+        dialog.getEffectiveSpellModificationContext = () => context
+
+        await expect(dialog._getSummonCreatureSelectors()).resolves.toEqual([
+            expect.objectContaining({
+                index: 0,
+                kreaturentyp: 'daemon',
+                selectedUuid: 'Compendium.Ilaris.kreaturen.Actor.azzitai',
+            }),
+        ])
+        expect(context.preEffects[0].summonCreature.selectedCreatureUuid).toBe(
+            'Compendium.Ilaris.kreaturen.Actor.azzitai',
+        )
+        expect(dialog.getEffectiveSpellProfile()).toMatchObject({ difficulty: 16, cost: 6 })
     })
 
     test('applies a ballistic spell to its selected target without requiring a caster token after an undefended outcome', async () => {

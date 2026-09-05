@@ -18,6 +18,18 @@ import {
     releaseSummonedCreatureBoundResource,
 } from './pre-effects/summoned-creatures.js'
 
+// A completed token deletion needs no persistent marker: the released
+// TokenDocument stays available to this hook while its Actor reservation is
+// returned. Register at module load so the lifecycle is available to the
+// first world document operation.
+Hooks.on('deleteToken', async (tokenDocument) => {
+    try {
+        await releaseSummonedCreatureBoundResource(tokenDocument)
+    } catch (error) {
+        console.error('Ilaris | Failed to release a summoned creature resource:', error)
+    }
+})
+
 Hooks.once('init', () => {
     registerResistHandler()
     registerResistResolutionListener()
@@ -27,7 +39,4 @@ Hooks.once('init', () => {
     registerZoneLifecycleHooks()
     registerZoneAdministrationHooks()
     registerSummonDominationResolutionListener()
-    Hooks.on('deleteToken', async (tokenDocument) => {
-        await releaseSummonedCreatureBoundResource(tokenDocument)
-    })
 })

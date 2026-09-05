@@ -75,6 +75,29 @@ describe('toArray', () => {
 })
 
 describe('pre-effect processor', () => {
+    it('does not process creature summons after a failed cast', async () => {
+        const caster = createTargetActor({ id: 'caster-id', uuid: 'Actor.caster' })
+        global.fromUuid = jest.fn()
+
+        await applyPreEffects(
+            { success: false },
+            { item: { name: 'Beschwörung', system: {} }, actor: caster, speaker: {} },
+            {},
+            {
+                preEffects: [
+                    {
+                        summonCreature: {
+                            enabled: true,
+                            selectedCreatureUuid: 'Compendium.Ilaris.kreaturen.Actor.daemon',
+                        },
+                    },
+                ],
+            },
+        )
+
+        expect(global.fromUuid).not.toHaveBeenCalled()
+    })
+
     it('dispatches a successful summonCreature pre-effect without changing summonItem handling', async () => {
         const caster = createTargetActor({ id: 'caster-id', uuid: 'Actor.caster' })
         const created = { actor: { sheet: { render: jest.fn() } } }

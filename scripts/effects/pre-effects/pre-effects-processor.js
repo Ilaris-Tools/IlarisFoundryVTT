@@ -184,6 +184,8 @@ function getEffectPayload(preEffect, maechtigeQs, armedInputValues = {}) {
 
 /** Apply all pre-effects from a spell to its targets. */
 export async function applyPreEffects(rollResult, dialog, armedInputValues = {}, context = {}) {
+    if (!rollResult?.success) return
+
     const item = context.sourceItem || dialog.item
     const preEffects = toArray(context.preEffects || item?.system?.preEffects)
     if (!preEffects.length) return
