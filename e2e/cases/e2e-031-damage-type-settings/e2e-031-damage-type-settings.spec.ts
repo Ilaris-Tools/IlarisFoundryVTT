@@ -6,12 +6,24 @@
  * @scenario DialogV2 saves edited type
  */
 
-import { expect, test } from '@playwright/test'
+import { expect, test, type Page } from '@playwright/test'
 import {
     foundryConfig,
     loginAndJoinWorld,
     restoreFoundrySetting,
 } from '../../shared/fixtures/foundry'
+
+async function dismissReloadDialog(page: Page) {
+    // The reload dialog can appear asynchronously after a settings save;
+    // wait for it instead of racing an immediate visibility check.
+    const dialog = page.locator('#reload-world-confirm')
+    try {
+        await dialog.waitFor({ state: 'visible', timeout: 5000 })
+        await dialog.locator('button[data-action="no"]').click()
+    } catch {
+        // No reload dialog appeared — nothing to dismiss.
+    }
+}
 
 const damageTypesSetting = { namespace: 'Ilaris', key: 'damageTypes' }
 const weaponDamageRollSetting = { namespace: 'Ilaris', key: 'expandWeaponDamageMultipliers' }
@@ -22,6 +34,7 @@ test.describe('E2E-031 · Damage Type Settings', () => {
 
     test.beforeEach(async ({ page }) => {
         await loginAndJoinWorld(page, foundryConfig)
+        await dismissReloadDialog(page).catch(() => {})
         originalSetting = await page.evaluate(({ namespace, key }) => {
             return { namespace, key, value: game.settings.get(namespace, key) }
         }, damageTypesSetting)
@@ -80,6 +93,7 @@ test.describe('E2E-031 · Damage Type Settings', () => {
         ).toHaveCount(1)
 
         await settingsDialog.locator('button[data-action="saveSettings"]').click()
+        await dismissReloadDialog(page)
 
         await page.waitForFunction(
             ({ namespace, key }) => {
@@ -119,6 +133,7 @@ test.describe('E2E-031 · Damage Type Settings', () => {
         await clearSideEffectDialog.locator('input[name="elementalSideEffect"]').fill('')
         await clearSideEffectDialog.locator('button:has-text("Übernehmen")').click()
         await reopenedDialog.locator('button[data-action="saveSettings"]').click()
+        await dismissReloadDialog(page)
         await page.waitForFunction(
             () =>
                 JSON.parse(game.settings.get('Ilaris', 'damageTypes')).find(
@@ -155,6 +170,7 @@ test.describe('E2E-031 · Damage Type Settings', () => {
             reopenedDialog.locator('.damage-type-row').filter({ hasText: 'Testheilung' }),
         ).toHaveCount(0)
         await finalDialog.locator('button[data-action="saveSettings"]').click()
+        await dismissReloadDialog(page)
         await page.waitForFunction(
             () =>
                 !JSON.parse(game.settings.get('Ilaris', 'damageTypes')).some(
@@ -182,6 +198,7 @@ test.describe('E2E-031 · Damage Type Settings', () => {
         await expect(settingInput).toBeVisible({ timeout: 10000 })
         await settingInput.check()
         await settingsDialog.locator('button[data-action="saveSettings"]').click()
+        await dismissReloadDialog(page)
 
         await page.waitForFunction(
             ({ namespace, key }) => game.settings.get(namespace, key) === true,
