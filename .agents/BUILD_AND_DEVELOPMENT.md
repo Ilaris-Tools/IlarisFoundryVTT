@@ -123,6 +123,37 @@ describe('HeldenSheet', () => {
 })
 ```
 
+### Handling Existing Test Failures
+
+A failing existing test is a signal to investigate, not a signal to rewrite the test.
+
+```text
+Existing test fails
+       │
+       ▼
+Understand what behavior the test protects
+       │
+       ▼
+Check specification / OpenSpec / documented intent using the truth order:
+OpenSpec requirement → expected behavior → existing regression test → implementation
+       │
+       ├── Implementation is wrong ────────► Fix production code
+       ├── Intended behavior changed ──────► Update implementation AND affected tests
+       ├── Test is incorrect/outdated ─────► Update the test with justification
+       └── Cause unclear ──────────────────► Investigate further before changing expectations
+```
+
+| Pattern                                                             | Suspicious when                | Legitimate when                                     |
+| ------------------------------------------------------------------- | ------------------------------ | --------------------------------------------------- |
+| Assertion weakened/removed (`toBe` → `toBeTruthy`, expects removed) | no spec/behavior change        | behavior changed intentionally                      |
+| `.skip`/`.fixme`/`.only` added                                      | without a tracked reason       | acute known issue + tracked ticket                  |
+| Timeout/retry/`waitForTimeout`                                      | used instead of diagnosing     | documented infrastructure flake                     |
+| `jest.mock` on system-internal module                               | mock drift vs. real API        | boundary mock (Foundry globals via `jest.setup.js`) |
+| Tautological test (asserts implementation)                          | cannot fail when spec violated | behavior contract derived from spec                 |
+| Snapshot updated blindly                                            | no behavior diff reviewed      | behavior change verified                            |
+
+Agents SHALL NOT remove regression coverage because behavior changed nearby, use `.skip`/`.only`/disabled assertions/broader matchers/arbitrary timeout increases as substitutes for diagnosis, or regenerate expected output without inspecting the behavioral difference first. When modifying an existing test because its expectation is obsolete, document the behavioral reason in the implementation report or change artifacts.
+
 ## Linting & Formatting
 
 ### ESLint

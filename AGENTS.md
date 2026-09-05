@@ -135,6 +135,25 @@ After the required E2E tests pass, review the diff and commit every change made 
 11. **Keep presentation in templates.** Put rendered markup in feature-specific Handlebars (`.hbs`) templates and pass structured context from JavaScript. Use JavaScript for application state, event handling, and data preparation—not large inline HTML strings—unless Foundry requires dynamic HTML at runtime.
 12. **Use the appropriate Foundry abstraction.** Prefer Documents and embedded-document APIs for persistent data, AppV2/Handlebars applications for UI, and documented Hooks for lifecycle integration.
 
+### Test preservation and failure diagnosis
+
+Existing tests are regression evidence. When an existing unit or E2E test fails after an implementation change, first determine why the test fails, and compare the implementation, the test expectation, and the applicable OpenSpec requirement or documented intended behavior. If the implementation violates the intended behavior, fix the implementation and preserve the test. Update an existing test only when the expected behavior intentionally changed or the test is incorrect, outdated, flaky, or based on an invalid assumption, and preserve equivalent regression coverage for all behavior that remains required. When it is unclear whether the implementation or the test represents the intended behavior, inspect the relevant specification, OpenSpec change, documentation, and surrounding tests before modifying either.
+
+#### Integrity of test changes
+
+Agents SHALL NOT:
+
+- delete or skip a failing test merely to obtain a passing suite;
+- weaken assertions or replace specific assertions with broader ones without a behavioral justification;
+- update snapshots or expected values blindly;
+- treat the current implementation as authoritative when it conflicts with an existing specification or intentional regression test;
+- mock system-internal modules with `jest.mock` where a `jest.spyOn` on the real module or a boundary mock is possible — mock drift (the mocked API diverging from reality while tests stay green) is a violation;
+- add new or updated tests that merely restate the implementation; tests SHALL assert observable behavior derived from a requirement and SHALL be able to fail when that requirement is violated.
+
+#### E2E determinism and flake triage
+
+E2E tests SHALL be deterministic. `.skip`, `.fixme`, `.only`, increased timeouts, retry changes, or `waitForTimeout` are not substitutes for diagnosing a failure. Infrastructure issues (Foundry not running, stale packs, incomplete baseline world) are resolved with `node utils/foundry-lifecycle.mjs` and the documented procedures in `e2e/README.md` and `docs/develop/e2e-testing.md` — not by modifying tests. A flaky test SHALL be triaged (diagnose → deterministic setup/teardown, restored settings, no reliance on prior test order) before it may be quarantined, and any quarantine SHALL link to a tracked issue or follow-up task.
+
 ## Precedence
 
 For the shared workflow policy above, this file is authoritative. Provider adapters and path-specific instructions MUST NOT silently replace its lifecycle, handoff contract, or self-review gate. An explicit, documented exception in this file is the only permitted override.
