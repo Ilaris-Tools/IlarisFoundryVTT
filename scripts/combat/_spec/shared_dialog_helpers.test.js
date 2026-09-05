@@ -899,10 +899,7 @@ describe('applyOperator', () => {
 // @spec openspec/changes/add-pre-effect-unit-tests/specs/pre-effect-unit-tests/spec.md
 // ---------------------------------------------------------------
 
-jest.mock('../../effects/nachbrennen-effect.js', () => ({
-    resolveElementalSideEffect: jest.fn(),
-}))
-
+import * as nachbrennenEffect from '../../effects/nachbrennen-effect.js'
 import { resolveElementalSideEffect } from '../../effects/nachbrennen-effect.js'
 import { _applyDamageDirectly, getDamageTypeBehavior } from '../dialogs/shared-dialog-helpers.js'
 
@@ -1064,6 +1061,8 @@ describe('_applyDamageDirectly — Healing', () => {
             if (key === 'damageTypes') return defaultDamageTypes
             return undefined
         })
+
+        jest.spyOn(nachbrennenEffect, 'resolveElementalSideEffect').mockResolvedValue(undefined)
     })
 
     function createTargetActor({

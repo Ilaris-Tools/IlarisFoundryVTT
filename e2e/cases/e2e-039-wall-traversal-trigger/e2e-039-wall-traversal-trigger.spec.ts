@@ -277,7 +277,17 @@ test.describe('E2E-039 · Wand aus Dornen traversal trigger', () => {
                     }),
                 setup,
             )
-            await playerPage.waitForTimeout(300)
+            await expect
+                .poll(() =>
+                    page.evaluate(
+                        ({ tokenId, start }) => {
+                            const token = (canvas as any).scene?.tokens.get(tokenId)
+                            return token?.x === start.x - canvas.grid.size / 2
+                        },
+                        { tokenId: setup.tokenId, start: setup.start },
+                    ),
+                )
+                .toBe(true)
             await dragTokenAcrossWall(playerPage, setup.tokenId, setup.destination)
             await expect.poll(() => playerPage.locator('.resist-button').count()).toBeGreaterThan(1)
             await resolveTraversalPrompt(playerPage, true)

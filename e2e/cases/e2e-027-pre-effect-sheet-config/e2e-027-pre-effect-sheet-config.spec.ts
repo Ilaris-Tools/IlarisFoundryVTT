@@ -219,7 +219,19 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
 
         await skillSelect.selectOption(skill)
         await skillSelect.dispatchEvent('change')
-        await page.waitForTimeout(250)
+        await page.waitForFunction(
+            ({ itemId, skill }) => {
+                const item = game.items.get(itemId) as any
+                const inEntries = (entries: any[]) =>
+                    entries?.some((p: any) => p?.avoidTest?.fertigkeit === skill) ?? false
+                const modifications = item?.system?.spellModifications ?? []
+                return (
+                    inEntries(item?.system?.preEffects) ||
+                    modifications.some((m: any) => inEntries(m?.preEffects))
+                )
+            },
+            { itemId: importedItemId, skill },
+        )
         const talent = await talentSelect
             .locator('option')
             .evaluateAll((options) => options.map((option: any) => option.value).find(Boolean))
@@ -227,7 +239,19 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
 
         await talentSelect.selectOption(talent)
         await talentSelect.dispatchEvent('change')
-        await page.waitForTimeout(250)
+        await page.waitForFunction(
+            ({ itemId, talent }) => {
+                const item = game.items.get(itemId) as any
+                const inEntries = (entries: any[]) =>
+                    entries?.some((p: any) => p?.avoidTest?.talent === talent) ?? false
+                const modifications = item?.system?.spellModifications ?? []
+                return (
+                    inEntries(item?.system?.preEffects) ||
+                    modifications.some((m: any) => inEntries(m?.preEffects))
+                )
+            },
+            { itemId: importedItemId, talent },
+        )
 
         await page.evaluate((id) => game.items.get(id)?.sheet?.close(), importedItemId)
         const reopenedWindow = await openImportedSpellSheet(page)

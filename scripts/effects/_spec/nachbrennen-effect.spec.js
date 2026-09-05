@@ -6,9 +6,8 @@ import {
     resolveElementalSideEffect,
 } from '../nachbrennen-effect.js'
 
-jest.mock('../../skills/skills-api.js', () => ({ openSkillDialog: jest.fn() }))
-
 import { openSkillDialog } from '../../skills/skills-api.js'
+import * as skillsApi from '../../skills/skills-api.js'
 
 beforeEach(() => {
     global.foundry = {
@@ -30,7 +29,8 @@ beforeEach(() => {
         statusEffects: { Nachbrennen: { id: 'Nachbrennen', name: 'Nachbrennen' } },
     }
     global.ActiveEffect = { createDocuments: jest.fn().mockResolvedValue([]) }
-    openSkillDialog.mockReset()
+    jest.restoreAllMocks()
+    jest.spyOn(skillsApi, 'openSkillDialog').mockResolvedValue(undefined)
 })
 
 function createActor(overrides = {}) {

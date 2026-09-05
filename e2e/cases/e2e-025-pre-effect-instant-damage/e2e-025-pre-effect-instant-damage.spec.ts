@@ -352,15 +352,20 @@ test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
             { name: ACTOR_NAME, before: wundenBefore.wunden },
             { timeout: 20000 },
         )
-        await page.waitForTimeout(250)
-
-        const damageMessages = await page.evaluate(
-            (baseline) =>
-                game.messages.contents
-                    .slice(baseline)
-                    .filter((message: any) => /Schaden:\s*\d+/.test(message.content ?? '')).length,
-            messageBaseline,
-        )
-        expect(damageMessages).toBe(1)
+        await expect
+            .poll(
+                () =>
+                    page.evaluate(
+                        (baseline) =>
+                            game.messages.contents
+                                .slice(baseline)
+                                .filter((message: any) =>
+                                    /Schaden:\s*\d+/.test(message.content ?? ''),
+                                ).length,
+                        messageBaseline,
+                    ),
+                { timeout: 10000 },
+            )
+            .toBe(1)
     })
 })

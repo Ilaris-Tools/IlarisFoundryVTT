@@ -116,7 +116,20 @@ test.describe('E2E-039 · Target Magieresistenz', () => {
                     d20: 1,
                 },
             )
-            await gmPage.waitForTimeout(250)
+            await expect
+                .poll(
+                    () =>
+                        gmPage.evaluate(() => {
+                            const dialog = Array.from(
+                                (foundry.applications as any).instances?.values() ?? [],
+                            ).find(
+                                (app: any) => app.constructor?.name === 'UebernatuerlichDialog',
+                            ) as any
+                            return dialog?.magicResistanceChallenge?.difficulty ?? null
+                        }),
+                    { timeout: 10000 },
+                )
+                .toBe(firstDifficulty)
             const afterDuplicate = await gmPage.evaluate(() => {
                 const dialog = Array.from(
                     (foundry.applications as any).instances?.values() ?? [],

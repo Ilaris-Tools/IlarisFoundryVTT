@@ -206,6 +206,20 @@ Stateful E2E cases SHALL pass in isolation and in the serial full suite.
 
 Critical E2E assertions SHALL prove controls are visibly reachable through layout or scrolling before activation.
 
+### Requirement: E2E test case determinism
+
+E2E test cases SHALL use predicate-based waits (`expect(...).toBeVisible()`, `waitForFunction`, `waitForSelector`) for asynchronous UI state and SHALL NOT use fixed-duration `waitForTimeout` calls as substitutes for waiting on an observable condition.
+
+#### Scenario: Predicate-based wait is used
+
+- **WHEN** an E2E test case needs to wait for UI state (dialog visible, chat message present, effect applied)
+- **THEN** the test SHALL wait on a predicate (`expect(...).toBeVisible()`, `waitForFunction`, `waitForSelector`) with a bounded timeout instead of a fixed `waitForTimeout`
+
+#### Scenario: Fixed-duration wait is prohibited
+
+- **WHEN** an E2E test case contains a `waitForTimeout` call
+- **THEN** the call SHALL be removed and replaced with a predicate-based wait derived from the observable condition of the scenario
+
 - [importer](../importer/spec.md) — XML import tested by e2e-016
 - [combat](../combat/spec.md) — Combat dialogs tested by e2e-001 through e2e-012
 - [actor-sheets](../actor-sheets/spec.md) — Actor sheets tested by e2e-007, e2e-013

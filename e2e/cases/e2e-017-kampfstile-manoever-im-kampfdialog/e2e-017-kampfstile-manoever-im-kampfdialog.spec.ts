@@ -501,7 +501,9 @@ test.describe('E2E-017 Kampfstile und Stil-Manöver im Kampfdialog', () => {
                 .selectOption('Parierwaffenkampf')
 
             await page.locator('.hero-sync-button-wrapper [data-action="syncItems"]').click()
-            await page.waitForTimeout(500)
+            await expect
+                .poll(() => page.locator('.notification.info').last().textContent())
+                .toMatch(/synchronisiert|bereits aktuell/i)
 
             await openMeleeAttackDialogForWeapon(actorWindow, preparedState.mainWeaponName)
             const attackDialog = page.locator('.application.angriff-dialog').last()
