@@ -17,8 +17,8 @@ import { expect, test } from '@playwright/test'
 import {
     ActorDefaultSnapshot,
     captureActorDefaultSnapshot,
-    foundryConfig,
-    loginAndJoinWorld,
+    closeOpenApplications,
+    createE2ESession,
     openPreEffectsTab,
     restoreActorFromDefaultSnapshot,
 } from '../../shared/fixtures/foundry'
@@ -29,9 +29,19 @@ const SPELL_NAME = 'Ignifaxius Flammenstrahl'
 test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
     let snapshot: ActorDefaultSnapshot
     let importedItemId: string | null = null
+    let session: Awaited<ReturnType<typeof createE2ESession>> | undefined
 
-    test.beforeEach(async ({ page }) => {
-        await loginAndJoinWorld(page, foundryConfig)
+    test.beforeAll(async ({ browser }) => {
+        session = await createE2ESession(browser)
+    })
+
+    test.afterAll(() => {
+        session?.close()
+    })
+
+    test.beforeEach(async () => {
+        const page = session!.page
+        await closeOpenApplications(page).catch(() => {})
         snapshot = await captureActorDefaultSnapshot(page, ACTOR_NAME)
 
         importedItemId = await page.evaluate(
@@ -63,7 +73,8 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         }
     })
 
-    test.afterEach(async ({ page }) => {
+    test.afterEach(async () => {
+        const page = session!.page
         if (importedItemId) {
             await page
                 .evaluate((id) => {
@@ -91,7 +102,8 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         return itemWindow
     }
 
-    test('Pre-effects tab is accessible and has expected structure', async ({ page }) => {
+    test('Pre-effects tab is accessible and has expected structure', async () => {
+        const page = session!.page
         const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)
 
@@ -107,7 +119,8 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         await expect(addButton).toBeVisible()
     })
 
-    test('outcome panels follow Widerstand and reveal only when enabled', async ({ page }) => {
+    test('outcome panels follow Widerstand and reveal only when enabled', async () => {
+        const page = session!.page
         const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)
         const card = itemWindow.locator('.pre-effect-card').first()
@@ -146,9 +159,8 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         await itemWindow.screenshot({ path: 'test-results/resistance-outcomes-editor.png' })
     })
 
-    test('outcome panels remain legible in Foundry light and dark application themes', async ({
-        page,
-    }) => {
+    test('outcome panels remain legible in Foundry light and dark application themes', async () => {
+        const page = session!.page
         const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)
         const savedUiConfig = await page.evaluate(() =>
@@ -185,7 +197,8 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         }
     })
 
-    test('AvoidTest skill dropdown is populated from compendium', async ({ page }) => {
+    test('AvoidTest skill dropdown is populated from compendium', async () => {
+        const page = session!.page
         const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)
 
@@ -204,7 +217,8 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         expect(optionTexts.some((text) => text.includes('uebernatuerlicheFertigkeit'))).toBe(false)
     })
 
-    test('AvoidTest talent dropdown persists a compatible profane talent', async ({ page }) => {
+    test('AvoidTest talent dropdown persists a compatible profane talent', async () => {
+        const page = session!.page
         const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)
 
@@ -261,7 +275,8 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         ).toHaveValue(talent)
     })
 
-    test('Damage type select is populated from settings', async ({ page }) => {
+    test('Damage type select is populated from settings', async () => {
+        const page = session!.page
         const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)
 
@@ -271,9 +286,8 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         expect(options.length).toBeGreaterThan(0)
     })
 
-    test('summon-item source autocomplete follows and persists its selected source kind', async ({
-        page,
-    }) => {
+    test('summon-item source autocomplete follows and persists its selected source kind', async () => {
+        const page = session!.page
         const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)
 
@@ -350,7 +364,8 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         })
     })
 
-    test('adds, persists, and deletes a pre-effect entry', async ({ page }) => {
+    test('adds, persists, and deletes a pre-effect entry', async () => {
+        const page = session!.page
         const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)
         const cards = itemWindow.locator('.pre-effect-card')
@@ -388,9 +403,8 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         await expect(reopenedWindow.locator('.pre-effect-card')).toHaveCount(initialCount)
     })
 
-    test('adds, persists, reopens, and edits an Ilaris modifier with selectors', async ({
-        page,
-    }) => {
+    test('adds, persists, reopens, and edits an Ilaris modifier with selectors', async () => {
+        const page = session!.page
         const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)
         const card = itemWindow.locator('.pre-effect-card').first()

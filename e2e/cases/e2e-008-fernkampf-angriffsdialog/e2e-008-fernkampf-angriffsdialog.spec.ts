@@ -2,8 +2,8 @@ import { expect, test } from '@playwright/test'
 
 import {
     clearChatLog,
-    foundryConfig,
-    loginAndJoinWorld,
+    closeOpenApplications,
+    createE2ESession,
     openActorSheet,
     openRangedAttackDialogForWeapon,
 } from '../../shared/fixtures/foundry'
@@ -99,12 +99,27 @@ async function rollAndCaptureDamage(
 }
 
 test.describe('E2E-008 Fernkampf-Angriffsdialog', () => {
+    let session: Awaited<ReturnType<typeof createE2ESession>> | undefined
+
+    test.beforeAll(async ({ browser }) => {
+        session = await createE2ESession(browser)
+    })
+
+    test.afterAll(() => {
+        session?.close()
+    })
+
+    test.beforeEach(async () => {
+        const page = session!.page
+        await closeOpenApplications(page).catch(() => {})
+        await clearChatLog(page).catch(() => {})
+    })
+
     // ------------------------------------------------------------------ //
     // Szenario A: Standard-Angriff (alle Selects auf neutralen Werten)
     // ------------------------------------------------------------------ //
-    test('A: Standard-Angriff – alle Selects neutral, Chat validieren', async ({ page }) => {
-        await loginAndJoinWorld(page, foundryConfig)
-        await clearChatLog(page)
+    test('A: Standard-Angriff – alle Selects neutral, Chat validieren', async () => {
+        const page = session!.page
 
         const actorWindow = await openActorSheet(page, ACTOR_NAME)
         await openRangedAttackDialogForWeapon(actorWindow)
@@ -149,9 +164,8 @@ test.describe('E2E-008 Fernkampf-Angriffsdialog', () => {
     // ------------------------------------------------------------------ //
     // Szenario B: Alle Selects auf erster Stufe
     // ------------------------------------------------------------------ //
-    test('B: Alle Selects auf erster Stufe – Modifier sichtbar und im Chat', async ({ page }) => {
-        await loginAndJoinWorld(page, foundryConfig)
-        await clearChatLog(page)
+    test('B: Alle Selects auf erster Stufe – Modifier sichtbar und im Chat', async () => {
+        const page = session!.page
 
         const actorWindow = await openActorSheet(page, ACTOR_NAME)
         await openRangedAttackDialogForWeapon(actorWindow)
@@ -194,9 +208,8 @@ test.describe('E2E-008 Fernkampf-Angriffsdialog', () => {
     // ------------------------------------------------------------------ //
     // Szenario C: Alle Selects auf hoechster Stufe
     // ------------------------------------------------------------------ //
-    test('C: Alle Selects auf hoechster Stufe – starke Erschwernis im Chat', async ({ page }) => {
-        await loginAndJoinWorld(page, foundryConfig)
-        await clearChatLog(page)
+    test('C: Alle Selects auf hoechster Stufe – starke Erschwernis im Chat', async () => {
+        const page = session!.page
 
         const actorWindow = await openActorSheet(page, ACTOR_NAME)
         await openRangedAttackDialogForWeapon(actorWindow)
@@ -234,9 +247,8 @@ test.describe('E2E-008 Fernkampf-Angriffsdialog', () => {
     // ------------------------------------------------------------------ //
     // Szenario D: Scharfschuss NUMBER=4 → Angriff + Schaden
     // ------------------------------------------------------------------ //
-    test('D: Scharfschuss=4 – Angriff- und Schaden-Chat pruefen', async ({ page }) => {
-        await loginAndJoinWorld(page, foundryConfig)
-        await clearChatLog(page)
+    test('D: Scharfschuss=4 – Angriff- und Schaden-Chat pruefen', async () => {
+        const page = session!.page
 
         const actorWindow = await openActorSheet(page, ACTOR_NAME)
         await openRangedAttackDialogForWeapon(actorWindow)
@@ -285,7 +297,8 @@ test.describe('E2E-008 Fernkampf-Angriffsdialog', () => {
     // Szenario E: Patzer / Triumph (analog E2E-005)
     // ------------------------------------------------------------------ //
     test.describe('E: Patzer/Triumph-Szenarien', () => {
-        test.afterEach(async ({ page }) => {
+        test.afterEach(async () => {
+            const page = session!.page
             // CONFIG.Dice.randomUniform nach jedem Test zuruecksetzen,
             // auch wenn der Test fehlschlaegt.
             await page
@@ -295,11 +308,8 @@ test.describe('E2E-008 Fernkampf-Angriffsdialog', () => {
                 .catch(() => {})
         })
 
-        test('Vier Wuerfe: 0.99→Patzer, 0.01→Triumph, 0.95 und 0.05→Normalwurf', async ({
-            page,
-        }) => {
-            await loginAndJoinWorld(page, foundryConfig)
-            await clearChatLog(page)
+        test('Vier Wuerfe: 0.99→Patzer, 0.01→Triumph, 0.95 und 0.05→Normalwurf', async () => {
+            const page = session!.page
 
             const actorWindow = await openActorSheet(page, ACTOR_NAME)
             await openRangedAttackDialogForWeapon(actorWindow)
@@ -307,6 +317,16 @@ test.describe('E2E-008 Fernkampf-Angriffsdialog', () => {
             const attackDialog = page.locator('.application.fernkampf-dialog').last()
             await expect(attackDialog).toBeVisible({ timeout: 15000 })
             await expect(attackDialog).toContainText('Fernkampfangriff:')
+
+            // Selects auf neutrale Werte zuruecksetzen (Teisisolation, wie in A) —
+            // die Dialog-Umgebungsselekte leben im Client-Zustand und ueberleben
+            // Testgrenzen, wenn die Session wiederverwendet wird.
+            await attackDialog.locator('select[id^="gzkl-"]').selectOption('2')
+            await attackDialog.locator('select[id^="lcht-"]').selectOption('0')
+            await attackDialog.locator('select[id^="wttr-"]').selectOption('0')
+            await attackDialog.locator('select[id^="bwng-"]').selectOption('0')
+            await attackDialog.locator('select[id^="dckg-"]').selectOption('0')
+            await attackDialog.locator('select[id^="kgtl-"]').selectOption('0')
 
             const attackButton = attackDialog.locator(
                 '.modifier-summary.attack-summary.clickable-summary[data-action="angreifen"]',

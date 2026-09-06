@@ -98,7 +98,7 @@ The system SHALL provide an E2E Spec Generator agent, refactored from the E2E Te
 #### Scenario: Playwright fixture isolation
 
 - **WHEN** the E2E Spec Generator generates a test
-- **THEN** it SHALL use Playwright's built-in fixture isolation (`test('name', async ({ page }) => { ... })`) and SHALL NOT create shared mutable state objects, manual `browser.newPage()` calls in `beforeAll`, or `as never` type casts
+- **THEN** it SHALL use Playwright's built-in fixture isolation (`test('name', async ({ page }) => { ... })`) and SHALL NOT create shared mutable state objects or `as never` type casts; for multi-test case files it SHALL follow the per-file session reuse requirement (single session in `beforeAll`, closed in `afterAll`) instead of a per-test `page` fixture
 
 #### Scenario: Predicate-based waits
 
@@ -181,6 +181,21 @@ The combat E2E baseline SHALL prove that selecting a target in the target-select
 - **WHEN** the user selects a Token in the combat target-selection dialog and submits it
 - **THEN** the Token SHALL be present in `game.user.targets`
 - **AND** the downstream combat flow SHALL use that selected target
+
+### Requirement: Per-file session reuse
+
+Multi-test E2E case files SHALL reuse a single Foundry session per file: the login SHALL happen once in `beforeAll` (shared page via `browser.newPage()`), and the session SHALL be closed in `afterAll`. State modified between/within tests SHALL be restored (snapshots, settings, chat) so test semantics remain equivalent; the sequential execution model (`workers: 1`) stays unchanged.
+
+#### Scenario: Multi-test file shares one session
+
+- **WHEN** a case file contains more than one test
+- **THEN** the file SHALL log in once (`beforeAll`) and reuse the page across its tests (`afterAll` closes it)
+- **AND** per-test cleanup SHALL restore mutated actor/setting/chat state
+
+#### Scenario: Single-test file keeps simple setup
+
+- **WHEN** a case file contains exactly one test
+- **THEN** it SHALL keep the current per-test login (no reuse wrapper needed)
 
 ## Data Model
 

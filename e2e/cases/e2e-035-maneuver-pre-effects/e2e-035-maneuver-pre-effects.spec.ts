@@ -2,8 +2,8 @@ import { expect, test } from '@playwright/test'
 import {
     captureActorDefaultSnapshot,
     clearChatLog,
-    foundryConfig,
-    loginAndJoinWorld,
+    closeOpenApplications,
+    createE2ESession,
     restoreActorFromDefaultSnapshot,
 } from '../../shared/fixtures/foundry'
 
@@ -13,15 +13,26 @@ const SOURCE_ACTOR_NAME = 'Testlauf-Npc'
 test.describe('E2E-035 · maneuver pre-effects', () => {
     let actorSnapshot: import('../../shared/fixtures/foundry').ActorDefaultSnapshot
     let createdEffectIds: string[] = []
+    let session: Awaited<ReturnType<typeof createE2ESession>> | undefined
 
-    test.beforeEach(async ({ page }) => {
-        createdEffectIds = []
-        await loginAndJoinWorld(page, foundryConfig)
-        actorSnapshot = await captureActorDefaultSnapshot(page, ACTOR_NAME)
-        await clearChatLog(page)
+    test.beforeAll(async ({ browser }) => {
+        session = await createE2ESession(browser)
     })
 
-    test.afterEach(async ({ page }) => {
+    test.afterAll(() => {
+        session?.close()
+    })
+
+    test.beforeEach(async () => {
+        const page = session!.page
+        createdEffectIds = []
+        await closeOpenApplications(page).catch(() => {})
+        actorSnapshot = await captureActorDefaultSnapshot(page, ACTOR_NAME)
+        await clearChatLog(page).catch(() => {})
+    })
+
+    test.afterEach(async () => {
+        const page = session!.page
         await page
             .evaluate(
                 async ({ actorName, effectIds }) => {
@@ -36,9 +47,8 @@ test.describe('E2E-035 · maneuver pre-effects', () => {
         await clearChatLog(page).catch(() => {})
     })
 
-    test('Binden penalizes the attacker and expires at the end of that actor’s phase', async ({
-        page,
-    }) => {
+    test('Binden penalizes the attacker and expires at the end of that actor’s phase', async () => {
+        const page = session!.page
         const result = await page.evaluate(
             async ({ actorName, sourceActorName }) => {
                 const actor = game.actors?.getName(actorName) as any
@@ -95,9 +105,8 @@ test.describe('E2E-035 · maneuver pre-effects', () => {
         )
     })
 
-    test('Niederwerfen uses the activating roll total as resistance difficulty', async ({
-        page,
-    }) => {
+    test('Niederwerfen uses the activating roll total as resistance difficulty', async () => {
+        const page = session!.page
         const result = await page.evaluate(
             async ({ actorName, sourceActorName }) => {
                 const actor = game.actors?.getName(actorName) as any
@@ -146,9 +155,8 @@ test.describe('E2E-035 · maneuver pre-effects', () => {
         })
     })
 
-    test('Niederwerfen and Umreißen materialize Liegend after their resistance gate fails', async ({
-        page,
-    }) => {
+    test('Niederwerfen and Umreißen materialize Liegend after their resistance gate fails', async () => {
+        const page = session!.page
         const result = await page.evaluate(
             async ({ actorName, sourceActorName }) => {
                 const actor = game.actors?.getName(actorName) as any
@@ -221,9 +229,8 @@ test.describe('E2E-035 · maneuver pre-effects', () => {
         })
     })
 
-    test('manual and automated Liegend sources protect one another in the status picker', async ({
-        page,
-    }) => {
+    test('manual and automated Liegend sources protect one another in the status picker', async () => {
+        const page = session!.page
         const result = await page.evaluate(
             async ({ actorName }) => {
                 const actor = game.actors?.getName(actorName) as any
@@ -285,9 +292,8 @@ test.describe('E2E-035 · maneuver pre-effects', () => {
         })
     })
 
-    test('Entwaffnen clears only the selected weapon slot after a failed KK resistance', async ({
-        page,
-    }) => {
+    test('Entwaffnen clears only the selected weapon slot after a failed KK resistance', async () => {
+        const page = session!.page
         const result = await page.evaluate(
             async ({ actorName, sourceActorName }) => {
                 const actor = game.actors?.getName(actorName) as any
@@ -334,9 +340,8 @@ test.describe('E2E-035 · maneuver pre-effects', () => {
         })
     })
 
-    test('Umklammern retains or deletes exactly its linked effect after the opposed escape', async ({
-        page,
-    }) => {
+    test('Umklammern retains or deletes exactly its linked effect after the opposed escape', async () => {
+        const page = session!.page
         const result = await page.evaluate(
             async ({ actorName, sourceActorName }) => {
                 const actor = game.actors?.getName(actorName) as any

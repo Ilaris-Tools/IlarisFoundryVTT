@@ -4,9 +4,9 @@ import {
     ActorDefaultSnapshot,
     captureActorDefaultSnapshot,
     clearChatLog,
+    closeOpenApplications,
+    createE2ESession,
     enableTargetSelectionForTest,
-    foundryConfig,
-    loginAndJoinWorld,
     openActorSheet,
     openChatSidebar,
     openSpellDialog,
@@ -104,8 +104,19 @@ test.describe('E2E-043 · Nachbrennen', () => {
     let damageTypesSetting: import('../../shared/fixtures/foundry').FoundrySettingSnapshot
     let diagnostics: string[] = []
     let manualEffect: { actorId: string; effectId: string } | null = null
+    let session: Awaited<ReturnType<typeof createE2ESession>> | undefined
 
-    test.beforeEach(async ({ page }) => {
+    test.beforeAll(async ({ browser }) => {
+        session = await createE2ESession(browser)
+    })
+
+    test.afterAll(async () => {
+        await session?.close()
+    })
+
+    test.beforeEach(async () => {
+        const page = session!.page
+        await closeOpenApplications(page).catch(() => {})
         diagnostics = []
         page.on('pageerror', (error) =>
             diagnostics.push(`pageerror: ${error.stack || error.message}`),
@@ -113,7 +124,6 @@ test.describe('E2E-043 · Nachbrennen', () => {
         page.on('console', (message) => {
             if (message.type() === 'error') diagnostics.push(`console: ${message.text()}`)
         })
-        await loginAndJoinWorld(page, foundryConfig)
         await clearChatLog(page)
         await openChatSidebar(page)
         targetSelectionSetting = await enableTargetSelectionForTest(page)
@@ -160,7 +170,8 @@ test.describe('E2E-043 · Nachbrennen', () => {
         )
     })
 
-    test.afterEach(async ({ page }) => {
+    test.afterEach(async () => {
+        const page = session!.page
         if (manualEffect)
             await page
                 .evaluate(
@@ -181,9 +192,8 @@ test.describe('E2E-043 · Nachbrennen', () => {
         expect(diagnostics).toEqual([])
     })
 
-    test('a failed visible KO-20 check creates a four-phase status and resolves once', async ({
-        page,
-    }) => {
+    test('a failed visible KO-20 check creates a four-phase status and resolves once', async () => {
+        const page = session!.page
         fixture = await createTarget(page)
         const actorSheet = await openActorSheet(page, CASTER_NAME)
         await openSpellDialog(actorSheet, SPELL_NAME)
@@ -299,9 +309,8 @@ test.describe('E2E-043 · Nachbrennen', () => {
             .screenshot({ path: 'test-results/e2e-043-nachbrennen-complete.png' })
     })
 
-    test('the existing effect-row delete control extinguishes only Nachbrennen', async ({
-        page,
-    }) => {
+    test('the existing effect-row delete control extinguishes only Nachbrennen', async () => {
+        const page = session!.page
         fixture = await createTarget(page)
         const state = await page.evaluate(async (targetName) => {
             const actor = game.actors?.getName(targetName) as any

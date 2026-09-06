@@ -10,8 +10,8 @@
 import { expect, test } from '@playwright/test'
 import {
     clearChatLog,
-    foundryConfig,
-    loginAndJoinWorld,
+    closeOpenApplications,
+    createE2ESession,
     openActorSheet,
     openSpellDialog,
 } from '../../shared/fixtures/foundry'
@@ -22,15 +22,26 @@ const SPELL_PACK = 'Ilaris.zauberspruche-und-rituale'
 test.describe('E2E-037 · Structured spell modifications', () => {
     let createdItemIds: string[] = []
     let createdEffectIds: string[] = []
+    let session: Awaited<ReturnType<typeof createE2ESession>> | undefined
 
-    test.beforeEach(async ({ page }) => {
-        createdItemIds = []
-        createdEffectIds = []
-        await loginAndJoinWorld(page, foundryConfig)
-        await clearChatLog(page)
+    test.beforeAll(async ({ browser }) => {
+        session = await createE2ESession(browser)
     })
 
-    test.afterEach(async ({ page }) => {
+    test.afterAll(() => {
+        session?.close()
+    })
+
+    test.beforeEach(async () => {
+        const page = session!.page
+        createdItemIds = []
+        createdEffectIds = []
+        await closeOpenApplications(page).catch(() => {})
+        await clearChatLog(page).catch(() => {})
+    })
+
+    test.afterEach(async () => {
+        const page = session!.page
         await page
             .evaluate(
                 async ({ actorName, itemIds, effectIds }) => {
@@ -46,7 +57,8 @@ test.describe('E2E-037 · Structured spell modifications', () => {
         await clearChatLog(page).catch(() => {})
     })
 
-    test('Attributo FF creates only its roll-scoped +2/+1 form modifiers', async ({ page }) => {
+    test('Attributo FF creates only its roll-scoped +2/+1 form modifiers', async () => {
+        const page = session!.page
         const result = await page.evaluate(
             async ({ actorName, packId }) => {
                 const actor = game.actors?.getName(actorName) as any
@@ -115,9 +127,8 @@ test.describe('E2E-037 · Structured spell modifications', () => {
         )
     })
 
-    test('Miasmafaxius inherits Pestgestank effects while changing the cast profile', async ({
-        page,
-    }) => {
+    test('Miasmafaxius inherits Pestgestank effects while changing the cast profile', async () => {
+        const page = session!.page
         const result = await page.evaluate(async (packId) => {
             const pack = game.packs?.get(packId)
             const spell = (await pack?.getDocuments())?.find(
@@ -144,9 +155,8 @@ test.describe('E2E-037 · Structured spell modifications', () => {
         expect(result.effectivePreEffects).toBe(result.basePreEffects)
     })
 
-    test('Schimmernder Schild replaces Fortifex and summons a form-provenanced shield', async ({
-        page,
-    }) => {
+    test('Schimmernder Schild replaces Fortifex and summons a form-provenanced shield', async () => {
+        const page = session!.page
         const result = await page.evaluate(
             async ({ actorName, packId }) => {
                 const actor = game.actors?.getName(actorName) as any
@@ -215,9 +225,8 @@ test.describe('E2E-037 · Structured spell modifications', () => {
         )
     })
 
-    test('renders Dämonenbann forms and updates the selected suppression profile', async ({
-        page,
-    }) => {
+    test('renders Dämonenbann forms and updates the selected suppression profile', async () => {
+        const page = session!.page
         const createdItemId = await page.evaluate(async (packId) => {
             const actor = game.actors?.getName('HatAlles') as any
             const source = (await game.packs?.get(packId)?.getDocuments())?.find(
@@ -269,9 +278,8 @@ test.describe('E2E-037 · Structured spell modifications', () => {
         }
     })
 
-    test('generic anti-magic requires exactly one form and presents player/GM-managed outcomes', async ({
-        page,
-    }) => {
+    test('generic anti-magic requires exactly one form and presents player/GM-managed outcomes', async () => {
+        const page = session!.page
         const result = await page.evaluate(async (packId) => {
             const pack = game.packs?.get(packId)
             const spell = (await pack?.getDocuments())?.find(
@@ -300,9 +308,8 @@ test.describe('E2E-037 · Structured spell modifications', () => {
         expect(result.description).toContain('Spielleitung und Spieler')
     })
 
-    test('Dämonenbann suppression applies to contained Dämonisch rolls and cleans up exactly', async ({
-        page,
-    }) => {
+    test('Dämonenbann suppression applies to contained Dämonisch rolls and cleans up exactly', async () => {
+        const page = session!.page
         const result = await page.evaluate(async (packId) => {
             const caster = game.actors?.getName('HatAlles') as any
             const target = game.actors?.getName('Testlauf-Held') as any
@@ -480,9 +487,8 @@ test.describe('E2E-037 · Structured spell modifications', () => {
         expect(result.cleanup).toBe(true)
     })
 
-    test('legacy text-only modifications still generate their maneuver fallback', async ({
-        page,
-    }) => {
+    test('legacy text-only modifications still generate their maneuver fallback', async () => {
+        const page = session!.page
         const result = await page.evaluate(
             async ({ actorName, packId }) => {
                 const actor = game.actors?.getName(actorName) as any

@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test'
 import {
     clearChatLog,
-    foundryConfig,
-    loginAndJoinWorld,
+    closeOpenApplications,
+    createE2ESession,
     openActorSheet,
     openSpellDialog,
     restoreFoundrySetting,
@@ -23,15 +23,25 @@ test.describe('E2E-035 · creature summoning', () => {
     let creaturePacksSetting:
         | import('../../shared/fixtures/foundry').FoundrySettingSnapshot
         | undefined
+    let session: Awaited<ReturnType<typeof createE2ESession>> | undefined
 
-    test.beforeEach(async ({ page }) => {
+    test.beforeAll(async ({ browser }) => {
+        session = await createE2ESession(browser)
+    })
+
+    test.afterAll(() => {
+        session?.close()
+    })
+
+    test.beforeEach(async () => {
+        const page = session!.page
         createdTokenIds = []
         createdItemIds = []
         createdEffectIds = []
         createdCombatIds = []
         creaturePacksSetting = undefined
-        await loginAndJoinWorld(page, foundryConfig)
-        await clearChatLog(page)
+        await closeOpenApplications(page).catch(() => {})
+        await clearChatLog(page).catch(() => {})
         await page.evaluate(
             async ({ actorName, energy }) => {
                 const actor = game.actors?.getName(actorName)
@@ -42,7 +52,8 @@ test.describe('E2E-035 · creature summoning', () => {
         )
     })
 
-    test.afterEach(async ({ page }) => {
+    test.afterEach(async () => {
+        const page = session!.page
         await page
             .evaluate(
                 async ({ actorName, tokenIds, itemIds, effectIds, combatIds }) => {
@@ -79,9 +90,8 @@ test.describe('E2E-035 · creature summoning', () => {
         await clearChatLog(page).catch(() => {})
     })
 
-    test('Skelettarius creates one adjacent unlinked creature token from the configured pack', async ({
-        page,
-    }) => {
+    test('Skelettarius creates one adjacent unlinked creature token from the configured pack', async () => {
+        const page = session!.page
         creaturePacksSetting = await setFoundrySettingForTest(
             page,
             'Ilaris',
@@ -174,9 +184,8 @@ test.describe('E2E-035 · creature summoning', () => {
         expect(result.selectedCreatureUuid).toBe(result.sourceCreatureUuid)
     })
 
-    test('Krähenruf visibly summons a nearby amplified Krähenschwarm and expires only its token', async ({
-        page,
-    }, testInfo) => {
+    test('Krähenruf visibly summons a nearby amplified Krähenschwarm and expires only its token', async ({}, testInfo) => {
+        const page = session!.page
         creaturePacksSetting = await setFoundrySettingForTest(
             page,
             'Ilaris',
@@ -466,11 +475,11 @@ test.describe('E2E-035 · creature summoning', () => {
         createdEffectIds = createdEffectIds.filter((id) => id !== expiry.markerId)
     })
 
-    test('Skelettarius visibly filters the creature picker and opens a Beherrschungsprobe', async ({
-        page,
-    }, testInfo) => {
+    test('Skelettarius visibly filters the creature picker and opens a Beherrschungsprobe', async ({}, testInfo) => {
+        const page = session!.page
         const pageErrors: string[] = []
-        page.on('pageerror', (error) => pageErrors.push(error.message))
+        const onPageError = (error: Error) => pageErrors.push(error.message)
+        page.on('pageerror', onPageError)
         creaturePacksSetting = await setFoundrySettingForTest(
             page,
             'Ilaris',
@@ -633,12 +642,12 @@ test.describe('E2E-035 · creature summoning', () => {
             chatBeforeDomination,
         )
         await expect(dominationDialog).toBeVisible()
+        page.removeListener('pageerror', onPageError)
         expect(pageErrors).toEqual([])
     })
 
-    test('disabled and missing domination configurations do not open a further roll', async ({
-        page,
-    }) => {
+    test('disabled and missing domination configurations do not open a further roll', async () => {
+        const page = session!.page
         creaturePacksSetting = await setFoundrySettingForTest(
             page,
             'Ilaris',

@@ -22,9 +22,9 @@ import {
     captureActorDefaultSnapshot,
     clearChatLog,
     clickResistButton,
-    foundryConfig,
+    closeOpenApplications,
+    createE2ESession,
     enableTargetSelectionForTest,
-    loginAndJoinWorld,
     openActorSheet,
     openChatSidebar,
     openSpellDialog,
@@ -134,9 +134,19 @@ test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
     let snapshot: ActorDefaultSnapshot
     let targetSelectionSetting: import('../../shared/fixtures/foundry').FoundrySettingSnapshot
     let initialEffectIds: string[]
+    let session: Awaited<ReturnType<typeof createE2ESession>> | undefined
 
-    test.beforeEach(async ({ page }) => {
-        await loginAndJoinWorld(page, foundryConfig)
+    test.beforeAll(async ({ browser }) => {
+        session = await createE2ESession(browser)
+    })
+
+    test.afterAll(() => {
+        session?.close()
+    })
+
+    test.beforeEach(async () => {
+        const page = session!.page
+        await closeOpenApplications(page).catch(() => {})
         targetSelectionSetting = await enableTargetSelectionForTest(page)
         snapshot = await captureActorDefaultSnapshot(page, ACTOR_NAME)
         initialEffectIds = await page.evaluate(
@@ -253,7 +263,8 @@ test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
         await openChatSidebar(page)
     })
 
-    test.afterEach(async ({ page }) => {
+    test.afterEach(async () => {
+        const page = session!.page
         await page
             .evaluate(() => {
                 delete CONFIG.Dice.randomUniform
@@ -278,9 +289,8 @@ test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
         await clearChatLog(page).catch(() => {})
     })
 
-    test('Resist whisper is sent and FertigkeitDialog opens with correct parameters', async ({
-        page,
-    }) => {
+    test('Resist whisper is sent and FertigkeitDialog opens with correct parameters', async () => {
+        const page = session!.page
         const actorWindow = await openActorSheet(page, ACTOR_NAME)
         await openSpellDialog(actorWindow, SPELL_NAME)
 
@@ -362,9 +372,8 @@ test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
         await expect(fertigkeitDialog).toContainText(String(RESIST_DIFFICULTY))
     })
 
-    test('tied automatic casting rolls immediately without a Fertigkeit choice', async ({
-        page,
-    }) => {
+    test('tied automatic casting rolls immediately without a Fertigkeit choice', async () => {
+        const page = session!.page
         const tiedSkills = await page.evaluate(
             async ({ name, spellName }) => {
                 const actor = game.actors.getName(name)
@@ -399,7 +408,8 @@ test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
         await spellDialog.screenshot({ path: 'test-results/tied-cast-skill-resolved.png' })
     })
 
-    test('failed resist visibly applies only the configured marker outcome', async ({ page }) => {
+    test('failed resist visibly applies only the configured marker outcome', async () => {
+        const page = session!.page
         await openResistDialog(page)
         // The player opened the real resistance dialog. This deterministic hook dispatch is
         // limited to choosing the branch without relying on random dice during E2E.
@@ -463,7 +473,8 @@ test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
         await actorWindow.screenshot({ path: 'test-results/resistance-outcome-effect-row.png' })
     })
 
-    test('successful resist applies only the configured -4 outcome', async ({ page }) => {
+    test('successful resist applies only the configured -4 outcome', async () => {
+        const page = session!.page
         await openResistDialog(page)
         // See the failed branch above: the hook is a deterministic result selection only.
         await resolveResist(page, true)
@@ -495,7 +506,8 @@ test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
         })
     })
 
-    test('preselects a configured profane talent owned by the target', async ({ page }) => {
+    test('preselects a configured profane talent owned by the target', async () => {
+        const page = session!.page
         const configured = await page.evaluate(
             async ({ name, spellName, difficulty }) => {
                 const actor = game.actors.getName(name)
@@ -531,7 +543,8 @@ test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
         await expect(dialog).toContainText(configured.skill)
     })
 
-    test('uses ohne Talent when the target lacks the configured talent', async ({ page }) => {
+    test('uses ohne Talent when the target lacks the configured talent', async () => {
+        const page = session!.page
         await page.evaluate(
             async ({ name, spellName, difficulty }) => {
                 const actor = game.actors.getName(name)

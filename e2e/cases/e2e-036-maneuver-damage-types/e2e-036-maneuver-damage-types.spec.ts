@@ -3,8 +3,8 @@ import { expect, test } from '@playwright/test'
 import {
     captureActorDefaultSnapshot,
     clearChatLog,
-    foundryConfig,
-    loginAndJoinWorld,
+    closeOpenApplications,
+    createE2ESession,
     restoreActorFromDefaultSnapshot,
     restoreFoundrySetting,
 } from '../../shared/fixtures/foundry'
@@ -15,9 +15,19 @@ const damageTypesSetting = { namespace: 'Ilaris', key: 'damageTypes' }
 test.describe('E2E-036 · maneuver damage types', () => {
     let actorSnapshot: import('../../shared/fixtures/foundry').ActorDefaultSnapshot
     let damageTypesSnapshot: import('../../shared/fixtures/foundry').FoundrySettingSnapshot
+    let session: Awaited<ReturnType<typeof createE2ESession>> | undefined
 
-    test.beforeEach(async ({ page }) => {
-        await loginAndJoinWorld(page, foundryConfig)
+    test.beforeAll(async ({ browser }) => {
+        session = await createE2ESession(browser)
+    })
+
+    test.afterAll(async () => {
+        await session?.close()
+    })
+
+    test.beforeEach(async () => {
+        const page = session!.page
+        await closeOpenApplications(page).catch(() => {})
         actorSnapshot = await captureActorDefaultSnapshot(page, TARGET_ACTOR_NAME)
         damageTypesSnapshot = await page.evaluate(({ namespace, key }) => {
             return { namespace, key, value: game.settings.get(namespace, key) }
@@ -25,15 +35,15 @@ test.describe('E2E-036 · maneuver damage types', () => {
         await clearChatLog(page)
     })
 
-    test.afterEach(async ({ page }) => {
+    test.afterEach(async () => {
+        const page = session!.page
         await restoreFoundrySetting(page, damageTypesSnapshot).catch(() => {})
         await restoreActorFromDefaultSnapshot(page, actorSnapshot).catch(() => {})
         await clearChatLog(page).catch(() => {})
     })
 
-    test('Stumpfer Schlag applies STUMPF exhaustion through the maneuver modification path', async ({
-        page,
-    }) => {
+    test('Stumpfer Schlag applies STUMPF exhaustion through the maneuver modification path', async () => {
+        const page = session!.page
         await page.evaluate(async () => {
             const configured = JSON.parse(game.settings.get('Ilaris', 'damageTypes'))
             const requiredTypes = [
@@ -120,9 +130,8 @@ test.describe('E2E-036 · maneuver damage types', () => {
         expect(result.summary).toContain('Schadenstyp zu Stumpf')
     })
 
-    test('both Rüstungsbrecher maneuvers use TRUE_DAMAGE behavior and a removed key falls back safely', async ({
-        page,
-    }) => {
+    test('both Rüstungsbrecher maneuvers use TRUE_DAMAGE behavior and a removed key falls back safely', async () => {
+        const page = session!.page
         await page.evaluate(async () => {
             const configured = JSON.parse(game.settings.get('Ilaris', 'damageTypes'))
             const requiredTypes = [

@@ -8,8 +8,8 @@
 
 import { expect, test, type Page } from '@playwright/test'
 import {
-    foundryConfig,
-    loginAndJoinWorld,
+    closeOpenApplications,
+    createE2ESession,
     restoreFoundrySetting,
 } from '../../shared/fixtures/foundry'
 
@@ -31,9 +31,19 @@ const weaponDamageRollSetting = { namespace: 'Ilaris', key: 'expandWeaponDamageM
 test.describe('E2E-031 · Damage Type Settings', () => {
     let originalSetting: import('../../shared/fixtures/foundry').FoundrySettingSnapshot
     let originalWeaponDamageRollSetting: import('../../shared/fixtures/foundry').FoundrySettingSnapshot
+    let session: Awaited<ReturnType<typeof createE2ESession>> | undefined
 
-    test.beforeEach(async ({ page }) => {
-        await loginAndJoinWorld(page, foundryConfig)
+    test.beforeAll(async ({ browser }) => {
+        session = await createE2ESession(browser)
+    })
+
+    test.afterAll(async () => {
+        await session?.close()
+    })
+
+    test.beforeEach(async () => {
+        const page = session!.page
+        await closeOpenApplications(page).catch(() => {})
         await dismissReloadDialog(page).catch(() => {})
         originalSetting = await page.evaluate(({ namespace, key }) => {
             return { namespace, key, value: game.settings.get(namespace, key) }
@@ -43,12 +53,14 @@ test.describe('E2E-031 · Damage Type Settings', () => {
         }, weaponDamageRollSetting)
     })
 
-    test.afterEach(async ({ page }) => {
+    test.afterEach(async () => {
+        const page = session!.page
         await restoreFoundrySetting(page, originalSetting).catch(() => {})
         await restoreFoundrySetting(page, originalWeaponDamageRollSetting).catch(() => {})
     })
 
-    test('supports edit, add, delete, behavior persistence, and reopening', async ({ page }) => {
+    test('supports edit, add, delete, behavior persistence, and reopening', async () => {
+        const page = session!.page
         await page.evaluate(() => {
             const menu = game.settings.menus.get('Ilaris.ilarisSettingsMenu')
             if (!menu?.type) throw new Error('Ilaris settings menu is not registered')
@@ -181,7 +193,8 @@ test.describe('E2E-031 · Damage Type Settings', () => {
         )
     })
 
-    test('GM enables and persists weapon damage roll expansion', async ({ page }) => {
+    test('GM enables and persists weapon damage roll expansion', async () => {
+        const page = session!.page
         await page.evaluate(() => {
             const menu = game.settings.menus.get('Ilaris.ilarisSettingsMenu')
             if (!menu?.type) throw new Error('Ilaris settings menu is not registered')

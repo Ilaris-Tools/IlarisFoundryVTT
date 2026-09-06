@@ -20,9 +20,9 @@ import {
     ActorDefaultSnapshot,
     captureActorDefaultSnapshot,
     clearChatLog,
-    foundryConfig,
+    closeOpenApplications,
+    createE2ESession,
     enableTargetSelectionForTest,
-    loginAndJoinWorld,
     openActorSheet,
     openSpellDialog,
     restoreActorFromDefaultSnapshot,
@@ -40,10 +40,20 @@ test.describe('E2E-028 · Pre-Effect Buff ActiveEffect Creation', () => {
         | import('../../shared/fixtures/foundry').FoundrySettingSnapshot
         | undefined
     let initialEffectIds: string[]
+    let session: Awaited<ReturnType<typeof createE2ESession>> | undefined
 
-    test.beforeEach(async ({ page }) => {
+    test.beforeAll(async ({ browser }) => {
+        session = await createE2ESession(browser)
+    })
+
+    test.afterAll(() => {
+        session?.close()
+    })
+
+    test.beforeEach(async () => {
+        const page = session!.page
         supernaturalStackingSetting = undefined
-        await loginAndJoinWorld(page, foundryConfig)
+        await closeOpenApplications(page).catch(() => {})
         targetSelectionSetting = await enableTargetSelectionForTest(page)
         snapshot = await captureActorDefaultSnapshot(page, ACTOR_NAME)
         initialEffectIds = await page.evaluate(
@@ -66,7 +76,8 @@ test.describe('E2E-028 · Pre-Effect Buff ActiveEffect Creation', () => {
         await clearChatLog(page)
     })
 
-    test.afterEach(async ({ page }) => {
+    test.afterEach(async () => {
+        const page = session!.page
         await page
             .evaluate(() => {
                 delete CONFIG.Dice.randomUniform
@@ -94,7 +105,8 @@ test.describe('E2E-028 · Pre-Effect Buff ActiveEffect Creation', () => {
         await clearChatLog(page).catch(() => {})
     })
 
-    test('Buff spell creates ActiveEffect with correct properties', async ({ page }) => {
+    test('Buff spell creates ActiveEffect with correct properties', async () => {
+        const page = session!.page
         const actorWindow = await openActorSheet(page, ACTOR_NAME)
         await openSpellDialog(actorWindow, SPELL_NAME)
 
@@ -251,9 +263,8 @@ test.describe('E2E-028 · Pre-Effect Buff ActiveEffect Creation', () => {
         expect(effectInfo!.original).toBe(effectInfo!.expectedDuration)
     })
 
-    test('materializes semantic amplification, keeps native changes, and redirects main attributes', async ({
-        page,
-    }) => {
+    test('materializes semantic amplification, keeps native changes, and redirects main attributes', async () => {
+        const page = session!.page
         const effectData = await page.evaluate(async (actorName) => {
             const actor = game.actors.getName(actorName)
             const spell = actor?.items.find((item: any) => item.name?.includes('Axxeleratus'))
@@ -333,9 +344,8 @@ test.describe('E2E-028 · Pre-Effect Buff ActiveEffect Creation', () => {
     })
 
     // Existing actor and setting fixtures are sufficient; no new e2e/shared helper is needed.
-    test('recasts retain in Ilaris mode, replace their whole source in Foundry mode, and resolve semantic MR', async ({
-        page,
-    }) => {
+    test('recasts retain in Ilaris mode, replace their whole source in Foundry mode, and resolve semantic MR', async () => {
+        const page = session!.page
         supernaturalStackingSetting = await setFoundrySettingForTest(
             page,
             'Ilaris',

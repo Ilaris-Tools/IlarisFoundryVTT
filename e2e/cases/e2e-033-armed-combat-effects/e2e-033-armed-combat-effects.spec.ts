@@ -1,20 +1,35 @@
 import { expect, test } from '@playwright/test'
-import { clearChatLog, foundryConfig, loginAndJoinWorld } from '../../shared/fixtures/foundry'
+import {
+    clearChatLog,
+    closeOpenApplications,
+    createE2ESession,
+} from '../../shared/fixtures/foundry'
 
 const ACTOR_NAME = 'HatAlles'
 
 test.describe('E2E-033 · armed combat effects', () => {
     let createdEffectIds: string[] = []
     let createdItemIds: string[] = []
+    let session: Awaited<ReturnType<typeof createE2ESession>> | undefined
 
-    test.beforeEach(async ({ page }) => {
+    test.beforeAll(async ({ browser }) => {
+        session = await createE2ESession(browser)
+    })
+
+    test.afterAll(async () => {
+        await session?.close()
+    })
+
+    test.beforeEach(async () => {
+        const page = session!.page
+        await closeOpenApplications(page).catch(() => {})
         createdEffectIds = []
         createdItemIds = []
-        await loginAndJoinWorld(page, foundryConfig)
         await clearChatLog(page)
     })
 
-    test.afterEach(async ({ page }) => {
+    test.afterEach(async () => {
+        const page = session!.page
         await page
             .evaluate(
                 async ({ actorName, effectIds, itemIds }) => {
@@ -31,9 +46,8 @@ test.describe('E2E-033 · armed combat effects', () => {
         await clearChatLog(page).catch(() => {})
     })
 
-    test('Neun Streiche stores a bounded count, consumes on a hit, and keeps snapshot damage', async ({
-        page,
-    }) => {
+    test('Neun Streiche stores a bounded count, consumes on a hit, and keeps snapshot damage', async () => {
+        const page = session!.page
         const result = await page.evaluate(async (actorName) => {
             const actor = game.actors?.getName(actorName) as any
             if (!actor) throw new Error('HatAlles wurde nicht gefunden.')
@@ -86,9 +100,8 @@ test.describe('E2E-033 · armed combat effects', () => {
         expect(result.removed).toBe(true)
     })
 
-    test('Falkenauge affects only a ranged attack and a miss still consumes its charge', async ({
-        page,
-    }) => {
+    test('Falkenauge affects only a ranged attack and a miss still consumes its charge', async () => {
+        const page = session!.page
         const result = await page.evaluate(async (actorName) => {
             const actor = game.actors?.getName(actorName) as any
             if (!actor) throw new Error('HatAlles wurde nicht gefunden.')

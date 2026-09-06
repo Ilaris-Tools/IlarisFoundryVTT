@@ -4,6 +4,8 @@ import { E2E_BASELINE } from '../../shared/baseline'
 import {
     clickResistButton,
     clearChatLog,
+    closeOpenApplications,
+    createE2ESession,
     enableTargetSelectionForTest,
     foundryConfig,
     loginAndJoinWorld,
@@ -41,10 +43,14 @@ async function clearE2EZoneDocuments(page: import('@playwright/test').Page) {
 
 test.describe('E2E-038 · Spell zone lifecycle', () => {
     let templateDeprecations: string[] = []
+    let session: Awaited<ReturnType<typeof createE2ESession>> | undefined
+    let sessionBrowser: import('@playwright/test').Browser | undefined
 
-    test.beforeEach(async ({ page }) => {
-        templateDeprecations = []
-        page.on('console', (message) => {
+    test.beforeAll(async ({ browser }) => {
+        session = await createE2ESession(browser)
+        sessionBrowser = browser
+        // Console listener einmalig pro Session (nicht pro Test, sonst stapeln sie sich).
+        session.page.on('console', (message) => {
             const text = message.text()
             if (
                 /MeasuredTemplate|Scene#templates|MEASURED_TEMPLATE_TYPES|core\.gridTemplates/.test(
@@ -53,20 +59,31 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
             )
                 templateDeprecations.push(text)
         })
-        await loginAndJoinWorld(page, foundryConfig)
+    })
+
+    test.afterAll(() => {
+        session?.close()
+    })
+
+    test.beforeEach(async () => {
+        const page = session!.page
+        templateDeprecations = []
+        await closeOpenApplications(page).catch(() => {})
         // A failed or externally terminated earlier run may not reach afterEach.
         // The isolated E2E world must therefore start without stale Ilaris zones.
         await clearE2EZoneDocuments(page)
-        await clearChatLog(page)
+        await clearChatLog(page).catch(() => {})
     })
 
-    test.afterEach(async ({ page }) => {
+    test.afterEach(async () => {
+        const page = session!.page
         await clearE2EZoneDocuments(page)
         await clearChatLog(page).catch(() => {})
         expect(templateDeprecations).toEqual([])
     })
 
-    test('resolves the cone, circular form, and non-zone Faxius form', async ({ page }) => {
+    test('resolves the cone, circular form, and non-zone Faxius form', async () => {
+        const page = session!.page
         const result = await page.evaluate(async (packId) => {
             const pack = game.packs?.get(packId)
             const spell = (await pack?.getDocuments())?.find(
@@ -90,9 +107,8 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
         expect(result.faxius).toBeNull()
     })
 
-    test('resolves Aeolitus forms and snapshots Langer Atem KO into the created Region', async ({
-        page,
-    }) => {
+    test('resolves Aeolitus forms and snapshots Langer Atem KO into the created Region', async () => {
+        const page = session!.page
         const result = await page.evaluate(
             async ({ actorName, packId }) => {
                 const actor = game.actors?.getName(actorName) as any
@@ -171,9 +187,8 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
         })
     })
 
-    test('renders Aeolitus Zone authoring controls in the concrete sheet order', async ({
-        page,
-    }) => {
+    test('renders Aeolitus Zone authoring controls in the concrete sheet order', async () => {
+        const page = session!.page
         const itemId = await page.evaluate(async (packId) => {
             const pack = game.packs?.get(packId)
             const source = (await pack?.getDocuments())?.find(
@@ -255,9 +270,8 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
         }
     })
 
-    test('toggling a spell-modification resistance checkbox does not add a pre-effect', async ({
-        page,
-    }) => {
+    test('toggling a spell-modification resistance checkbox does not add a pre-effect', async () => {
+        const page = session!.page
         const itemId = await page.evaluate(async (packId) => {
             const pack = game.packs?.get(packId)
             const source = (await pack?.getDocuments())?.find(
@@ -315,9 +329,8 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
         }
     })
 
-    test('resolves a placed Pestgestank cone against only its contained token', async ({
-        page,
-    }) => {
+    test('resolves a placed Pestgestank cone against only its contained token', async () => {
+        const page = session!.page
         let created: { regionId: string; tokenIds: string[] } | null = null
         try {
             const result = await page.evaluate(async (actorName) => {
@@ -391,9 +404,8 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
         }
     })
 
-    test('cancels a draft Region and creates only its replacement before a cast', async ({
-        page,
-    }) => {
+    test('cancels a draft Region and creates only its replacement before a cast', async () => {
+        const page = session!.page
         const result = await page.evaluate(async () => {
             const scene = canvas.scene as any
             const { createZoneDraftRegion, deleteZoneDraftRegion } =
@@ -453,9 +465,8 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
         expect(result.draftIds).toEqual([result.replacementId])
     })
 
-    test('keeps zone spells on the manual path when target automation is disabled', async ({
-        page,
-    }) => {
+    test('keeps zone spells on the manual path when target automation is disabled', async () => {
+        const page = session!.page
         const result = await page.evaluate(async () => {
             const previous = game.settings.get('Ilaris', 'useTargetSelection')
             try {
@@ -477,10 +488,9 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
         expect(result).toEqual({ requiresPlacement: false, placementMissing: false })
     })
 
-    test('places and casts opt-in turn-start and round-start Zone triggers through Combat Tracker controls', async ({
-        page,
-        browser,
-    }) => {
+    test('places and casts opt-in turn-start and round-start Zone triggers through Combat Tracker controls', async () => {
+        const page = session!.page
+        const browser = sessionBrowser!
         test.setTimeout(180000)
         const playerContext = await browser.newContext()
         const playerPage = await playerContext.newPage()
@@ -923,10 +933,9 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
         }
     })
 
-    test('sends one resistance prompt to the player-owned target on creation and re-entry', async ({
-        page,
-        browser,
-    }) => {
+    test('sends one resistance prompt to the player-owned target on creation and re-entry', async () => {
+        const page = session!.page
+        const browser = sessionBrowser!
         const playerContext = await browser.newContext()
         const playerPage = await playerContext.newPage()
         try {
@@ -1077,9 +1086,8 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
         }
     })
 
-    test('creates a GM-owned thorn-wall Region and decrements it once per round', async ({
-        page,
-    }) => {
+    test('creates a GM-owned thorn-wall Region and decrements it once per round', async () => {
+        const page = session!.page
         const created = await page.evaluate(
             async ({ actorName, packId }) => {
                 const actor = game.actors?.getName(actorName) as any
@@ -1165,7 +1173,8 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
         expect(persisted.remaining).toBe(255)
     })
 
-    test('applies, removes, reapplies, and isolates passive Zone effects', async ({ page }) => {
+    test('applies, removes, reapplies, and isolates passive Zone effects', async () => {
+        const page = session!.page
         const result = await page.evaluate(
             async ({ actorName, packId }) => {
                 const actor = game.actors?.getName(actorName) as any

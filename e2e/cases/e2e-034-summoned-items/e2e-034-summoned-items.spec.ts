@@ -1,8 +1,8 @@
 import { expect, test } from '@playwright/test'
 import {
     clearChatLog,
-    foundryConfig,
-    loginAndJoinWorld,
+    closeOpenApplications,
+    createE2ESession,
     restoreFoundrySetting,
     setFoundrySettingForTest,
 } from '../../shared/fixtures/foundry'
@@ -13,16 +13,27 @@ test.describe('E2E-034 · summoned items', () => {
     let createdItemIds: string[] = []
     let createdEffectIds: string[] = []
     let stackingSetting: import('../../shared/fixtures/foundry').FoundrySettingSnapshot | undefined
+    let session: Awaited<ReturnType<typeof createE2ESession>> | undefined
 
-    test.beforeEach(async ({ page }) => {
+    test.beforeAll(async ({ browser }) => {
+        session = await createE2ESession(browser)
+    })
+
+    test.afterAll(() => {
+        session?.close()
+    })
+
+    test.beforeEach(async () => {
+        const page = session!.page
         createdItemIds = []
         createdEffectIds = []
         stackingSetting = undefined
-        await loginAndJoinWorld(page, foundryConfig)
-        await clearChatLog(page)
+        await closeOpenApplications(page).catch(() => {})
+        await clearChatLog(page).catch(() => {})
     })
 
-    test.afterEach(async ({ page }) => {
+    test.afterEach(async () => {
+        const page = session!.page
         await page
             .evaluate(
                 async ({ actorName, itemIds, effectIds }) => {
@@ -39,9 +50,8 @@ test.describe('E2E-034 · summoned items', () => {
         if (stackingSetting) await restoreFoundrySetting(page, stackingSetting).catch(() => {})
     })
 
-    test('Segen der Heiligen Ardare summons Armalion into the selected target inventory', async ({
-        page,
-    }) => {
+    test('Segen der Heiligen Ardare summons Armalion into the selected target inventory', async () => {
+        const page = session!.page
         const result = await page.evaluate(async (actorName) => {
             const actor = game.actors?.getName(actorName) as any
             const pack = game.packs?.get('Ilaris.liturgien-und-mirakel')
@@ -106,7 +116,8 @@ test.describe('E2E-034 · summoned items', () => {
         })
     })
 
-    test('Firuns Einsicht summons its configured Gegenstände-pack Item', async ({ page }) => {
+    test('Firuns Einsicht summons its configured Gegenstände-pack Item', async () => {
+        const page = session!.page
         const result = await page.evaluate(async (actorName) => {
             const actor = game.actors?.getName(actorName) as any
             const pack = game.packs?.get('Ilaris.liturgien-und-mirakel')
@@ -169,9 +180,8 @@ test.describe('E2E-034 · summoned items', () => {
         })
     })
 
-    test('Phexens Wurfstern ignores another weapon and vanishes after its own missed throw', async ({
-        page,
-    }) => {
+    test('Phexens Wurfstern ignores another weapon and vanishes after its own missed throw', async () => {
+        const page = session!.page
         const result = await page.evaluate(async (actorName) => {
             const actor = game.actors?.getName(actorName) as any
             const pack = game.packs?.get('Ilaris.liturgien-und-mirakel')
@@ -271,9 +281,8 @@ test.describe('E2E-034 · summoned items', () => {
     })
 
     for (const stackingMode of ['ilaris', 'foundry']) {
-        test(`owner-turn expiry removes only its linked recast in ${stackingMode} stacking mode`, async ({
-            page,
-        }) => {
+        test(`owner-turn expiry removes only its linked recast in ${stackingMode} stacking mode`, async () => {
+            const page = session!.page
             stackingSetting = await setFoundrySettingForTest(
                 page,
                 'Ilaris',

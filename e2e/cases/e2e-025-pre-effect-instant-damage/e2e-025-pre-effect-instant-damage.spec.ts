@@ -19,10 +19,10 @@ import {
     ActorDefaultSnapshot,
     captureActorDefaultSnapshot,
     clearChatLog,
-    foundryConfig,
+    closeOpenApplications,
+    createE2ESession,
     enableTargetSelectionForTest,
     getActorWounds,
-    loginAndJoinWorld,
     openActorSheet,
     openSpellDialog,
     restoreActorFromDefaultSnapshot,
@@ -36,9 +36,19 @@ const SPELL_PACK = 'Ilaris.zauberspruche-und-rituale'
 test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
     let snapshot: ActorDefaultSnapshot
     let targetSelectionSetting: import('../../shared/fixtures/foundry').FoundrySettingSnapshot
+    let session: Awaited<ReturnType<typeof createE2ESession>> | undefined
 
-    test.beforeEach(async ({ page }) => {
-        await loginAndJoinWorld(page, foundryConfig)
+    test.beforeAll(async ({ browser }) => {
+        session = await createE2ESession(browser)
+    })
+
+    test.afterAll(() => {
+        session?.close()
+    })
+
+    test.beforeEach(async () => {
+        const page = session!.page
+        await closeOpenApplications(page).catch(() => {})
         targetSelectionSetting = await enableTargetSelectionForTest(page)
         snapshot = await captureActorDefaultSnapshot(page, ACTOR_NAME)
 
@@ -73,7 +83,8 @@ test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
         await clearChatLog(page)
     })
 
-    test.afterEach(async ({ page }) => {
+    test.afterEach(async () => {
+        const page = session!.page
         await page
             .evaluate(() => {
                 delete CONFIG.Dice.randomUniform
@@ -84,7 +95,8 @@ test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
         await clearChatLog(page).catch(() => {})
     })
 
-    test('Cast instant-damage spell updates target wounds', async ({ page }) => {
+    test('Cast instant-damage spell updates target wounds', async () => {
+        const page = session!.page
         const actorWindow = await openActorSheet(page, ACTOR_NAME)
         await openSpellDialog(actorWindow, SPELL_NAME)
 
@@ -202,7 +214,8 @@ test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
         expect(spellMsgs.length).toBeGreaterThan(0)
     })
 
-    test('damage at or below WS creates chat feedback without adding wounds', async ({ page }) => {
+    test('damage at or below WS creates chat feedback without adding wounds', async () => {
+        const page = session!.page
         await page.evaluate(
             ({ name, spellName }) => {
                 const spell = game.actors
@@ -282,7 +295,8 @@ test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
         expect((await getActorWounds(page, ACTOR_NAME)).wunden).toBe(wundenBefore.wunden)
     })
 
-    test('Pandämonium-like damage-only approximation applies exactly once', async ({ page }) => {
+    test('Pandämonium-like damage-only approximation applies exactly once', async () => {
+        const page = session!.page
         await page.evaluate(
             ({ name, spellName }) => {
                 const spell = game.actors

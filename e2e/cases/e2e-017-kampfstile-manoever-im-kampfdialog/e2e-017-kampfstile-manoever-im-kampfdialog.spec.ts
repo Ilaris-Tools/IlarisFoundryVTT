@@ -4,8 +4,8 @@ import {
     ActorDefaultSnapshot,
     captureActorDefaultSnapshot,
     clearChatLog,
-    foundryConfig,
-    loginAndJoinWorld,
+    closeOpenApplications,
+    createE2ESession,
     openActorSheet,
     openMeleeAttackDialogForWeapon,
     restoreActorFromDefaultSnapshot,
@@ -436,8 +436,24 @@ async function runStyleCase(page: Page, styleCase: StyleCase) {
 
 test.describe('E2E-017 Kampfstile und Stil-Manöver im Kampfdialog', () => {
     let actorDefaultSnapshot: ActorDefaultSnapshot | null = null
+    let session: Awaited<ReturnType<typeof createE2ESession>> | undefined
 
-    test.afterEach(async ({ page }) => {
+    test.beforeAll(async ({ browser }) => {
+        session = await createE2ESession(browser)
+    })
+
+    test.afterAll(() => {
+        session?.close()
+    })
+
+    test.beforeEach(async () => {
+        const page = session!.page
+        await closeOpenApplications(page).catch(() => {})
+        await clearChatLog(page).catch(() => {})
+    })
+
+    test.afterEach(async () => {
+        const page = session!.page
         if (!actorDefaultSnapshot) return
 
         try {
@@ -448,11 +464,8 @@ test.describe('E2E-017 Kampfstile und Stil-Manöver im Kampfdialog', () => {
     })
 
     for (const styleCase of STYLE_CASES) {
-        test(`${styleCase.styleName}: ${styleCase.expectedManeuver} ist aktiv, andere Stil-Manöver sind inaktiv`, async ({
-            page,
-        }) => {
-            await loginAndJoinWorld(page, foundryConfig)
-            await clearChatLog(page)
+        test(`${styleCase.styleName}: ${styleCase.expectedManeuver} ist aktiv, andere Stil-Manöver sind inaktiv`, async () => {
+            const page = session!.page
 
             actorDefaultSnapshot = await captureActorDefaultSnapshot(page, ACTOR_NAME)
 
@@ -460,9 +473,8 @@ test.describe('E2E-017 Kampfstile und Stil-Manöver im Kampfdialog', () => {
         })
     }
 
-    test('Dropdown enthält alle erwarteten Kampfstile', async ({ page }) => {
-        await loginAndJoinWorld(page, foundryConfig)
-        await clearChatLog(page)
+    test('Dropdown enthält alle erwarteten Kampfstile', async () => {
+        const page = session!.page
 
         actorDefaultSnapshot = await captureActorDefaultSnapshot(page, ACTOR_NAME)
 
@@ -478,10 +490,9 @@ test.describe('E2E-017 Kampfstile und Stil-Manöver im Kampfdialog', () => {
         }
     })
 
-    test('Kompendium-Synchronisierung erhält die humanoide Zielauswahl für Parierwaffenkampf', async ({
-        page,
-    }) => {
-        await loginAndJoinWorld(page, foundryConfig)
+    test('Kompendium-Synchronisierung erhält die humanoide Zielauswahl für Parierwaffenkampf', async () => {
+        const page = session!.page
+
         actorDefaultSnapshot = await captureActorDefaultSnapshot(page, ACTOR_NAME)
 
         const originalHideSyncButton = await page.evaluate(() =>

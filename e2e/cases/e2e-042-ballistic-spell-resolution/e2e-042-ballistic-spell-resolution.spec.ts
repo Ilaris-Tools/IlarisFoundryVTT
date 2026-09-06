@@ -3,9 +3,9 @@ import {
     ActorDefaultSnapshot,
     captureActorDefaultSnapshot,
     clearChatLog,
+    closeOpenApplications,
+    createE2ESession,
     enableTargetSelectionForTest,
-    foundryConfig,
-    loginAndJoinWorld,
     openActorSheet,
     openChatSidebar,
     openSpellDialog,
@@ -114,9 +114,19 @@ async function createTarget(page: import('@playwright/test').Page) {
 test.describe('E2E-042 · Ballistische Zauberauflösung', () => {
     let casterSnapshot: ActorDefaultSnapshot
     let targetSelectionSetting: Awaited<ReturnType<typeof enableTargetSelectionForTest>>
+    let session: Awaited<ReturnType<typeof createE2ESession>> | undefined
 
-    test.beforeEach(async ({ page }) => {
-        await loginAndJoinWorld(page, foundryConfig)
+    test.beforeAll(async ({ browser }) => {
+        session = await createE2ESession(browser)
+    })
+
+    test.afterAll(async () => {
+        await session?.close()
+    })
+
+    test.beforeEach(async () => {
+        const page = session!.page
+        await closeOpenApplications(page).catch(() => {})
         await removeBallisticFixtures(page)
         await clearChatLog(page)
         await openChatSidebar(page)
@@ -141,7 +151,8 @@ test.describe('E2E-042 · Ballistische Zauberauflösung', () => {
         )
     })
 
-    test.afterEach(async ({ page }) => {
+    test.afterEach(async () => {
+        const page = session!.page
         await removeBallisticFixtures(page).catch(() => {})
         await restoreActorFromDefaultSnapshot(page, casterSnapshot).catch(() => {})
         await restoreFoundrySetting(page, targetSelectionSetting).catch(() => {})
@@ -149,9 +160,8 @@ test.describe('E2E-042 · Ballistische Zauberauflösung', () => {
         await page.evaluate(() => delete (CONFIG.Dice as any).randomUniform).catch(() => {})
     })
 
-    test('visible target gets one Pre-Effect only after the rendered Nicht-verteidigen outcome', async ({
-        page,
-    }) => {
+    test('visible target gets one Pre-Effect only after the rendered Nicht-verteidigen outcome', async () => {
+        const page = session!.page
         const { targetTokenId } = await createTarget(page)
         const woundBefore = await page.evaluate((tokenId) => {
             return (canvas.tokens?.get(tokenId)?.actor as any)?.system?.gesundheit?.wunden ?? 0
@@ -194,9 +204,8 @@ test.describe('E2E-042 · Ballistische Zauberauflösung', () => {
         ).toBeVisible()
     })
 
-    test('successful rendered Akrobatik defense prevents the target Pre-Effect', async ({
-        page,
-    }) => {
+    test('successful rendered Akrobatik defense prevents the target Pre-Effect', async () => {
+        const page = session!.page
         const { targetTokenId } = await createTarget(page)
         const woundBefore = await page.evaluate((tokenId) => {
             return (canvas.tokens?.get(tokenId)?.actor as any)?.system?.gesundheit?.wunden ?? 0

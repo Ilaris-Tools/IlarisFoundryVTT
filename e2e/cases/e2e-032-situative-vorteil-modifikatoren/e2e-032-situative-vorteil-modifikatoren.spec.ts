@@ -9,8 +9,8 @@ import {
     ActorDefaultSnapshot,
     captureActorDefaultSnapshot,
     clearChatLog,
-    foundryConfig,
-    loginAndJoinWorld,
+    closeOpenApplications,
+    createE2ESession,
     openActorSheet,
     openSpellDialog,
     restoreActorFromDefaultSnapshot,
@@ -52,14 +52,25 @@ async function rollSkillAndReadFormula(
 
 test.describe('E2E-032 · Situative Vorteil-Modifikatoren', () => {
     let snapshot: ActorDefaultSnapshot
+    let session: Awaited<ReturnType<typeof createE2ESession>> | undefined
 
-    test.beforeEach(async ({ page }) => {
-        await loginAndJoinWorld(page, foundryConfig)
+    test.beforeAll(async ({ browser }) => {
+        session = await createE2ESession(browser)
+    })
+
+    test.afterAll(async () => {
+        await session?.close()
+    })
+
+    test.beforeEach(async () => {
+        const page = session!.page
+        await closeOpenApplications(page).catch(() => {})
         snapshot = await captureActorDefaultSnapshot(page, ACTOR_NAME)
         await clearChatLog(page)
     })
 
-    test.afterEach(async ({ page }) => {
+    test.afterEach(async () => {
+        const page = session!.page
         await page
             .evaluate(() => {
                 delete (CONFIG.Dice as any).randomUniform
@@ -69,9 +80,8 @@ test.describe('E2E-032 · Situative Vorteil-Modifikatoren', () => {
         await clearChatLog(page).catch(() => {})
     })
 
-    test('skill situation shows Zerstörerisch I and includes it in the deterministic roll', async ({
-        page,
-    }) => {
+    test('skill situation shows Zerstörerisch I and includes it in the deterministic roll', async () => {
+        const page = session!.page
         await importVorteil(page, 'Zerstörerisch I')
         const actorWindow = await openActorSheet(page, ACTOR_NAME)
         await actorWindow.locator('nav [data-tab="fertigkeiten"]').click()
@@ -101,9 +111,8 @@ test.describe('E2E-032 · Situative Vorteil-Modifikatoren', () => {
         expect(formula).toMatch(/\+\s*4\s*$/)
     })
 
-    test('supernatural condition shows Scharfsinnig I and includes it in the deterministic roll', async ({
-        page,
-    }) => {
+    test('supernatural condition shows Scharfsinnig I and includes it in the deterministic roll', async () => {
+        const page = session!.page
         await importVorteil(page, 'Scharfsinnig I')
         const spellName = await page.evaluate((actorName) => {
             const actor = game.actors.getName(actorName)

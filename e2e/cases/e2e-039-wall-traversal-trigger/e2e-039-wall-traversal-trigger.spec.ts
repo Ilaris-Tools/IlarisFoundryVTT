@@ -3,6 +3,7 @@ import { expect, test } from '@playwright/test'
 import {
     clearChatLog,
     clickResistButton,
+    createE2ESession,
     foundryConfig,
     loginAndJoinWorld,
     openChatSidebar,
@@ -67,14 +68,23 @@ async function resolveTraversalPrompt(page: import('@playwright/test').Page, suc
 test.describe('E2E-039 · Wand aus Dornen traversal trigger', () => {
     let wasPaused = false
     let runtimeDiagnostics: string[] = []
+    let session: Awaited<ReturnType<typeof createE2ESession>> | undefined
 
-    test.beforeEach(async ({ page }) => {
+    test.beforeAll(async ({ browser }) => {
+        session = await createE2ESession(browser)
+    })
+
+    test.afterAll(async () => {
+        await session?.close()
+    })
+
+    test.beforeEach(async () => {
+        const page = session!.page
         runtimeDiagnostics = []
         page.on('pageerror', (error) => runtimeDiagnostics.push(`pageerror: ${error.message}`))
         page.on('console', (message) => {
             if (message.type() === 'error') runtimeDiagnostics.push(`console: ${message.text()}`)
         })
-        await loginAndJoinWorld(page, foundryConfig)
         wasPaused = await page.evaluate(async () => {
             for (const application of foundry.applications?.instances?.values?.() ?? [])
                 await application.close?.({ animate: false })
@@ -87,7 +97,8 @@ test.describe('E2E-039 · Wand aus Dornen traversal trigger', () => {
         await openChatSidebar(page)
     })
 
-    test.afterEach(async ({ page }) => {
+    test.afterEach(async () => {
+        const page = session!.page
         await clearWallTraversalDocuments(page)
         await clearChatLog(page).catch(() => {})
         if (wasPaused)
@@ -98,9 +109,9 @@ test.describe('E2E-039 · Wand aus Dornen traversal trigger', () => {
     })
 
     test('damages every normal traversal and retains then clears the failure marker', async ({
-        page,
         browser,
     }) => {
+        const page = session!.page
         const playerContext = await browser.newContext()
         const playerPage = await playerContext.newPage()
         try {
@@ -310,9 +321,9 @@ test.describe('E2E-039 · Wand aus Dornen traversal trigger', () => {
     })
 
     test('keeps initial wall placement inert and resolves a normal outbound traversal', async ({
-        page,
         browser,
     }) => {
+        const page = session!.page
         const playerContext = await browser.newContext()
         const playerPage = await playerContext.newPage()
         try {
