@@ -1,5 +1,5 @@
 import { wuerfelwurf } from '../../dice/wuerfel.js'
-import { ILARIS } from '../../core/config.js'
+import { IlarisItemPicker } from '../../items/dialogs/item-picker.js'
 import {
     createNahkampfwaffeDefaults,
     createFernkampfwaffeDefaults,
@@ -521,65 +521,23 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
      * @param {HTMLElement} target - The target element with data-action
      */
     static async onItemCreate(event, target) {
-        const itemclass = target.dataset.itemclass
-
-        // Get item templates from config
-        const itemTemplates = ILARIS.itemTemplates
-
-        // Handle special case for ActiveEffect
-        if (itemclass === 'effect') {
+        if (!this.isEditable || !this.actor.isOwner) return
+        const { itemclass, profan } = target.dataset
+        if (itemclass !== 'effect') {
+            return new IlarisItemPicker({ actor: this.actor, itemclass, profan }).render({
+                force: true,
+            })
+        }
+        try {
             const created = await this.actor.createEmbeddedDocuments('ActiveEffect', [
                 { name: 'Neuer Effekt', icon: 'icons/svg/aura.svg' },
             ])
-            if (created && created.length > 0) {
-                created[0].sheet.render(true)
-            }
-            return
-        }
-
-        // Handle special case for vorteil
-        if (itemclass === 'vorteil') {
-            game.packs.get('Ilaris.vorteile').render(true)
-            Dialog.prompt({
-                content:
-                    'Du kannst Vorteile direkt aus den Kompendium Packs auf den Statblock ziehen. Für eigene Vor/Nachteile zu erstellen, die nicht im Regelwerk enthalten sind, benutze die Eigenschaften.',
-                callback: () => {},
-            })
-            return
-        }
-
-        // Get template or use generic fallback
-        const template = itemTemplates[itemclass] || {
-            name: 'Neues generisches Item',
-            type: itemclass,
-            system: {},
-            logMessage: 'Neues generisches Item',
-        }
-
-        // Create base item data
-        let itemData = {
-            name: template.name,
-            type: template.type,
-            system: { ...template.system },
-        }
-
-        // Apply custom handler if present
-        if (template.customHandler) {
-            template.customHandler(itemData, event)
-        }
-
-        try {
-            // Create the item and render its sheet
-            const created = await this.actor.createEmbeddedDocuments('Item', [itemData])
-            if (created && created.length > 0) {
-                created[0].sheet.render(true)
-            }
-        } catch (err) {
-            console.error('ILARIS | Error creating item:', err)
-            ui.notifications.error('Fehler beim Erstellen des Items.')
+            if (created?.length) created[0].sheet.render(true)
+        } catch (error) {
+            console.error('ILARIS | Error creating effect:', error)
+            ui.notifications.error('Fehler beim Erstellen des Effekts.')
         }
     }
-
     /**
      * Handle item editing
      * @param {PointerEvent} event - The click event

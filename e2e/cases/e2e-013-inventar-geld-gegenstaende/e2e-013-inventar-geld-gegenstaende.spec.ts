@@ -155,6 +155,7 @@ test.describe('E2E-013 Inventar-Tab — Geld und Gegenstände', () => {
         )
         await expect(addItemLink).toBeVisible({ timeout: 10000 })
         await addItemLink.click()
+        await page.locator('.item-picker-dialog [data-action="createBlank"]').click()
 
         // Neu geöffnetes Gegenstand-Sheet abwarten
         const gegenstandSheet = page.locator('.application.sheet.item.gegenstand').last()
@@ -188,6 +189,7 @@ test.describe('E2E-013 Inventar-Tab — Geld und Gegenstände', () => {
         // ── Phase 3: Behälter mit negativem Platzbedarf anlegen ────────────
 
         await addItemLink.click()
+        await page.locator('.item-picker-dialog [data-action="createBlank"]').click()
 
         const behaelterSheet = page.locator('.application.sheet.item.gegenstand').last()
         await expect(behaelterSheet).toBeVisible({ timeout: 15000 })
@@ -232,6 +234,7 @@ test.describe('E2E-013 Inventar-Tab — Geld und Gegenstände', () => {
         // ── Phase 4: Inhalt in Behälter legen ─────────────────────────────
 
         await addItemLink.click()
+        await page.locator('.item-picker-dialog [data-action="createBlank"]').click()
 
         const inhaltSheet = page.locator('.application.sheet.item.gegenstand').last()
         await expect(inhaltSheet).toBeVisible({ timeout: 15000 })

@@ -1,0 +1,30 @@
+<section class="picker-results" aria-label="Passende Einträge" aria-busy="{{loading}}">
+    <div class="picker-status" role="status">
+        {{#if loading}}
+        <p><i class="fas fa-spinner fa-spin" aria-hidden="true"></i> Kompendien werden geladen …</p>
+        {{else}}
+        <p>{{count}} passende Einträge</p>
+        {{/if}}
+        {{#if failures}}
+        <p class="picker-warning">Diese Kompendien konnten nicht geladen werden: {{failures}}</p>
+        <button type="button" data-action="retry" {{disabled busy}}>Erneut versuchen</button>
+        {{/if}}
+    </div>
+    <div class="picker-result-list">
+        {{#unless loading}}
+        {{#each entries}}
+        <div class="picker-result" data-item-key="{{key}}">
+            <input type="radio" name="item" value="{{key}}" aria-label="{{name}} aus {{source}}" {{checked selected}} {{disabled ../busy}}>
+            <img src="{{img}}" alt="" width="32" height="32" loading="lazy">
+            <div class="picker-result-details">
+                <button type="button" class="picker-preview" data-action="preview" data-key="{{key}}" {{disabled ../busy}}>{{name}}</button>
+                <span class="picker-source">{{source}}</span>
+            </div>
+        </div>
+        {{else}}
+        <p class="picker-empty">Keine passenden Einträge gefunden. Du kannst die Filter ändern oder ein eigenes Item erstellen.</p>
+        {{/each}}
+        {{/unless}}
+    </div>
+</section>
+
