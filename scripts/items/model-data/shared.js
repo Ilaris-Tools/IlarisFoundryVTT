@@ -106,8 +106,9 @@ export function createRuestungDefaults() {
 export function createManoeverDefaults() {
     return {
         voraussetzung: '',
-        input: { label: 'Checkbox', field: 'CHECKBOX', min: 0, max: 0 },
+        input: { label: 'Checkbox', field: 'CHECKBOX', choices: [], min: 0, max: 0 },
         modifications: [],
+        preEffects: [],
         gruppe: 0,
         probe: '',
         gegenprobe: '',

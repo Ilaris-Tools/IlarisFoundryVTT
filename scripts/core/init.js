@@ -412,6 +412,16 @@ Hooks.once('init', () => {
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/falling-orange.svg',
         },
+        Nachbrennen: {
+            id: 'Nachbrennen',
+            name: 'Nachbrennen',
+            order: 600,
+            duration: [],
+            changes: [],
+            isTemporary: 0,
+            img: 'systems/Ilaris/assets/images/icon/ilaris-fvtt_magic_white.svg',
+            tint: STATUS_EFFECT_COLORS.ORANGE,
+        },
 
         // ── Nahkampf ───────────────────────────────────────────────────────────
         Nahkampf1: {
@@ -511,6 +521,8 @@ Hooks.once('init', () => {
 
 Hooks.on('ready', async () => {
     registerDefenseButtonHook()
+    const { registerMagicResistanceChatHook } = await import('../combat/magic-resistance-chat.js')
+    registerMagicResistanceChatHook()
     // TODO Phase 2.8: replace with tokensReady() from tokens/hooks.js
     applyHexTokenSetting()
     // TODO Phase 2.5: replace with combatReady() from combat/hooks.js (for setupIlarisSocket)
@@ -555,9 +567,63 @@ function setupIlarisSocket() {
             case 'createResistPromptByOwner':
                 await handleCreateResistPromptByOwnerRequest(data.data)
                 break
+            case 'requestMagicResistance': {
+                const { handleMagicResistanceRequest } =
+                    await import('../combat/magic-resistance-chat.js')
+                await handleMagicResistanceRequest(data.data)
+                break
+            }
+            case 'resolveMagicResistance': {
+                const { handleMagicResistanceResult } =
+                    await import('../combat/magic-resistance-chat.js')
+                await handleMagicResistanceResult(data.data)
+                break
+            }
             case 'broadcastCombatHook':
                 await handleBroadcastCombatHookRequest(data.data)
                 break
+            case 'armedAttackResolved': {
+                const { applyArmedAttackResolutionToDialog } =
+                    await import('../combat/dialogs/combat-dialog.js')
+                applyArmedAttackResolutionToDialog(data.data)
+                break
+            }
+            case 'resolveBallisticSpellDefense': {
+                const { resolveBallisticDefenseOutcome } =
+                    await import('../combat/ballistic-spell-resolution.js')
+                await resolveBallisticDefenseOutcome(data.data)
+                break
+            }
+            case 'createPersistentZone': {
+                const { createPersistentZoneFromRequest } =
+                    await import('../combat/zones/zone-lifecycle.js')
+                await createPersistentZoneFromRequest(data.data)
+                break
+            }
+            case 'createZoneDraft': {
+                const { createZoneDraftRegionFromRequest } =
+                    await import('../combat/zones/zone-lifecycle.js')
+                await createZoneDraftRegionFromRequest(data.data)
+                break
+            }
+            case 'deleteZoneDraft': {
+                const { deleteZoneDraftRegionFromRequest } =
+                    await import('../combat/zones/zone-lifecycle.js')
+                await deleteZoneDraftRegionFromRequest(data.data)
+                break
+            }
+            case 'dispatchZoneTraversal': {
+                const { dispatchPersistentZoneTraversalFromRequest } =
+                    await import('../combat/zones/zone-lifecycle.js')
+                await dispatchPersistentZoneTraversalFromRequest(data.data)
+                break
+            }
+            case 'dispatchZoneMovementResistance': {
+                const { dispatchPersistentZoneMovementResistanceFromRequest } =
+                    await import('../combat/zones/zone-lifecycle.js')
+                await dispatchPersistentZoneMovementResistanceFromRequest(data.data)
+                break
+            }
             default:
                 console.warn(`Unknown Ilaris socket request type: ${data.type}`)
         }

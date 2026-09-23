@@ -1,5 +1,6 @@
 import { IlarisActorSheet } from './actor.js'
 import * as settings from '../../settings/index.js'
+import { prepareEffectRows } from './effect-row-utils.js'
 
 export class HeldenSheet extends IlarisActorSheet {
     /** @override */
@@ -92,7 +93,7 @@ export class HeldenSheet extends IlarisActorSheet {
         )
 
         // Add applied effects
-        context.effects = this.actor.appliedEffects
+        context.effects = prepareEffectRows(this.actor.appliedEffects)
 
         // Add tab data for template
         context.tabs = this._prepareTabs('primary')

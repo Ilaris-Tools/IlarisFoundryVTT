@@ -1,0 +1,15 @@
+/* ----------------------------------------- */
+/*  Journal Readability                      */
+/* ----------------------------------------- */
+
+/*
+ * Quick-reference callouts currently use inline pastel backgrounds. Foundry's
+ * dark theme changes the inherited text color, but cannot override those
+ * inline backgrounds without an explicit author rule. Keep this scoped to
+ * journal pages so other applications retain their own styling.
+ */
+:is(body.theme-dark, .theme-dark) .journal-entry .journal-entry-page [style*='background-color'],
+.journal-entry.theme-dark .journal-entry-page [style*='background-color'] {
+  background-color: var(--color-cool-4) !important;
+  color: var(--color-text-primary) !important;
+}

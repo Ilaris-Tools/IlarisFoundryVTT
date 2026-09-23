@@ -8,6 +8,9 @@
     "text": "Dein Ziel erleidet eine plötzliche Muskelschwäche. Wenn es anstrengende Bewegungen unternimmt (Laufen, Kämpfen), erleidet es alle DH* Initiativephasen 1 Punkt Erschöpfung.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "",
     "vorbereitung": "2 Aktionen",
     "ziel": "Einzelwesen",

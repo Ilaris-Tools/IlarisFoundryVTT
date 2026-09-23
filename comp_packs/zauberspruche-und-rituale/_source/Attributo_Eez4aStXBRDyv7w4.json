@@ -16,7 +16,258 @@
     "kosten": "8 AsP",
     "erlernen": "Alch 8; Ach, Dru, Elf, Geo, Hex, Mag, Sch 14",
     "pw": 0,
-    "gruppe": 0
+    "gruppe": 0,
+    "spellModificationGroups": [{ "id": "attribute", "label": "Attribut", "required": true }],
+    "spellModifications": [
+      {
+        "id": "mu",
+        "name": "MU",
+        "group": "attribute",
+        "effectMode": "replace",
+        "profile": {},
+        "preEffects": [
+          {
+            "baseDuration": 960,
+            "durationType": "ownerTurns",
+            "instant": false,
+            "changes": [],
+            "ilarisModifiers": [
+              {
+                "phase": "roll",
+                "target": "mu",
+                "value": "+2",
+                "stacking": "strongest-supernatural",
+                "selector": {}
+              },
+              {
+                "phase": "roll",
+                "target": "probe",
+                "value": "+1",
+                "stacking": "strongest-supernatural",
+                "selector": { "attribute": ["MU"] }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "kl",
+        "name": "KL",
+        "group": "attribute",
+        "effectMode": "replace",
+        "profile": {},
+        "preEffects": [
+          {
+            "baseDuration": 960,
+            "durationType": "ownerTurns",
+            "instant": false,
+            "changes": [],
+            "ilarisModifiers": [
+              {
+                "phase": "roll",
+                "target": "kl",
+                "value": "+2",
+                "stacking": "strongest-supernatural",
+                "selector": {}
+              },
+              {
+                "phase": "roll",
+                "target": "probe",
+                "value": "+1",
+                "stacking": "strongest-supernatural",
+                "selector": { "attribute": ["KL"] }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "in",
+        "name": "IN",
+        "group": "attribute",
+        "effectMode": "replace",
+        "profile": {},
+        "preEffects": [
+          {
+            "baseDuration": 960,
+            "durationType": "ownerTurns",
+            "instant": false,
+            "changes": [],
+            "ilarisModifiers": [
+              {
+                "phase": "roll",
+                "target": "in",
+                "value": "+2",
+                "stacking": "strongest-supernatural",
+                "selector": {}
+              },
+              {
+                "phase": "roll",
+                "target": "probe",
+                "value": "+1",
+                "stacking": "strongest-supernatural",
+                "selector": { "attribute": ["IN"] }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ch",
+        "name": "CH",
+        "group": "attribute",
+        "effectMode": "replace",
+        "profile": {},
+        "preEffects": [
+          {
+            "baseDuration": 960,
+            "durationType": "ownerTurns",
+            "instant": false,
+            "changes": [],
+            "ilarisModifiers": [
+              {
+                "phase": "roll",
+                "target": "ch",
+                "value": "+2",
+                "stacking": "strongest-supernatural",
+                "selector": {}
+              },
+              {
+                "phase": "roll",
+                "target": "probe",
+                "value": "+1",
+                "stacking": "strongest-supernatural",
+                "selector": { "attribute": ["CH"] }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ff",
+        "name": "FF",
+        "group": "attribute",
+        "effectMode": "replace",
+        "profile": {},
+        "preEffects": [
+          {
+            "baseDuration": 960,
+            "durationType": "ownerTurns",
+            "instant": false,
+            "changes": [],
+            "ilarisModifiers": [
+              {
+                "phase": "roll",
+                "target": "ff",
+                "value": "+2",
+                "stacking": "strongest-supernatural",
+                "selector": {}
+              },
+              {
+                "phase": "roll",
+                "target": "probe",
+                "value": "+1",
+                "stacking": "strongest-supernatural",
+                "selector": { "attribute": ["FF"] }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ge",
+        "name": "GE",
+        "group": "attribute",
+        "effectMode": "replace",
+        "profile": {},
+        "preEffects": [
+          {
+            "baseDuration": 960,
+            "durationType": "ownerTurns",
+            "instant": false,
+            "changes": [],
+            "ilarisModifiers": [
+              {
+                "phase": "roll",
+                "target": "ge",
+                "value": "+2",
+                "stacking": "strongest-supernatural",
+                "selector": {}
+              },
+              {
+                "phase": "roll",
+                "target": "probe",
+                "value": "+1",
+                "stacking": "strongest-supernatural",
+                "selector": { "attribute": ["GE"] }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ko",
+        "name": "KO",
+        "group": "attribute",
+        "effectMode": "replace",
+        "profile": {},
+        "preEffects": [
+          {
+            "baseDuration": 960,
+            "durationType": "ownerTurns",
+            "instant": false,
+            "changes": [],
+            "ilarisModifiers": [
+              {
+                "phase": "roll",
+                "target": "ko",
+                "value": "+2",
+                "stacking": "strongest-supernatural",
+                "selector": {}
+              },
+              {
+                "phase": "roll",
+                "target": "probe",
+                "value": "+1",
+                "stacking": "strongest-supernatural",
+                "selector": { "attribute": ["KO"] }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "kk",
+        "name": "KK",
+        "group": "attribute",
+        "effectMode": "replace",
+        "profile": {},
+        "preEffects": [
+          {
+            "baseDuration": 960,
+            "durationType": "ownerTurns",
+            "instant": false,
+            "changes": [],
+            "ilarisModifiers": [
+              {
+                "phase": "roll",
+                "target": "kk",
+                "value": "+2",
+                "stacking": "strongest-supernatural",
+                "selector": {}
+              },
+              {
+                "phase": "roll",
+                "target": "probe",
+                "value": "+1",
+                "stacking": "strongest-supernatural",
+                "selector": { "attribute": ["KK"] }
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   "effects": [],
   "folder": null,

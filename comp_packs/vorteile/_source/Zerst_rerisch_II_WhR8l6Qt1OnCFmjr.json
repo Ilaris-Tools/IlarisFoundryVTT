@@ -7,7 +7,31 @@
     "text": "Proben zum Zerstören oder Durchbrechen von Gegenständen sind um +4 erleichtert.\n\nErlaubt das Manöver Hammerschlag gegen Gegenstände. Bei waffenlosen Angriffen gegen Gegenstände verletzt du dich normalerweise nicht."
   },
   "_id": "WhR8l6Qt1OnCFmjr",
-  "effects": [],
+  "effects": [
+    {
+      "_id": "ZerstoerII000001",
+      "_key": "!items.effects!WhR8l6Qt1OnCFmjr.ZerstoerII000001",
+      "name": "Gegenstand zerstören/durchbrechen",
+      "icon": "icons/svg/aura.svg",
+      "disabled": false,
+      "duration": {},
+      "transfer": true,
+      "changes": [],
+      "system": {
+        "ilarisSource": "ordinary",
+        "ilarisModifiers": [
+          {
+            "phase": "roll",
+            "target": "probe",
+            "value": "4",
+            "stacking": "add",
+            "selector": { "situation": ["gegenstandZerstoeren"] }
+          }
+        ]
+      },
+      "flags": {}
+    }
+  ],
   "_stats": {
     "coreVersion": "12.331",
     "systemId": null,

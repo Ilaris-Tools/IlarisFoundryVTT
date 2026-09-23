@@ -16,7 +16,27 @@
     "kosten": "8 AsP",
     "erlernen": "Mag 16",
     "pw": 0,
-    "gruppe": 15
+    "gruppe": 15,
+    "preEffects": [
+      {
+        "baseDuration": 16,
+        "instant": false,
+        "changes": [],
+        "ilarisModifiers": [],
+        "summonItem": {
+          "sourceKind": "waffe",
+          "sourceUuid": "Compendium.Ilaris.waffen.Item.KKOHovBsVU9bphLS",
+          "overrides": [
+            {
+              "path": "system.tp",
+              "value": "2W6+2",
+              "amplifiedByMaechtigeMagie": true,
+              "maechtigBonus": "+2"
+            }
+          ]
+        }
+      }
+    ]
   },
   "effects": [],
   "folder": null,

@@ -1,4 +1,4 @@
-import { expect, Locator, Page } from '@playwright/test'
+import { expect, Locator, Page, type Browser } from '@playwright/test'
 
 import { assertE2EBaseline, E2E_BASELINE } from '../baseline'
 
@@ -54,22 +54,32 @@ async function isWorldUiVisible(page: Page): Promise<boolean> {
     return false
 }
 
+async function waitForWorldReady(page: Page) {
+    await page.waitForFunction(
+        () => typeof game !== 'undefined' && game.ready && !!game.messages,
+        undefined,
+        { timeout: 30000 },
+    )
+}
+
 export async function loginAndJoinWorld(page: Page, config: FoundryCredentials = foundryConfig) {
     await registerFoundryOverlayHandlers(page)
+
+    // Fast-path: reuse an already-connected session (no goto/login).
+    // Foundry keeps WebSockets open, so networkidle is never a readiness signal.
+    if (page.url().includes('/game') && (await isWorldUiVisible(page))) {
+        await waitForWorldReady(page)
+        return
+    }
 
     await page.goto(config.url, { waitUntil: 'domcontentloaded' })
 
     // Foundry redirects asynchronously from / to /join, /game, or /setup
     await page.waitForURL(/(\/join|\/game|\/setup)/, { timeout: 30000 })
-    await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {})
 
-    // Already in game (e.g. local dev session still active)
+    // Redirect landed in the active world
     if (page.url().includes('/game') && (await isWorldUiVisible(page))) {
-        await page.waitForFunction(
-            () => typeof game !== 'undefined' && game.ready && !!game.messages,
-            undefined,
-            { timeout: 30000 },
-        )
+        await waitForWorldReady(page)
         return
     }
 
@@ -139,11 +149,7 @@ export async function loginAndJoinWorld(page: Page, config: FoundryCredentials =
     // Final checks: world UI visible, URL is /game, and Foundry runtime fully ready.
     await page.waitForURL(/\/game/, { timeout: 60000 })
     await page.waitForSelector('#chat-log, #ui-left', { timeout: 45000 })
-    await page.waitForFunction(
-        () => typeof game !== 'undefined' && game.ready && !!game.messages,
-        undefined,
-        { timeout: 30000 },
-    )
+    await waitForWorldReady(page)
 
     await assertE2EBaseline(page)
 
@@ -152,6 +158,21 @@ export async function loginAndJoinWorld(page: Page, config: FoundryCredentials =
     // Explicitly dismiss the breaking-change dialog that may have appeared during startup
     // (the dialog is rendered asynchronously after game.ready via fetch + enrichHTML).
     await dismissBreakingChangeDialogIfPresent(page)
+}
+
+/**
+ * Opens one Foundry session and logs in once.
+ * Multi-test case files share this page across their tests
+ * (pattern proven by e2e-009): beforeAll session, tests use session.page,
+ * afterAll session.close().
+ */
+export async function createE2ESession(browser: Browser) {
+    const page = await browser.newPage()
+    await loginAndJoinWorld(page)
+    return {
+        page,
+        close: async () => page.close().catch(() => {}),
+    }
 }
 
 async function registerFoundryOverlayHandlers(page: Page): Promise<void> {
@@ -231,12 +252,23 @@ export async function clearChatLog(page: Page) {
 
     if (hasVisibleUiClear) {
         await clearButtons.first().click()
+        // The confirmation dialog can appear asynchronously after the click
+        // (especially with reused sessions). Wait for it briefly and click it
+        // when present; the chat-empty predicate below is the real signal, so
+        // an absent confirm does not burn the full wait.
         const confirm = page
             .locator('button:has-text("Ja"), button:has-text("Yes"), .dialog .yes')
             .first()
-        if (await confirm.isVisible().catch(() => false)) {
-            await confirm.click()
-        }
+        const appeared = await confirm
+            .waitFor({ state: 'visible', timeout: 2000 })
+            .then(() => true)
+            .catch(() => false)
+        if (appeared) await confirm.click().catch(() => {})
+        await page
+            .waitForFunction(() => (game.messages?.contents?.length ?? 0) === 0, undefined, {
+                timeout: 3000,
+            })
+            .catch(() => {})
         return
     }
 
@@ -245,6 +277,28 @@ export async function clearChatLog(page: Page) {
         const ids = (game.messages?.contents ?? []).map((m: any) => m.id)
         if (ids.length > 0) await ChatMessage.deleteDocuments(ids)
     })
+}
+
+/**
+ * Closes all open Foundry application windows (dialogs, sheets) on the page
+ * while keeping the core UI (sidebar, hotbar, scene controls) intact.
+ * Required for shared per-file sessions: dialogs left open by one test would
+ * intercept pointer events of later tests, while hiding the core UI would
+ * break `isWorldUiVisible` and force a full re-login per test.
+ */
+export async function closeOpenApplications(page: Page) {
+    await page
+        .evaluate(async () => {
+            const CORE_UI_CONTAINERS =
+                '#sidebar, #hotbar, #controls, #players, #scenes, #ui-top, #ui-bottom, #ui-left'
+            for (const application of foundry.applications?.instances?.values?.() ?? []) {
+                const element = application.element as HTMLElement | undefined
+                if (!element) continue
+                if (element.closest(CORE_UI_CONTAINERS)) continue
+                await application.close?.({ animate: false })
+            }
+        })
+        .catch(() => {})
 }
 
 /**
@@ -588,7 +642,7 @@ export async function openChatSidebar(page: Page): Promise<void> {
     await page
         .locator('#chat-log, .chat-log, #sidebar .chat-message')
         .first()
-        .waitFor({ state: 'visible', timeout: 10000 })
+        .waitFor({ state: 'visible', timeout: 3000 })
         .catch(() => {})
 }
 

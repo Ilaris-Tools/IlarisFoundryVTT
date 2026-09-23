@@ -48,6 +48,16 @@
     {{/if}}
 
     <div class="flexrow">
+        <label>Situation:</label>
+        <select id="situation-{{dialogId}}" style="max-width: 260px;">
+            <option value="" {{#if (ifEq selectedSituation "")}}selected{{/if}}>Keine besondere Situation</option>
+            {{#each situationOptions}}
+            <option value="{{this.id}}" {{#if (ifEq this.id ../selectedSituation)}}selected{{/if}}>{{this.label}}</option>
+            {{/each}}
+        </select>
+    </div>
+
+    <div class="flexrow">
         <label>Hohe Qualität:</label>
         <input
             id="hohequalitaet-{{dialogId}}"

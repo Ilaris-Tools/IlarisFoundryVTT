@@ -115,17 +115,14 @@
             </ul>
         </li>
         <li>
-            Andere Vorteile benutzen die Active Effekts Mechanik von Foundry, um ihre Boni auf den
-            Charakter zu bringen. Zur Zeit sind das nur Statische Effekte ohne weitere
-            Einschränkungen z.B. Unverwündlich mit +1WS funktioniert, Eindrucksvoll I mit Bonus +2
-            in Rededuellen funktioniert nicht! Um Effekte zu verändern oder hinzuzufügen, sollte man
-            sich mal https://foundryvtt.com/article/active-effects/ oder eine Anleitung von DnD zum
-            Thema anschauen https://github-wiki-see.page/m/foundryvtt/dnd5e/wiki/Active-Effect-Guide
-            . Grundsätzlich können alle Keys, die sich im System des Charakters befinden benutzt
-            werden, schaut dazu in die template.json.
-            <strong>Beim Import von Vorteilen mit dem XML Import aus Sephrasto:</strong> Wenn man
-            Vorbildhaft in Sephrasto modifyGS/DH/... verwendet hat werden diese Scripte in Foundry
-            in Effekte umgewandelt.
+            Vorteile können neben statischen Foundry-Änderungen auch kontextabhängige
+            Ilaris-Modifikatoren besitzen. Bei Fertigkeitsproben wählst du die Situation im
+            Dropdown; im Dialog für übernatürliche Fertigkeiten bestätigst du passende, von
+            Spielleitung und Spieler:innen festgelegte Bedingungen. Der Bonus und seine Quelle sind
+            anschließend immer in der Probenzusammenfassung sichtbar.
+            <strong>Wichtig:</strong> Foundry erkennt weder Orte, Ziele, Ressourcen noch gewählte
+            Zaubermodifikationen automatisch. Nicht als feste Probenmodifikation ausdrückbare Folgen
+            – etwa Patzerregeln, Informationsgrade oder Regeneration – bleiben manuell.
         </li>
     </ul>
 </div>
@@ -208,10 +205,21 @@
                                     andere ähnliche Manöver nicht selektierbar
                                 </li>
                                 <li>
+                                    Schadenstyp ändern: wählt einen in den Welteinstellungen
+                                    definierten Schadenstyp. Das Manöver speichert dessen Schlüssel,
+                                    während im Chat der konfigurierte Name angezeigt wird. Das
+                                    Verhalten des Schadenstyps bestimmt, ob Schaden Wunden oder
+                                    Erschöpfung verursacht und ob Rüstung ignoriert wird. Stumpfer
+                                    Schlag verwendet
+                                    <code>STUMPF</code>; Rüstungsbrecher verwendet
+                                    <code>TRUE_DAMAGE</code>. Wird ein verwendeter Schadenstyp aus
+                                    den Welteinstellungen entfernt, warnt das System und verwendet
+                                    Profan (Wunden) als Rückfall.
+                                </li>
+                                <li>
                                     Spezialeffekt: kann bei allen Manövern verwendet werden und gibt
-                                    im Chat einfach nur Text aus, was das Manöver spezielles macht.
-                                    ZB hat das Manöver Rüstungsbrecher den Spezialeffekt, dass es
-                                    Rüstung ignoriert. Was dann im Chat so ausgegeben wird.
+                                    im Chat nur beschreibenden Text aus. Er automatisiert keine
+                                    Regelwirkung.
                                 </li>
                             </ul>
                         </li>

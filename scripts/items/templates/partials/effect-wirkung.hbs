@@ -1,0 +1,64 @@
+{{! Shared effect-bausteine list. Params: pathPrefix (payload path, e.g. "system.preEffects.0"), changes (array). }}
+<div class="changes-list">
+    <h4>Wirkungen</h4>
+    {{#each changes}}
+    <details class="change-card" {{#unless (ifEq type "custom")}}open{{/unless}}>
+        <summary>
+            <span class="change-summary">{{value}}{{#if damageType}} · {{damageType}}{{/if}}{{#if amplifiedByMaechtigeMagie}}{{#if maechtigBonus}} · Mächtig {{maechtigBonus}}{{/if}}{{/if}}</span>
+            <button type="button" class="delete-change">✕</button>
+        </summary>
+        <div class="change-card-body">
+            <div class="form-group">
+                <label>Wert:</label>
+                <input type="text" name="{{../pathPrefix}}.changes.{{@index}}.value" value="{{value}}" placeholder="z.B. 4W6" />
+            </div>
+            <div class="form-group">
+                <label>Schadenstyp:</label>
+                <select name="{{../pathPrefix}}.changes.{{@index}}.damageType">
+                    {{#each @root.damageTypeOptions}}
+                    <option value="{{value}}" {{#if (ifEq value ../damageType)}}selected{{/if}}>{{label}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="form-group">
+                <label><input type="checkbox" name="{{../pathPrefix}}.changes.{{@index}}.amplifiedByMaechtigeMagie" {{checked amplifiedByMaechtigeMagie}} /> Verstärkt durch Mächtige Magie</label>
+            </div>
+            {{#if amplifiedByMaechtigeMagie}}
+            <div class="form-group">
+                <label>Mächtig Bonus:</label>
+                <input type="text" name="{{../pathPrefix}}.changes.{{@index}}.maechtigBonus" value="{{maechtigBonus}}" placeholder="z.B. +2W6" />
+            </div>
+            {{/if}}
+            <div class="form-group">
+                <label>Abgeschwächter Wert:</label>
+                <input type="text" name="{{../pathPrefix}}.changes.{{@index}}.diminishedValue" value="{{diminishedValue}}" placeholder="z.B. 1W6" />
+            </div>
+            <div class="form-group">
+                <label>Abgeschwächter MM Bonus:</label>
+                <input type="text" name="{{../pathPrefix}}.changes.{{@index}}.diminishedMaechtigBonus" value="{{diminishedMaechtigBonus}}" placeholder="z.B. +5" />
+            </div>
+            <details class="change-advanced" {{#if (ifEq type "custom")}}open{{/if}}>
+                <summary>Erweitert ⓘ</summary>
+                <div class="form-group">
+                    <label>Key:</label>
+                    <input type="text" name="{{../pathPrefix}}.changes.{{@index}}.key" value="{{key}}" />
+                </div>
+                <div class="form-group">
+                    <label>Typ:</label>
+                    <select name="{{../pathPrefix}}.changes.{{@index}}.type">
+                        <option value="add" {{#if (ifEq type "add")}}selected{{/if}}>add</option>
+                        <option value="custom" {{#if (ifEq type "custom")}}selected{{/if}}>custom (DOT)</option>
+                        <option value="multiply" {{#if (ifEq type "multiply")}}selected{{/if}}>multiply</option>
+                        <option value="override" {{#if (ifEq type "override")}}selected{{/if}}>override</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Priorität:</label>
+                    <input type="number" name="{{../pathPrefix}}.changes.{{@index}}.priority" value="{{priority}}" data-dtype="Number" />
+                </div>
+            </details>
+        </div>
+    </details>
+    {{/each}}
+    <button type="button" class="add-change">+ Benutzerdefinierte Änderung</button>
+</div>

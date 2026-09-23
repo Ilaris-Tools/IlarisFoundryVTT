@@ -16,7 +16,50 @@
     "kosten": "16 AsP",
     "erlernen": "Hex 18; Bor, Mag 20",
     "pw": 0,
-    "gruppe": 0
+    "gruppe": 0,
+    "preEffects": [
+      {
+        "baseDuration": 16,
+        "instant": false,
+        "changes": [],
+        "ilarisModifiers": [],
+        "avoidTest": {
+          "enabled": true,
+          "fertigkeit": "Willenskraft",
+          "talent": "",
+          "attribut": "",
+          "diminishedOnly": false,
+          "resistDifficulty": 16
+        },
+        "resistanceOutcomes": {
+          "failure": {
+            "enabled": true,
+            "changes": [],
+            "ilarisModifiers": [],
+            "marker": { "enabled": true, "id": "handlungsunfaehig", "label": "Handlungsunfähig" },
+            "condition": { "enabled": false, "statusId": "" }
+          },
+          "success": {
+            "enabled": true,
+            "changes": [],
+            "ilarisModifiers": [
+              {
+                "phase": "roll",
+                "target": "probe",
+                "value": "-4",
+                "stacking": "strongest-supernatural",
+                "comparisonValue": "",
+                "selector": {},
+                "amplifiedByMaechtigeMagie": false,
+                "maechtigBonus": ""
+              }
+            ],
+            "marker": { "enabled": false, "id": "", "label": "" },
+            "condition": { "enabled": false, "statusId": "" }
+          }
+        }
+      }
+    ]
   },
   "effects": [],
   "folder": null,

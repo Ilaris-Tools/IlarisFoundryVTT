@@ -8,6 +8,9 @@
     "text": "Dein Opfer altert schlagartig um 8 Jahre, Auswirkungen davon sind Spielleiterentscheid.",
     "maechtig": "Das Opfer altert um weitere 4 Jahre.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "Verschrumpelte Glieder (–4, 8 AsP, davon 1 gAsP; der Zauber betrifft nur ein einziges Körperteil des Opfers.)",
     "vorbereitung": "1 Stunde",
     "ziel": "Einzelperson",

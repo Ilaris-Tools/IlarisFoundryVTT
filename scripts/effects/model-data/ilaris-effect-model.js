@@ -24,6 +24,40 @@ export function createIlarisActiveEffectDataModel(h) {
                 _pendingExpiry: h.bool(false),
                 _pendingDurationChange: h.bool(false),
             })
+            // `changes` intentionally remains the native Foundry channel. Contextual
+            // Ilaris rules are authored separately so they can be resolved for a
+            // weapon, Talent, or situation without modifying prepared actor data.
+            schema.ilarisSource = h.string('ordinary')
+            schema.ilarisModifiers = h.arrayOfObjects()
+            schema.ilarisArmedCombat = h.object({})
+            schema.ilarisEnding = h.object({})
+            const sourceTiming = h.schema({
+                durationType: h.string(''),
+                expiresOn: h.string(''),
+                remaining: h.number(0),
+            })
+            const conditionSource = h.schema({
+                id: h.string(''),
+                type: h.string('preEffect'),
+                origin: h.string(''),
+                sourceItemUuid: h.string(''),
+                spellUuid: h.string(''),
+                spellName: h.string(''),
+                casterUuid: h.string(''),
+                preEffectIndex: h.number(0),
+                applicationId: h.string(''),
+                castSkill: h.string(''),
+                resistanceOutcome: h.string(''),
+                timing: sourceTiming,
+            })
+            schema.ilarisCondition = h.schema({
+                statusId: h.string(''),
+                sources: new foundry.data.fields.ArrayField(conditionSource, {
+                    required: false,
+                    nullable: true,
+                    initial: () => [],
+                }),
+            })
             return schema
         }
     }

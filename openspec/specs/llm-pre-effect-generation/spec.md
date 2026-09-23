@@ -56,7 +56,7 @@ A pure function `buildPreEffectPrompt(spellData, damageTypes, systemKeys)` SHALL
 
 ### Requirement: Generate button on übernatürlich item sheet
 
-A "🤖 Generieren" button SHALL be present in the pre-effects section of the übernatürlich item sheet, visible only to GMs.
+A `🤖 Generieren` button SHALL be present in the shared Pre-Effects section only when it is rendered by an übernatürlich item sheet and the current user is a GM with a configured API. The LLM request handler and availability context SHALL remain owned by `UebernatuerlichTalentSheet`; another Item sheet that inherits standard Pre-Effect authoring SHALL not acquire spell-generation behavior merely through that shared base.
 
 #### Scenario: Button visible to GMs
 
@@ -77,6 +77,11 @@ A "🤖 Generieren" button SHALL be present in the pre-effects section of the ü
 
 - **WHEN** a GM opens the sheet and both `llmApiUrl` and `llmApiKey` are non-empty
 - **THEN** the "🤖 Generieren" button SHALL be rendered
+
+#### Scenario: Button hidden on a maneuver sheet
+
+- **WHEN** a GM opens a maneuver item sheet while the LLM API is configured
+- **THEN** the shared Pre-Effect section SHALL NOT render a `🤖 Generieren` button
 
 #### Scenario: Button shows loading state during request
 
@@ -119,3 +124,34 @@ The LLM API settings SHALL be documented both in `docs/einstellungen.md` (MkDocs
 
 - **WHEN** a GM opens the "Übersicht: Welteinstellungen" journal entry in Foundry
 - **THEN** a section SHALL describe the LLM/KI settings with the same information as the MkDocs page
+
+### Requirement: LLM prompt distinguishes Foundry changes and Ilaris modifiers
+
+`buildPreEffectPrompt()` SHALL document native `changes` and semantic
+`ilarisModifiers` as separate parts of the generated pre-effect JSON schema.
+It SHALL describe the Ilaris modifier fields, supported selectors, and the
+rule that context-sensitive or übernatürlich non-stacking bonuses belong in
+`ilarisModifiers` rather than duplicated actor-path changes. It SHALL describe
+the semantic equivalents of native Mächtige Magie/Liturgie and diminished-resist
+fields, and SHALL require main-attribute effects to use roll-phase semantic
+modifiers rather than native Actor paths.
+
+#### Scenario: Generated spell can describe a weapon-scoped bonus
+
+- **WHEN** an LLM is asked to generate a pre-effect for a spell that grants
+  AT only with Klingenwaffen
+- **THEN** the prompt SHALL provide an `ilarisModifiers` representation with
+  a Klingenwaffen selector
+
+#### Scenario: LLM retains ordinary native change option
+
+- **WHEN** an LLM is asked to generate an unconditional actor-path change
+- **THEN** the prompt SHALL still document the existing native `changes`
+  representation
+
+#### Scenario: LLM receives main-attribute and amplification guidance
+
+- **WHEN** `buildPreEffectPrompt()` describes the pre-effect schema
+- **THEN** it SHALL direct a GE or KK change to `ilarisModifiers`
+- **AND** it SHALL document the modifier fields used for Mächtige
+  Magie/Liturgie and diminished-resist value materialization

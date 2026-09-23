@@ -47,7 +47,8 @@ const s: {
 // ---------------------------------------------------------------------------
 
 /**
- * Klickt den Würfelwurf-Button (.talent-summary[data-action="angreifen"]) mit AppV2-Fallback
+ * Klickt den Würfelwurf-Button mit dem stabilen `angreifen`-Action-Attribut
+ * und AppV2-Fallback
  * und wartet auf `expectedNewMessages` neue Chat-Nachrichten.
  * Gibt die letzten N Nachrichten als { flavor, content } zurück.
  */
@@ -58,9 +59,7 @@ async function rollAndCaptureMessages(
 ): Promise<Array<{ flavor: string; content: string }>> {
     const beforeCount = await page.evaluate(() => game.messages.contents.length)
 
-    const rollButton = spellDialog.locator(
-        '.modifier-summary.talent-summary.clickable-summary[data-action="angreifen"]',
-    )
+    const rollButton = spellDialog.locator('[data-action="angreifen"]')
     await rollButton.click()
 
     const chatIncreased = await page
@@ -72,7 +71,7 @@ async function rollAndCaptureMessages(
         // Fallback für flaky AppV2-Click-Delivery
         await page.evaluate(() => {
             const node = document.querySelector(
-                '.application.uebernatuerlich-dialog .modifier-summary.talent-summary.clickable-summary[data-action="angreifen"]',
+                '.application.uebernatuerlich-dialog [data-action="angreifen"]',
             )
             node?.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }))
         })

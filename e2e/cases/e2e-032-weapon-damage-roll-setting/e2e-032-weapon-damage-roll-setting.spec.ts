@@ -8,8 +8,8 @@
 
 import { expect, test } from '@playwright/test'
 import {
-    foundryConfig,
-    loginAndJoinWorld,
+    closeOpenApplications,
+    createE2ESession,
     restoreFoundrySetting,
     setFoundrySettingForTest,
 } from '../../shared/fixtures/foundry'
@@ -19,9 +19,19 @@ const hammerschlagId = '90GXiYXQQTvML5gA'
 
 test.describe('E2E-032 · Weapon Damage Roll Setting', () => {
     let originalSetting: import('../../shared/fixtures/foundry').FoundrySettingSnapshot
+    let session: Awaited<ReturnType<typeof createE2ESession>> | undefined
 
-    test.beforeEach(async ({ page }) => {
-        await loginAndJoinWorld(page, foundryConfig)
+    test.beforeAll(async ({ browser }) => {
+        session = await createE2ESession(browser)
+    })
+
+    test.afterAll(async () => {
+        await session?.close()
+    })
+
+    test.beforeEach(async () => {
+        const page = session!.page
+        await closeOpenApplications(page).catch(() => {})
         originalSetting = await setFoundrySettingForTest(
             page,
             weaponDamageRollSetting.namespace,
@@ -30,7 +40,8 @@ test.describe('E2E-032 · Weapon Damage Roll Setting', () => {
         )
     })
 
-    test.afterEach(async ({ page }) => {
+    test.afterEach(async () => {
+        const page = session!.page
         await restoreFoundrySetting(page, originalSetting).catch(() => {})
     })
 
@@ -73,7 +84,8 @@ test.describe('E2E-032 · Weapon Damage Roll Setting', () => {
         }, hammerschlagId)
     }
 
-    test('keeps default Hammerschlag damage as a result multiplier', async ({ page }) => {
+    test('keeps default Hammerschlag damage as a result multiplier', async () => {
+        const page = session!.page
         const result = await getHammerschlagDamageRoll(page)
 
         expect(result.formula).toBe('(2d6+3)*2')
@@ -81,7 +93,8 @@ test.describe('E2E-032 · Weapon Damage Roll Setting', () => {
         expect(Number.isFinite(result.total)).toBe(true)
     })
 
-    test('expands opt-in Hammerschlag damage before rolling', async ({ page }) => {
+    test('expands opt-in Hammerschlag damage before rolling', async () => {
+        const page = session!.page
         await setFoundrySettingForTest(
             page,
             weaponDamageRollSetting.namespace,

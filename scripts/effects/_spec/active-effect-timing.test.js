@@ -3,7 +3,7 @@
  *
  * Covers:
  * - isExpiryEvent guard (returns false for ownerTurns effects, delegates for others)
- * - updateDuration guard (skips core for ownerTurns effects, delegates for others)
+ * - updateDuration delegation keeps the Foundry v14 registry valid
  * - IlarisActiveEffectConfig._getIlarisTimingData defaults
  * - Regression: DoT effects are unaffected by the timing guards
  */
@@ -27,6 +27,10 @@ beforeAll(async () => {
 
         updateDuration(_context) {
             this._updateDurationCalled = true
+        }
+
+        shouldApplyChange(_change, _options) {
+            return true
         }
     }
 
@@ -89,6 +93,13 @@ describe('IlarisActiveEffect.isExpiryEvent', () => {
         expect(effect._isExpiryCalled).toBe(false)
     })
 
+    test('returns false for condition-ledger effects with durationless shared records', () => {
+        const effect = new IlarisActiveEffect()
+        effect.system = { ilarisCondition: { statusId: 'Nachbrennen', sources: [] } }
+        expect(effect.isExpiryEvent('combatTurn')).toBe(false)
+        expect(effect._isExpiryCalled).toBe(false)
+    })
+
     test('delegates to super for effects without ilarisTiming', () => {
         const effect = new IlarisActiveEffect()
         effect.system = {}
@@ -107,11 +118,18 @@ describe('IlarisActiveEffect.isExpiryEvent', () => {
 // ── updateDuration ───────────────────────────────────────────────────────────
 
 describe('IlarisActiveEffect.updateDuration', () => {
-    test('skips super for ownerTurns effects — core must not decrement them', () => {
+    test('delegates for ownerTurns effects so Foundry can derive registry data', () => {
         const effect = new IlarisActiveEffect()
         effect.system = { ilarisTiming: { durationType: 'ownerTurns' } }
         effect.updateDuration({})
-        expect(effect._updateDurationCalled).toBe(false)
+        expect(effect._updateDurationCalled).toBe(true)
+    })
+
+    test('supplies an empty context when Foundry refreshes duration without one', () => {
+        const effect = new IlarisActiveEffect()
+        effect.system = { ilarisCondition: { statusId: 'Nachbrennen', sources: [] } }
+        effect.updateDuration()
+        expect(effect._updateDurationCalled).toBe(true)
     })
 
     test('delegates to super for effects without ilarisTiming', () => {
@@ -129,11 +147,20 @@ describe('IlarisActiveEffect.updateDuration', () => {
     })
 })
 
+describe('IlarisActiveEffect native main-attribute guard', () => {
+    test('rejects legacy main-attribute changes while preserving non-attribute native changes', () => {
+        const effect = new IlarisActiveEffect()
+
+        expect(effect.shouldApplyChange({ key: 'system.attribute.GE.wert' })).toBe(false)
+        expect(effect.shouldApplyChange({ key: 'system.modifikatoren.manuellermod' })).toBe(true)
+    })
+})
+
 // ── IlarisActiveEffectConfig._getIlarisTimingData ────────────────────────────
 
 describe('IlarisActiveEffectConfig._getIlarisTimingData', () => {
     function makeConfig(systemData) {
-        const cfg = Object.create(IlarisActiveEffectConfig.prototype)
+        const cfg = new IlarisActiveEffectConfig()
         cfg.document = { system: systemData || {} }
         return cfg
     }
@@ -145,6 +172,8 @@ describe('IlarisActiveEffectConfig._getIlarisTimingData', () => {
             remaining: 0,
             originalValue: 0,
             expiresOn: 'turnEnd',
+            humanReadableOriginal: '',
+            humanReadableRemaining: '',
         })
     })
 
@@ -162,7 +191,66 @@ describe('IlarisActiveEffectConfig._getIlarisTimingData', () => {
             remaining: 3,
             originalValue: 5,
             expiresOn: 'turnEnd',
+            humanReadableOriginal: '',
+            humanReadableRemaining: '',
         })
+    })
+
+    test('adds German hour and day labels only for values above 100 Initiativephasen', () => {
+        const cfg = makeConfig({
+            ilarisTiming: {
+                durationType: 'ownerTurns',
+                remaining: 23040,
+                originalValue: 960,
+                expiresOn: 'turnEnd',
+            },
+        })
+
+        expect(cfg._getIlarisTimingData()).toEqual(
+            expect.objectContaining({
+                humanReadableOriginal: '1 Stunde',
+                humanReadableRemaining: '1 Tag',
+            }),
+        )
+        expect(
+            makeConfig({
+                ilarisTiming: { remaining: 100, originalValue: 101 },
+            })._getIlarisTimingData(),
+        ).toEqual(
+            expect.objectContaining({
+                humanReadableOriginal: '0,11 Stunden',
+                humanReadableRemaining: '',
+            }),
+        )
+    })
+
+    test('prepares Vorteil modifiers as ordinary additive entries without dropping native changes', async () => {
+        const cfg = new IlarisActiveEffectConfig()
+        cfg.document = {
+            parent: { type: 'vorteil' },
+            system: {
+                ilarisSource: 'uebernatuerlich',
+                ilarisModifiers: [
+                    {
+                        phase: 'roll',
+                        target: 'at',
+                        value: '2',
+                        stacking: 'strongest-supernatural',
+                    },
+                ],
+            },
+            changes: [{ key: 'system.modifikatoren.manuellermod', value: '1' }],
+        }
+
+        const context = await cfg._prepareContext({})
+
+        expect(context.ilarisSource).toBe('ordinary')
+        expect(context.ilarisModifiers).toEqual([
+            expect.objectContaining({ target: 'at', stacking: 'add' }),
+        ])
+        expect(cfg.document.changes).toEqual([
+            { key: 'system.modifikatoren.manuellermod', value: '1' },
+        ])
     })
 })
 

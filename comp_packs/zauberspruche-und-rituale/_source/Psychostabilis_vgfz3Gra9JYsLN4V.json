@@ -16,7 +16,36 @@
     "kosten": "8 AsP",
     "erlernen": "Alch, Mag 12; Dru, Geo, Hex 14; Ach, Srl, Elf 18",
     "pw": 0,
-    "gruppe": 0
+    "gruppe": 0,
+    "preEffects": [
+      {
+        "baseDuration": 960,
+        "instant": false,
+        "changes": [],
+        "ilarisModifiers": [
+          {
+            "phase": "prepare",
+            "target": "mr",
+            "value": "4",
+            "stacking": "strongest-supernatural",
+            "comparisonValue": "",
+            "selector": {},
+            "amplifiedByMaechtigeMagie": true,
+            "maechtigBonus": "+2",
+            "diminishedValue": "",
+            "diminishedMaechtigBonus": ""
+          }
+        ],
+        "avoidTest": {
+          "enabled": false,
+          "fertigkeit": "",
+          "talent": "",
+          "attribut": "",
+          "diminishedOnly": false,
+          "resistDifficulty": 12
+        }
+      }
+    ]
   },
   "effects": [],
   "folder": null,

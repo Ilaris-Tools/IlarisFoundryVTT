@@ -38,6 +38,11 @@ async function handlePostAngriff(rollResult, dialog) {
         const { targetActor } = resolveTargetActorForDamage(target)
         if (!targetActor) continue
 
+        const targetRollResult = dialog.createBallisticTargetRoll
+            ? dialog.createBallisticTargetRoll(rollResult, target)
+            : rollResult
+        if (!targetRollResult) continue
+
         let weapons = []
 
         if (
@@ -80,7 +85,7 @@ async function handlePostAngriff(rollResult, dialog) {
                 }" data-attacker-id="${
                     dialog.actor.id
                 }" data-attack-type="${attackType}" data-roll-result='${encodeURIComponent(
-                    JSON.stringify(rollResult, (key, value) =>
+                    JSON.stringify(targetRollResult, (key, value) =>
                         typeof value === 'function' ? undefined : value,
                     ),
                 )}'>
@@ -99,12 +104,22 @@ async function handlePostAngriff(rollResult, dialog) {
                 }" data-attacker-id="${
                     dialog.actor.id
                 }" data-attack-type="${attackType}" data-roll-result='${encodeURIComponent(
-                    JSON.stringify(rollResult, (key, value) =>
+                    JSON.stringify(targetRollResult, (key, value) =>
                         typeof value === 'function' ? undefined : value,
                     ),
                 )}'>
                     <i class="fas fa-running"></i>
                     Verteidigen mit Akrobatik
+                </button>`
+        }
+
+        if (targetRollResult.ilarisBallisticSpell) {
+            buttonsHtml += `
+                <button class="defend-button" data-actor-id="${targetActor.id}"
+                    data-weapon-id="no-defense" data-distance="${target.distance}"
+                    data-attacker-id="${dialog.actor.id}" data-attack-type="${attackType}"
+                    data-roll-result='${encodeURIComponent(JSON.stringify(targetRollResult))}'>
+                    Nicht verteidigen
                 </button>`
         }
 

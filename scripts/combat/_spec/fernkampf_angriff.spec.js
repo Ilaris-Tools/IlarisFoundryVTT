@@ -151,4 +151,41 @@ describe('FernkampfAngriffDialog summary context', () => {
         expect(damageSummary.headingClass).toBe('disabled')
         expect(damageSummary.rows[0].value).toBe('Nicht gesetzt')
     })
+
+    it('adds contextual AT and linear damage modifiers after ranged maneuver damage', () => {
+        const dialog = createDialog()
+        dialog.actor.allApplicableEffects = () => [
+            {
+                name: 'Fernsegen',
+                system: {
+                    ilarisSource: 'uebernatuerlich',
+                    ilarisModifiers: [
+                        {
+                            phase: 'roll',
+                            target: 'at',
+                            value: '2',
+                            stacking: 'strongest-supernatural',
+                        },
+                        {
+                            phase: 'roll',
+                            target: 'damage',
+                            value: '1W6',
+                            stacking: 'strongest-supernatural',
+                        },
+                    ],
+                },
+            },
+        ]
+        dialog.mod_dm = 2
+
+        const summary = dialog.getSummaryContext({ baseFK: 12 }, 0, 0, '1d20')
+
+        expect(summary.sections[0].rows).toEqual(
+            expect.arrayContaining([expect.objectContaining({ label: 'Ilaris: Fernsegen' })]),
+        )
+        expect(summary.sections[1].heading).toContain('1W6+3 +2 +1d6')
+        expect(summary.sections[1].rows).toEqual(
+            expect.arrayContaining([expect.objectContaining({ label: 'Ilaris: Fernsegen' })]),
+        )
+    })
 })

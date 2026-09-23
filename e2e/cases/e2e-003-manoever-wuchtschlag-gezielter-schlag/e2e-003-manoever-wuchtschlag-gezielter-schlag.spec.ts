@@ -1,14 +1,24 @@
 import { expect, test } from '@playwright/test'
 
 import {
+    ActorDefaultSnapshot,
+    captureActorDefaultSnapshot,
     clearChatLog,
     foundryConfig,
     loginAndJoinWorld,
     openActorSheet,
+    restoreActorFromDefaultSnapshot,
 } from '../../shared/fixtures/foundry'
 
+const ACTOR_NAME = 'Testlauf-Held'
+
 test.describe('E2E-003 Manoever-Kombination: Wuchtschlag + Gezielter Schlag + Schildspalter', () => {
+    let heldSnapshot: ActorDefaultSnapshot | undefined
+
     test.afterEach(async ({ page }) => {
+        if (heldSnapshot) {
+            await restoreActorFromDefaultSnapshot(page, heldSnapshot).catch(() => {})
+        }
         await clearChatLog(page).catch(() => {})
     })
 
@@ -18,8 +28,16 @@ test.describe('E2E-003 Manoever-Kombination: Wuchtschlag + Gezielter Schlag + Sc
         await loginAndJoinWorld(page, foundryConfig)
         await clearChatLog(page)
 
+        // Deterministic setup: neutralize any leftover manual modifier
+        // (globalermod = wundabzuege + furchtabzuege + manuellermod) so the
+        // maneuver-only total (-3) is expected regardless of world state.
+        heldSnapshot = await captureActorDefaultSnapshot(page, ACTOR_NAME)
+        await page.evaluate((name) =>
+            game.actors.getName(name)?.update({ 'system.modifikatoren.manuellermod': 0 }),
+        )
+
         // Open Testlauf-Held actor sheet
-        const actorWindow = await openActorSheet(page, 'Testlauf-Held')
+        const actorWindow = await openActorSheet(page, ACTOR_NAME)
 
         // Navigate to Kampf tab
         await actorWindow.locator('nav [data-tab="kampf"]').click()

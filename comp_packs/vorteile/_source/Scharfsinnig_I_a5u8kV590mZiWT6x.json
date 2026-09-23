@@ -7,7 +7,31 @@
     "text": "Proben bei einer Ermittlung oder Recherche sind um +2 erleichtert."
   },
   "_id": "a5u8kV590mZiWT6x",
-  "effects": [],
+  "effects": [
+    {
+      "_id": "ScharfI000000001",
+      "_key": "!items.effects!a5u8kV590mZiWT6x.ScharfI000000001",
+      "name": "Ermittlung & Recherche",
+      "icon": "icons/svg/aura.svg",
+      "disabled": false,
+      "duration": {},
+      "transfer": true,
+      "changes": [],
+      "system": {
+        "ilarisSource": "ordinary",
+        "ilarisModifiers": [
+          {
+            "phase": "roll",
+            "target": "probe",
+            "value": "2",
+            "stacking": "add",
+            "selector": { "situation": ["ermittlungRecherche"] }
+          }
+        ]
+      },
+      "flags": {}
+    }
+  ],
   "_stats": {
     "coreVersion": "12.331",
     "systemId": null,

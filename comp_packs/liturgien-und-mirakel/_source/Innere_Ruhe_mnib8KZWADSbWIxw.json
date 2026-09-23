@@ -16,7 +16,36 @@
     "kosten": "8 KaP",
     "erlernen": "Brn, Pra 12",
     "pw": 0,
-    "gruppe": 23
+    "gruppe": 23,
+    "preEffects": [
+      {
+        "baseDuration": 7680,
+        "instant": false,
+        "changes": [],
+        "ilarisModifiers": [
+          {
+            "phase": "roll",
+            "target": "talent",
+            "value": "4",
+            "stacking": "strongest-supernatural",
+            "comparisonValue": "",
+            "selector": { "talent": ["Selbstbeherrschung"] },
+            "amplifiedByMaechtigeMagie": true,
+            "maechtigBonus": "+2",
+            "diminishedValue": "",
+            "diminishedMaechtigBonus": ""
+          }
+        ],
+        "avoidTest": {
+          "enabled": false,
+          "fertigkeit": "",
+          "talent": "",
+          "attribut": "",
+          "diminishedOnly": false,
+          "resistDifficulty": 12
+        }
+      }
+    ]
   },
   "effects": [],
   "folder": null,

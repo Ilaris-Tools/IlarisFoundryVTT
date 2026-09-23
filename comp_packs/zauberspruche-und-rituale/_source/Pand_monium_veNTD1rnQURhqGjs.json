@@ -20,11 +20,11 @@
     "preEffects": [
       {
         "baseDuration": 0,
-        "instant": true,
+        "instant": false,
         "changes": [
           {
             "key": "system.gesundheit.wunden",
-            "type": "add",
+            "type": "dot",
             "value": "2W6",
             "amplifiedByMaechtigeMagie": true,
             "maechtigBonus": "+1W6",
@@ -43,7 +43,22 @@
           "resistDifficulty": 12
         }
       }
-    ]
+    ],
+    "zone": {
+      "shape": "circle",
+      "distance": 2,
+      "placement": { "anchor": "free", "range": 16, "pivot": "center" },
+      "lifecycle": "persistent",
+      "effectMode": "passive",
+      "duration": { "remaining": 960, "originalValue": 960 },
+      "trigger": { "triggerOnCreate": true, "onEnter": true },
+      "movementResistance": {
+        "enabled": true,
+        "attribut": "GE",
+        "resistDifficulty": 16,
+        "failureMarker": { "name": "Bewegung fehlgeschlagen" }
+      }
+    }
   },
   "effects": [],
   "folder": null,

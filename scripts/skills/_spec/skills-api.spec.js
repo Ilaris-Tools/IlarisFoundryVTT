@@ -127,6 +127,7 @@ function createDialogElement(dialogId, overrides = {}) {
         [`#hohequalitaet-${dialogId}`]: { value: overrides.hoheQualitaet ?? '0' },
         [`#modifikator-${dialogId}`]: { value: overrides.modifikator ?? '0' },
         [`#rollMode-${dialogId}`]: { value: overrides.rollMode ?? 'roll' },
+        [`#situation-${dialogId}`]: { value: overrides.situation ?? '' },
         [`#talent-${dialogId}`]: overrides.includeTalentField
             ? { value: overrides.talentValue ?? '-2' }
             : null,
@@ -285,6 +286,145 @@ describe('FertigkeitDialog hooks', () => {
                 label: 'Athletik',
                 usesTalent: false,
             }),
+        )
+    })
+
+    it('applies semantic attribute modifiers only to matching probes and honors social-duel selectors', () => {
+        actor.allApplicableEffects = () => [
+            {
+                name: 'Attributo GE',
+                system: {
+                    ilarisSource: 'uebernatuerlich',
+                    ilarisModifiers: [
+                        {
+                            phase: 'roll',
+                            target: 'ge',
+                            value: '2',
+                            stacking: 'strongest-supernatural',
+                        },
+                    ],
+                },
+            },
+            {
+                name: 'Rededuell',
+                system: {
+                    ilarisSource: 'ordinary',
+                    ilarisModifiers: [
+                        {
+                            phase: 'roll',
+                            target: 'probe',
+                            value: '3',
+                            stacking: 'add',
+                            selector: { situation: ['sozialesDuell'] },
+                        },
+                    ],
+                },
+            },
+            {
+                name: 'Schwaches Attributo GE',
+                system: {
+                    ilarisSource: 'uebernatuerlich',
+                    ilarisModifiers: [
+                        {
+                            phase: 'roll',
+                            target: 'ge',
+                            value: '1',
+                            stacking: 'strongest-supernatural',
+                        },
+                    ],
+                },
+            },
+        ]
+        const geDialog = new FertigkeitDialog(actor, {
+            probeType: 'attribut',
+            fertigkeitName: 'GE',
+            pw: 10,
+            attributeTargets: ['GE'],
+            situation: 'sozialesDuell',
+        })
+        geDialog.element = createDialogElement(geDialog.dialogId, {
+            situation: 'sozialesDuell',
+        })
+
+        const kkDialog = new FertigkeitDialog(actor, {
+            probeType: 'attribut',
+            fertigkeitName: 'KK',
+            pw: 10,
+            attributeTargets: ['KK'],
+        })
+        kkDialog.element = createDialogElement(kkDialog.dialogId)
+
+        expect(geDialog._calculateModifiers()).toEqual(
+            expect.objectContaining({ totalMod: 7, finalPW: 17 }),
+        )
+        expect(kkDialog._calculateModifiers()).toEqual(
+            expect.objectContaining({ totalMod: 2, finalPW: 12 }),
+        )
+
+        const summary = geDialog._buildSummaryContext(geDialog._calculateModifiers())
+        expect(summary.sections[0].rows).toEqual(
+            expect.arrayContaining([expect.objectContaining({ label: 'Ilaris: Attributo GE' })]),
+        )
+        expect(summary.sections[0].rows).not.toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({ label: 'Ilaris: Schwaches Attributo GE' }),
+            ]),
+        )
+        expect(summary.sections[0].suppression.entries).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({ sourceName: 'Schwaches Attributo GE' }),
+            ]),
+        )
+    })
+
+    it('expands a waited social duel so general and specific Vorteil effects both apply', async () => {
+        actor.allApplicableEffects = () => [
+            {
+                name: 'Eindrucksvoll I',
+                parent: { type: 'vorteil' },
+                system: {
+                    ilarisModifiers: [
+                        {
+                            phase: 'roll',
+                            target: 'probe',
+                            value: '2',
+                            selector: { situation: ['sozialesDuell'] },
+                        },
+                    ],
+                },
+            },
+            {
+                name: 'Bedächtig',
+                parent: { type: 'vorteil' },
+                system: {
+                    ilarisModifiers: [
+                        {
+                            phase: 'roll',
+                            target: 'probe',
+                            value: '4',
+                            selector: { situation: ['sozialesDuellAbwartend'] },
+                        },
+                    ],
+                },
+            },
+        ]
+        const dialog = new FertigkeitDialog(actor, {
+            probeType: 'simple',
+            fertigkeitName: 'Überreden',
+            pw: 10,
+            situation: 'sozialesDuellAbwartend',
+        })
+        dialog.element = createDialogElement(dialog.dialogId, {
+            situation: 'sozialesDuellAbwartend',
+        })
+
+        expect(dialog._calculateModifiers()).toEqual(
+            expect.objectContaining({ totalMod: 8, finalPW: 18 }),
+        )
+
+        const context = await dialog._prepareContext({})
+        expect(context.situationOptions).toEqual(
+            expect.arrayContaining([expect.objectContaining({ id: 'sozialesDuellAbwartend' })]),
         )
     })
 

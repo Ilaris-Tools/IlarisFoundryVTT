@@ -33,8 +33,33 @@
     "text": "Handlungen des Umklammerten sind um –X erschwert und seine GS sinkt auf 0, solange die Umklammerung anhält. Bei mehrfachen Umklammerungen summieren sich die Malusse. Du kannst dein Ziel in einer Freien Aktion loslassen. Der Umklammerte kann eine Aktion Konflikt aufwenden und eine vergleichenden GE-oder KK-Probe (I) gegen die GE oder KK des Umklammernden ablegen. Gelingt die Probe, lässt der Umklammernde sofort los. Das Manöver senkt den Schaden des Angriffes auf 0. Sollte der Angriff ohnehin keinen Schaden anrichten, ist das Manöver nicht möglich. Voraussetzungen: Angriff mit beiden Händen im waffenlosen Kampf; Ziel darf nicht einer höheren Größenklasse angehören",
     "input": {
       "label": "",
-      "field": "NUMBER"
+      "field": "NUMBER",
+      "choices": [],
+      "min": 1,
+      "max": 8
     },
+    "preEffects": [
+      {
+        "activation": "onConfirmedHit",
+        "baseDuration": 0,
+        "durationType": "infinite",
+        "instant": false,
+        "changes": [{ "key": "system.abgeleitete.gs", "type": "override", "value": "0" }],
+        "ilarisModifiers": [
+          {
+            "phase": "roll",
+            "target": "probe",
+            "value": "-1",
+            "scaleWithInput": true,
+            "stacking": "add",
+            "comparisonValue": "",
+            "selector": {}
+          }
+        ],
+        "ilarisEnding": { "type": "opposedEscape" },
+        "avoidTest": { "enabled": false }
+      }
+    ],
     "isBaseManoever": true
   },
   "effects": [],

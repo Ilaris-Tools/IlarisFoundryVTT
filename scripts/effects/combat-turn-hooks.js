@@ -42,6 +42,33 @@
  */
 
 import { IlarisActiveEffect } from './active-effect.js'
+import { reduceConditionSourcesForCombatant } from './status-conditions.js'
+
+// Transient turn windows intentionally avoid mutating infinite Zone timing.
+const pendingInfiniteDotTicks = new Set()
+
+function infiniteDotKey(actor, effect) {
+    return `${actor?.uuid || actor?.id || ''}:${effect?.uuid || effect?.id || ''}`
+}
+
+export async function expireEffect(actor, effect) {
+    const summonedTokenId = effect.flags?.ilaris?.summonedTokenId
+    if (summonedTokenId) {
+        const scene = await fromUuid(effect.flags?.ilaris?.summonedSceneUuid)
+        const token =
+            scene?.tokens?.get?.(summonedTokenId) ||
+            scene?.tokens?.find?.((entry) => entry.id === summonedTokenId)
+        if (token) await scene.deleteEmbeddedDocuments('Token', [summonedTokenId])
+    }
+    const summonedItemId = effect.flags?.ilaris?.summonedItemId
+    if (summonedItemId) {
+        const exists =
+            actor.items?.get?.(summonedItemId) ||
+            actor.items?.find?.((item) => item.id === summonedItemId)
+        if (exists) await actor.deleteEmbeddedDocuments('Item', [summonedItemId])
+    }
+    await effect.delete()
+}
 
 Hooks.on('combatTurn', async (combat, updateData, updateOptions) => {
     // GM-only to avoid duplicate processing across clients
@@ -50,7 +77,8 @@ Hooks.on('combatTurn', async (combat, updateData, updateOptions) => {
     if (updateOptions?.direction === -1) return
 
     const combatant = combat.combatants.get(combat.turns[updateData.turn]._id)
-    reduceEffectDurationForCombatant(combatant)
+    await reduceEffectDurationForCombatant(combatant)
+    await reduceConditionSourcesForCombatant(combatant, 'turnStart')
 })
 
 /**
@@ -65,7 +93,8 @@ Hooks.on('combatRound', async (combat, updateData, updateOptions) => {
     // NOTE: combat.current reflects the round that just ended, not the previous.
     // This is expected V14 behavior — combat.current is updated before the hook fires.
     const combatant = combat.combatants.get(combat.turns[updateData.turn]._id)
-    reduceEffectDurationForCombatant(combatant)
+    await reduceEffectDurationForCombatant(combatant)
+    await reduceConditionSourcesForCombatant(combatant, 'turnStart')
 })
 
 /**
@@ -74,7 +103,7 @@ Hooks.on('combatRound', async (combat, updateData, updateOptions) => {
  */
 Hooks.on('updateCombat', async (combat, changed, _options, _userId) => {
     if (!game.user.isGM) return
-    if (!('turn' in changed)) return
+    if (!changed || !('turn' in changed)) return
 
     for (const combatant of combat.combatants) {
         const actor = combatant.actor
@@ -99,7 +128,7 @@ Hooks.on('updateCombat', async (combat, changed, _options, _userId) => {
             }
 
             if (newRemaining <= 0) {
-                await effect.delete()
+                await expireEffect(actor, effect)
                 ChatMessage.create({
                     content: `<p><strong>${effect.name}</strong> auf ${actor.name} ist ausgelaufen.</p>`,
                 })
@@ -110,7 +139,28 @@ Hooks.on('updateCombat', async (combat, changed, _options, _userId) => {
                 })
             }
         }
+        await reduceConditionSourcesForCombatant(combatant, 'turnEnd')
     }
+})
+
+/** Resolve each transient infinite Zone DOT window once at owner-turn end. */
+export async function applyPendingInfiniteDotTicks(combat) {
+    for (const combatant of combat.combatants) {
+        const actor = combatant.actor
+        if (!actor) continue
+        for (const effect of actor.appliedEffects) {
+            const key = infiniteDotKey(actor, effect)
+            if (!pendingInfiniteDotTicks.has(key)) continue
+            pendingInfiniteDotTicks.delete(key)
+            for (const change of effect.dotChanges || [])
+                await IlarisActiveEffect.applyDotDamage(actor, change, effect)
+        }
+    }
+}
+
+Hooks.on('updateCombat', async (combat, changed, _options, _userId) => {
+    if (!game.user.isGM || !changed || !('turn' in changed)) return
+    await applyPendingInfiniteDotTicks(combat)
 })
 
 /**
@@ -122,9 +172,18 @@ Hooks.on('updateCombat', async (combat, changed, _options, _userId) => {
  *   Instead sets _pendingExpiry or _pendingDurationChange flag for Phase 2
  *   (updateCombat hook) to handle the actual update.
  */
-async function reduceEffectDurationForCombatant(combatant) {
+export async function reduceEffectDurationForCombatant(combatant) {
     const actor = combatant?.actor
     if (!actor) return
+
+    for (const effect of actor.appliedEffects.filter(
+        (entry) =>
+            !entry.disabled &&
+            !entry.isSuppressed &&
+            entry.system?.ilarisTiming?.durationType === 'infinite' &&
+            entry.hasDotChanges,
+    ))
+        pendingInfiniteDotTicks.add(infiniteDotKey(actor, effect))
 
     const effects = actor.appliedEffects.filter(
         (e) =>
@@ -137,7 +196,7 @@ async function reduceEffectDurationForCombatant(combatant) {
 
         if (timing.expiresOn === 'turnStart') {
             if (newRemaining <= 0) {
-                await effect.delete()
+                await expireEffect(actor, effect)
                 ChatMessage.create({
                     content: `<p><strong>${effect.name}</strong> auf ${actor.name} ist ausgelaufen.</p>`,
                 })

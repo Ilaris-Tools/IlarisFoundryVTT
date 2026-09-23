@@ -19,8 +19,32 @@
     "text": "Bis zum Ende der nächsten eigenen Initiativephase sind alle Verteidigungen des Gegners um -X (maximal 8) erschwert.",
     "input": {
       "label": "",
-      "field": "NUMBER"
+      "field": "NUMBER",
+      "choices": [],
+      "min": 1,
+      "max": 8
     },
+    "preEffects": [
+      {
+        "activation": "onSuccessfulDefense",
+        "baseDuration": 1,
+        "durationType": "ownerTurns",
+        "instant": false,
+        "changes": [],
+        "ilarisModifiers": [
+          {
+            "phase": "roll",
+            "target": "vt",
+            "value": "-1",
+            "scaleWithInput": true,
+            "stacking": "add",
+            "comparisonValue": "",
+            "selector": {}
+          }
+        ],
+        "avoidTest": { "enabled": false }
+      }
+    ],
     "isBaseManoever": true
   },
   "effects": [],

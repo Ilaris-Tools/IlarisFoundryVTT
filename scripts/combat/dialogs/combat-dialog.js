@@ -3,12 +3,24 @@ import {
     ConfigureGameSettingsCategories,
 } from '../../settings/configure-game-settings.model.js'
 import { postRollToChat } from '../../dice/wuerfel_misc.js'
+import { signed } from '../../dice/chatutilities.js'
 import {
     callIlarisHookAllWithGlobalMirror,
     callIlarisHookWithGlobalMirror,
 } from '../hooks/global_combat_hooks.js'
+import { IlarisModifierPhase } from '../../effects/utils/ilaris-modifier-constants.js'
+import { resolveIlarisModifiers } from '../../effects/utils/ilaris-modifier-resolver.js'
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api
+
+/** Apply an armed-damage snapshot to the initiating dialog on this client. */
+export function applyArmedAttackResolutionToDialog({ dialogId, damageFormula } = {}) {
+    const dialog = globalThis.window?._ilarisCombatDialogs?.get(dialogId)
+    if (!dialog) return false
+    dialog.armedDamageFormula = damageFormula || ''
+    dialog.updateModifierDisplay?.()
+    return true
+}
 
 /**
  * Base class for all combat dialogs in Ilaris.
@@ -52,6 +64,10 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         this.item = item
         this.actor = actor
         this.dialogId = `dialog-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`
+        if (globalThis.window) {
+            window._ilarisCombatDialogs ??= new Map()
+            window._ilarisCombatDialogs.set(this.dialogId, this)
+        }
         this.summary = this.getDefaultSummaryContext()
 
         // Initialize selected actors from Foundry targets after actor/item are set
@@ -60,6 +76,12 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         this.speaker = ChatMessage.getSpeaker({ actor: this.actor })
         this.rollmode = game.settings.get('core', 'messageMode')
         this.fumble_val = 1
+    }
+
+    /** @override */
+    async close(options = {}) {
+        globalThis.window?._ilarisCombatDialogs?.delete(this.dialogId)
+        return super.close(options)
     }
 
     /**
@@ -345,6 +367,71 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         }
     }
 
+    /** Resolve semantic effect components for the equipped weapon context. */
+    getIlarisModifierResult(target) {
+        return resolveIlarisModifiers({
+            actor: this.actor,
+            phase: IlarisModifierPhase.Roll,
+            target,
+            fertigkeit: this.getIlarisFertigkeitContext(),
+            talent: this.item?.system?.talent || '',
+            situation: this.getIlarisSituationTags(),
+        })
+    }
+
+    getIlarisFertigkeitContext() {
+        const system = this.item?.system || {}
+        if (system.fertigkeit) return system.fertigkeit
+        if (system.fertigkeit_ausgewaehlt && system.fertigkeit_ausgewaehlt !== 'auto') {
+            return system.fertigkeit_ausgewaehlt
+        }
+        return String(system.fertigkeiten || '')
+            .split(',')
+            .map((fertigkeit) => fertigkeit.trim())
+            .filter(Boolean)
+    }
+
+    getIlarisSituationTags() {
+        return []
+    }
+
+    getIlarisModifierRows(result) {
+        return result.selected.map((entry) => ({
+            label: `Ilaris: ${entry.sourceName}`,
+            value: entry.parsed.raw,
+            cssClass: `modifier-item ${entry.parsed.expectedValue >= 0 ? 'positive' : 'negative'}`,
+        }))
+    }
+
+    getIlarisSuppressionContext(result) {
+        if (!result.hasSuppression) return null
+        return {
+            label: 'Unterdrückte Ilaris-Modifikatoren anzeigen',
+            entries: result.suppressed.map((entry) => ({
+                sourceName: entry.sourceName,
+                value: entry.parsed.raw,
+                reason: entry.reason,
+            })),
+        }
+    }
+
+    getIlarisModifierText(result) {
+        return result.selected
+            .map((entry) => `Ilaris – ${entry.sourceName}: ${entry.parsed.raw}`)
+            .join('\n')
+    }
+
+    /** Append a terminal effect-derived damage contribution after maneuvers. */
+    appendIlarisDamageFormula(formula, result = this.getIlarisModifierResult('damage')) {
+        const terms = [formula]
+        if (result.value) terms.push(signed(result.value))
+        for (const diceFormula of result.diceFormulas) {
+            const normalized = diceFormula.replace(/[Ww]/g, 'd')
+            terms.push(/^[+-]/.test(normalized) ? normalized : `+${normalized}`)
+        }
+        return terms.filter(Boolean).join(' ')
+    }
+
     getErrorSummaryContext() {
         return {
             title: 'Würfelaktionen:',
@@ -512,12 +599,14 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             return
         const dialog = new TargetSelectionDialog(this.actor, (selectedActors) => {
             this.selectedActors = selectedActors
+            this.magicResistanceChallenge = null
             callIlarisHookAllWithGlobalMirror(
                 'Ilaris.targetSelectionComplete',
                 this,
                 this.selectedActors,
             )
-            this.updateSelectedActorsDisplay()
+            if (this._isAutomaticMagicResistance?.()) this.render()
+            else this.updateSelectedActorsDisplay()
         })
         dialog.render(true)
     }

@@ -8,6 +8,9 @@
     "text": "Dein Ziel ist geblendet und erleidet eine Erschwernis von –2 auf Proben.",
     "maechtig": "Erhöht den Malus um –1.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "",
     "vorbereitung": "0 Aktionen",
     "ziel": "Einzelwesen",

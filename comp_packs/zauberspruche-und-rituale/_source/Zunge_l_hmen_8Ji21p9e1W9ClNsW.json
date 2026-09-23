@@ -8,6 +8,9 @@
     "text": "Dein Opfer kann seine Zunge nicht mehr bewegen und kann keine verständlichen Äußerungen von sich geben. Wenn ein Zauber oder eine Liturgie eine gesprochene Formel oder Gebet benötigt, muss das Ziel die Zaubertechnik ignorieren.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "",
     "vorbereitung": "2 Aktionen",
     "ziel": "Einzelperson",

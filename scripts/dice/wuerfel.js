@@ -1,6 +1,10 @@
 import { openCombatDialog } from '../combat/combat-api.js'
 import { openSkillDialog } from '../skills/skills-api.js'
 import { roll_crit_message } from './wuerfel_misc.js'
+import {
+    buildAttributeProbeDialogOptions,
+    buildFertigkeitProbeDialogOptions,
+} from './skill-dialog-options.js'
 
 export async function wuerfelwurf(target, actor) {
     let speaker = ChatMessage.getSpeaker({ actor: actor })
@@ -29,18 +33,14 @@ export async function wuerfelwurf(target, actor) {
     } else if (rolltype == 'fertigkeit_diag') {
         // Unified skill/attribute dialog with preview
         const probeType = target.dataset.probetype || 'fertigkeit'
+        const situation = target.dataset.situation
 
         if (probeType === 'attribut') {
             const attribut_name = target.dataset.attribut
-            const label = CONFIG.ILARIS.label[attribut_name]
-            const pw = systemData.attribute[attribut_name].pw
-
-            await openSkillDialog(actor, {
-                probeType: 'attribut',
-                fertigkeitKey: attribut_name,
-                fertigkeitName: label,
-                pw: pw,
-            })
+            await openSkillDialog(
+                actor,
+                buildAttributeProbeDialogOptions(attribut_name, systemData, situation),
+            )
         } else if (probeType === 'freieFertigkeit' || probeType === 'freie_fertigkeit') {
             const fertigkeitName = target.dataset.fertigkeit
             const stufe = Number(target.dataset.pw)
@@ -67,23 +67,11 @@ export async function wuerfelwurf(target, actor) {
             // Regular skill (fertigkeit)
             const fertigkeit = target.dataset.fertigkeit
             const fertigkeitData = actor.profan.fertigkeiten[fertigkeit]
-            const fertigkeitName = fertigkeitData.name
-            const pw = fertigkeitData.system.pw
 
-            // Build talent list
-            const talentList = {}
-            const talente = fertigkeitData.system.talente || []
-            for (const [i, tal] of talente.entries()) {
-                talentList[i] = tal.name
-            }
-
-            await openSkillDialog(actor, {
-                probeType: 'fertigkeit',
-                fertigkeitKey: fertigkeit,
-                fertigkeitName: fertigkeitName,
-                pw: pw,
-                talentList: talentList,
-            })
+            await openSkillDialog(
+                actor,
+                buildFertigkeitProbeDialogOptions(fertigkeit, fertigkeitData, situation),
+            )
         }
     } else if (rolltype == 'simpleformula_diag') {
         label = target.dataset.name

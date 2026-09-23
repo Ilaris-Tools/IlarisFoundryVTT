@@ -16,7 +16,36 @@
     "kosten": "8 KaP",
     "erlernen": "Rah 12; Aves 16",
     "pw": 0,
-    "gruppe": 43
+    "gruppe": 43,
+    "preEffects": [
+      {
+        "baseDuration": 960,
+        "instant": false,
+        "changes": [],
+        "ilarisModifiers": [
+          {
+            "phase": "roll",
+            "target": "talent",
+            "value": "4",
+            "stacking": "strongest-supernatural",
+            "comparisonValue": "",
+            "selector": { "talent": ["Menschenkenntnis", "Betören"] },
+            "amplifiedByMaechtigeMagie": true,
+            "maechtigBonus": "+2",
+            "diminishedValue": "",
+            "diminishedMaechtigBonus": ""
+          }
+        ],
+        "avoidTest": {
+          "enabled": false,
+          "fertigkeit": "",
+          "talent": "",
+          "attribut": "",
+          "diminishedOnly": false,
+          "resistDifficulty": 12
+        }
+      }
+    ]
   },
   "effects": [],
   "folder": null,

@@ -7,7 +7,31 @@
     "text": "Wenn du in einem Rededuell abwartest, ist deine Probe um +4 erleichtert."
   },
   "_id": "HwogoFXuTUa2Hyyg",
-  "effects": [],
+  "effects": [
+    {
+      "_id": "Bedaechtig000001",
+      "_key": "!items.effects!HwogoFXuTUa2Hyyg.Bedaechtig000001",
+      "name": "Rededuell: abwartend",
+      "icon": "icons/svg/aura.svg",
+      "disabled": false,
+      "duration": {},
+      "transfer": true,
+      "changes": [],
+      "system": {
+        "ilarisSource": "ordinary",
+        "ilarisModifiers": [
+          {
+            "phase": "roll",
+            "target": "probe",
+            "value": "4",
+            "stacking": "add",
+            "selector": { "situation": ["sozialesDuellAbwartend"] }
+          }
+        ]
+      },
+      "flags": {}
+    }
+  ],
   "_stats": {
     "coreVersion": "12.331",
     "systemId": null,

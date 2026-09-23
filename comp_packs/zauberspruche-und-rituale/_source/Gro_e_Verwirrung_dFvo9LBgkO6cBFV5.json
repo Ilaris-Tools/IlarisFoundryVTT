@@ -8,6 +8,9 @@
     "text": "Dein Opfer kann sich nicht mehr konzentrieren. Alle Proben auf KL und IN sind um –4 erschwert, Proben auf Fertigkeiten mit KL oder IN um –2.",
     "maechtig": "Der Malus steigt um –2/–1.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "",
     "vorbereitung": "0 Aktionen",
     "ziel": "Einzelperson",

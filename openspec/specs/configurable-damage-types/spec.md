@@ -6,26 +6,34 @@ A world-scoped, GM-editable registry of damage types shared across the system (p
 
 ### Requirement: Configurable damage types setting
 
-A world-scoped setting `damageTypes` SHALL store a JSON array of `{value, label, behavior}` objects defining which damage types are available throughout the system. The optional `behavior` object contains boolean flags (`healing`, `targetsErschoepfung`) describing what the type does. Designed as a shared setting for multiple consumers (pre-effects, weapons, combat dialogs).
+A world-scoped setting `damageTypes` SHALL store a JSON array of `{value, label, behavior}` objects defining which damage types are available throughout the system. The optional `behavior` object contains boolean flags (`healing`, `targetsErschoepfung`) and an optional `elementalSideEffect` string describing rule effects of the type. Designed as a shared setting for multiple consumers (pre-effects, weapons, combat dialogs).
 
 #### Scenario: Default includes core, magical, elemental, and healing types
 
 - **WHEN** the setting is first used (no prior value)
 - **THEN** it SHALL default to 13 types: PROFAN, STUMPF, MAGISCH, GEWEIHT, DAEMONISCH, FEUER, EIS, ERZ, HUMUS, LUFT, WASSER, HEALING_WOUND, HEALING_EXHAUSTION
-- **AND** PROFAN, MAGISCH, GEWEIHT, DAEMONISCH, FEUER, EIS, ERZ, HUMUS, LUFT, WASSER SHALL have `behavior: {}` (or absent, defaulting to non-healing Wunden damage)
+- **AND** every default type SHALL explicitly define `behavior.elementalSideEffect`
+- **AND** FEUER SHALL set `behavior.elementalSideEffect` to `"nachbrennen"`
+- **AND** every other default type SHALL set `behavior.elementalSideEffect` to `null`
 - **AND** STUMPF SHALL have `behavior: {"targetsErschoepfung": true}`
 - **AND** HEALING_WOUND SHALL have `behavior: {"healing": true}`
 - **AND** HEALING_EXHAUSTION SHALL have `behavior: {"healing": true, "targetsErschoepfung": true}`
 
 #### Scenario: GM can add custom types with behavior flags
 
-- **WHEN** a GM adds a custom type `{"value":"ENERGIE","label":"Energie","behavior":{"healing":false,"targetsErschoepfung":false}}` via the settings UI
-- **THEN** the saved setting SHALL include that type alongside existing ones
+- **WHEN** a GM adds a custom type with an `elementalSideEffect` through the settings UI
+- **THEN** the saved setting SHALL preserve that named side effect alongside existing behavior flags
+
+#### Scenario: GM can rebind a default damage type side effect
+
+- **WHEN** a GM changes a default type's `elementalSideEffect` value in the settings UI
+- **THEN** subsequent resolved damage of that type SHALL use the saved value
+- **AND** an empty or `null` value SHALL dispatch no elemental side effect
 
 #### Scenario: Legacy types without behavior still work
 
-- **WHEN** the setting contains types without a `behavior` key (old schema)
-- **THEN** those types SHALL be treated as damage (`healing: false`) affecting Wunden (`targetsErschoepfung: false`)
+- **WHEN** the setting contains types without a `behavior` key
+- **THEN** those types SHALL be treated as damage affecting Wunden with no elemental side effect
 
 #### Scenario: GM can remove all types and replace them
 
@@ -36,6 +44,21 @@ A world-scoped setting `damageTypes` SHALL store a JSON array of `{value, label,
 
 - **WHEN** the setting value is corrupted or unparseable
 - **THEN** the pre-effects damage type dropdown SHALL show an empty list (no crash)
+
+### Requirement: Consumers retain configured damage-type keys
+
+Any consumer that selects a configured damage type SHALL retain its registry `value` key for downstream behavior resolution; it SHALL use the `label` only for display. This includes `CHANGE_DAMAGE_TYPE` maneuver modifications consumed by the combat damage pipeline.
+
+#### Scenario: Maneuver applies configured behavior by key
+
+- **WHEN** a maneuver's `CHANGE_DAMAGE_TYPE` modification selects configured type `{"value":"STUMPF","label":"Stumpf (Erschöpfung)","behavior":{"targetsErschoepfung":true}}`
+- **THEN** the combat pipeline SHALL receive `damageType: 'STUMPF'`
+- **AND** [`getDamageTypeBehavior`](https://foundryvtt.com/api/classes/foundry.helpers.ClientSettings.html#get) SHALL resolve `targetsErschoepfung: true`
+
+#### Scenario: Label changes do not change behavior lookup
+
+- **WHEN** a GM changes the label of a configured damage type while preserving its `value`
+- **THEN** downstream damage behavior SHALL continue to resolve by the unchanged `value`
 
 ### Requirement: Damage type setting UI in IlarisSettingsDialog
 
@@ -79,7 +102,7 @@ The IlarisSettingsDialog General tab SHALL include a read-only list of configure
 
 ### Requirement: Pre-effects template uses configured damage types
 
-The pre-effects damage type `<select>` SHALL be populated from the `damageTypes` setting as its first consumer.
+The pre-effects damage type `<select>` and the maneuver `CHANGE_DAMAGE_TYPE` `<select>` SHALL be populated from the `damageTypes` setting as consumers of the shared registry.
 
 #### Scenario: Dropdown shows configured types
 
@@ -88,8 +111,13 @@ The pre-effects damage type `<select>` SHALL be populated from the `damageTypes`
 
 #### Scenario: Currently selected type is preserved
 
-- **WHEN** a pre-effect change has `damageType: "FEUER"` and the setting includes `{"value":"FEUER","label":"Feuer"}`
-- **THEN** the "Feuer" option SHALL be selected in the dropdown
+- **WHEN** a pre-effect change or maneuver modification has a `damageType` or `value` of `FEUER` and the setting includes `{"value":"FEUER","label":"Feuer"}`
+- **THEN** the "Feuer" option SHALL be selected in the corresponding dropdown
+
+#### Scenario: Maneuver dropdown shows configured types
+
+- **WHEN** a Manoever item sheet renders a `CHANGE_DAMAGE_TYPE` modification
+- **THEN** its damage type `<select>` SHALL contain one `<option>` per entry in the setting
 
 ### Requirement: E2E coverage for damage type settings CRUD
 

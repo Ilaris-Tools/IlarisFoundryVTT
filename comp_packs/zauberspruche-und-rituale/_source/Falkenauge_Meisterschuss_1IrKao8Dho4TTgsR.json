@@ -16,7 +16,22 @@
     "kosten": "4 AsP",
     "erlernen": "Elf 12",
     "pw": 0,
-    "gruppe": 0
+    "gruppe": 0,
+    "preEffects": [
+      {
+        "baseDuration": 8,
+        "instant": false,
+        "changes": [],
+        "ilarisModifiers": [],
+        "armedCombat": {
+          "enabled": true,
+          "trigger": "nextSuccessfulAttack",
+          "scope": "ranged",
+          "attackBonus": 4,
+          "charges": { "base": 1, "amplifiedByMaechtigeMagie": false, "maechtigBonus": 0 }
+        }
+      }
+    ]
   },
   "effects": [],
   "folder": null,

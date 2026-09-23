@@ -8,6 +8,9 @@
     "text": "Dein Opfer verliert die Kontrolle über seinen Körper. Es beginnt wie wild zu tanzen und erleidet nach dem Ende der Wirkungsdauer 2 Punkte Erschöpfung. Angriffe auf das Opfer haben eine Schwierigkeit von 16.",
     "maechtig": "Das Opfer erleidet einen weiteren Punkt Erschöpfung.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "",
     "vorbereitung": "2 Aktionen",
     "ziel": "Einzelperson",

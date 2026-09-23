@@ -21,8 +21,8 @@
         "affectedByInput": true
       },
       "1": {
-        "type": "ARMOR_BREAKING",
-        "value": 1,
+        "type": "CHANGE_DAMAGE_TYPE",
+        "value": "TRUE_DAMAGE",
         "operator": "ADD",
         "target": "",
         "affectedByInput": true

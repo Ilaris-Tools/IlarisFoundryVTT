@@ -7,7 +7,34 @@
     "text": "In Rededuellen sind Proben auf Betören und Einschüchtern um +2 erleichtert."
   },
   "_id": "O0pG6mRRYkRWsoCa",
-  "effects": [],
+  "effects": [
+    {
+      "_id": "EindrI0000000001",
+      "_key": "!items.effects!O0pG6mRRYkRWsoCa.EindrI0000000001",
+      "name": "Rededuell: Betören und Einschüchtern",
+      "icon": "icons/svg/aura.svg",
+      "disabled": false,
+      "duration": {},
+      "transfer": true,
+      "changes": [],
+      "system": {
+        "ilarisSource": "ordinary",
+        "ilarisModifiers": [
+          {
+            "phase": "roll",
+            "target": "probe",
+            "value": "2",
+            "stacking": "add",
+            "selector": {
+              "talent": ["Betören", "Einschüchtern"],
+              "situation": ["sozialesDuell"]
+            }
+          }
+        ]
+      },
+      "flags": {}
+    }
+  ],
   "_stats": {
     "coreVersion": "12.331",
     "systemId": null,

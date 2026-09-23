@@ -33,6 +33,28 @@ The system SHALL provide `IlarisSettingsDialog` (AppV2 via `HandlebarsApplicatio
 - **WHEN** the reset button (`data-action="resetSettings"`) is clicked
 - **THEN** all settings SHALL be restored to their default values
 
+### Requirement: Creature Actor compendium group
+
+The Ilaris settings dialog SHALL add a creature compendium group to the existing "Benutzte Kompendien" tab. The group SHALL list packs whose indexes contain Actor entries with `type: "kreatur"`, use the `kreaturenPacks` setting for selection, and preserve the existing GM-only save and reset behavior.
+
+#### Scenario: Creature group is visible to the GM
+
+- **WHEN** a GM opens the compendium settings tab
+- **THEN** a "Kreaturen Kompendien" group SHALL show all eligible Actor packs
+- **AND** each entry SHALL expose its pack collection identifier and selected state
+
+#### Scenario: Creature group is hidden from non-GMs
+
+- **WHEN** a non-GM opens the settings dialog
+- **THEN** they SHALL not be able to edit creature pack checkboxes
+- **AND** the existing GM-only settings notice SHALL remain available
+
+#### Scenario: Creature group saves through the shared handler
+
+- **WHEN** the GM saves the compendium settings
+- **THEN** the selected creature pack identifiers SHALL be serialized and written through `game.settings.set`
+- **AND** the other compendium groups SHALL retain their current selections
+
 ### Requirement: Weapon-damage roll expansion setting
 
 The system SHALL register a GM-managed, world-scoped boolean setting that controls whether `WEAPON_DAMAGE` multiplier modifications expand the base weapon formula before it is rolled. The setting SHALL be registered through [`foundry.helpers.ClientSettings`](https://foundryvtt.com/api/v14/classes/foundry.helpers.ClientSettings.html) with `config: false`, SHALL default to disabled, and SHALL be managed exclusively through `IlarisSettingsDialog`.
@@ -72,26 +94,52 @@ The system SHALL define all setting name strings as constants in `configure-game
 - **WHEN** any code reads or writes a system setting
 - **THEN** it SHALL use the constant from `configure-game-settings.model.js` rather than a string literal
 
+### Requirement: World configures supernatural effect stacking
+
+`registerIlarisGameSettings()` SHALL register a world-scoped setting named
+`supernaturalEffectStacking`, managed through IlarisSettingsDialog and named
+through the central setting-name constants. It SHALL offer `ilaris` as the
+default and `foundry` as the alternative. Its German UI text SHALL explain
+that `ilaris` retains supernatural effects and selects the stronger
+supernatural component per overlap, while `foundry` adds distinct effects
+normally and replaces all earlier ActiveEffects from the same supernatural
+spell or liturgy source when it is recast.
+
+#### Scenario: Default follows the Ilaris rule
+
+- **WHEN** a world has no saved value for the setting
+- **THEN** the resolver SHALL use `ilaris` mode
+- **AND** a same-spell recast SHALL retain the existing effect document
+
+#### Scenario: GM selects Foundry behavior
+
+- **WHEN** a GM saves `foundry` in the Ilaris settings dialog
+- **THEN** subsequent resolution SHALL add competing distinct effects normally
+- **AND** a subsequent spell or liturgy application SHALL replace all earlier
+  ActiveEffects from its same supernatural source
+- **AND** the setting SHALL be persisted with world scope
+
 ## Data Model
 
 ### Settings
 
-| Setting                          | Type    | Default     | Description                                                         |
-| -------------------------------- | ------- | ----------- | ------------------------------------------------------------------- |
-| `weaponSpaceRequirement`         | Boolean | true        | Whether weapons require hand slots                                  |
-| `realFumbleCrits`                | Boolean | false       | Use "real" crit/fumble rules (nat 20 must succeed, nat 1 must fail) |
-| `renameTriumphWithCrit`          | Boolean | false       | Rename "Triumph" to "Crit" in UI                                    |
-| `restrictEnergyCostSetting`      | Boolean | false       | Prevent casting without sufficient energy                           |
-| `hideSyncKampfstileButton`       | Boolean | false       | Hide the sync combat styles button                                  |
-| `enableTabbingCharacterSheet`    | Boolean | false       | Enable tab navigation on character sheets                           |
-| `hexTokenShapes`                 | Boolean | false       | Use hex-shaped tokens                                               |
-| `defaultRangedDodgeTalent`       | String  | "Akrobatik" | Default dodge talent for ranged attacks                             |
-| `lepSystem`                      | Boolean | false       | Use LEP (life points) system                                        |
-| `expandWeaponDamageMultipliers`  | Boolean | false       | Expand `WEAPON_DAMAGE` multiplier formulas before rolling           |
-| `lastSeenBreakingChangesVersion` | String  | ""          | Last version for which breaking changes were acknowledged           |
-| `useSceneEnvironment`            | Boolean | true        | Apply scene environment modifiers to ranged attacks                 |
-| `useTargetSelection`             | Boolean | true        | Show target selection dialog in combat                              |
-| Plus 7 compendium pack settings  | String  | (pack keys) | Selected compendium packs for each item category                    |
+| Setting                          | Type    | Default                | Description                                                         |
+| -------------------------------- | ------- | ---------------------- | ------------------------------------------------------------------- |
+| `weaponSpaceRequirement`         | Boolean | true                   | Whether weapons require hand slots                                  |
+| `realFumbleCrits`                | Boolean | false                  | Use "real" crit/fumble rules (nat 20 must succeed, nat 1 must fail) |
+| `renameTriumphWithCrit`          | Boolean | false                  | Rename "Triumph" to "Crit" in UI                                    |
+| `restrictEnergyCostSetting`      | Boolean | false                  | Prevent casting without sufficient energy                           |
+| `hideSyncKampfstileButton`       | Boolean | false                  | Hide the sync combat styles button                                  |
+| `enableTabbingCharacterSheet`    | Boolean | false                  | Enable tab navigation on character sheets                           |
+| `hexTokenShapes`                 | Boolean | false                  | Use hex-shaped tokens                                               |
+| `defaultRangedDodgeTalent`       | String  | "Akrobatik"            | Default dodge talent for ranged attacks                             |
+| `lepSystem`                      | Boolean | false                  | Use LEP (life points) system                                        |
+| `expandWeaponDamageMultipliers`  | Boolean | false                  | Expand `WEAPON_DAMAGE` multiplier formulas before rolling           |
+| `lastSeenBreakingChangesVersion` | String  | ""                     | Last version for which breaking changes were acknowledged           |
+| `useSceneEnvironment`            | Boolean | true                   | Apply scene environment modifiers to ranged attacks                 |
+| `useTargetSelection`             | Boolean | true                   | Show target selection dialog in combat                              |
+| `kreaturenPacks`                 | String  | `["Ilaris.kreaturen"]` | Selected creature Actor compendium packs                            |
+| Plus 7 compendium pack settings  | String  | (pack keys)            | Selected compendium packs for each other item category              |
 
 ## Cross-References
 

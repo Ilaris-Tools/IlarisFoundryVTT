@@ -20,6 +20,7 @@ nav:
     - FAQ: faq.md
     - Entwicklung:
           - ModelData und Migration: develop/modeldata-migration.md
+          - Pre-Effect-Lücken: develop/pre-effect-coverage-gaps.md
           - Release: develop/release.md
           - E2E-Tests: develop/e2e-testing.md
           - Hooks: develop/hooks.md

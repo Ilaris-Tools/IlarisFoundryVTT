@@ -8,6 +8,9 @@
     "text": "Mit diesem Tanz kannst du in die Träume eines schlafenden Zieles eindringen und ihm dort Botschaften überbringen. Woran sich das Ziel erinnern kann, ist Spielleiterentscheid. Du musst eine emotionale Beziehung zum Ziel haben.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "",
     "vorbereitung": "1 Stunde",
     "ziel": "Einzelperson",

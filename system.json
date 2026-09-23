@@ -38,6 +38,7 @@
   "esmodules": ["scripts/core/hooks.js"],
   "styles": [
     "scripts/core/styles/core.css",
+    "scripts/core/styles/journal.css",
     "scripts/actors/styles/actor-sheet.css",
     "scripts/actors/styles/actors.css",
     "scripts/actors/styles/sidebar.css",
@@ -46,6 +47,7 @@
     "scripts/items/styles/pre-effects.css",
     "scripts/waffe/styles/waffe.css",
     "scripts/combat/styles/combat-dialogs.css",
+    "scripts/combat/styles/zone-administration.css",
     "scripts/effects/styles/effects.css",
     "scripts/tokens/styles/tokens.css",
     "scripts/importer/styles/importer.css",

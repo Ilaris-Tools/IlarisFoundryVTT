@@ -8,6 +8,9 @@
     "text": "Du überreichst deinem Opfer einen maximal faustgroßen Gegenstand, der für ihn als ähnlich großer Gegenstand deiner Wahl erscheint. Das Opfer sucht selbst Erklärungen für das Verhalten des Gegenstandes – so wird zum Beispiel ein wegspringender Frosch zu einem wegrollenden Edelstein.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "",
     "vorbereitung": "2 Aktionen",
     "ziel": "Einzelperson",

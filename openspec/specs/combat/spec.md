@@ -53,7 +53,7 @@ The system SHALL provide `FernkampfAngriffDialog` extending `CombatDialog` for r
 
 ### Requirement: Supernatural combat dialog (UebernatuerlichDialog)
 
-The system SHALL provide `UebernatuerlichDialog` extending `CombatDialog` for supernatural abilities including energy cost tracking, Blutmagie, and Verbotene Pforten.
+The system SHALL provide `UebernatuerlichDialog` extending `CombatDialog` for supernatural abilities including energy cost tracking, Blutmagie, Verbotene Pforten, and player/GM-managed contextual Vorteil conditions. The dialog SHALL pass selected, session-local condition tags to the roll-phase Ilaris modifier resolver for its supernatural Probe and show any applied ordinary contribution in its summary. When `useTargetSelection` is enabled and the item has a normalized zone profile, the dialog SHALL show one `Zone platzieren` control above the right-column `Würfelaktionen`, create and retain an inert draft Region before rolling, enable roll actions only while that draft exists, and defer all zone effects or persistence until a successful cast. When that setting is disabled, zone automation SHALL not run and the spell retains its manual outcome path. For an explicitly ballistic source, a successful targeted cast SHALL enter the ranged-defense outcome gate before it calls target Pre-Effects.
 
 #### Scenario: Energy cost enforcement
 
@@ -64,6 +64,39 @@ The system SHALL provide `UebernatuerlichDialog` extending `CombatDialog` for su
 
 - **WHEN** the caster uses Blutmagie (blood magic)
 - **THEN** energy costs SHALL be converted to health damage at the configured ratio
+
+#### Scenario: Contextual Vorteil is selected for one supernatural roll
+
+- **WHEN** the player or GM selects a relevant condition in the supernatural dialog
+- **THEN** its matching ordinary Vorteil Probe modifier SHALL affect that dialog's preview and roll
+- **AND** the selection SHALL not be persisted on the Actor or Item
+
+#### Scenario: Zone placement precedes the roll
+
+- **WHEN** a supernatural item has a normalized zone profile and target automation is enabled
+- **THEN** the dialog SHALL show `Zone platzieren` above `Würfelaktionen` and keep roll actions unavailable until placement is confirmed
+- **AND** the confirmed shape SHALL remain visible as an inert draft Region until the spell is resolved, replaced, cancelled, or the dialog is closed
+
+#### Scenario: Zone placement can be redone
+
+- **WHEN** the user activates `Zone platzieren` while a draft is present
+- **THEN** the dialog SHALL discard the current draft and reopen zone placement without rolling or paying energy
+
+#### Scenario: Zone automation is disabled with target selection
+
+- **WHEN** `useTargetSelection` is disabled
+- **THEN** a zone spell SHALL not open template placement or resolve automatic zone targets
+- **AND** the dialog SHALL retain the existing manual outcome path
+
+#### Scenario: Zone placement requires a caster token and active scene
+
+- **WHEN** zone automation is enabled but the caster token or active Scene cannot be resolved
+- **THEN** the dialog SHALL notify the user and abort before rolling or charging energy
+
+#### Scenario: Ballistic cast keeps the normal dialog layout
+
+- **WHEN** a user opens and rolls an explicitly ballistic supernatural spell
+- **THEN** the dialog SHALL retain its existing target list, roll controls, and summaries while the defense outcome resolves in chat
 
 ### Requirement: Target selection
 
@@ -100,7 +133,7 @@ The system SHALL mirror 10 combat hooks as `Ilaris.global.*` events for use by w
 
 ### Requirement: Multiplayer defense routing
 
-The system SHALL route defense prompts and damage application to the correct client using socket communication, preserving token context for unlinked actors.
+The system SHALL route defense and resistance prompts, plus their resulting damage or Pre-Effect application, to the correct client using socket or chat communication while preserving token context for unlinked [Actor](https://foundryvtt.com/api/v14/classes/foundry.documents.Actor.html) documents. Resistance target resolution SHALL prefer a structured token-aware target payload, then fall back to a serialized Actor UUID, and finally to a legacy world-actor id only when the prior forms cannot resolve an Actor.
 
 #### Scenario: Defense prompt sent to target's client
 
@@ -117,9 +150,26 @@ The system SHALL route defense prompts and damage application to the correct cli
 - **WHEN** a non-GM client needs to apply damage to a target they don't own
 - **THEN** the GM client SHALL handle the damage application via socket payload with full token metadata
 
+#### Scenario: Resistance prompt prefers structured target context
+
+- **WHEN** a resistance prompt contains `target.actorId`, `target.tokenId`, and `target.actorLink` for an unlinked Token Actor
+- **THEN** every prompt-click and result-application stage SHALL resolve that Token Actor before a world Actor with the same source id
+
+#### Scenario: UUID-only resistance prompt remains compatible
+
+- **WHEN** a resistance prompt lacks a resolvable structured target but contains `targetActorUuid`
+- **THEN** the system SHALL resolve that UUID with `foundry.utils.fromUuid`
+- **AND** it SHALL use the resolved Actor for the resistance dialog and result application
+
+#### Scenario: Legacy actor id remains a final fallback
+
+- **WHEN** a resistance prompt lacks a resolvable structured target and UUID but contains `targetActorId`
+- **THEN** the system SHALL resolve the world Actor with that id
+- **AND** it SHALL warn or stop safely when no target can be resolved
+
 ### Requirement: Maneuver integration
 
-The system SHALL integrate maneuvers (Manöver) into all three combat dialog types via `handleModifications()`.
+The system SHALL integrate maneuvers (Manöver) into all three combat dialog types via `handleModifications()`. Maneuver damage-type changes SHALL retain their registry key through damage application, and unmodified melee and ranged attacks SHALL initialize with the registered `PROFAN` key.
 
 #### Scenario: Maneuvers modify attack parameters
 
@@ -130,6 +180,17 @@ The system SHALL integrate maneuvers (Manöver) into all three combat dialog typ
 
 - **WHEN** a maneuver with an energy or health cost is used
 - **THEN** the cost SHALL be deducted from the attacker
+
+#### Scenario: Maneuver damage type reaches damage application by key
+
+- **WHEN** a selected maneuver uses `CHANGE_DAMAGE_TYPE` with a configured registry value
+- **THEN** `applyDamageToTarget()` SHALL receive that registry value rather than its display label
+- **AND** the configured damage-type behavior SHALL determine the affected health pool and armor handling
+
+#### Scenario: Ordinary attacks start as Profan damage
+
+- **WHEN** a melee or ranged attack resolves without a damage-type-changing maneuver
+- **THEN** the damage application path SHALL receive `PROFAN`
 
 ### Requirement: Configurable weapon-damage multiplier roll behavior
 
@@ -186,10 +247,11 @@ The combat modifier pipeline SHALL apply the world weapon-damage roll expansion 
 - **THEN** the chat message SHALL indicate healing (e.g., "heilt X Einschränkungen") instead of damage
 - **AND** `ChatMessage.create` SHALL receive `style: CONST.CHAT_MESSAGE_STYLES.OTHER`
 
-#### Scenario: Healing works with LEP system
+#### Scenario: LEP healing removes accumulated damage
 
-- **WHEN** the LEP system is active and `behavior.healing` is true
-- **THEN** LEP SHALL be increased by the damage amount, capped at the actor's maximum LEP
+- **WHEN** the LEP system is active and `behavior.healing` is true for a type targeting Wunden
+- **THEN** the system SHALL reduce `system.gesundheit.wunden` by the positive healing amount, floored at `0`
+- **AND** it SHALL not use a `wunden_max` field because LEP represents current health as maximum LEP minus accumulated `wunden` damage
 
 #### Scenario: HEALING_EXHAUSTION heals Erschöpfung
 
@@ -227,6 +289,108 @@ The combat modifier pipeline SHALL apply the world weapon-damage roll expansion 
 
 - **WHEN** healing would reduce wounds below 0
 - **THEN** wounds SHALL be capped at 0
+
+### Requirement: Akrobatik defense reads the active message-mode setting
+
+The Akrobatik defense dialog SHALL initialize its roll-mode control from [`ClientSettings#get`](https://foundryvtt.com/api/classes/foundry.helpers.ClientSettings.html#get) using the supported `core.messageMode` key.
+
+#### Scenario: Akrobatik defense opens without a per-dialog mode selection
+
+- **WHEN** an Akrobatik defense dialog is opened and its roll-mode input has no selected override
+- **THEN** the dialog SHALL use the current `core.messageMode` setting
+- **AND** it SHALL not access the removed `core.rollMode` setting
+
+### Requirement: Combat resolves contextual Ilaris effect modifiers
+
+Melee and ranged combat dialogs SHALL request roll-phase Ilaris modifiers with
+the acting actor, weapon Fertigkeit, weapon Talent, and the resolved combat
+context. The resulting AT, VT, TP, and Waffenschaden contributions SHALL be
+included in the corresponding roll or damage calculation and displayed in the
+dialog summary as an effect-derived modifier.
+
+#### Scenario: Klingenwaffen attack receives its matching AT bonus
+
+- **WHEN** an actor attacks with a weapon whose Fertigkeit is Klingenwaffen
+- **THEN** a matching `fertigkeit: ["Klingenwaffen"]` AT modifier SHALL be
+  included in the attack result
+
+#### Scenario: Defense applies a separate VT modifier
+
+- **WHEN** a combatant makes a defense roll
+- **THEN** matching VT modifiers SHALL be resolved for the defending actor and
+  included independently of the attacker's AT modifiers
+
+#### Scenario: Damage effect comparison and contribution are maneuver-independent
+
+- **WHEN** competing übernatürliche TP or Waffenschaden effect modifiers use
+  fixed values or linear W6 formulas and a later maneuver modifies ordinary
+  weapon damage
+- **THEN** combat SHALL select the stronger effect from the raw configured or
+  expected comparison magnitudes
+- **AND** it SHALL add the selected effect contribution after maneuver
+  transformations without multiplying, halving, or otherwise changing it
+
+### Requirement: Combat summaries show applied and suppressed effect results
+
+Combat dialog summaries SHALL always show the total and source of every
+applied Ilaris effect modifier in the normal modifier breakdown. When the
+resolver suppresses one or more matching contributions, the summary SHALL show
+an accessible suppression icon or button with a localized label. Activating it
+SHALL reveal the suppressed entries and their suppression reason; the detailed
+entries SHALL be collapsed by default.
+
+#### Scenario: Applied combat modifier is immediately visible
+
+- **WHEN** a resolved combat context includes an applied Ilaris AT, VT, or
+  damage modifier
+- **THEN** the dialog summary SHALL display that applied modifier without
+  requiring the user to open suppression details
+
+#### Scenario: Suppression details are available on demand
+
+- **WHEN** one or more matching combat modifiers were suppressed
+- **THEN** the dialog summary SHALL display the suppression indicator
+- **AND** activating it SHALL reveal each suppressed modifier and the stronger
+  contribution that suppressed it
+
+### Requirement: Combat resolves armed attack snapshots
+
+Melee and ranged dialogs SHALL serialize matching armed-effect snapshots through defense handling, consume charges once after each matching attack resolution, and apply snapshot damage only on confirmed hits.
+
+#### Scenario: Armed snapshot resolves once after the final outcome
+
+- **WHEN** an attack has a matching armed-effect snapshot with available charges
+- **THEN** the combat flow SHALL carry that snapshot through defense resolution
+- **AND** it SHALL consume one charge after the matching attack resolution
+- **AND** it SHALL apply its damage contribution only on a confirmed hit
+
+### Requirement: Melee outcome resolution activates selected maneuver pre-effects
+
+The melee combat dialogs SHALL evaluate selected maneuver pre-effects only at their final attack-versus-defense resolution. They SHALL pass the dialog's existing selected targets and the maneuver user's Actor to the generic pre-effect service. They SHALL not invoke maneuver effects from an intermediate attack roll that can still be defeated by a defense.
+
+#### Scenario: A confirmed melee hit dispatches offensive pre-effects once
+
+- **WHEN** a melee attacker wins a final resolution with a selected `onConfirmedHit` maneuver pre-effect
+- **THEN** the dialog SHALL dispatch that maneuver pre-effect once for the resolved defender
+
+#### Scenario: A successful defense dispatches defensive pre-effects once
+
+- **WHEN** a melee defender wins a final resolution with a selected `onSuccessfulDefense` maneuver pre-effect
+- **THEN** the defense flow SHALL dispatch that maneuver pre-effect once for the attacking actor
+
+### Requirement: Maneuver pre-effects retain their activating roll
+
+The combat dialog SHALL pass the final result of the roll that satisfied a maneuver pre-effect's activation to the common pre-effect processor when it creates a resistance prompt. The processor SHALL make that result available as the resistance prompt's `triggeringRollTotal`; it SHALL use the evaluated [Roll](https://foundryvtt.com/api/v14/classes/foundry.dice.Roll.html) total and shall not repeat the roll.
+
+#### Scenario: Confirmed-hit maneuver uses the attack total
+
+- **WHEN** an `onConfirmedHit` maneuver Pre-Effect with a triggering-roll resistance source is dispatched after a confirmed hit
+- **THEN** its target's resistance prompt SHALL contain the attack roll's final total
+
+#### Scenario: Successful-defense maneuver uses the defense total
+
+- **WHEN** an `onSuccessfulDefense` maneuver Pre-Effect with a triggering-roll resistance source is dispatched after a successful defense
+- **THEN** its target's resistance prompt SHALL contain the defense roll's final total
 
 ## Data Model
 

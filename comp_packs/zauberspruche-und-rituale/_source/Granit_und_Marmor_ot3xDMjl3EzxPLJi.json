@@ -8,6 +8,9 @@
     "text": "Dein Opfer verwandelt sich im Verlauf einer Stunde in eine Statue aus natürlichem Gestein. Es gilt nicht mehr als Lebewesen und nimmt die Zeit als Statue nicht wahr. Schäden an der Statue werden direkt in Wunden und Verstümmelungen am Opfer übersetzt.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "Statuenträume (–4; das Opfer behält sein Bewusstsein.)\nPermanenz (–4, Wirkungsdauer bis die Bindung gelöst wird, 16 AsP, davon 2 gAsP)",
     "vorbereitung": "4 Aktionen",
     "ziel": "Einzelwesen",

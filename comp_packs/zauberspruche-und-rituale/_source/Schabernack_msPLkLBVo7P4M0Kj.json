@@ -8,6 +8,9 @@
     "text": "Deinem Opfer geschieht ein kleines Missgeschick – es stolpert, bekommt im Gespräch plötzlich Blähungen, oder ihm rutscht eine unanständige Bemerkung heraus.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "",
     "vorbereitung": "2 Aktionen",
     "ziel": "Einzelperson",

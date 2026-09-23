@@ -6,12 +6,13 @@ Pre-effect configurations authored on spells in the `zauberspruche-und-rituale` 
 
 ### Requirement: Damage spells have instant pre-effects
 
-Direct damage spells (elemental rays, single-target projectiles) in the `zauberspruche-und-rituale` compendium SHALL include pre-effect configurations that apply instant damage to the target's wounds.
+Direct damage spells (elemental rays, single-target projectiles) in the `zauberspruche-und-rituale` compendium SHALL include pre-effect configurations that apply instant damage to the target's wounds. A spell whose rule text declares it ballistic SHALL also author the normalized ballistic source marker; that marker SHALL cause no elemental side effect by itself. A configured elemental side effect SHALL be resolved only through the damage type after direct damage succeeds.
 
 #### Scenario: Ignifaxius applies 4W6 fire damage
 
-- **WHEN** a GM casts Ignifaxius and the spell succeeds
+- **WHEN** a GM casts Ignifaxius and the spell succeeds against an undefended visible target
 - **THEN** the target SHALL receive `4W6` instant damage to `system.gesundheit.wunden` via `_applyDamageDirectly` with `damageType: FEUER`
+- **AND** the configured FEUER side effect SHALL resolve Nachbrennen independently of the ballistic gate
 
 #### Scenario: Mächtige Magie amplifies damage
 
@@ -22,6 +23,11 @@ Direct damage spells (elemental rays, single-target projectiles) in the `zaubers
 
 - **WHEN** any \*faxius spell (Ignifaxius, Frigifaxius, Aquafaxius, Humofaxius, Archofaxius, Orcanofaxius) is examined
 - **THEN** each SHALL have `preEffects[0].instant: true`, `changes[0].key: "system.gesundheit.wunden"`, `changes[0].amplifiedByMaechtigeMagie: true`, and `damageType` matching the spell's element
+
+#### Scenario: Ballistic source is explicit
+
+- **WHEN** Ignifaxius or another reviewed ballistic source is examined
+- **THEN** it SHALL declare the ballistic marker without encoding a spell-name-specific resolution branch
 
 ### Requirement: Heal spells have instant pre-effects
 
@@ -50,35 +56,53 @@ Heal spells in the compendium SHALL include pre-effect configurations that heal 
 
 ### Requirement: Buff spells have duration-based pre-effects
 
-Simple buff spells (single stat modifier, Einzelperson target, non-instant duration) SHALL include pre-effect configurations that create ActiveEffects with Ilaris turn timing. Many buff spells require careful key path mapping — some effects map to derived/computed values not directly addressable as data model fields.
+Simple buff spells and liturgies (single target, fully representable numeric modifier, non-instant duration) SHALL include pre-effect configurations that create ActiveEffects using Ilaris owner-turn timing. Durations stated in minutes, hours, or days SHALL be converted at one minute = 16 Initiativephasen. Many buff spells require careful key path mapping — some effects map to derived/computed values not directly addressable as data model fields.
 
-#### Scenario: Axxeleratus creates GS and modifier ActiveEffects
+Rule-aware bonuses SHALL use semantic `ilarisModifiers` where a raw actor path
+cannot express their scope or their non-stacking behavior; classical Foundry
+changes remain available for ordinary path changes. During the reviewed duration-aware iteration, every source Item named in the selected-coverage scenario SHALL be migrated in its `_source/` data to the appropriate native change or semantic Ilaris modifier representation.
+
+#### Scenario: Axxeleratus creates rule-aware GS, AT, and VT modifiers
 
 - **WHEN** a GM casts Axxeleratus and the spell succeeds
-- **THEN** ActiveEffects targeting `system.abgeleitete.gs` (+4), `system.modifikatoren.nahkampfmod` (+2), and `system.modifikatoren.verteidigungmod` (+2) SHALL be created with `durationType: "ownerTurns"`
+- **THEN** it SHALL create an ActiveEffect with `durationType: "ownerTurns"`
+- **AND** its GS bonus (+4) and its AT (+2) and VT (+2) bonuses SHALL be
+  represented as Ilaris modifiers with übernatürlicher strongest-effect
+  stacking semantics
+- **AND** the AT and VT bonuses SHALL retain a general combat scope rather
+  than being stored as duplicate `system.modifikatoren` path changes
 
-#### Scenario: Gardianum creates MR ActiveEffect
+#### Scenario: Psychostabilis creates an owner-turn semantic MR ActiveEffect
 
-- **WHEN** a GM casts Gardianum and the spell succeeds
-- **THEN** an ActiveEffect targeting `system.abgeleitete.mr` SHALL be created
+- **WHEN** a GM casts Psychostabilis and the spell succeeds
+- **THEN** an ActiveEffect with `baseDuration: 960` SHALL be created
+- **AND** it SHALL contain a prepare-phase `mr` Ilaris modifier with
+  übernatürlicher strongest-effect stacking semantics
+- **AND** it SHALL not contain a native `system.abgeleitete.mr` change
+- **AND** the effect SHALL use `system.ilarisTiming.durationType: "ownerTurns"`
 
-#### Scenario: Buff spells with minutes duration map to turns
+#### Scenario: Buff spells with minutes duration use Initiativephasen
 
-- **WHEN** a buff spell has `wirkungsdauer: "4 Minuten"`
-- **THEN** the pre-effect `baseDuration` SHALL be `4`
+- **WHEN** a reviewed buff spell has `wirkungsdauer: "4 Minuten"`
+- **THEN** its pre-effect SHALL use `baseDuration: 64`
+
+#### Scenario: Selected converted-duration source Items are migrated
+
+- **WHEN** the duration-aware iteration is prepared for packing
+- **THEN** `Tanz der Schwerter`, `Adlerauge Luchsenohr`, `Adlerauge Luchsenohr (Tiergeist)`, `Innere Ruhe`, `Mondsilberzunge`, `Rahjas Wohlgefallen`, `Psychostabilis`, `Psychostabilis (Tiergeist)`, and `Tanz des Ungehorsams` SHALL each have the reviewed `_source/` pre-effect representation
 
 #### Known key path mappings
 
-| Concept              | Key path                               |
-| -------------------- | -------------------------------------- |
-| AT (Angriff)         | `system.modifikatoren.nahkampfmod`     |
-| VT (Verteidigung)    | `system.modifikatoren.verteidigungmod` |
-| GS (Geschwindigkeit) | `system.abgeleitete.gs`                |
-| MR (Magieresistenz)  | `system.abgeleitete.mr`                |
-| INI (Initiative)     | `system.abgeleitete.ini`               |
-| RS (Rüstungsschutz)  | ❌ Derived from armor, no direct field |
-| Elemental resist     | ❌ No resistance field exists          |
-| Attribut bonus       | ❌ Multiple sub-fields per attribute   |
+| Concept              | Representation                                                                     |
+| -------------------- | ---------------------------------------------------------------------------------- |
+| AT (Angriff)         | Ilaris roll modifier targeting AT                                                  |
+| VT (Verteidigung)    | Ilaris roll modifier targeting VT                                                  |
+| GS (Geschwindigkeit) | Ilaris prepare modifier targeting GS                                               |
+| MR (Magieresistenz)  | Ilaris prepare modifier targeting MR                                               |
+| INI (Initiative)     | `system.abgeleitete.ini`                                                           |
+| RS (Rüstungsschutz)  | ❌ Derived from armor, no direct field                                             |
+| Elemental resist     | ❌ No resistance field exists                                                      |
+| Attribut bonus       | Ilaris roll modifier matched to the tested attribute; never changes derived values |
 
 ### Requirement: Debuff spells have duration-based pre-effects
 
@@ -93,3 +117,68 @@ Simple debuff spells (single-target, non-instant duration, stat penalty or condi
 
 - **WHEN** a debuff spell has `wirkungsdauer: "4 Initiativphasen"`
 - **THEN** the pre-effect `baseDuration` SHALL be `4`
+
+### Requirement: Krähenruf and Skelettarius author reviewed Actor summon data
+
+The creature compendium SHALL contain a _Krähenschwarm_ source Actor with the
+published _Krähenruf_ baseline combat values. _Krähenruf_ SHALL define a timed
+`casterAdjacent` actor summon lasting 16 initiative phases and source overrides
+that add one WS, AT, and TP per Mächtige-Magie QS. _Skelettarius Totenherr_
+SHALL define a permanent `selectedTarget` summon using the reviewed Skelett
+creature source and an activation delay of two global initiative phases.
+
+#### Scenario: Krähenruf has a complete timed summon source
+
+- **WHEN** _Krähenruf_ and _Krähenschwarm_ are examined in compendium `_source/`
+- **THEN** the spell SHALL reference the creature source by UUID with a 16-phase timed actor-summon pre-effect
+- **AND** the source SHALL contain WS 3, Koloss I, INI 6, GS 8, VT 3, RW 2, AT 10, TP `2W6–2`, and Zusätzliche AT I before its configured amplification
+
+#### Scenario: Skelettarius has a permanent delayed undead source
+
+- **WHEN** _Skelettarius Totenherr_ is examined in compendium `_source/`
+- **THEN** it SHALL reference the reviewed Skelett source by UUID with permanent selected-target placement
+- **AND** it SHALL configure an activation delay of two initiative phases
+
+### Requirement: Reviewed resistance-outcome spell source data
+
+The reviewed spell source Items SHALL use explicit resistance outcome payloads
+when their rules assign distinct persistent results to success and failure.
+Their marker and modifier effects SHALL preserve the source spell provenance
+required by the `supernatural-pre-effects` capability.
+
+#### Scenario: Fluch des Gewürms has distinct resistance outcomes
+
+- **WHEN** _Fluch des Gewürms_ is examined in compendium `_source/`
+- **THEN** it SHALL define a Willenskraft 16 resistance Pre-Effect with a
+  failure marker labelled `Handlungsunfähig` and a success payload applying a
+  global `-4` Ilaris modifier for 16 Initiativephasen
+
+#### Scenario: Krabbelnder Schrecken has distinct resistance outcomes
+
+- **WHEN** _Krabbelnder Schrecken_ is examined in compendium `_source/`
+- **THEN** it SHALL define the same reviewed Willenskraft 16 failure-marker
+  and success-`-4` outcome pattern for 16 Initiativephasen
+
+#### Scenario: Hexengalle uses a marker instead of a numeric placeholder
+
+- **WHEN** _Hexengalle_ is examined in compendium `_source/`
+- **THEN** its failed Zähigkeit 16 resistance result SHALL use a timed,
+  spell-traceable `Handlungsunfähig` marker for two Initiativephasen
+- **AND** it SHALL not use an unrelated zero-valued modifier merely to create
+  an effect document
+
+### Requirement: Reviewed spells author structured forms
+
+The source compendium SHALL author forms for Attributo, Tlalucs Odem Pestgestank, Fortifex arkane Wand, and generic anti-magic talents. Attributo SHALL require exactly one attribute and apply roll-only modifiers without changing raw attributes/derived values. Miasmafaxius SHALL inherit Pestgestank's outcome while overriding its profile. Schimmernder Schild SHALL replace Fortifex's outcome. Every generic anti-magic talent SHALL require exactly one of Gegenzauber, Magie unterdruecken, Zauber aufheben, and Wesenheit bannen.
+
+#### Scenario: Attributo is roll-only
+
+- **WHEN** the FF Attributo form succeeds
+- **THEN** it SHALL create +2 FF attribute-test and +1 FF-selected skill-test semantic modifiers
+- **AND** it SHALL not change `system.attribute.FF.wert` or a derived value
+
+#### Scenario: Anti-magic outcome is transparently player-managed
+
+- **WHEN** a generic anti-magic form succeeds
+- **THEN** cast output SHALL identify the selected form and its configured profile
+- **AND** no misleading automatic reaction, zone, target-effect, or entity outcome SHALL be created

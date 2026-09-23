@@ -98,7 +98,7 @@ The system SHALL provide an E2E Spec Generator agent, refactored from the E2E Te
 #### Scenario: Playwright fixture isolation
 
 - **WHEN** the E2E Spec Generator generates a test
-- **THEN** it SHALL use Playwright's built-in fixture isolation (`test('name', async ({ page }) => { ... })`) and SHALL NOT create shared mutable state objects, manual `browser.newPage()` calls in `beforeAll`, or `as never` type casts
+- **THEN** it SHALL use Playwright's built-in fixture isolation (`test('name', async ({ page }) => { ... })`) and SHALL NOT create shared mutable state objects or `as never` type casts; for multi-test case files it SHALL follow the per-file session reuse requirement (single session in `beforeAll`, closed in `afterAll`) instead of a per-test `page` fixture
 
 #### Scenario: Predicate-based waits
 
@@ -182,6 +182,21 @@ The combat E2E baseline SHALL prove that selecting a target in the target-select
 - **THEN** the Token SHALL be present in `game.user.targets`
 - **AND** the downstream combat flow SHALL use that selected target
 
+### Requirement: Per-file session reuse
+
+Multi-test E2E case files SHALL reuse a single Foundry session per file: the login SHALL happen once in `beforeAll` (shared page via `browser.newPage()`), and the session SHALL be closed in `afterAll`. State modified between/within tests SHALL be restored (snapshots, settings, chat) so test semantics remain equivalent; the sequential execution model (`workers: 1`) stays unchanged.
+
+#### Scenario: Multi-test file shares one session
+
+- **WHEN** a case file contains more than one test
+- **THEN** the file SHALL log in once (`beforeAll`) and reuse the page across its tests (`afterAll` closes it)
+- **AND** per-test cleanup SHALL restore mutated actor/setting/chat state
+
+#### Scenario: Single-test file keeps simple setup
+
+- **WHEN** a case file contains exactly one test
+- **THEN** it SHALL keep the current per-test login (no reuse wrapper needed)
+
 ## Data Model
 
 N/A — E2E testing does not define persistent data.
@@ -205,6 +220,50 @@ Stateful E2E cases SHALL pass in isolation and in the serial full suite.
 ### Requirement: Visible control reachability
 
 Critical E2E assertions SHALL prove controls are visibly reachable through layout or scrolling before activation.
+
+### Requirement: E2E test case determinism
+
+E2E test cases SHALL use predicate-based waits (`expect(...).toBeVisible()`, `waitForFunction`, `waitForSelector`) for asynchronous UI state and SHALL NOT use fixed-duration `waitForTimeout` calls as substitutes for waiting on an observable condition.
+
+#### Scenario: Predicate-based wait is used
+
+- **WHEN** an E2E test case needs to wait for UI state (dialog visible, chat message present, effect applied)
+- **THEN** the test SHALL wait on a predicate (`expect(...).toBeVisible()`, `waitForFunction`, `waitForSelector`) with a bounded timeout instead of a fixed `waitForTimeout`
+
+#### Scenario: Fixed-duration wait is prohibited
+
+- **WHEN** an E2E test case contains a `waitForTimeout` call
+- **THEN** the call SHALL be removed and replaced with a predicate-based wait derived from the observable condition of the scenario
+
+### Requirement: Restart-dialog isolation
+
+E2E cases SHALL dismiss Foundry reload/restart confirmation dialogs they trigger (e.g., `reload-world-confirm`) before continuing with subsequent interactions, and SHALL restore any affected settings. A leftover reload dialog SHALL NOT intercept pointer events of later steps.
+
+#### Scenario: Settings save triggers reload dialog
+
+- **WHEN** an E2E case saves a setting that makes Foundry open a reload confirmation dialog
+- **THEN** the case SHALL dismiss the dialog (e.g., click `No` / `data-action="no"` or the equivalent) before performing subsequent clicks or assertions
+- **AND** the affected setting SHALL be restored in cleanup (e.g., `afterEach`)
+
+#### Scenario: Reload dialog interception is prevented
+
+- **WHEN** an E2E case continues after a settings save
+- **THEN** no open reload dialog SHALL intercept pointer events of later steps
+
+### Requirement: Login readiness waits
+
+The E2E login fixture SHALL wait for world readiness through a predicate (`game.ready && game.messages`) and SHALL NOT rely on `waitForLoadState('networkidle')` as a readiness signal. When a page already has an active game session, the fixture SHALL fast-path directly to the readiness wait instead of re-navigating and re-joining.
+
+#### Scenario: Fresh login waits on game readiness
+
+- **WHEN** an E2E test logs into the world
+- **THEN** the fixture SHALL wait until `game.ready` is true and the game data is available (e.g., `game.messages`) with a bounded timeout
+- **AND** it SHALL not depend on `networkidle` (Foundry WebSockets keep the network active)
+
+#### Scenario: Reused session fast-paths
+
+- **WHEN** the page already shows the game UI for the configured world
+- **THEN** the fixture SHALL skip navigation and login and SHALL only wait for world readiness
 
 - [importer](../importer/spec.md) — XML import tested by e2e-016
 - [combat](../combat/spec.md) — Combat dialogs tested by e2e-001 through e2e-012

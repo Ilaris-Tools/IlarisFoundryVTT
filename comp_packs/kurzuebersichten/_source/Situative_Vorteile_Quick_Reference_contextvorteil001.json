@@ -1,0 +1,39 @@
+{
+  "name": "Übersicht: Situative Vorteile",
+  "type": "JournalEntry",
+  "_id": "kurzcontext001",
+  "pages": [
+    {
+      "_id": "kurzcontextpg01",
+      "name": "Situative Vorteile - Übersicht",
+      "type": "text",
+      "title": { "show": true, "level": 1 },
+      "text": {
+        "format": 1,
+        "content": "<p>Situative Vorteile verwenden gewöhnliche, additive Ilaris-Modifikatoren. Sie konkurrieren nie mit übernatürlichen Effekten und bleiben aktiv, solange der Vorteil auf dem Charakter vorhanden ist.</p>\n<h2>Fertigkeitsproben</h2>\n<p>Wähle im Feld <strong>Situation</strong> die aktuelle Probenart. Unterstützt sind Rededuell, Rededuell – abwartend, Ermittlung &amp; Recherche sowie Gegenstände zerstören/durchbrechen. <em>Rededuell – abwartend</em> zählt zugleich als normales Rededuell; deshalb gelten etwa Eindrucksvoll und Bedächtig zusammen, wenn ihre jeweiligen Voraussetzungen erfüllt sind.</p>\n<h2>Übernatürliche Fertigkeiten</h2>\n<p>Der Abschnitt <strong>Situative Vorteile und Traditionen</strong> zeigt nur Bedingungen, die zu übertragenen Vorteilseffekten des Charakters passen. Checkboxen und die Kraftlinien-Stärke gelten nur für die aktuell geöffnete Probe und werden nicht auf Actor, Item oder Welt gespeichert.</p>\n<p>Spieler:innen und Spielleitung entscheiden gemeinsam, ob ein passender Ort, ein Ziel, eine Zaubermodifikation oder eine Ressource tatsächlich vorliegt. Foundry prüft diese Voraussetzungen nicht selbst.</p>\n<h2>Was bleibt manuell?</h2>\n<ul><li>Patzerregeln, zusätzliche Informationsgrade und Manöverfreigaben.</li><li>Regeneration, Kosten, Wirkungsdauer und Verbrauchseffekte.</li><li>Bedingungen, deren feste Höhe oder passende Fertigkeit nicht im Vorteil hinterlegt ist. Kraftlinienmagie benötigt insbesondere eine vom Spieltisch festgelegte Zuordnung zwischen Kraftlinie und übernatürlicher Fertigkeit.</li></ul>"
+      },
+      "video": { "controls": true, "volume": 0.5 },
+      "src": null,
+      "system": {},
+      "sort": 0,
+      "ownership": { "default": -1 },
+      "flags": {},
+      "_key": "!journal.pages!kurzcontext001.kurzcontextpg01"
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "ownership": { "default": 0 },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "12.343",
+    "systemId": "Ilaris",
+    "systemVersion": "12.2.6",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "_key": "!journal!kurzcontext001"
+}

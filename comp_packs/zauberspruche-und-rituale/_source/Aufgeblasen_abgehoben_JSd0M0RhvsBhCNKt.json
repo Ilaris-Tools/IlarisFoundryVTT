@@ -8,6 +8,9 @@
     "text": "Dein Opfer wirkt aufgeblasen und schwebt langsam immer höher. Dabei ist es wie ein Ballon dem Wind ausgeliefert. Wenn der Zauber endet, sinkt es wieder langsam zu Boden.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "Höhe begrenzen (–4; die maximale Höhe beträgt 8 Schritt.)\nFesselballon (–4; das Opfer bewegt sich nur vertikal, bleibt aber sonst an Ort und Stelle.)\nTierballons (–4; der Zauber wirkt auf Tiere.)\nKunstflug (–8; das Opfer fliegt Figuren, die du mit deinen Armen vorgibst. Erfordert Konzentration.)",
     "vorbereitung": "4 Aktionen",
     "ziel": "Einzelperson",

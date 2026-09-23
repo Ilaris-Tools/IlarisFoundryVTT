@@ -2,7 +2,7 @@ const isNewerVersion = foundry.utils.isNewerVersion
 
 // Keep this strictly increasing, independent from system.json version,
 // so newly added migration steps re-run on already-upgraded worlds.
-const TARGET_SCHEMA_VERSION = '13.2.0'
+const TARGET_SCHEMA_VERSION = '13.3.0'
 
 const ITEM_TYPE_RENAME_MAP = {
     freiestalent: 'freiesTalent',
@@ -213,6 +213,17 @@ function normalizeKreaturData(system) {
     if (!system || typeof system !== 'object') return false
 
     let changed = false
+
+    for (const field of ['summoningDifficulty', 'summoningCost']) {
+        const value = Number(system[field])
+        const hasNumericValue =
+            system[field] !== null && system[field] !== '' && Number.isFinite(value) && value >= 0
+        const normalized = hasNumericValue ? value : 12
+        if (system[field] !== normalized) {
+            system[field] = normalized
+            changed = true
+        }
+    }
 
     if (system.abgeleitete && !system.displayWerte) {
         system.displayWerte = foundry.utils.deepClone(system.abgeleitete)

@@ -16,7 +16,27 @@
     "kosten": "16 KaP",
     "erlernen": "Phe 18",
     "pw": 0,
-    "gruppe": 37
+    "gruppe": 37,
+    "preEffects": [
+      {
+        "baseDuration": 64,
+        "instant": false,
+        "changes": [],
+        "ilarisModifiers": [],
+        "summonItem": {
+          "sourceKind": "waffe",
+          "sourceUuid": "Compendium.Ilaris.waffen.Item.C9Qy0anjBUWn9TUw",
+          "overrides": [
+            {
+              "path": "system.tp",
+              "value": "2W20",
+              "amplifiedByMaechtigeMagie": true,
+              "maechtigBonus": "+1W20"
+            }
+          ]
+        }
+      }
+    ]
   },
   "effects": [],
   "folder": null,

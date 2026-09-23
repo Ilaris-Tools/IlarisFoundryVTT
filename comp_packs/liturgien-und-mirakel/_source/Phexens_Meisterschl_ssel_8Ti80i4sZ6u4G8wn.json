@@ -16,7 +16,20 @@
     "kosten": "8 KaP",
     "erlernen": "Phe 18",
     "pw": 0,
-    "gruppe": 39
+    "gruppe": 39,
+    "preEffects": [
+      {
+        "baseDuration": 16,
+        "instant": false,
+        "changes": [],
+        "ilarisModifiers": [],
+        "summonItem": {
+          "sourceKind": "gegenstand",
+          "sourceUuid": "Compendium.Ilaris.gegenstande.Item.boTWlXOLtukSGoQL",
+          "overrides": []
+        }
+      }
+    ]
   },
   "effects": [],
   "folder": null,

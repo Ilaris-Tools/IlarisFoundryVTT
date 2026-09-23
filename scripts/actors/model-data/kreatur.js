@@ -18,6 +18,8 @@ export function createKreaturActorDataModel(TypeDataModel, h) {
                 edit: h.bool(false),
                 kreaturentyp: h.string('humanoid'),
                 kurzbeschreibung: h.string(''),
+                summoningDifficulty: h.number(12, false),
+                summoningCost: h.number(12, false),
                 kampfwerte: h.schema({
                     ws: h.number(0),
                     ws_stern: h.number(0),

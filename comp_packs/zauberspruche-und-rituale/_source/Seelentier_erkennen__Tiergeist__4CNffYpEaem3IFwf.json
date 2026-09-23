@@ -9,6 +9,9 @@
     "text": "Du erkennst das Seelentier deines Zieles. Wenn dir das Tier und seine assoziierten Eigenschaften bekannt sind, erleichtert dir das alle künftigen gesellschaftlichen Proben dem Ziel gegenüber um +2.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "",
     "vorbereitung": "4 Aktionen",
     "ziel": "Einzelperson",

@@ -8,6 +8,9 @@
     "text": "Du erlegst dem Opfer eine Aufgabe auf, die nicht tödlich sein darf. Stehen die moralischen Vorstellungen des Opfers der Aufgabe entgegen, kann es mit einer Konterprobe (Willenskraft, 16) widerstehen. Ignoriert das Opfer die Aufgabe oder lässt sie absichtlich scheitern, erleidet es pro Woche 1 Wunde, die während der Wirkungsdauer nicht geheilt oder regeneriert werden kann.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "",
     "vorbereitung": "1 Stunde",
     "ziel": "Einzelperson",

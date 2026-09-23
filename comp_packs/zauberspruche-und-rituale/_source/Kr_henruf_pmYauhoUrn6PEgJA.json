@@ -16,7 +16,43 @@
     "kosten": "8 AsP",
     "erlernen": "Hex 12",
     "pw": 0,
-    "gruppe": 0
+    "gruppe": 0,
+    "preEffects": [
+      {
+        "baseDuration": 16,
+        "instant": false,
+        "changes": [],
+        "ilarisModifiers": [],
+        "summonCreature": {
+          "enabled": true,
+          "kreaturentypen": ["tier"],
+          "sourceUuid": "Compendium.Ilaris.kreaturen.Actor.Kraehenschwarm1",
+          "lifetime": "timed",
+          "overrides": [
+            {
+              "path": "system.kampfwerte.ws",
+              "value": 0,
+              "amplifiedByMaechtigeMagie": true,
+              "maechtigBonus": 1
+            },
+            {
+              "path": "items.0.system.at",
+              "value": 0,
+              "amplifiedByMaechtigeMagie": true,
+              "maechtigBonus": 1
+            },
+            {
+              "path": "items.0.system.tp",
+              "value": 0,
+              "amplifiedByMaechtigeMagie": true,
+              "maechtigBonus": 1
+            }
+          ],
+          "boundResourceCost": { "enabled": false, "resource": "gasp", "amount": 0 },
+          "dominationChecks": { "enabled": false }
+        }
+      }
+    ]
   },
   "effects": [],
   "folder": null,

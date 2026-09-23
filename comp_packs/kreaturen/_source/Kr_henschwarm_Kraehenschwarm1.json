@@ -1,0 +1,96 @@
+{
+  "_id": "Kraehenschwarm1",
+  "name": "Krähenschwarm",
+  "type": "kreatur",
+  "img": "systems/Ilaris/assets/images/token/kreaturentypen/tier.png",
+  "system": {
+    "gesundheit": {
+      "erschoepfung": 0,
+      "wunden": 0,
+      "wundabzuege": 0,
+      "wundenignorieren": false,
+      "display": "Volle Gesundheit",
+      "hp": { "max": 3, "value": 3, "threshold": 0 }
+    },
+    "energien": {
+      "asp": { "max": null, "value": null, "threshold": 0 },
+      "gup": { "max": null, "value": null, "threshold": 0 },
+      "kap": { "max": null, "value": null, "threshold": 0 }
+    },
+    "initiative": 0,
+    "furcht": { "furchtstufe": 0, "furchtabzuege": 0, "display": "" },
+    "modifikatoren": { "manuellermod": 0, "nahkampfmod": 0 },
+    "schips": { "schips": 0, "schips_stern": 0 },
+    "attribute": {
+      "KO": { "wert": 0, "pw": null },
+      "MU": { "wert": 0, "pw": null },
+      "GE": { "wert": 0, "pw": null },
+      "KK": { "wert": 0, "pw": null },
+      "IN": { "wert": 0, "pw": null },
+      "KL": { "wert": 0, "pw": null },
+      "CH": { "wert": 0, "pw": null },
+      "FF": { "wert": 0, "pw": null }
+    },
+    "edit": false,
+    "kreaturentyp": "tier",
+    "kurzbeschreibung": "Von Krähenruf gerufener Schwarm.",
+    "kampfwerte": {
+      "ws": 3,
+      "ws_stern": null,
+      "ini": 6,
+      "gs": 8,
+      "koloss": 1,
+      "mr": 0,
+      "gs_schwimmend": null
+    },
+    "talente": [],
+    "freietalente": [],
+    "kampfunfaehig": "",
+    "text": "",
+    "abgeleitete": { "globalermod": 0, "nahkampfmoddisplay": "-", "globalermoddisplay": "-" }
+  },
+  "items": [
+    {
+      "_id": "Kraehenangriff01",
+      "name": "Krähenschwarm",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [],
+        "tp": "2W6-2",
+        "haerte": 0,
+        "rw": 2,
+        "lz": null,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 10,
+        "vt": 3
+      },
+      "effects": [],
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": { "default": 0 },
+      "flags": {},
+      "_key": "!actors.items!Kraehenschwarm1.Kraehenangriff01"
+    },
+    {
+      "_id": "Kraehenextraatk1",
+      "name": "Zusätzliche Attacke I",
+      "type": "eigenschaft",
+      "system": { "text": "" },
+      "effects": [],
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": { "default": 0 },
+      "flags": {},
+      "_key": "!actors.items!Kraehenschwarm1.Kraehenextraatk1"
+    }
+  ],
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": { "default": 0 },
+  "flags": {},
+  "_key": "!actors!Kraehenschwarm1"
+}

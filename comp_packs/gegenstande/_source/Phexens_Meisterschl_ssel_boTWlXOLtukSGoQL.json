@@ -1,0 +1,37 @@
+{
+  "name": "Phexens Meisterschlüssel",
+  "type": "gegenstand",
+  "_id": "boTWlXOLtukSGoQL",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "haerte": 0,
+    "beschaedigung": 0,
+    "aufbewahrungs_ort": "mitführend",
+    "bewahrt_auf": [],
+    "gewicht_summe": 0,
+    "gewicht": 0,
+    "preis": 0,
+    "quantity": 1,
+    "text": "Phexens Meisterschlüssel herbei, der fast jedes Schloss öffnet. Bei magisch gesicherten Schlössern wirkt die Liturgie als Konterprobe (8),\nbei deren Gelingen der Zauber aufgehoben wird."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "I6YlRiEqRJwTfdEG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "Ilaris",
+    "systemVersion": "14.0.0",
+    "createdTime": 1786199500720,
+    "modifiedTime": 1786199534825,
+    "lastModifiedBy": "I6YlRiEqRJwTfdEG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!boTWlXOLtukSGoQL"
+}

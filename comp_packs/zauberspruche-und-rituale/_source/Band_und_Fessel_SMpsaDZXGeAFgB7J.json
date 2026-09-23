@@ -8,6 +8,9 @@
     "text": "Dein Opfer kann einen kreisförmigen Bereich von 4 Schritt Radius nicht verlassen. Alle zwei Stunden darf es versuchen, sich mit einer Konterprobe (MU, 16) vom Zauber zu befreien. Dabei handelt es sich um eine mentale Barriere. Wird das Ziel mit Gewalt über die Barriere getragen – wogegen es sich wehren wird – endet der Effekt.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "",
     "vorbereitung": "4 Aktionen",
     "ziel": "Einzelwesen",

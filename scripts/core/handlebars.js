@@ -5,6 +5,27 @@ const loadTemplates = foundry.applications.handlebars.loadTemplates
 export const initializeHandlebars = () => {
     registerHandlebarsHelpers()
     preloadHandlebarsTemplates()
+    registerHandlebarsPartials()
+}
+
+/**
+ * Loads and registers the shared pre-effect editor partials. The load is
+ * fire-and-forget like the regular template preload; registration completes
+ * before any item sheet renders.
+ */
+/**
+ * Loads and registers the shared pre-effect editor partials.
+ * Foundry's loadTemplates registers a template as a Handlebars partial under
+ * the given id when the object form { id: path } is used (see
+ * foundry.applications.handlebars.getTemplate). Fire-and-forget like the
+ * regular template preload; registration completes before any item sheet renders.
+ */
+function registerHandlebarsPartials() {
+    loadTemplates({
+        'effect-wirkung': 'systems/Ilaris/scripts/items/templates/partials/effect-wirkung.hbs',
+        'pre-effect-card': 'systems/Ilaris/scripts/items/templates/partials/pre-effect-card.hbs',
+        'zone-editor': 'systems/Ilaris/scripts/items/templates/partials/zone-editor.hbs',
+    })
 }
 
 function preloadHandlebarsTemplates() {
@@ -36,6 +57,16 @@ function preloadHandlebarsTemplates() {
 }
 
 function registerHandlebarsHelpers() {
+    Handlebars.registerHelper('concat', function (...args) {
+        args.pop() // drop the options object
+        return args.join('')
+    })
+
+    Handlebars.registerHelper('hasItems', function (value) {
+        if (Array.isArray(value)) return value.length > 0
+        return Boolean(value && typeof value === 'object' && Object.keys(value).length > 0)
+    })
+
     Handlebars.registerHelper('AttributeFertigkeit', function (attrArray) {
         const fertAttr = attrArray[0].concat('/', attrArray[1], '/', attrArray[2])
         return fertAttr

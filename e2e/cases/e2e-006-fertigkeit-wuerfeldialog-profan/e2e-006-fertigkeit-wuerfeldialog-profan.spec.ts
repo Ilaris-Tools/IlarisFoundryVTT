@@ -4,6 +4,8 @@ import {
     ActorDefaultSnapshot,
     captureActorDefaultSnapshot,
     clearChatLog,
+    closeOpenApplications,
+    createE2ESession,
     foundryConfig,
     loginAndJoinWorld,
     openActorSheet,
@@ -38,10 +40,22 @@ const DICE_COMBINATIONS = [
 ] as const
 
 test.describe('E2E-006 Fertigkeit Wuerfeldialog Profan', () => {
-    test('Fertigkeiten-Tab, erste Fertigkeit oeffnen, alle Wuerfelkombinationen pruefen', async ({
-        page,
-    }) => {
-        await loginAndJoinWorld(page, foundryConfig)
+    let session: Awaited<ReturnType<typeof createE2ESession>> | undefined
+
+    test.beforeAll(async ({ browser }) => {
+        session = await createE2ESession(browser)
+    })
+
+    test.afterAll(async () => {
+        await session?.close()
+    })
+
+    test.beforeEach(async () => {
+        await closeOpenApplications(session!.page).catch(() => {})
+    })
+
+    test('Fertigkeiten-Tab, erste Fertigkeit oeffnen, alle Wuerfelkombinationen pruefen', async () => {
+        const page = session!.page
         await clearChatLog(page)
 
         const actorDefaultSnapshot: ActorDefaultSnapshot = await captureActorDefaultSnapshot(
@@ -226,8 +240,8 @@ test.describe('E2E-006 Fertigkeit Wuerfeldialog Profan', () => {
         }
     })
 
-    test('Würfelmodus übernimmt den im Game Chat gewählten Standard', async ({ page }) => {
-        await loginAndJoinWorld(page, foundryConfig)
+    test('Würfelmodus übernimmt den im Game Chat gewählten Standard', async () => {
+        const page = session!.page
 
         const chatMessageMode = await page.evaluate(() => game.settings.get('core', 'messageMode'))
         expect(

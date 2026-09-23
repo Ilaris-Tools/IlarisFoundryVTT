@@ -1,0 +1,46 @@
+<section class="zone-administration">
+    <header class="zone-administration-context">
+        <h2>Ilaris-Zonen verwalten</h2>
+        <p><strong>Szene:</strong> {{sceneName}}</p>
+        <p class="hint">Zum Verschieben oder Anpassen eine Zone auf der Karte auswählen und die normalen Foundry-Regionwerkzeuge verwenden.</p>
+    </header>
+
+    <div class="zone-administration-toolbar">
+        <button type="button" data-action="reconcileZones" {{#unless isGM}}disabled{{/unless}}><i class="fa-solid fa-arrows-rotate"></i> Abgleich durchführen</button>
+    </div>
+
+    {{#if malformed.length}}
+    <section class="zone-administration-warnings">
+        <h3>Unvollständige Ilaris-Zonen</h3>
+        {{#each malformed}}
+        <p><strong>{{name}}</strong>: {{reason}}</p>
+        {{/each}}
+    </section>
+    {{/if}}
+
+    {{#if zones.length}}
+    <ol class="zone-administration-list">
+        {{#each zones}}
+        <li class="zone-administration-row" data-zone-id="{{id}}">
+            <div class="zone-administration-summary">
+                <h3>{{name}}</h3>
+                <p><strong>Zauber:</strong> {{spellName}} · <strong>Zaubernde Person:</strong> {{casterName}}</p>
+                <p><strong>Auslösung:</strong> {{triggerLabel}} · <strong>Dauer:</strong> {{durationLabel}}</p>
+                <p>{{effectSummary}}</p>
+            </div>
+            <div class="zone-administration-actions">
+                <button type="button" data-action="selectZone" data-zone-id="{{id}}">Auf Karte auswählen</button>
+                <button type="button" data-action="editZone" data-zone-id="{{id}}">Region bearbeiten</button>
+                {{#if isSceneRounds}}
+                <label>Verbleibende Szenenrunden <input type="number" name="remaining" min="1" step="1" value="{{remaining}}" /></label>
+                <button type="button" data-action="saveDuration" data-zone-id="{{id}}">Dauer speichern</button>
+                {{/if}}
+                <button type="button" class="danger" data-action="dismissZone" data-zone-id="{{id}}">Zone aufheben</button>
+            </div>
+        </li>
+        {{/each}}
+    </ol>
+    {{else}}
+    <p class="zone-administration-empty">In dieser Szene gibt es keine gültigen Ilaris-Zonen.</p>
+    {{/if}}
+</section>

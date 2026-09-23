@@ -8,6 +8,7 @@
     "text": "Du schleuderst eine Handvoll des Elements, mit dem du den Zauber wirkst, auf deinen Gegner. Die Menge vervielfacht sich im Flug und richtet 2W6 TP an. Ballistischer Zauber.\nFertigkeit Eis: Erfrieren (S. 98)\nFertigkeit Erz: Niederschmettern (S. 98)\nFertigkeit Feuer: Nachbrennen (S. 98)\nFertigkeit Humus: Fesseln (S. 98)\nFertigkeit Luft: Zurückstoßen (S. 98)\nFertigkeit Wasser: Ertränken (S. 98)",
     "maechtig": "Erhöht die TP um +4.",
     "schwierigkeit": "12",
+    "ballistic": { "enabled": true },
     "modifikationen": "",
     "vorbereitung": "0 Aktionen",
     "ziel": "Einzelwesen",

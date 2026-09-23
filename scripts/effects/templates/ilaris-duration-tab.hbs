@@ -1,5 +1,5 @@
 <section class="tab duration {{tab.cssClass}}" data-group="sheet" data-tab="duration">
-    <legend>Ilaris Runden-Dauer</legend>
+    <legend>Ilaris Initiativephasen-Dauer</legend>
     <div class="form-group">
         <label>Dauer-Typ</label>
         <div class="form-fields">
@@ -11,21 +11,27 @@
     </div>
 
     <div class="form-group">
-        <label>Ursprüngliche Runden</label>
+        <label>Ursprüngliche Initiativephasen</label>
         <div class="form-fields">
             <input type="number" name="system.ilarisTiming.originalValue"
                    value="{{ilarisTiming.originalValue}}" min="0" step="1">
         </div>
-        <p class="hint">Die ursprüngliche Anzahl Runden, bevor der Effekt zu zählen beginnt.</p>
+        <p class="hint">Die ursprüngliche Anzahl Initiativephasen, bevor der Effekt zu zählen beginnt.</p>
+        {{#if ilarisTiming.humanReadableOriginal}}
+        <p class="hint">Entspricht: {{ilarisTiming.humanReadableOriginal}}</p>
+        {{/if}}
     </div>
 
     <div class="form-group">
-        <label>Verbleibende Runden</label>
+        <label>Verbleibende Initiativephasen</label>
         <div class="form-fields">
             <input type="number" name="system.ilarisTiming.remaining"
                    value="{{ilarisTiming.remaining}}" min="0" step="1">
         </div>
         <p class="hint">Wird im Zug des Trägers um 1 verringert. Bei 0 läuft der Effekt aus.</p>
+        {{#if ilarisTiming.humanReadableRemaining}}
+        <p class="hint">Entspricht: {{ilarisTiming.humanReadableRemaining}}</p>
+        {{/if}}
     </div>
 
     <div class="form-group">

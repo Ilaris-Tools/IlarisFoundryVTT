@@ -196,6 +196,8 @@ Every transition between agent roles must follow this contract:
 | API Compliance  | ✅/❌  | [details] |
 | Style/Lint      | ✅/❌  | [details] |
 
+> **Note:** Changes to existing tests are a review item. When an implementation report shows modified existing tests, it SHALL include a behavioral justification for each change (spec-driven behavior change vs. test correction). A "test changed to make the suite green" without justification is a Regression Risk finding.
+
 ### Blocking Issues
 
 [Only if BLOCK — concrete, actionable fix descriptions]

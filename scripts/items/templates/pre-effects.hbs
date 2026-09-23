@@ -1,163 +1,152 @@
 <section class="pre-effects-section">
-    <h3>Pre-Effects</h3>
-    <div class="pre-effects-list" data-section="preEffects">
-        {{#each item.system.preEffects}}
-        <fieldset class="pre-effect-card">
-            <legend>Pre-Effect</legend>
-            <button type="button" class="delete-pre-effect">✕</button>
+    <details class="sheet-area automation-area" open>
+        <summary class="sheet-area-header">Automatisierung</summary>
+        <div class="sheet-area-body">
+            {{#if @root.preEffectCapabilities.allowZone}}
+            {{#if item.system.zone.shape}}
+            <fieldset class="pre-effect-card zone-card">
+                <legend>Zone</legend>
+                <details class="pre-effect-accordion" open>
+                    <summary class="pre-effect-summary"><span>{{@root.zoneSummary}}</span></summary>
+                    <div class="pre-effect-card-body">
+                        {{> zone-editor pathPrefix="system.zone" zone=item.system.zone}}
+                        <button type="button" class="clear-zone-profile">Zonenprofil entfernen</button>
+                    </div>
+                </details>
+            </fieldset>
+            {{else}}
+            <button type="button" class="add-zone-profile">+ Zone hinzufügen</button>
+            {{/if}}
+            {{/if}}
 
-            <div class="form-group">
-                <label>Dauer (Runden):</label>
-                <input type="number" name="system.preEffects.{{@index}}.baseDuration" value="{{baseDuration}}" data-dtype="Number" />
+            <div class="pre-effects-list" data-section="preEffects">
+                {{#each preEffects as |preEffect preEffectIndex|}}
+                {{> pre-effect-card
+                    preEffect=preEffect
+                    pathPrefix=(concat "system.preEffects." preEffectIndex)
+                    capabilities=@root.preEffectCapabilities
+                    preEffectIndex=preEffectIndex}}
+                {{/each}}
             </div>
 
-            <div class="form-group">
-                <label>
-                    <input type="checkbox" name="system.preEffects.{{@index}}.instant" {{checked instant}} />
-                    Sofort (kein Effekt, direkter Schaden)
-                </label>
-            </div>
+            <details class="add-automation-menu">
+                <summary class="add-automation-summary">+ Automatisierung hinzufügen</summary>
+                <div class="add-automation-options">
+                    {{#each @root.availablePreEffectFeatures}}
+                    <button type="button" class="add-automation-feature" data-feature="{{id}}">{{label}}</button>
+                    {{/each}}
+                </div>
+            </details>
+            <button type="button" class="add-pre-effect">+ Leerer Pre-Effekt</button>
+            {{#if @root.hasLLMPreEffectGeneration}}
+            <button type="button" class="generate-pre-effect">🤖 Generieren</button>
+            {{/if}}
+        </div>
+    </details>
 
-            <div class="changes-list">
-                <h4>Änderungen</h4>
-                {{#if changes}}
-                {{#each changes}}
-                <fieldset class="change-card">
-                    <legend>Änderung</legend>
-                    <button type="button" class="delete-change">✕</button>
-
-                    <div class="form-group">
-                        <label>Key:</label>
-                        <input type="text" name="system.preEffects.{{@../index}}.changes.{{@index}}.key" value="{{key}}" />
-                    </div>
-                    <div class="form-group">
-                        <label>Typ:</label>
-                        <select name="system.preEffects.{{@../index}}.changes.{{@index}}.type">
-                            <option value="add" {{#if (ifEq type "add")}}selected{{/if}}>add</option>
-                            <option value="custom" {{#if (ifEq type "custom")}}selected{{/if}}>custom (DOT)</option>
-                            <option value="multiply" {{#if (ifEq type "multiply")}}selected{{/if}}>multiply</option>
-                            <option value="override" {{#if (ifEq type "override")}}selected{{/if}}>override</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Wert:</label>
-                        <input type="text" name="system.preEffects.{{@../index}}.changes.{{@index}}.value" value="{{value}}" />
-                    </div>
-                    <div class="form-group">
-                        <label>
-                            <input type="checkbox" name="system.preEffects.{{@../index}}.changes.{{@index}}.amplifiedByMaechtigeMagie" {{checked amplifiedByMaechtigeMagie}} />
-                            Verstärkt durch Mächtige Magie
-                        </label>
-                    </div>
-                    <div class="form-group">
-                        <label>Mächtig Bonus:</label>
-                        <input type="text" name="system.preEffects.{{@../index}}.changes.{{@index}}.maechtigBonus" value="{{maechtigBonus}}" placeholder="z.B. +2W6" />
-                    </div>
-                    <div class="form-group">
-                        <label>Schadenstyp:</label>
-                        <select name="system.preEffects.{{@../index}}.changes.{{@index}}.damageType">
-                            {{#each @root.damageTypeOptions}}
-                            <option value="{{value}}" {{#if (ifEq value ../damageType)}}selected{{/if}}>{{label}}</option>
-                            {{/each}}
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Abgeschwächter Wert:</label>
-                        <input type="text" name="system.preEffects.{{@../index}}.changes.{{@index}}.diminishedValue" value="{{diminishedValue}}" placeholder="z.B. 1W6" />
-                    </div>
-                    <div class="form-group">
-                        <label>Abgeschwächter MM Bonus:</label>
-                        <input type="text" name="system.preEffects.{{@../index}}.changes.{{@index}}.diminishedMaechtigBonus" value="{{diminishedMaechtigBonus}}" placeholder="z.B. +5" />
-                    </div>
-                    <div class="form-group">
-                        <label>Priorität:</label>
-                        <input type="number" name="system.preEffects.{{@../index}}.changes.{{@index}}.priority" value="{{priority}}" data-dtype="Number" />
-                    </div>
+    {{#if @root.canAuthorSpellModifications}}
+    <details class="sheet-area modifications-area">
+        <summary class="sheet-area-header">Strukturierte Zaubermodifikationen</summary>
+        <div class="sheet-area-body">
+            <section class="spell-modification-editor">
+                <p class="hint">Diese Formen ersetzen nur die automatisch erzeugten Modifikationsmanöver. Der Regeltext oben bleibt erhalten.</p>
+                <button type="button" class="add-spell-modification-group">Gruppe hinzufügen</button>
+                {{#each item.system.spellModificationGroups as |group|}}
+                <fieldset class="spell-modification-group-card">
+                    <legend>Gruppe {{@index}}</legend>
+                    <div class="form-group"><label>ID</label><input type="text" name="system.spellModificationGroups.{{@index}}.id" value="{{group.id}}" /></div>
+                    <div class="form-group"><label>Bezeichnung</label><input type="text" name="system.spellModificationGroups.{{@index}}.label" value="{{group.label}}" /></div>
+                    <label><input type="checkbox" name="system.spellModificationGroups.{{@index}}.required" {{checked group.required}} /> Genau eine Auswahl erforderlich</label>
+                    <button type="button" class="delete-spell-modification-group" data-group-index="{{@index}}">Gruppe löschen</button>
                 </fieldset>
                 {{/each}}
-                {{/if}}
-                <button type="button" class="add-change">+ Änderung hinzufügen</button>
-            </div>
+                <button type="button" class="add-spell-modification">Zaubermodifikation hinzufügen</button>
+                {{#each @root.spellModificationForms as |form|}}
+                <fieldset class="spell-modification-card">
+                    <legend>Form {{@index}}: {{form.name}}</legend>
+                    <div class="form-group"><label>ID</label><input type="text" name="system.spellModifications.{{@index}}.id" value="{{form.id}}" /></div>
+                    <div class="form-group"><label>Name</label><input type="text" name="system.spellModifications.{{@index}}.name" value="{{form.name}}" /></div>
+                    <div class="form-group"><label>Beschreibung</label><textarea name="system.spellModifications.{{@index}}.description">{{form.description}}</textarea></div>
+                    <div class="form-group"><label>Gruppe</label><input type="text" name="system.spellModifications.{{@index}}.group" value="{{form.group}}" list="spell-modification-groups" /></div>
+                    <div class="form-group"><label>Effektmodus</label><select name="system.spellModifications.{{@index}}.effectMode"><option value="inherit" {{#if (ifEq form.effectMode "inherit")}}selected{{/if}}>Basis übernehmen</option><option value="extend" {{#if (ifEq form.effectMode "extend")}}selected{{/if}}>Basis erweitern</option><option value="replace" {{#if (ifEq form.effectMode "replace")}}selected{{/if}}>Basis ersetzen</option></select></div>
+                    <h4>Profil</h4>
+                    <div class="form-group"><label>Schwierigkeit</label><input type="number" name="system.spellModifications.{{@index}}.profile.difficulty" value="{{form.profile.difficulty}}" /></div>
+                    <div class="form-group"><label>Kostenmodus</label><select name="system.spellModifications.{{@index}}.profile.cost.mode"><option value="add" {{#if (ifEq form.profile.cost.mode "add")}}selected{{/if}}>Addieren</option><option value="set" {{#if (ifEq form.profile.cost.mode "set")}}selected{{/if}}>Setzen</option></select><input type="number" name="system.spellModifications.{{@index}}.profile.cost.value" value="{{form.profile.cost.value}}" /></div>
+                    <div class="form-group"><label>Permanente Kosten</label><input type="text" name="system.spellModifications.{{@index}}.profile.permanentCost" value="{{form.profile.permanentCost}}" /></div>
+                    <div class="form-group"><label>Ziel</label><input type="text" name="system.spellModifications.{{@index}}.profile.target" value="{{form.profile.target}}" /></div>
+                    <div class="form-group"><label>Reichweite</label><input type="text" name="system.spellModifications.{{@index}}.profile.range" value="{{form.profile.range}}" /></div>
+                    <div class="form-group"><label>Wirkungsdauer</label><input type="text" name="system.spellModifications.{{@index}}.profile.duration" value="{{form.profile.duration}}" /></div>
+                    <div class="form-group"><label><input type="checkbox" name="system.spellModifications.{{@index}}.profile.magicResistance.enabled" {{checked form.profile.magicResistance.enabled}} /> Ziel-Magieresistenz</label></div>
+                    <h4>Zonenform</h4>
+                    <p class="hint">Leer laesst das Basisprofil unveraendert. Eine deaktivierte Zone schaltet ein geerbtes Basisprofil aus.</p>
+                    {{#if form.zone}}
+                    {{> zone-editor pathPrefix=(concat "system.spellModifications." @index ".zone") zone=form.zone inheritMode=true}}
+                    <button type="button" class="disable-spell-modification-zone" data-form-index="{{@index}}">Zone deaktivieren</button>
+                    <button type="button" class="clear-spell-modification-zone" data-form-index="{{@index}}">Zonenueberschreibung loeschen</button>
+                    {{else}}
+                    <button type="button" class="add-spell-modification-zone" data-form-index="{{@index}}">+ Zone hinzufügen</button>
+                    {{/if}}
+                    <h4>Form-Pre-Effects</h4>
+                    <button type="button" class="add-spell-modification-pre-effect" data-form-index="{{@index}}">Pre-Effekt hinzufügen</button>
+                    {{#each form.preEffects as |preEffect|}}
+                    {{> pre-effect-card
+                        preEffect=preEffect
+                        pathPrefix=(concat "system.spellModifications." @../index ".preEffects." @index)
+                        capabilities=@root.formPreEffectCapabilities
+                        preEffectIndex=@index
+                        formIndex=@../index
+                        isFormPreEffect=true}}
+                    {{/each}}
+                    <button type="button" class="move-spell-modification" data-form-index="{{@index}}" data-direction="-1">↑</button>
+                    <button type="button" class="move-spell-modification" data-form-index="{{@index}}" data-direction="1">↓</button>
+                    <button type="button" class="delete-spell-modification" data-form-index="{{@index}}">Form löschen</button>
+                </fieldset>
+                {{/each}}
+                <datalist id="spell-modification-groups">{{#each item.system.spellModificationGroups}}<option value="{{id}}">{{label}}</option>{{/each}}</datalist>
+            </section>
+        </div>
+    </details>
+    {{else}}
+    <details class="sheet-area modifications-area">
+        <summary class="sheet-area-header">Strukturierte Zaubermodifikationen</summary>
+        <div class="sheet-area-body">
+            <p class="hint">Für Manöver nicht verfügbar.</p>
+        </div>
+    </details>
+    {{/if}}
 
-            <div class="avoid-test-section">
-                <h4>Widerstands-Probe</h4>
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" name="system.preEffects.{{@index}}.avoidTest.enabled" {{checked avoidTest.enabled}} />
-                        Aktiviert
-                    </label>
-                </div>
-                <div class="avoid-test-fields">
-                    <div class="form-group">
-                        <label>Fertigkeit:</label>
-                        <select name="system.preEffects.{{@index}}.avoidTest.fertigkeit">
-                            <option value="">— Keine —</option>
-                            {{#each @root.avoidTestSkillOptions}}
-                            <optgroup label="{{packName}}">
-                                {{#each skills}}
-                                <option value="{{name}}" {{#if (ifEq name ../../avoidTest.fertigkeit)}}selected{{/if}}>{{name}} ({{type}})</option>
-                                {{/each}}
-                            </optgroup>
-                            {{/each}}
-                            {{#if avoidTest.fertigkeit}}
-                            {{#unless (isSkillInOptions avoidTest.fertigkeit @root.avoidTestSkillOptions)}}
-                            <option value="{{avoidTest.fertigkeit}}" selected>⚠ {{avoidTest.fertigkeit}} (nicht verfügbar)</option>
-                            {{/unless}}
-                            {{/if}}
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Talent (optional):</label>
-                        <select name="system.preEffects.{{@index}}.avoidTest.talent">
-                            <option value="">— Keines —</option>
-                            {{#each @root.avoidTestTalentOptions}}
-                            <optgroup label="{{packName}}">
-                                {{#each talents}}
-                                {{#if (ifEq fertigkeit ../../avoidTest.fertigkeit)}}
-                                <option value="{{name}}" {{#if (ifEq name ../../avoidTest.talent)}}selected{{/if}}>{{name}}</option>
-                                {{/if}}
-                                {{/each}}
-                            </optgroup>
-                            {{/each}}
-                            {{#if avoidTest.talent}}
-                            {{#unless (isTalentInOptions avoidTest.talent avoidTest.fertigkeit @root.avoidTestTalentOptions)}}
-                            <option value="{{avoidTest.talent}}" selected>⚠ {{avoidTest.talent}} (nicht verfügbar)</option>
-                            {{/unless}}
-                            {{/if}}
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Attribut:</label>
-                        <select name="system.preEffects.{{@index}}.avoidTest.attribut">
-                            <option value="">— Keines —</option>
-                            {{#each @root.avoidTestAttributeOptions}}
-                            {{! one #each frame deep — a single ../ reaches the preEffect }}
-                            <option value="{{value}}" {{#if (ifEq value ../avoidTest.attribut)}}selected{{/if}}>{{label}}</option>
-                            {{/each}}
-                            {{#if avoidTest.attribut}}
-                            {{#unless (isAttrInOptions avoidTest.attribut @root.avoidTestAttributeOptions)}}
-                            <option value="{{avoidTest.attribut}}" selected>⚠ {{avoidTest.attribut}} (nicht verfügbar)</option>
-                            {{/unless}}
-                            {{/if}}
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>
-                            <input type="checkbox" name="system.preEffects.{{@index}}.avoidTest.diminishedOnly" {{checked avoidTest.diminishedOnly}} />
-                            Nur abgeschwächt (Diminished Only)
-                        </label>
-                    </div>
-                    <div class="form-group">
-                        <label>Erschwernis:</label>
-                        <input type="number" name="system.preEffects.{{@index}}.avoidTest.resistDifficulty" value="{{avoidTest.resistDifficulty}}" data-dtype="Number" placeholder="12" />
-                    </div>
-                </div>
-            </div>
-        </fieldset>
+    <details class="sheet-area advanced-area">
+        <summary class="sheet-area-header">Erweitert</summary>
+        <div class="sheet-area-body">
+            {{#if @root.canAuthorSpellModifications}}
+            <p class="hint">Interne technische Werte für Spezialfälle. Normalerweise nicht erforderlich.</p>
+            <div class="form-group"><label>PW</label><input type="number" name="system.pw" value="{{item.system.pw}}" data-dtype="Number" /></div>
+            <div class="form-group"><label>Gruppe</label><input type="number" name="system.gruppe" value="{{item.system.gruppe}}" data-dtype="Number" /></div>
+            {{else}}
+            <p class="hint">Keine weiteren technischen Werte.</p>
+            {{/if}}
+        </div>
+    </details>
+
+    <datalist id="ilaris-summon-item-sources-waffe">
+        {{#each @root.summonItemOptions.waffe}}
+            {{#each items}}
+            <option value="{{uuid}}" label="{{name}} ({{type}}, {{../packName}})"></option>
+            {{/each}}
         {{/each}}
-        <button type="button" class="add-pre-effect">+ Pre-Effect hinzufügen</button>
-        {{#if @root.hasLLMConfig}}
-        <button type="button" class="generate-pre-effect">🤖 Generieren</button>
-        {{/if}}
-    </div>
+    </datalist>
+    <datalist id="ilaris-summon-item-sources-gegenstand">
+        {{#each @root.summonItemOptions.gegenstand}}
+            {{#each items}}
+            <option value="{{uuid}}" label="{{name}} ({{type}}, {{../packName}})"></option>
+            {{/each}}
+        {{/each}}
+    </datalist>
+    <datalist id="ilaris-summon-creature-sources">
+        {{#each @root.summonCreatureOptions}}
+            {{#each actors}}
+            <option value="{{uuid}}" label="{{name}} ({{../packName}})"></option>
+            {{/each}}
+        {{/each}}
+    </datalist>
 </section>

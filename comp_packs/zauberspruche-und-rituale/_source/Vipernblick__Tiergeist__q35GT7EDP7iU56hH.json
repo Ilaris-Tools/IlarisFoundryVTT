@@ -9,6 +9,9 @@
     "text": "Du erscheinst deinem Opfer als grauenvolle Gestalt aus den Niederhöllen. Es kann nicht wegsehen und ist vor Angst handlungsunfähig. Wird der Sichtkontakt unterbrochen, endet der Zauber.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "Fremdgestalt (–4; du kannst eine andere Person wählen, die als Alpgestalt erscheint.)",
     "vorbereitung": "4 Aktionen",
     "ziel": "Einzelwesen",

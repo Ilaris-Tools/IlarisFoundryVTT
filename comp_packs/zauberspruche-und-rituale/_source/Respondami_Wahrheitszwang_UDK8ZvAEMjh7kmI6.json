@@ -8,6 +8,9 @@
     "text": "Das Ziel muss eine Ja/Nein-Frage wahrheitsgemäß beantworten. Ist die Frage nicht mit Ja oder Nein zu beantworten, erleidet es 1W6 SP.",
     "maechtig": "Erlaubt eine weitere Frage.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "",
     "vorbereitung": "1 Aktion",
     "ziel": "Einzelperson",

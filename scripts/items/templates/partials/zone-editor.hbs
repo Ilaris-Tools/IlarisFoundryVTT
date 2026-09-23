@@ -1,0 +1,82 @@
+{{! Shared Zone editor partial. Params: pathPrefix (e.g. "system.zone"), zone (data object). }}
+<div class="form-group"><label>Form</label>
+    <select name="{{pathPrefix}}.shape">
+        {{#if inheritMode}}<option value="">Basis übernehmen</option>{{else}}<option value="">Keine Zone</option>{{/if}}
+        <option value="cone" {{#if (ifEq zone.shape "cone")}}selected{{/if}}>Kegel</option>
+        <option value="circle" {{#if (ifEq zone.shape "circle")}}selected{{/if}}>Kreis</option>
+        <option value="rectangle" {{#if (ifEq zone.shape "rectangle")}}selected{{/if}}>Wand/Rechteck</option>
+    </select>
+</div>
+<div class="form-group">
+    <label>Laenge/Radius</label>
+    <input type="number" min="1" name="{{pathPrefix}}.distance" value="{{zone.distance}}" />
+    {{#if (ifEq zone.shape "cone")}}
+    <label>Kegelwinkel</label>
+    <input type="number" min="1" name="{{pathPrefix}}.angle" value="{{zone.angle}}" />
+    {{/if}}
+    {{#if (ifEq zone.shape "rectangle")}}
+    <label>Wandbreite</label>
+    <input type="number" min="1" name="{{pathPrefix}}.width" value="{{zone.width}}" />
+    {{/if}}
+</div>
+<div class="form-group">
+    <label>Verankerung</label>
+    <select name="{{pathPrefix}}.placement.anchor">
+        {{#if inheritMode}}<option value="">Basis übernehmen</option>{{/if}}
+        <option value="caster" {{#if (ifEq zone.placement.anchor "caster")}}selected{{/if}}>Beim Zaubernden</option>
+        <option value="free" {{#if (ifEq zone.placement.anchor "free")}}selected{{/if}}>Frei platzierbar</option>
+    </select>
+    <label>Reichweite</label>
+    <input type="number" min="0" name="{{pathPrefix}}.placement.range" value="{{zone.placement.range}}" />
+</div>
+<div class="form-group">
+    <label>Lebenszyklus</label>
+    <select name="{{pathPrefix}}.lifecycle">
+        {{#if inheritMode}}<option value="">Basis übernehmen</option>{{/if}}
+        <option value="instant" {{#if (ifEq zone.lifecycle "instant")}}selected{{/if}}>Sofortig</option>
+        <option value="persistent" {{#if (ifEq zone.lifecycle "persistent")}}selected{{/if}}>Bleibend</option>
+    </select>
+</div>
+<div class="form-group">
+    <label>Dauerquelle</label>
+    <select name="{{pathPrefix}}.duration.source">
+        {{#if inheritMode}}<option value="">Basis übernehmen</option>{{/if}}
+        <option value="fixed" {{#if (ifEq zone.duration.source "fixed")}}selected{{/if}}>Feste Szenenrunden</option>
+        <option value="casterAttribute" {{#if (ifEq zone.duration.source "casterAttribute")}}selected{{/if}}>Hauptattribut der zaubernden Person</option>
+    </select>
+    <label>Szenenrunden</label>
+    <input type="number" min="1" name="{{pathPrefix}}.duration.remaining" value="{{zone.duration.remaining}}" />
+    <label>Hauptattribut</label>
+    <select name="{{pathPrefix}}.duration.attribute">
+        <option value="">-- wählen --</option>
+        <option value="MU" {{#if (ifEq zone.duration.attribute "MU")}}selected{{/if}}>MU</option>
+        <option value="KL" {{#if (ifEq zone.duration.attribute "KL")}}selected{{/if}}>KL</option>
+        <option value="IN" {{#if (ifEq zone.duration.attribute "IN")}}selected{{/if}}>IN</option>
+        <option value="CH" {{#if (ifEq zone.duration.attribute "CH")}}selected{{/if}}>CH</option>
+        <option value="FF" {{#if (ifEq zone.duration.attribute "FF")}}selected{{/if}}>FF</option>
+        <option value="GE" {{#if (ifEq zone.duration.attribute "GE")}}selected{{/if}}>GE</option>
+        <option value="KO" {{#if (ifEq zone.duration.attribute "KO")}}selected{{/if}}>KO</option>
+        <option value="KK" {{#if (ifEq zone.duration.attribute "KK")}}selected{{/if}}>KK</option>
+    </select>
+</div>
+<label><input type="checkbox" name="{{pathPrefix}}.trigger.triggerOnCreate" {{checked zone.trigger.triggerOnCreate}} /> Beim Erzeugen ausloesen</label>
+<label><input type="checkbox" name="{{pathPrefix}}.trigger.onEnter" {{checked zone.trigger.onEnter}} /> Beim Betreten ausloesen</label>
+<label><input type="checkbox" name="{{pathPrefix}}.trigger.onRoundStart" {{checked zone.trigger.onRoundStart}} /> Zu Rundenbeginn ausloesen</label>
+<div class="form-group zone-movement-resistance">
+    <label><input type="checkbox" name="{{pathPrefix}}.movementResistance.enabled" {{checked zone.movementResistance.enabled}} /> Bewegungswiderstand <span class="ilaris-info" data-tooltip="<div style='max-width: 380px; text-align: left;'><strong>Bewegungswiderstand</strong><p>Das Betreten der Zone erfordert eine Probe; bei Misserfolg wird die Bewegung gestoppt.</p><p>Beispiel: Attribut KK, Schwierigkeit 14.</p></div>">ⓘ</span></label>
+    <label>Attribut</label>
+    <select name="{{pathPrefix}}.movementResistance.attribut">
+        {{#if inheritMode}}<option value="">Basis übernehmen</option>{{/if}}
+        <option value="">-- wählen --</option>
+        <option value="MU" {{#if (ifEq zone.movementResistance.attribut "MU")}}selected{{/if}}>MU</option>
+        <option value="KL" {{#if (ifEq zone.movementResistance.attribut "KL")}}selected{{/if}}>KL</option>
+        <option value="IN" {{#if (ifEq zone.movementResistance.attribut "IN")}}selected{{/if}}>IN</option>
+        <option value="CH" {{#if (ifEq zone.movementResistance.attribut "CH")}}selected{{/if}}>CH</option>
+        <option value="FF" {{#if (ifEq zone.movementResistance.attribut "FF")}}selected{{/if}}>FF</option>
+        <option value="GE" {{#if (ifEq zone.movementResistance.attribut "GE")}}selected{{/if}}>GE</option>
+        <option value="KO" {{#if (ifEq zone.movementResistance.attribut "KO")}}selected{{/if}}>KO</option>
+        <option value="KK" {{#if (ifEq zone.movementResistance.attribut "KK")}}selected{{/if}}>KK</option>
+    </select>
+    <label>Schwierigkeit</label>
+    <input type="number" name="{{pathPrefix}}.movementResistance.resistDifficulty" value="{{zone.movementResistance.resistDifficulty}}" />
+</div>

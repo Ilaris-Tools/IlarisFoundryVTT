@@ -8,7 +8,9 @@
  *   1. Updates the target actor's wounds
  *   2. Creates a chat message describing the damage
  *
- * Uses Ignifaxius (or first discovered spell with instant pre-effects).
+ * Uses Fulminictus Donnerkeil, imported from the compendium source (a
+ * non-ballistic instant-damage spell) so the instant Pre-Effects apply
+ * directly after a successful targeted cast.
  * The test actor is both caster and target.
  */
 
@@ -17,10 +19,10 @@ import {
     ActorDefaultSnapshot,
     captureActorDefaultSnapshot,
     clearChatLog,
-    foundryConfig,
+    closeOpenApplications,
+    createE2ESession,
     enableTargetSelectionForTest,
     getActorWounds,
-    loginAndJoinWorld,
     openActorSheet,
     openSpellDialog,
     restoreActorFromDefaultSnapshot,
@@ -28,14 +30,25 @@ import {
 } from '../../shared/fixtures/foundry'
 
 const ACTOR_NAME = 'HatAlles'
-const SPELL_NAME = 'Ignifaxius'
+const SPELL_NAME = 'Fulminictus Donnerkeil'
+const SPELL_PACK = 'Ilaris.zauberspruche-und-rituale'
 
 test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
     let snapshot: ActorDefaultSnapshot
     let targetSelectionSetting: import('../../shared/fixtures/foundry').FoundrySettingSnapshot
+    let session: Awaited<ReturnType<typeof createE2ESession>> | undefined
 
-    test.beforeEach(async ({ page }) => {
-        await loginAndJoinWorld(page, foundryConfig)
+    test.beforeAll(async ({ browser }) => {
+        session = await createE2ESession(browser)
+    })
+
+    test.afterAll(() => {
+        session?.close()
+    })
+
+    test.beforeEach(async () => {
+        const page = session!.page
+        await closeOpenApplications(page).catch(() => {})
         targetSelectionSetting = await enableTargetSelectionForTest(page)
         snapshot = await captureActorDefaultSnapshot(page, ACTOR_NAME)
 
@@ -48,10 +61,30 @@ test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
             })
         }, ACTOR_NAME)
 
+        // Import the naturally non-ballistic instant-damage spell from the
+        // packed compendium source. It is not part of the baseline actor, so
+        // the actor snapshot restore removes it again in afterEach.
+        await page.evaluate(
+            async ({ name, packId, spellName }) => {
+                const actor = game.actors.getName(name)
+                if (actor?.items.some((item) => item.name === spellName)) return
+                const pack = game.packs?.get(packId)
+                const source = (await pack?.getDocuments?.())?.find(
+                    (item) => item.name === spellName,
+                )
+                if (!source) throw new Error('Fulminictus fehlt im Kompendium.')
+                const itemData = foundry.utils.deepClone(source.toObject())
+                delete itemData._id
+                await actor.createEmbeddedDocuments('Item', [itemData])
+            },
+            { name: ACTOR_NAME, packId: SPELL_PACK, spellName: SPELL_NAME },
+        )
+
         await clearChatLog(page)
     })
 
-    test.afterEach(async ({ page }) => {
+    test.afterEach(async () => {
+        const page = session!.page
         await page
             .evaluate(() => {
                 delete CONFIG.Dice.randomUniform
@@ -62,7 +95,8 @@ test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
         await clearChatLog(page).catch(() => {})
     })
 
-    test('Cast instant-damage spell updates target wounds', async ({ page }) => {
+    test('Cast instant-damage spell updates target wounds', async () => {
+        const page = session!.page
         const actorWindow = await openActorSheet(page, ACTOR_NAME)
         await openSpellDialog(actorWindow, SPELL_NAME)
 
@@ -180,7 +214,8 @@ test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
         expect(spellMsgs.length).toBeGreaterThan(0)
     })
 
-    test('damage at or below WS creates chat feedback without adding wounds', async ({ page }) => {
+    test('damage at or below WS creates chat feedback without adding wounds', async () => {
+        const page = session!.page
         await page.evaluate(
             ({ name, spellName }) => {
                 const spell = game.actors
@@ -260,7 +295,8 @@ test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
         expect((await getActorWounds(page, ACTOR_NAME)).wunden).toBe(wundenBefore.wunden)
     })
 
-    test('Pandämonium-like damage-only approximation applies exactly once', async ({ page }) => {
+    test('Pandämonium-like damage-only approximation applies exactly once', async () => {
+        const page = session!.page
         await page.evaluate(
             ({ name, spellName }) => {
                 const spell = game.actors
@@ -330,15 +366,20 @@ test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
             { name: ACTOR_NAME, before: wundenBefore.wunden },
             { timeout: 20000 },
         )
-        await page.waitForTimeout(250)
-
-        const damageMessages = await page.evaluate(
-            (baseline) =>
-                game.messages.contents
-                    .slice(baseline)
-                    .filter((message: any) => /Schaden:\s*\d+/.test(message.content ?? '')).length,
-            messageBaseline,
-        )
-        expect(damageMessages).toBe(1)
+        await expect
+            .poll(
+                () =>
+                    page.evaluate(
+                        (baseline) =>
+                            game.messages.contents
+                                .slice(baseline)
+                                .filter((message: any) =>
+                                    /Schaden:\s*\d+/.test(message.content ?? ''),
+                                ).length,
+                        messageBaseline,
+                    ),
+                { timeout: 10000 },
+            )
+            .toBe(1)
     })
 })
