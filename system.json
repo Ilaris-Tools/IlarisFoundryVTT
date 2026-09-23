@@ -42,6 +42,7 @@
     "scripts/actors/styles/actors.css",
     "scripts/actors/styles/sidebar.css",
     "scripts/items/styles/items.css",
+    "scripts/items/styles/item-picker.css",
     "scripts/items/styles/manoever.css",
     "scripts/items/styles/pre-effects.css",
     "scripts/waffe/styles/waffe.css",

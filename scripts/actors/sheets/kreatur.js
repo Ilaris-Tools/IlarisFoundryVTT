@@ -1,4 +1,5 @@
 import { IlarisActorSheet } from './actor.js'
+import { IlarisItemPicker } from '../../items/dialogs/item-picker.js'
 
 export class KreaturSheet extends IlarisActorSheet {
     /** @override */
@@ -41,22 +42,11 @@ export class KreaturSheet extends IlarisActorSheet {
      * @param {HTMLElement} target - The target element
      */
     static addVorteilInfo(event, target) {
-        try {
-            const pack = game.packs.get('Ilaris.vorteile')
-            if (pack) {
-                pack.render(true)
-            }
-            Dialog.prompt({
-                content:
-                    'Du kannst Vorteile direkt aus den Kompendium Packs auf den Statblock ziehen. Für eigene Vor/Nachteile zu erstellen, die nicht im Regelwerk enthalten sind, benutze die Eigenschaften.',
-                callback: () => {},
-            })
-        } catch (err) {
-            console.error('ILARIS | Error showing vorteil info:', err)
-            ui.notifications.error('Fehler beim Öffnen der Vorteile-Kompendium.')
-        }
+        if (!this.isEditable || !this.actor.isOwner) return
+        return new IlarisItemPicker({ actor: this.actor, itemclass: 'vorteil' }).render({
+            force: true,
+        })
     }
-
     /**
      * Handle dropped item creation with type conversion for creatures
      * @param {Item} item - The dropped item
