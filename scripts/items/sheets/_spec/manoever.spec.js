@@ -23,6 +23,7 @@ describe('ManoeverSheet pre-effect authoring', () => {
             form: { template: 'systems/Ilaris/scripts/items/templates/manoever.hbs' },
             preEffects: PreEffectItemSheet.PARTS.preEffects,
         })
+        expect(Object.keys(ManoeverSheet.PARTS)).toEqual(['form', 'preEffects'])
     })
 
     it('does not expose LLM generation even for a configured GM', async () => {
@@ -59,13 +60,20 @@ describe('ManoeverSheet pre-effect authoring', () => {
             join(process.cwd(), 'scripts', 'items', 'templates', 'pre-effects.hbs'),
             'utf8',
         )
+        const cardTemplate = readFileSync(
+            join(process.cwd(), 'scripts', 'items', 'templates', 'partials', 'pre-effect-card.hbs'),
+            'utf8',
+        )
 
         expect(maneuverTemplate).toContain('system.input.choices.')
-        expect(preEffectsTemplate).toContain('onConfirmedHit')
-        expect(preEffectsTemplate).toContain('onSuccessfulDefense')
-        expect(preEffectsTemplate).toContain('deselectEquippedWeapon')
-        expect(preEffectsTemplate).toContain('Schwierigkeit aus:')
-        expect(preEffectsTemplate).toContain('Ergebnis der auslösenden Probe')
+        expect(cardTemplate).toContain('onConfirmedHit')
+        expect(cardTemplate).toContain('onSuccessfulDefense')
+        expect(cardTemplate).toContain('deselectEquippedWeapon')
+        expect(cardTemplate).toContain('Schwierigkeit aus:')
+        expect(cardTemplate).toContain('Ergebnis der auslösenden Probe')
+        expect(preEffectsTemplate).toContain('Strukturierte Zaubermodifikationen')
+        expect(preEffectsTemplate).toContain('Für Manöver nicht verfügbar.')
+        expect(preEffectsTemplate).toContain('Keine weiteren technischen Werte.')
         expect(preEffectsTemplate).toContain('@root.hasLLMPreEffectGeneration')
     })
 

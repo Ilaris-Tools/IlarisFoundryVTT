@@ -1,24 +1,27 @@
 /**
  * E2E-027 – Pre-Effect: Sheet Configuration
  *
- * @spec openspec/changes/add-pre-effect-e2e-tests/specs/pre-effect-e2e-tests/spec.md
+ * @spec openspec/changes/refine-edit-sheet-information-architecture/specs/edit-sheet-information-architecture/spec.md
+ * @scenario Inactive automation features are not rendered
+ * @scenario Automation features are added consciously
  * @scenario Add and delete pre-effect entry
  * @scenario AvoidTest skill select populated from compendium
  * @scenario Damage type select populated from settings
  *
- * Verifies that the GM can configure pre-effects on an uebernatuerlich item sheet:
- *   1. Navigate to the pre-effects tab
- *   2. Verify pre-effect cards exist
- *   3. Configure avoidTest (skill dropdown populated from compendium)
- *   4. Select damage types (populated from settings)
+ * Verifies the information architecture of pre-effect authoring on an
+ * uebernatuerlich item sheet:
+ *   1. Inactive features (Widerstandsprobe) are NOT rendered until added
+ *   2. The add-menu configures them; the block appears and persists
+ *   3. Existing automation stays visible (regression)
  */
 
 import { expect, test } from '@playwright/test'
 import {
     ActorDefaultSnapshot,
     captureActorDefaultSnapshot,
-    closeOpenApplications,
     createE2ESession,
+    foundryConfig,
+    loginAndJoinWorld,
     openPreEffectsTab,
     restoreActorFromDefaultSnapshot,
 } from '../../shared/fixtures/foundry'
@@ -35,13 +38,13 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         session = await createE2ESession(browser)
     })
 
-    test.afterAll(() => {
+    test.afterAll(async () => {
         session?.close()
     })
 
     test.beforeEach(async () => {
         const page = session!.page
-        await closeOpenApplications(page).catch(() => {})
+        await loginAndJoinWorld(page, foundryConfig)
         snapshot = await captureActorDefaultSnapshot(page, ACTOR_NAME)
 
         importedItemId = await page.evaluate(
@@ -102,28 +105,49 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         return itemWindow
     }
 
-    test('Pre-effects tab is accessible and has expected structure', async () => {
+    async function addAutomationFeature(
+        itemWindow: import('@playwright/test').Locator,
+        feature: string,
+    ) {
+        await itemWindow.locator('.add-automation-summary').click()
+        await itemWindow.locator(`.add-automation-feature[data-feature="${feature}"]`).click()
+        await itemWindow.locator('.pre-effects-list .pre-effect-card').last().waitFor()
+    }
+
+    test('Pre-effects tab is accessible, active automation is visible, inactive is hidden', async () => {
         const page = session!.page
         const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)
 
-        // Pre-effects is a stacked PART (`.pre-effects-section`), not a tab panel.
         const preEffectsSection = itemWindow.locator('.pre-effects-section')
         await expect(preEffectsSection).toBeVisible({ timeout: 10000 })
 
-        const preEffectCards = preEffectsSection.locator('.pre-effect-card')
+        const preEffectCards = preEffectsSection.locator('.pre-effects-list .pre-effect-card')
         const cardCount = await preEffectCards.count()
         expect(cardCount).toBeGreaterThan(0)
+
+        // Ignifaxius carries a damage effect → Wirkungen block is rendered.
+        await expect(preEffectCards.first().locator('.change-card')).toBeVisible()
+
+        // Ignifaxius has no Widerstandsprobe → section must NOT be rendered.
+        await expect(preEffectCards.first().locator('.avoid-test-section')).toHaveCount(0)
+
+        await preEffectsSection.locator('.add-automation-summary').click()
+        await expect(
+            preEffectsSection.locator('.add-automation-feature[data-feature="activationTrigger"]'),
+        ).toHaveCount(0)
 
         const addButton = preEffectsSection.locator('.add-pre-effect')
         await expect(addButton).toBeVisible()
     })
 
-    test('outcome panels follow Widerstand and reveal only when enabled', async () => {
+    test('add-flow reveals Widerstandsprobe and outcome panels only when configured', async () => {
         const page = session!.page
         const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)
-        const card = itemWindow.locator('.pre-effect-card').first()
+        await addAutomationFeature(itemWindow, 'resistance')
+
+        const card = itemWindow.locator('.pre-effects-list .pre-effect-card').last()
         const resistance = card.locator('.avoid-test-section')
         const outcomes = card.locator('.resistance-outcomes-section')
         await expect(resistance).toBeVisible()
@@ -151,11 +175,19 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         await expect(success).toContainText('Bei gelungener Widerstandsprobe')
         await expect(failure.locator('input[name$=".marker.id"]')).toBeHidden()
         await expect(
-            failure.locator('input[name="system.preEffects.0.resistanceOutcomes.failure.enabled"]'),
+            failure.locator('input[name$=".resistanceOutcomes.failure.enabled"]'),
         ).toBeVisible()
 
-        await failure.locator('input[name$=".resistanceOutcomes.failure.enabled"]').check()
-        await expect(failure.locator('input[name$=".marker.id"]')).toBeVisible()
+        await failure.getByText('Eigene Wirkung verwenden', { exact: true }).click()
+        const accordion = card.locator('.pre-effect-accordion')
+        if ((await accordion.getAttribute('open')) === null) {
+            await accordion.locator('> summary').click()
+        }
+        await expect(
+            card
+                .locator('.outcome-payload[data-outcome="failure"]')
+                .locator('input[name$=".marker.id"]'),
+        ).toBeVisible()
         await itemWindow.screenshot({ path: 'test-results/resistance-outcomes-editor.png' })
     })
 
@@ -163,6 +195,8 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         const page = session!.page
         const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)
+        await addAutomationFeature(itemWindow, 'resistance')
+
         const savedUiConfig = await page.evaluate(() =>
             foundry.utils.deepClone(game.settings.get('core', 'uiConfig')),
         )
@@ -182,7 +216,8 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
                     { config: savedUiConfig, colorScheme: theme },
                 )
                 await expect(page.locator(`body.theme-${theme}`)).toBeVisible()
-                const outcomes = itemWindow.locator('.resistance-outcomes-section')
+                const card = itemWindow.locator('.pre-effects-list .pre-effect-card').last()
+                const outcomes = card.locator('.resistance-outcomes-section')
                 await expect(outcomes).toBeVisible()
                 await outcomes.scrollIntoViewIfNeeded()
                 await itemWindow.screenshot({
@@ -201,8 +236,13 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         const page = session!.page
         const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)
+        await addAutomationFeature(itemWindow, 'resistance')
 
-        const skillSelect = itemWindow.locator('select[name$="avoidTest.fertigkeit"]').first()
+        const skillSelect = itemWindow
+            .locator('.pre-effects-list .pre-effect-card')
+            .last()
+            .locator('select[name$="avoidTest.fertigkeit"]')
+            .first()
         await expect(skillSelect).toBeVisible({ timeout: 10000 })
 
         const options = await skillSelect.locator('option').all()
@@ -221,10 +261,13 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         const page = session!.page
         const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)
+        await addAutomationFeature(itemWindow, 'resistance')
 
-        const skillSelect = itemWindow.locator('select[name$="avoidTest.fertigkeit"]').first()
-        const talentSelect = itemWindow.locator('select[name$="avoidTest.talent"]').first()
-        await expect(talentSelect).toBeVisible({ timeout: 10000 })
+        const card = itemWindow.locator('.pre-effects-list .pre-effect-card').last()
+        const skillSelect = card.locator('select[name$="avoidTest.fertigkeit"]').first()
+        await expect(card.locator('select[name$="avoidTest.talent"]').first()).toBeVisible({
+            timeout: 10000,
+        })
 
         const skill = await skillSelect
             .locator('option')
@@ -232,7 +275,6 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         if (!skill) test.skip(true, 'No profane skill option available')
 
         await skillSelect.selectOption(skill)
-        await skillSelect.dispatchEvent('change')
         await page.waitForFunction(
             ({ itemId, skill }) => {
                 const item = game.items.get(itemId) as any
@@ -246,13 +288,18 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
             },
             { itemId: importedItemId, skill },
         )
+        const talentSelect = itemWindow
+            .locator('.pre-effects-list .pre-effect-card')
+            .last()
+            .locator('select[name$="avoidTest.talent"]')
+            .first()
+        await expect(talentSelect).toBeVisible({ timeout: 10000 })
         const talent = await talentSelect
             .locator('option')
             .evaluateAll((options) => options.map((option: any) => option.value).find(Boolean))
         if (!talent) test.skip(true, 'No compatible profane talent option available')
 
         await talentSelect.selectOption(talent)
-        await talentSelect.dispatchEvent('change')
         await page.waitForFunction(
             ({ itemId, talent }) => {
                 const item = game.items.get(itemId) as any
@@ -271,7 +318,11 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         const reopenedWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(reopenedWindow)
         await expect(
-            reopenedWindow.locator('select[name$="avoidTest.talent"]').first(),
+            reopenedWindow
+                .locator('.pre-effects-list .pre-effect-card')
+                .last()
+                .locator('select[name$="avoidTest.talent"]')
+                .first(),
         ).toHaveValue(talent)
     })
 
@@ -280,7 +331,11 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)
 
-        const damageTypeSelect = itemWindow.locator('select[name$="damageType"]').first()
+        const damageTypeSelect = itemWindow
+            .locator('.pre-effects-list .pre-effect-card')
+            .first()
+            .locator('select[name$="damageType"]')
+            .first()
         await expect(damageTypeSelect).toBeVisible({ timeout: 10000 })
         const options = await damageTypeSelect.locator('option').all()
         expect(options.length).toBeGreaterThan(0)
@@ -290,9 +345,12 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         const page = session!.page
         const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)
+        await addAutomationFeature(itemWindow, 'summonItem')
 
-        const sourceKind = itemWindow.locator('select[name$="summonItem.sourceKind"]').first()
-        const sourceInput = itemWindow.locator('input[name$="summonItem.sourceUuid"]').first()
+        const card = itemWindow.locator('.pre-effects-list .pre-effect-card').last()
+        await card.locator('.pre-effect-accordion > summary').click()
+        const sourceKind = card.locator('select[name$="summonItem.sourceKind"]').first()
+        const sourceInput = card.locator('input[name$="summonItem.sourceUuid"]').first()
         await expect(sourceKind).toHaveValue('waffe')
         await expect(sourceInput).toBeVisible({ timeout: 10000 })
         await expect(sourceInput).toHaveAttribute('list', 'ilaris-summon-item-sources-waffe')
@@ -307,13 +365,12 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         expect(phexUuid).toBe('Compendium.Ilaris.waffen.Item.C9Qy0anjBUWn9TUw')
 
         await sourceKind.selectOption('gegenstand')
-        await sourceKind.dispatchEvent('change')
         await page.waitForFunction(
             ({ id }) => {
-                const preEffect = Object.values(
+                const preEffects = Object.values(
                     game.items.get(id)?.system?.preEffects ?? {},
-                )[0] as any
-                return preEffect?.summonItem?.sourceKind === 'gegenstand'
+                ) as any[]
+                return preEffects.some((p) => p?.summonItem?.sourceKind === 'gegenstand')
             },
             { id: importedItemId },
             { timeout: 10000 },
@@ -322,7 +379,9 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         await page.evaluate((id) => game.items.get(id)?.sheet?.close(), importedItemId)
         const reopenedWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(reopenedWindow)
-        const reopenedInput = reopenedWindow.locator('input[name$="summonItem.sourceUuid"]').first()
+        const reopenedCard = reopenedWindow.locator('.pre-effects-list .pre-effect-card').last()
+        await reopenedCard.locator('.pre-effect-accordion > summary').click()
+        const reopenedInput = reopenedCard.locator('input[name$="summonItem.sourceUuid"]').first()
         await expect(reopenedInput).toHaveAttribute('list', 'ilaris-summon-item-sources-gegenstand')
         const ringUuid = await reopenedWindow
             .locator('#ilaris-summon-item-sources-gegenstand option')
@@ -338,12 +397,13 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         await reopenedInput.dispatchEvent('change')
         await page.waitForFunction(
             ({ id, sourceUuid }) => {
-                const preEffect = Object.values(
+                const preEffects = Object.values(
                     game.items.get(id)?.system?.preEffects ?? {},
-                )[0] as any
-                return (
-                    preEffect?.summonItem?.sourceKind === 'gegenstand' &&
-                    preEffect?.summonItem?.sourceUuid === sourceUuid
+                ) as any[]
+                return preEffects.some(
+                    (p) =>
+                        p?.summonItem?.sourceKind === 'gegenstand' &&
+                        p?.summonItem?.sourceUuid === sourceUuid,
                 )
             },
             { id: importedItemId, sourceUuid: ringUuid },
@@ -354,34 +414,47 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         const finalWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(finalWindow)
         await expect(
-            finalWindow.locator('select[name$="summonItem.sourceKind"]').first(),
+            finalWindow
+                .locator('.pre-effects-list .pre-effect-card')
+                .last()
+                .locator('select[name$="summonItem.sourceKind"]')
+                .first(),
         ).toHaveValue('gegenstand')
         await expect(
-            finalWindow.locator('input[name$="summonItem.sourceUuid"]').first(),
+            finalWindow
+                .locator('.pre-effects-list .pre-effect-card')
+                .last()
+                .locator('input[name$="summonItem.sourceUuid"]')
+                .first(),
         ).toHaveValue(ringUuid)
-        await finalWindow.locator('.summon-item-section').first().screenshot({
+        const finalCard = finalWindow.locator('.pre-effects-list .pre-effect-card').last()
+        await finalCard.locator('.pre-effect-accordion > summary').click()
+        await finalCard.locator('.summon-item-section').screenshot({
             path: 'test-results/summon-item-source-kind-persisted.png',
         })
     })
 
-    test('adds, persists, and deletes a pre-effect entry', async () => {
+    test('adds, persists, and deletes a pre-effect entry via add-flow', async () => {
         const page = session!.page
         const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)
-        const cards = itemWindow.locator('.pre-effect-card')
+        const cards = itemWindow.locator('.pre-effects-list .pre-effect-card')
         const initialCount = await cards.count()
 
-        await itemWindow.locator('.add-pre-effect').click()
+        await addAutomationFeature(itemWindow, 'damage')
         await expect(cards).toHaveCount(initialCount + 1)
         const addedCard = cards.last()
         await addedCard.locator('.add-change').click()
-        await expect(addedCard.locator('.change-card')).toHaveCount(1)
-        const duration = addedCard.locator('input[name$="baseDuration"]')
+        await expect(addedCard.locator('.change-card')).toHaveCount(2)
+        const damageType = addedCard.locator('select[name$="damageType"]').first()
+        await damageType.selectOption('FEUER')
+        const updatedCard = itemWindow.locator('.pre-effects-list .pre-effect-card').last()
+        if ((await updatedCard.locator('.pre-effect-accordion').getAttribute('open')) === null) {
+            await updatedCard.locator('.pre-effect-accordion > summary').click()
+        }
+        const duration = updatedCard.locator('input[name$="baseDuration"]')
         await duration.fill('9')
         await duration.dispatchEvent('change')
-        const damageType = addedCard.locator('select[name$="damageType"]')
-        await damageType.selectOption('FEUER')
-        await damageType.dispatchEvent('change')
 
         await page.waitForFunction(
             ({ id, count }) => {
@@ -395,19 +468,26 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         await expect(itemWindow).toBeHidden({ timeout: 10000 })
         const reopenedWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(reopenedWindow)
-        const reopenedCard = reopenedWindow.locator('.pre-effect-card').last()
+        const reopenedCard = reopenedWindow.locator('.pre-effects-list .pre-effect-card').last()
         await expect(reopenedCard.locator('input[name$="baseDuration"]')).toHaveValue('9')
-        await expect(reopenedCard.locator('select[name$="damageType"]')).toHaveValue('FEUER')
+        if ((await reopenedCard.locator('.pre-effect-accordion').getAttribute('open')) === null) {
+            await reopenedCard.locator('.pre-effect-accordion > summary').click()
+        }
+        await expect(reopenedCard.locator('select[name$="damageType"]').first()).toHaveValue(
+            'FEUER',
+        )
 
         await reopenedCard.locator('.delete-pre-effect').click()
-        await expect(reopenedWindow.locator('.pre-effect-card')).toHaveCount(initialCount)
+        await expect(reopenedWindow.locator('.pre-effects-list .pre-effect-card')).toHaveCount(
+            initialCount,
+        )
     })
 
     test('adds, persists, reopens, and edits an Ilaris modifier with selectors', async () => {
         const page = session!.page
         const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)
-        const card = itemWindow.locator('.pre-effect-card').first()
+        const card = itemWindow.locator('.pre-effects-list .pre-effect-card').first()
         const modifiers = card.locator('.ilaris-modifier-card')
         const initialCount = await modifiers.count()
 
@@ -435,7 +515,7 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         const reopenedWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(reopenedWindow)
         const reopenedModifier = reopenedWindow
-            .locator('.pre-effect-card')
+            .locator('.pre-effects-list .pre-effect-card')
             .first()
             .locator('.ilaris-modifier-card')
             .last()

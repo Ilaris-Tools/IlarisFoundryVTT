@@ -26,15 +26,19 @@ describe('UebernatuerlichTalentSheet shared Pre-Effect composition', () => {
         expect(Object.keys(UebernatuerlichTalentSheet.PARTS)).toEqual(['form', 'preEffects'])
     })
 
-    it('keeps the round-start Zone opt-in directly after the entry trigger in the concrete editor', () => {
+    it('keeps the round-start Zone opt-in in the automation area with shared zone editor', () => {
         const template = readFileSync(
-            join(process.cwd(), 'scripts', 'items', 'templates', 'uebernatuerlich_talent.hbs'),
+            join(process.cwd(), 'scripts', 'items', 'templates', 'pre-effects.hbs'),
             'utf8',
         )
-        const createIndex = template.indexOf('system.zone.trigger.triggerOnCreate')
-        const enterIndex = template.indexOf('system.zone.trigger.onEnter')
-        const roundIndex = template.indexOf('system.zone.trigger.onRoundStart')
-        const resistanceIndex = template.indexOf('system.zone.movementResistance.enabled')
+        const zoneTemplate = readFileSync(
+            join(process.cwd(), 'scripts', 'items', 'templates', 'partials', 'zone-editor.hbs'),
+            'utf8',
+        )
+        const createIndex = zoneTemplate.indexOf('{{pathPrefix}}.trigger.triggerOnCreate')
+        const enterIndex = zoneTemplate.indexOf('{{pathPrefix}}.trigger.onEnter')
+        const roundIndex = zoneTemplate.indexOf('{{pathPrefix}}.trigger.onRoundStart')
+        const resistanceIndex = zoneTemplate.indexOf('{{pathPrefix}}.movementResistance.enabled')
         const removalIndex = template.indexOf('clear-zone-profile')
         const modificationIndex = template.indexOf('spell-modification-editor')
 
@@ -42,15 +46,11 @@ describe('UebernatuerlichTalentSheet shared Pre-Effect composition', () => {
         expect(enterIndex).toBeGreaterThan(createIndex)
         expect(roundIndex).toBeGreaterThan(enterIndex)
         expect(resistanceIndex).toBeGreaterThan(roundIndex)
-        expect(removalIndex).toBeGreaterThan(resistanceIndex)
+        expect(removalIndex).toBeGreaterThan(-1)
         expect(modificationIndex).toBeGreaterThan(removalIndex)
-        expect(template).toContain('Zu Rundenbeginn ausloesen')
-        expect(
-            template.indexOf(
-                'system.spellModifications.{{@index}}.zone.movementResistance.enabled',
-            ),
-        ).toBeGreaterThan(
-            template.indexOf('system.spellModifications.{{@index}}.zone.trigger.onRoundStart'),
+        expect(zoneTemplate).toContain('Zu Rundenbeginn ausloesen')
+        expect(zoneTemplate.indexOf('{{pathPrefix}}.movementResistance.enabled')).toBeGreaterThan(
+            zoneTemplate.indexOf('{{pathPrefix}}.trigger.onRoundStart'),
         )
     })
 
@@ -210,12 +210,16 @@ describe('UebernatuerlichTalentSheet summon-item options', () => {
             join(process.cwd(), 'scripts', 'items', 'templates', 'pre-effects.hbs'),
             'utf8',
         )
+        const cardTemplate = readFileSync(
+            join(process.cwd(), 'scripts', 'items', 'templates', 'partials', 'pre-effect-card.hbs'),
+            'utf8',
+        )
 
-        expect(template).toContain('summonItem.sourceKind')
+        expect(cardTemplate).toContain('summonItem.sourceKind')
         expect(template).toContain('ilaris-summon-item-sources-waffe')
         expect(template).toContain('ilaris-summon-item-sources-gegenstand')
         expect(template).toContain('ilaris-summon-creature-sources')
-        expect(template).toContain('add-summon-creature-override')
+        expect(cardTemplate).toContain('add-summon-creature-override')
         expect(template).toContain('@root.hasLLMPreEffectGeneration')
     })
 })
@@ -276,6 +280,21 @@ describe('UebernatuerlichTalentSheet Ilaris modifier removal', () => {
 })
 
 describe('UebernatuerlichTalentSheet structured spell forms', () => {
+    it('builds form pre-effect view models with form-scoped path prefixes', () => {
+        global.CONFIG = { ILARIS: { attribute: [] }, statusEffects: {} }
+        const sheet = new UebernatuerlichTalentSheet()
+        sheet.item = {
+            system: { spellModifications: [{ preEffects: [{ baseDuration: 1 }] }] },
+        }
+
+        const forms = sheet._getSpellModificationForms()
+
+        expect(forms[0].preEffects[0].pathPrefix).toBe('system.spellModifications.0.preEffects.0')
+        expect(forms[0].preEffects[0].resistanceOutcomes).toMatchObject({
+            failure: expect.any(Object),
+            success: expect.any(Object),
+        })
+    })
     it('persists group/form array edits and exposes the nested Pre-Effect authoring controls', async () => {
         const sheet = new UebernatuerlichTalentSheet()
         const clickHandlers = []
@@ -335,42 +354,56 @@ describe('UebernatuerlichTalentSheet structured spell forms', () => {
         })
 
         const template = readFileSync(
-            join(process.cwd(), 'scripts', 'items', 'templates', 'uebernatuerlich_talent.hbs'),
+            join(process.cwd(), 'scripts', 'items', 'templates', 'pre-effects.hbs'),
+            'utf8',
+        )
+        const cardTemplate = readFileSync(
+            join(process.cwd(), 'scripts', 'items', 'templates', 'partials', 'pre-effect-card.hbs'),
+            'utf8',
+        )
+        const zoneTemplate = readFileSync(
+            join(process.cwd(), 'scripts', 'items', 'templates', 'partials', 'zone-editor.hbs'),
             'utf8',
         )
         expect(template).toContain('spell-modification-editor')
         expect(template).toContain('add-spell-modification-pre-effect')
-        expect(template).toContain('Dauerquelle')
-        expect(template).toContain('system.spellModifications.{{@index}}.zone.duration.source')
-        expect(template).toContain('Zurückstoßen (Spielleitung)')
-        expect(template).toContain('add-spell-modification-domination-check')
-        expect(template).toContain('add-spell-modification-summon-creature-override')
+        expect(zoneTemplate).toContain('Dauerquelle')
+        expect(template).toContain('inheritMode=true')
+        expect(cardTemplate).toContain('Zurückstoßen (Spielleitung)')
+        expect(cardTemplate).toContain('add-spell-modification-domination-check')
+        expect(cardTemplate).toContain('add-spell-modification-summon-creature-override')
         expect(template).toContain('ilaris-summon-creature-sources')
     })
 
     it('renders spell-modification pre-effect controls with correct nested indices', () => {
         const template = readFileSync(
-            join(process.cwd(), 'scripts', 'items', 'templates', 'uebernatuerlich_talent.hbs'),
+            join(process.cwd(), 'scripts', 'items', 'templates', 'pre-effects.hbs'),
+            'utf8',
+        )
+        const cardTemplate = readFileSync(
+            join(process.cwd(), 'scripts', 'items', 'templates', 'partials', 'pre-effect-card.hbs'),
             'utf8',
         )
 
         expect(template).toContain(
-            'name="system.spellModifications.{{@../index}}.preEffects.{{@index}}.avoidTest.enabled"',
+            'pathPrefix=(concat "system.spellModifications." @../index ".preEffects." @index)',
+        )
+        expect(cardTemplate).toContain('name="{{pathPrefix}}.avoidTest.fertigkeit"')
+        expect(cardTemplate).toContain(
+            'name="{{../pathPrefix}}.resistanceOutcomes.failure.enabled"',
         )
         expect(template).not.toContain('system.spellModifications..preEffects')
     })
 
     it('keeps structured creature, domination, and probe fields behind their active branches', () => {
-        const template = readFileSync(
-            join(process.cwd(), 'scripts', 'items', 'templates', 'uebernatuerlich_talent.hbs'),
+        const cardTemplate = readFileSync(
+            join(process.cwd(), 'scripts', 'items', 'templates', 'partials', 'pre-effect-card.hbs'),
             'utf8',
         )
 
-        expect(template).toContain('{{#if preEffect.summonCreature.enabled}}')
-        expect(template).toContain('{{#if preEffect.summonCreature.dominationChecks.enabled}}')
-        expect(template).toContain('{{#if (ifEq check.probeType "attribut")}}')
-        expect(template).toContain(
-            'name="system.spellModifications.{{@../index}}.preEffects.{{@index}}.summonCreature.sourceUuid"',
-        )
+        expect(cardTemplate).toContain('{{#if preEffect.summonCreature.enabled}}')
+        expect(cardTemplate).toContain('{{#if preEffect.summonCreature.dominationChecks.enabled}}')
+        expect(cardTemplate).toContain('{{#if (ifEq probeType "attribut")}}')
+        expect(cardTemplate).toContain('name="{{pathPrefix}}.summonCreature.sourceUuid"')
     })
 })

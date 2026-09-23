@@ -1,0 +1,450 @@
+{{! Shared Pre-Effect card partial.
+    Params: preEffect (data object), pathPrefix (persisted path incl. index),
+    capabilities (flag set), preEffectIndex, isFormPreEffect (optional), formIndex (optional). }}
+<fieldset class="pre-effect-card">
+    <legend>Pre-Effekt</legend>
+    <details class="pre-effect-accordion" {{#if preEffect.changes.length}}open{{else if preEffect.avoidTest.enabled}}open{{else if preEffect.condition.enabled}}open{{/if}}>
+        <summary class="pre-effect-summary">
+            {{#unless isFormPreEffect}}
+            <button type="button" class="delete-pre-effect">✕</button>
+            {{else}}
+            <button type="button" class="delete-spell-modification-pre-effect" data-form-index="{{formIndex}}" data-pre-effect-index="{{preEffectIndex}}">✕</button>
+            {{/unless}}
+            <span>{{preEffect.summary}}</span>
+        </summary>
+        <div class="pre-effect-card-body">
+            {{#if capabilities.allowActivationTrigger}}
+            <div class="form-group">
+                <label>Auslöser:</label>
+                <select name="{{pathPrefix}}.activation">
+                    <option value="onConfirmedHit" {{#if (ifEq preEffect.activation "onConfirmedHit")}}selected{{/if}}>Bestätigter Treffer</option>
+                    <option value="onSuccessfulDefense" {{#if (ifEq preEffect.activation "onSuccessfulDefense")}}selected{{/if}}>Erfolgreiche Verteidigung</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Manöver-Operation:</label>
+                <select name="{{pathPrefix}}.operation">
+                    <option value="">— Keine —</option>
+                    <option value="deselectEquippedWeapon" {{#if (ifEq preEffect.operation "deselectEquippedWeapon")}}selected{{/if}}>Ausgewählte Waffe abwählen</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Befreiungsprobe:</label>
+                <select name="{{pathPrefix}}.ilarisEnding.type">
+                    <option value="">— Keine —</option>
+                    <option value="opposedEscape" {{#if (ifEq preEffect.ilarisEnding.type "opposedEscape")}}selected{{/if}}>GE oder KK</option>
+                </select>
+            </div>
+            {{/if}}
+
+            {{#if capabilities.allowDuration}}
+            <div class="form-group">
+                <label>Dauer (Runden):</label>
+                <input type="number" name="{{pathPrefix}}.baseDuration" value="{{preEffect.baseDuration}}" data-dtype="Number" />
+            </div>
+            {{/if}}
+
+            {{#if capabilities.allowInstant}}
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="{{pathPrefix}}.instant" {{checked preEffect.instant}} />
+                    Sofort (kein Effekt, direkter Schaden)
+                </label>
+            </div>
+            {{/if}}
+
+            {{#if capabilities.allowCondition}}
+            {{#if preEffect.condition.enabled}}
+            <div class="form-group">
+                <input type="hidden" name="{{pathPrefix}}.condition.enabled" value="true" />
+                <label>Zustand anwenden:</label>
+                <select name="{{pathPrefix}}.condition.statusId">
+                    <option value="">-- Zustand wählen --</option>
+                    {{#each @root.statusEffectOptions}}
+                    <option value="{{id}}" {{#if (ifEq id ../preEffect.condition.statusId)}}selected{{/if}}>{{name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            {{/if}}
+            {{/if}}
+
+            {{#if capabilities.allowMarker}}
+            {{#if preEffect.marker.enabled}}
+            <div class="form-group">
+                <input type="hidden" name="{{pathPrefix}}.marker.enabled" value="true" />
+                <label>Marker-ID:</label>
+                <input type="text" name="{{pathPrefix}}.marker.id" value="{{preEffect.marker.id}}" />
+            </div>
+            <div class="form-group">
+                <label>Marker-Anzeige:</label>
+                <input type="text" name="{{pathPrefix}}.marker.label" value="{{preEffect.marker.label}}" />
+            </div>
+            {{/if}}
+            {{/if}}
+
+            {{#if capabilities.allowRawChanges}}
+            {{#if (hasItems preEffect.changes)}}
+            {{> effect-wirkung pathPrefix=pathPrefix changes=preEffect.changes}}
+            {{/if}}
+            {{/if}}
+
+            {{#if capabilities.allowIlarisModifiers}}
+            {{#if (or (hasItems preEffect.ilarisModifiers) (hasItems preEffect.changes))}}
+            <div class="ilaris-modifiers-list">
+                <h4>Ilaris-Modifikatoren</h4>
+                {{#each preEffect.ilarisModifiers}}
+                <fieldset class="ilaris-modifier-card">
+                    <legend>Ilaris-Modifikator</legend>
+                    <button type="button" class="delete-ilaris-modifier">✕</button>
+                    <div class="form-group">
+                        <label>Phase:</label>
+                        <select name="{{../pathPrefix}}.ilarisModifiers.{{@index}}.phase">
+                            {{selectOptions @root.ilarisModifierPhases selected=phase}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ziel:</label>
+                        <select name="{{../pathPrefix}}.ilarisModifiers.{{@index}}.target">
+                            {{selectOptions @root.ilarisModifierTargets selected=target}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Wert:</label>
+                        <input type="text" name="{{../pathPrefix}}.ilarisModifiers.{{@index}}.value" value="{{value}}" placeholder="z. B. +2 oder +1W6" />
+                    </div>
+                    <div class="form-group">
+                        <label>Stapelung:</label>
+                        <select name="{{../pathPrefix}}.ilarisModifiers.{{@index}}.stacking">
+                            {{selectOptions @root.ilarisModifierStacking selected=stacking}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Vergleichswert:</label>
+                        <input type="text" name="{{../pathPrefix}}.ilarisModifiers.{{@index}}.comparisonValue" value="{{comparisonValue}}" />
+                    </div>
+                    <div class="form-group">
+                        <label>Fertigkeiten:</label>
+                        <input type="text" name="{{../pathPrefix}}.ilarisModifiers.{{@index}}.selector.fertigkeit" value="{{selector.fertigkeit}}" placeholder="Kommagetrennt" />
+                    </div>
+                    <div class="form-group">
+                        <label>Talente:</label>
+                        <input type="text" name="{{../pathPrefix}}.ilarisModifiers.{{@index}}.selector.talent" value="{{selector.talent}}" placeholder="Kommagetrennt" />
+                    </div>
+                    <div class="form-group">
+                        <label>Situation:</label>
+                        <input type="text" name="{{../pathPrefix}}.ilarisModifiers.{{@index}}.selector.situation" value="{{selector.situation}}" placeholder="z. B. sozialesDuell" />
+                    </div>
+                    <div class="form-group">
+                        <label><input type="checkbox" name="{{../pathPrefix}}.ilarisModifiers.{{@index}}.amplifiedByMaechtigeMagie" {{checked amplifiedByMaechtigeMagie}} /> Verstärkt durch Mächtige Magie</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Mächtig Bonus:</label>
+                        <input type="text" name="{{../pathPrefix}}.ilarisModifiers.{{@index}}.maechtigBonus" value="{{maechtigBonus}}" placeholder="z. B. +2" />
+                    </div>
+                    <div class="form-group">
+                        <label>Abgeschwächter Wert:</label>
+                        <input type="text" name="{{../pathPrefix}}.ilarisModifiers.{{@index}}.diminishedValue" value="{{diminishedValue}}" />
+                    </div>
+                    <div class="form-group">
+                        <label>Abgeschwächter Mächtig-Bonus:</label>
+                        <input type="text" name="{{../pathPrefix}}.ilarisModifiers.{{@index}}.diminishedMaechtigBonus" value="{{diminishedMaechtigBonus}}" />
+                    </div>
+                </fieldset>
+                {{/each}}
+                {{#unless isFormPreEffect}}
+                <button type="button" class="add-ilaris-modifier">+ Ilaris-Modifikator hinzufügen</button>
+                {{/unless}}
+            </div>
+            {{/if}}
+            {{/if}}
+
+            {{#if capabilities.allowSummonItem}}
+            {{#if preEffect.summonItem.enabled}}
+            <div class="summon-item-section">
+                <input type="hidden" name="{{pathPrefix}}.summonItem.enabled" value="true" />
+                <h4>Gegenstand beschwören</h4>
+                <div class="form-group">
+                    <label>Art:</label>
+                    <select name="{{pathPrefix}}.summonItem.sourceKind">
+                        <option value="waffe" {{#unless (ifEq preEffect.summonItem.sourceKind "gegenstand")}}selected{{/unless}}>Waffe</option>
+                        <option value="gegenstand" {{#if (ifEq preEffect.summonItem.sourceKind "gegenstand")}}selected{{/if}}>Gegenstand</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Quelle:</label>
+                    {{#if (ifEq preEffect.summonItem.sourceKind "gegenstand")}}
+                    <input type="text" name="{{pathPrefix}}.summonItem.sourceUuid" value="{{preEffect.summonItem.sourceUuid}}" list="ilaris-summon-item-sources-gegenstand" placeholder="Gegenstand suchen …" />
+                    {{else}}
+                    <input type="text" name="{{pathPrefix}}.summonItem.sourceUuid" value="{{preEffect.summonItem.sourceUuid}}" list="ilaris-summon-item-sources-waffe" placeholder="Waffe suchen …" />
+                    {{/if}}
+                </div>
+                <div class="summon-item-overrides-list">
+                    <h5>Werte auf der beschworenen Kopie</h5>
+                    {{#unless isFormPreEffect}}
+                    {{#each preEffect.summonItem.overrides}}
+                    <fieldset class="summon-item-override-card">
+                        <legend>Überschreibung</legend>
+                        <button type="button" class="delete-summon-item-override">✕</button>
+                        <div class="form-group">
+                            <label>Datenpfad:</label>
+                            <input type="text" name="{{../pathPrefix}}.summonItem.overrides.{{@index}}.path" value="{{path}}" placeholder="z. B. system.tp" />
+                        </div>
+                        <div class="form-group">
+                            <label>Wert:</label>
+                            <input type="text" name="{{../pathPrefix}}.summonItem.overrides.{{@index}}.value" value="{{value}}" />
+                        </div>
+                        <div class="form-group">
+                            <label><input type="checkbox" name="{{../pathPrefix}}.summonItem.overrides.{{@index}}.amplifiedByMaechtigeMagie" {{checked amplifiedByMaechtigeMagie}} /> Verstärkt durch Mächtige Magie</label>
+                        </div>
+                        <div class="form-group">
+                            <label>Mächtig-Bonus:</label>
+                            <input type="text" name="{{../pathPrefix}}.summonItem.overrides.{{@index}}.maechtigBonus" value="{{maechtigBonus}}" placeholder="z. B. +1W20" />
+                        </div>
+                    </fieldset>
+                    {{/each}}
+                    <button type="button" class="add-summon-item-override">+ Überschreibung hinzufügen</button>
+                    {{/unless}}
+                </div>
+            </div>
+            {{/if}}
+            {{/if}}
+
+            {{#if capabilities.allowSummonCreature}}
+            {{#if preEffect.summonCreature.enabled}}
+            <div class="summon-creature-section">
+                <input type="hidden" name="{{pathPrefix}}.summonCreature.enabled" value="true" />
+                <h4>Kreatur beschwören</h4>
+                <div class="form-group">
+                    <label>Erlaubte Kreaturentypen:</label>
+                    <input type="text" name="{{pathPrefix}}.summonCreature.kreaturentypen" value="{{preEffect.summonCreature.kreaturentypen}}" placeholder="z. B. daemon, elementar" />
+                </div>
+                <div class="form-group"><label>Feste Kreaturenquelle (optional):</label><input type="text" name="{{pathPrefix}}.summonCreature.sourceUuid" value="{{preEffect.summonCreature.sourceUuid}}" list="ilaris-summon-creature-sources" placeholder="Kreatur suchen …" /></div>
+                <div class="form-group"><label>Lebensdauer:</label><select name="{{pathPrefix}}.summonCreature.lifetime"><option value="permanent" {{#unless (ifEq preEffect.summonCreature.lifetime "timed")}}selected{{/unless}}>Permanent</option><option value="timed" {{#if (ifEq preEffect.summonCreature.lifetime "timed")}}selected{{/if}}>Zauberdauer</option></select></div>
+                <div class="summon-creature-overrides-list">
+                    <h5>Werte des beschworenen Schwarms</h5>
+                    {{#each preEffect.summonCreature.overrides}}
+                    <fieldset class="summon-creature-override-card">
+                        <legend>Überschreibung</legend>
+                        {{#if isFormPreEffect}}
+                        <button type="button" class="delete-spell-modification-summon-creature-override" data-form-index="{{formIndex}}" data-pre-effect-index="{{preEffectIndex}}" data-override-index="{{@index}}">✕</button>
+                        {{else}}
+                        <button type="button" class="delete-summon-creature-override">✕</button>
+                        {{/if}}
+                        <div class="form-group"><label>Datenpfad:</label><input type="text" name="{{../pathPrefix}}.summonCreature.overrides.{{@index}}.path" value="{{path}}" placeholder="z. B. items.0.system.at" /></div>
+                        <div class="form-group"><label>Zusatzwert:</label><input type="text" name="{{../pathPrefix}}.summonCreature.overrides.{{@index}}.value" value="{{value}}" /></div>
+                        <div class="form-group"><label><input type="checkbox" name="{{../pathPrefix}}.summonCreature.overrides.{{@index}}.amplifiedByMaechtigeMagie" {{checked amplifiedByMaechtigeMagie}} /> Verstärkt durch Mächtige Magie</label></div>
+                        <div class="form-group"><label>Mächtig-Bonus je QS:</label><input type="text" name="{{../pathPrefix}}.summonCreature.overrides.{{@index}}.maechtigBonus" value="{{maechtigBonus}}" placeholder="z. B. +1" /></div>
+                    </fieldset>
+                    {{/each}}
+                    {{#if isFormPreEffect}}
+                    <button type="button" class="add-spell-modification-summon-creature-override" data-form-index="{{formIndex}}" data-pre-effect-index="{{preEffectIndex}}">+ Überschreibung hinzufügen</button>
+                    {{else}}
+                    <button type="button" class="add-summon-creature-override">+ Überschreibung hinzufügen</button>
+                    {{/if}}
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" name="{{pathPrefix}}.summonCreature.boundResourceCost.enabled" {{checked preEffect.summonCreature.boundResourceCost.enabled}} /> gAsP/gKaP binden</label>
+                </div>
+                {{#if preEffect.summonCreature.boundResourceCost.enabled}}
+                <div class="form-group">
+                    <label>Ressource:</label>
+                    <select name="{{pathPrefix}}.summonCreature.boundResourceCost.resource">
+                        <option value="gasp" {{#unless (ifEq preEffect.summonCreature.boundResourceCost.resource "gkap")}}selected{{/unless}}>gAsP</option>
+                        <option value="gkap" {{#if (ifEq preEffect.summonCreature.boundResourceCost.resource "gkap")}}selected{{/if}}>gKaP</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>Menge:</label><input type="number" min="1" name="{{pathPrefix}}.summonCreature.boundResourceCost.amount" value="{{preEffect.summonCreature.boundResourceCost.amount}}" /></div>
+                {{/if}}
+                <div class="form-group"><label><input type="checkbox" name="{{pathPrefix}}.summonCreature.dominationChecks.enabled" {{checked preEffect.summonCreature.dominationChecks.enabled}} /> Beherrschungsprobe konfigurieren</label></div>
+                {{#if preEffect.summonCreature.dominationChecks.enabled}}
+                <div class="domination-checks-list">
+                    <h5>Beherrschungsproben nach Kreaturentyp</h5>
+                    {{#each preEffect.summonCreature.dominationChecks.entries}}
+                    <fieldset class="domination-check-card">
+                        <legend>Beherrschungsprobe</legend>
+                        {{#if isFormPreEffect}}
+                        <button type="button" class="delete-spell-modification-domination-check" data-form-index="{{formIndex}}" data-pre-effect-index="{{preEffectIndex}}" data-domination-check-index="{{@index}}">✕</button>
+                        {{else}}
+                        <button type="button" class="delete-domination-check">✕</button>
+                        {{/if}}
+                        <div class="form-group"><label>Kreaturentyp:</label><input type="text" name="{{../pathPrefix}}.summonCreature.dominationChecks.entries.{{@index}}.kreaturentyp" value="{{kreaturentyp}}" placeholder="z. B. daemon" /></div>
+                        <div class="form-group"><label>Schwierigkeit:</label><input type="number" min="0" name="{{../pathPrefix}}.summonCreature.dominationChecks.entries.{{@index}}.difficulty" value="{{difficulty}}" /></div>
+                        <div class="form-group"><label>Probe:</label><select name="{{../pathPrefix}}.summonCreature.dominationChecks.entries.{{@index}}.probeType"><option value="attribut" {{#if (ifEq probeType "attribut")}}selected{{/if}}>Attribut</option><option value="fertigkeit" {{#if (ifEq probeType "fertigkeit")}}selected{{/if}}>Fertigkeit</option></select></div>
+                        {{#if (ifEq probeType "attribut")}}
+                        <div class="form-group"><label>Attribut:</label><select name="{{../pathPrefix}}.summonCreature.dominationChecks.entries.{{@index}}.attribut"><option value="">— Wählen —</option>{{#each @root.avoidTestAttributeOptions}}<option value="{{value}}" {{#if (ifEq value ../attribut)}}selected{{/if}}>{{label}}</option>{{/each}}</select></div>
+                        {{else}}
+                        <div class="form-group"><label>Fertigkeit:</label><input type="text" name="{{../pathPrefix}}.summonCreature.dominationChecks.entries.{{@index}}.fertigkeit" value="{{fertigkeit}}" /></div>
+                        <div class="form-group"><label>Talent (optional):</label><input type="text" name="{{../pathPrefix}}.summonCreature.dominationChecks.entries.{{@index}}.talent" value="{{talent}}" /></div>
+                        {{/if}}
+                    </fieldset>
+                    {{/each}}
+                    {{#if isFormPreEffect}}
+                    <button type="button" class="add-spell-modification-domination-check" data-form-index="{{formIndex}}" data-pre-effect-index="{{preEffectIndex}}">+ Beherrschungsprobe hinzufügen</button>
+                    {{else}}
+                    <button type="button" class="add-domination-check">+ Beherrschungsprobe hinzufügen</button>
+                    {{/if}}
+                </div>
+                {{/if}}
+            </div>
+            {{/if}}
+            {{/if}}
+
+            {{#if capabilities.allowArmedCombat}}
+            {{#if preEffect.armedCombat.enabled}}
+            <details class="armed-combat-section" open>
+                <input type="hidden" name="{{pathPrefix}}.armedCombat.enabled" value="true" />
+                <summary class="block-summary">Bewaffneter Kampfeffekt</summary>
+                <div class="armed-combat-body">
+                    <div class="form-group">
+                        <label>Auslösung:</label>
+                        <select name="{{pathPrefix}}.armedCombat.trigger">
+                            <option value="nextSuccessfulAttack" {{#if (ifEq preEffect.armedCombat.trigger "nextSuccessfulAttack")}}selected{{/if}}>Nächster erfolgreicher Angriff</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Angriffsart:</label>
+                        <select name="{{pathPrefix}}.armedCombat.scope">
+                            <option value="any" {{#if (ifEq preEffect.armedCombat.scope "any")}}selected{{/if}}>Beliebig</option>
+                            <option value="melee" {{#if (ifEq preEffect.armedCombat.scope "melee")}}selected{{/if}}>Nahkampf</option>
+                            <option value="ranged" {{#if (ifEq preEffect.armedCombat.scope "ranged")}}selected{{/if}}>Fernkampf</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>AT-Bonus:</label><input type="number" name="{{pathPrefix}}.armedCombat.attackBonus" value="{{preEffect.armedCombat.attackBonus}}" /></div>
+                    <details class="armed-combat-advanced">
+                        <summary>Erweiterte Eingaben <span class="ilaris-info" data-tooltip="<div style='max-width: 380px; text-align: left;'><strong>Erweiterte Eingaben</strong><p>Technische Eingabeschlüssel für den Kampfdialog. Nur für Spezialfälle wie vorherige Treffer erforderlich.</p><p>Beispiel: Eingabeschlüssel previousHits, Schaden-Eingabe W6.</p></div>">ⓘ</span></summary>
+                        <div class="form-group"><label>Eingabeschlüssel:</label><input type="text" name="{{pathPrefix}}.armedCombat.inputs.0.key" value="{{preEffect.armedCombat.inputs.0.key}}" placeholder="z. B. previousHits" /></div>
+                        <div class="form-group"><label>Eingabelabel:</label><input type="text" name="{{pathPrefix}}.armedCombat.inputs.0.label" value="{{preEffect.armedCombat.inputs.0.label}}" /></div>
+                        <div class="form-group"><label>Standard:</label><input type="number" name="{{pathPrefix}}.armedCombat.inputs.0.default" value="{{preEffect.armedCombat.inputs.0.default}}" /></div>
+                        <div class="form-group"><label>Minimum:</label><input type="number" name="{{pathPrefix}}.armedCombat.inputs.0.min" value="{{preEffect.armedCombat.inputs.0.min}}" /></div>
+                        <div class="form-group"><label>Maximum:</label><input type="number" name="{{pathPrefix}}.armedCombat.inputs.0.max" value="{{preEffect.armedCombat.inputs.0.max}}" /></div>
+                        <div class="form-group"><label>Schaden-Eingabe:</label><input type="text" name="{{pathPrefix}}.armedCombat.damage.input" value="{{preEffect.armedCombat.damage.input}}" /></div>
+                        <div class="form-group"><label>Schaden je Einheit:</label><input type="text" name="{{pathPrefix}}.armedCombat.damage.perInput" value="{{preEffect.armedCombat.damage.perInput}}" placeholder="W6" /></div>
+                        <div class="form-group"><label>Ladungen:</label><input type="number" min="1" name="{{pathPrefix}}.armedCombat.charges.base" value="{{preEffect.armedCombat.charges.base}}" /></div>
+                        <div class="form-group"><label><input type="checkbox" name="{{pathPrefix}}.armedCombat.charges.amplifiedByMaechtigeMagie" {{checked preEffect.armedCombat.charges.amplifiedByMaechtigeMagie}} /> Verstärkt durch Mächtige Magie/Liturgie</label></div>
+                        <div class="form-group"><label>Ladungen je QS:</label><input type="number" min="0" name="{{pathPrefix}}.armedCombat.charges.maechtigBonus" value="{{preEffect.armedCombat.charges.maechtigBonus}}" /></div>
+                    </details>
+                </div>
+            </details>
+            {{/if}}
+            {{/if}}
+
+            {{#if capabilities.allowResistance}}
+            {{#if preEffect.avoidTest.enabled}}
+            <div class="avoid-test-section">
+                <input type="hidden" name="{{pathPrefix}}.avoidTest.enabled" value="true" />
+                <h4>Widerstands-Probe <span class="ilaris-info" data-tooltip="<div style='max-width: 380px; text-align: left;'><strong>Widerstandsprobe</strong><p>Erlaubt dem Ziel, die Wirkung dieses Effekts ganz oder teilweise zu vermeiden.</p><p>Beispiel: Der Effekt verursacht 2W6 Schaden. Das Ziel würfelt KO gegen 12. Bei Erfolg erhält es nur 1W6 Schaden.</p></div>">ⓘ</span></h4>
+                <div class="avoid-test-fields">
+                    <div class="form-group">
+                        <label>Fertigkeit:</label>
+                        <select name="{{pathPrefix}}.avoidTest.fertigkeit">
+                            <option value="">— Keine —</option>
+                            {{#each @root.avoidTestSkillOptions}}
+                            <optgroup label="{{packName}}">
+                                {{#each skills}}
+                                <option value="{{name}}" {{#if (ifEq name ../../avoidTest.fertigkeit)}}selected{{/if}}>{{name}} ({{type}})</option>
+                                {{/each}}
+                            </optgroup>
+                            {{/each}}
+                            {{#if preEffect.avoidTest.fertigkeit}}
+                            {{#unless (isSkillInOptions preEffect.avoidTest.fertigkeit @root.avoidTestSkillOptions)}}
+                            <option value="{{preEffect.avoidTest.fertigkeit}}" selected>⚠ {{preEffect.avoidTest.fertigkeit}} (nicht verfügbar)</option>
+                            {{/unless}}
+                            {{/if}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Talent (optional):</label>
+                        <select name="{{pathPrefix}}.avoidTest.talent">
+                            <option value="">— Keines —</option>
+                            {{#each @root.avoidTestTalentOptions}}
+                            <optgroup label="{{packName}}">
+                                {{#each talents}}
+                                {{#if (ifEq fertigkeit ../../avoidTest.fertigkeit)}}
+                                <option value="{{name}}" {{#if (ifEq name ../../avoidTest.talent)}}selected{{/if}}>{{name}}</option>
+                                {{/if}}
+                                {{/each}}
+                            </optgroup>
+                            {{/each}}
+                            {{#if preEffect.avoidTest.talent}}
+                            {{#unless (isTalentInOptions preEffect.avoidTest.talent preEffect.avoidTest.fertigkeit @root.avoidTestTalentOptions)}}
+                            <option value="{{preEffect.avoidTest.talent}}" selected>⚠ {{preEffect.avoidTest.talent}} (nicht verfügbar)</option>
+                            {{/unless}}
+                            {{/if}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Attribut:</label>
+                        <select name="{{pathPrefix}}.avoidTest.attribut">
+                            <option value="">— Keines —</option>
+                            {{#each @root.avoidTestAttributeOptions}}
+                            <option value="{{value}}" {{#if (ifEq value ../avoidTest.attribut)}}selected{{/if}}>{{label}}</option>
+                            {{/each}}
+                            {{#if preEffect.avoidTest.attribut}}
+                            {{#unless (isAttrInOptions preEffect.avoidTest.attribut @root.avoidTestAttributeOptions)}}
+                            <option value="{{preEffect.avoidTest.attribut}}" selected>⚠ {{preEffect.avoidTest.attribut}} (nicht verfügbar)</option>
+                            {{/unless}}
+                            {{/if}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" name="{{pathPrefix}}.avoidTest.diminishedOnly" {{checked preEffect.avoidTest.diminishedOnly}} {{#if preEffect.resistanceOutcomes.success.enabled}}disabled{{/if}} />
+                            Nur abgeschwächt (Diminished Only)
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>Schwierigkeit aus:</label>
+                        <select name="{{pathPrefix}}.avoidTest.resistDifficultySource">
+                            <option value="fixed" {{#unless (ifEq preEffect.avoidTest.resistDifficultySource "triggeringRoll")}}selected{{/unless}}>Fester Wert</option>
+                            <option value="triggeringRoll" {{#if (ifEq preEffect.avoidTest.resistDifficultySource "triggeringRoll")}}selected{{/if}}>Ergebnis der auslösenden Probe</option>
+                        </select>
+                    </div>
+                    {{#unless (ifEq preEffect.avoidTest.resistDifficultySource "triggeringRoll")}}
+                    <div class="form-group">
+                        <label>Erschwernis:</label>
+                        <input type="number" name="{{pathPrefix}}.avoidTest.resistDifficulty" value="{{preEffect.avoidTest.resistDifficulty}}" data-dtype="Number" placeholder="12" />
+                    </div>
+                    {{/unless}}
+                </div>
+            </div>
+            <div class="resistance-outcomes-section">
+                <h4>Wirkung nach Widerstand</h4>
+                {{#with preEffect.resistanceOutcomes.failure}}
+                <fieldset class="outcome-payload" data-outcome="failure">
+                    <legend>Bei misslungener Widerstandsprobe</legend>
+                    <div class="form-group"><label><input type="checkbox" name="{{../pathPrefix}}.resistanceOutcomes.failure.enabled" {{checked enabled}} /> Eigene Wirkung verwenden</label></div>
+                    {{#if enabled}}
+                    <div class="form-group"><label><input type="checkbox" name="{{../pathPrefix}}.resistanceOutcomes.failure.marker.enabled" {{checked marker.enabled}} /> Hinweis-Effekt</label></div>
+                    <div class="form-group"><label>Marker-ID:</label><input type="text" name="{{../pathPrefix}}.resistanceOutcomes.failure.marker.id" value="{{marker.id}}" /></div>
+                    <div class="form-group"><label>Marker-Anzeige:</label><input type="text" name="{{../pathPrefix}}.resistanceOutcomes.failure.marker.label" value="{{marker.label}}" /></div>
+                    <div class="form-group"><label><input type="checkbox" name="{{../pathPrefix}}.resistanceOutcomes.failure.tableManagedDisplacement.enabled" {{checked tableManagedDisplacement.enabled}} /> Zurückstoßen (Spielleitung)</label><p class="hint">Wendet die konfigurierte Wirkung an und informiert Zielbesitzende sowie Spielleitungen, dass die Token-Position manuell angepasst wird.</p></div>
+                    <div class="form-group"><label><input type="checkbox" name="{{../pathPrefix}}.resistanceOutcomes.failure.condition.enabled" {{checked condition.enabled}} /> Zustand anwenden</label><select name="{{../pathPrefix}}.resistanceOutcomes.failure.condition.statusId"><option value="">-- Zustand wählen --</option>{{#each @root.statusEffectOptions}}<option value="{{id}}" {{#if (ifEq id ../condition.statusId)}}selected{{/if}}>{{name}}</option>{{/each}}</select></div>
+                    {{#each changes}}<fieldset class="change-card"><button type="button" class="delete-change">✕</button><div class="form-group"><label>Key:</label><input type="text" name="{{../../pathPrefix}}.resistanceOutcomes.failure.changes.{{@index}}.key" value="{{key}}" /></div><div class="form-group"><label>Wert:</label><input type="text" name="{{../../pathPrefix}}.resistanceOutcomes.failure.changes.{{@index}}.value" value="{{value}}" /></div></fieldset>{{/each}}
+                    {{#unless isFormPreEffect}}<button type="button" class="add-change">+ Änderung hinzufügen</button>{{/unless}}
+                    {{#each ilarisModifiers}}<fieldset class="ilaris-modifier-card"><button type="button" class="delete-ilaris-modifier">✕</button><div class="form-group"><label>Ziel:</label><select name="{{../../pathPrefix}}.resistanceOutcomes.failure.ilarisModifiers.{{@index}}.target">{{selectOptions @root.ilarisModifierTargets selected=target}}</select></div><div class="form-group"><label>Wert:</label><input type="text" name="{{../../pathPrefix}}.resistanceOutcomes.failure.ilarisModifiers.{{@index}}.value" value="{{value}}" /></div></fieldset>{{/each}}
+                    {{#unless isFormPreEffect}}<button type="button" class="add-ilaris-modifier">+ Ilaris-Modifikator hinzufügen</button>{{/unless}}
+                    {{/if}}
+                </fieldset>
+                {{/with}}
+                {{#with preEffect.resistanceOutcomes.success}}
+                <fieldset class="outcome-payload" data-outcome="success">
+                    <legend>Bei gelungener Widerstandsprobe</legend>
+                    <div class="form-group"><label><input type="checkbox" name="{{../pathPrefix}}.resistanceOutcomes.success.enabled" {{checked enabled}} /> Eigene Wirkung verwenden</label></div>
+                    {{#if enabled}}
+                    <div class="form-group"><label><input type="checkbox" name="{{../pathPrefix}}.resistanceOutcomes.success.marker.enabled" {{checked marker.enabled}} /> Hinweis-Effekt</label></div>
+                    <div class="form-group"><label>Marker-ID:</label><input type="text" name="{{../pathPrefix}}.resistanceOutcomes.success.marker.id" value="{{marker.id}}" /></div>
+                    <div class="form-group"><label>Marker-Anzeige:</label><input type="text" name="{{../pathPrefix}}.resistanceOutcomes.success.marker.label" value="{{marker.label}}" /></div>
+                    <div class="form-group"><label><input type="checkbox" name="{{../pathPrefix}}.resistanceOutcomes.success.condition.enabled" {{checked condition.enabled}} /> Zustand anwenden</label><select name="{{../pathPrefix}}.resistanceOutcomes.success.condition.statusId"><option value="">-- Zustand wählen --</option>{{#each @root.statusEffectOptions}}<option value="{{id}}" {{#if (ifEq id ../condition.statusId)}}selected{{/if}}>{{name}}</option>{{/each}}</select></div>
+                    {{#each changes}}<fieldset class="change-card"><button type="button" class="delete-change">✕</button><div class="form-group"><label>Key:</label><input type="text" name="{{../../pathPrefix}}.resistanceOutcomes.success.changes.{{@index}}.key" value="{{key}}" /></div><div class="form-group"><label>Wert:</label><input type="text" name="{{../../pathPrefix}}.resistanceOutcomes.success.changes.{{@index}}.value" value="{{value}}" /></div></fieldset>{{/each}}
+                    {{#unless isFormPreEffect}}<button type="button" class="add-change">+ Änderung hinzufügen</button>{{/unless}}
+                    {{#each ilarisModifiers}}<fieldset class="ilaris-modifier-card"><button type="button" class="delete-ilaris-modifier">✕</button><div class="form-group"><label>Ziel:</label><select name="{{../../pathPrefix}}.resistanceOutcomes.success.ilarisModifiers.{{@index}}.target">{{selectOptions @root.ilarisModifierTargets selected=target}}</select></div><div class="form-group"><label>Wert:</label><input type="text" name="{{../../pathPrefix}}.resistanceOutcomes.success.ilarisModifiers.{{@index}}.value" value="{{value}}" /></div></fieldset>{{/each}}
+                    {{#unless isFormPreEffect}}<button type="button" class="add-ilaris-modifier">+ Ilaris-Modifikator hinzufügen</button>{{/unless}}
+                    {{/if}}
+                </fieldset>
+                {{/with}}
+            </div>
+            {{/if}}
+            {{/if}}
+        </div>
+    </details>
+</fieldset>

@@ -110,3 +110,179 @@
 .change-card select {
     flex: 1;
 }
+
+/* ── Information architecture: accordion areas ─────────────────────────── */
+
+.sheet-area {
+    border: 1px solid var(--ilaris-border-light, #c4a882);
+    border-radius: 4px;
+    margin: 8px 0;
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.sheet-area > summary,
+.sheet-area-header {
+    cursor: pointer;
+    padding: 8px 12px;
+    font-weight: bold;
+    color: var(--ilaris-heading-color, #782e22);
+    background: rgba(0, 0, 0, 0.04);
+    border-bottom: 1px solid var(--ilaris-border-light, #c4a882);
+    user-select: none;
+}
+
+.sheet-area[open] > summary {
+    border-bottom: 1px solid var(--ilaris-border-light, #c4a882);
+}
+
+.sheet-area-body {
+    padding: 8px 12px;
+}
+
+/* ── Pre-effect accordion cards ────────────────────────────────────────── */
+
+.pre-effect-accordion {
+    border-top: 1px dotted var(--ilaris-border-light, #c4a882);
+    margin-top: 4px;
+}
+
+.pre-effect-summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 4px 0;
+    font-size: 13px;
+}
+
+.pre-effect-summary .delete-pre-effect,
+.pre-effect-summary .delete-spell-modification-pre-effect {
+    margin-left: auto;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 2px 6px;
+}
+
+.pre-effect-card-body {
+    padding: 8px 0 4px 12px;
+}
+
+.zone-card {
+    margin-bottom: 12px;
+}
+
+.zone-card .clear-zone-profile {
+    margin-top: 8px;
+    cursor: pointer;
+}
+
+/* ── Add automation menu ───────────────────────────────────────────────── */
+
+.add-automation-menu {
+    margin: 8px 0;
+    border: 1px dashed var(--ilaris-border-light, #c4a882);
+    border-radius: 3px;
+}
+
+.add-automation-summary {
+    cursor: pointer;
+    padding: 6px 10px;
+    font-size: 13px;
+    color: var(--ilaris-heading-color, #782e22);
+    user-select: none;
+}
+
+.add-automation-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 6px 10px;
+}
+
+.add-automation-feature,
+.add-zone-profile {
+    background: rgba(0, 120, 0, 0.1);
+    border: 1px solid rgba(0, 120, 0, 0.3);
+    border-radius: 3px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.add-automation-feature:hover,
+.add-zone-profile:hover {
+    background: rgba(0, 120, 0, 0.2);
+}
+
+/* ── Wirkungen (effect bausteine) ──────────────────────────────────────── */
+
+.changes-list {
+    margin: 8px 0;
+    padding: 8px;
+}
+
+.change-card {
+    border: 1px solid var(--ilaris-border-light, #c4a882);
+    border-radius: 3px;
+    padding: 0;
+    margin-bottom: 8px;
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.change-card > summary {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    padding: 6px 8px;
+    font-size: 13px;
+    user-select: none;
+}
+
+.change-card-body,
+.change-advanced {
+    padding: 8px;
+}
+
+.change-advanced > summary {
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--ilaris-heading-color, #782e22);
+}
+
+.change-summary {
+    font-weight: bold;
+}
+
+/* ── Armed combat + resistance blocks ──────────────────────────────────── */
+
+.armed-combat-section,
+.avoid-test-section,
+.resistance-outcomes-section {
+    margin: 8px 0;
+    padding: 8px;
+    border: 1px dashed var(--ilaris-border-light, #c4a882);
+    border-radius: 3px;
+}
+
+.armed-combat-advanced {
+    margin-top: 8px;
+    padding: 8px;
+    border-top: 1px dotted var(--ilaris-border-light, #c4a882);
+}
+
+.armed-combat-advanced > summary {
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--ilaris-heading-color, #782e22);
+}
+
+/* Dark theme compatibility (mirrors the dark-mode journal readability pattern). */
+.theme-dark .sheet-area,
+.theme-dark .pre-effect-card,
+.theme-dark .change-card,
+.theme-dark .armed-combat-section,
+.theme-dark .avoid-test-section,
+.theme-dark .resistance-outcomes-section {
+    background: rgba(255, 255, 255, 0.03);
+}

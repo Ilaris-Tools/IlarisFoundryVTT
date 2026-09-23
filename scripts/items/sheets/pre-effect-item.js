@@ -1,6 +1,11 @@
 import { IlarisItemSheet } from './item.js'
 import { collectActorSystemPaths } from '../../effects/utils/field-path-collector.js'
 import {
+    getPreEffectCapabilities,
+    PRE_EFFECT_FEATURES,
+} from '../capabilities/pre-effect-capabilities.js'
+import { summarizePreEffect } from './summaries.js'
+import {
     IlarisModifierPhase,
     IlarisModifierPhaseLabels,
     IlarisModifierStacking,
@@ -67,6 +72,42 @@ export function normalizePreEffectFormData(updateData) {
     }
 }
 
+/**
+ * Retain nested editor data which AppV2 omits from a partial form submission.
+ * Array entries are edited and removed through dedicated document updates, so an
+ * empty submitted array must not erase the persisted entries during another
+ * field's regular form update.
+ */
+function mergePartialPreEffectValue(persisted, submitted) {
+    if (!submitted || typeof submitted !== 'object') return submitted
+
+    if (Array.isArray(persisted) || Array.isArray(submitted)) {
+        const persistedEntries = toPreEffectArray(persisted)
+        const submittedEntries = toPreEffectArray(submitted)
+        if (!submittedEntries.length) return persistedEntries
+        return submittedEntries.map((entry, index) =>
+            mergePartialPreEffectValue(persistedEntries[index], entry),
+        )
+    }
+
+    const merged = { ...(persisted || {}), ...submitted }
+    for (const [key, value] of Object.entries(submitted)) {
+        const existing = persisted?.[key]
+        if (value && typeof value === 'object') {
+            merged[key] = mergePartialPreEffectValue(existing, value)
+        }
+    }
+    return merged
+}
+
+/** Merge partial Pre-Effect form values into the persisted array by index. */
+export function mergePreEffectFormData(persistedPreEffects, submittedPreEffects) {
+    const persisted = toPreEffectArray(persistedPreEffects)
+    return toPreEffectArray(submittedPreEffects).map((preEffect, index) =>
+        mergePartialPreEffectValue(persisted[index], preEffect),
+    )
+}
+
 /** Normalize indexed structured spell-modification form data back to arrays. */
 export function normalizeSpellModificationFormData(updateData) {
     if (!updateData.system) return updateData
@@ -107,6 +148,12 @@ export class PreEffectItemSheet extends IlarisItemSheet {
     static async #onSubmitForm(event, form, formData) {
         const expanded = foundry.utils.expandObject(formData.object)
         const updateData = normalizePreEffectFormData(normalizeSpellModificationFormData(expanded))
+        if (updateData.system?.preEffects) {
+            updateData.system.preEffects = mergePreEffectFormData(
+                this.document.system?.preEffects,
+                updateData.system.preEffects,
+            )
+        }
         await this.document.update(updateData)
     }
 
@@ -132,37 +179,70 @@ export class PreEffectItemSheet extends IlarisItemSheet {
             name: effect.name || effect.label || effect.id,
         }))
 
+        const capabilities = getPreEffectCapabilities(this.document.type, 'base')
+        context.preEffectCapabilities = capabilities
+        context.availablePreEffectFeatures = PRE_EFFECT_FEATURES.filter(
+            (feature) => capabilities[feature.flag],
+        )
+        context.canAuthorSpellModifications = false
+
         return context
     }
 
     /** Supply non-persistent defaults so legacy entries expose the new editor controls. */
     _getEditorPreEffects(preEffects) {
-        return toPreEffectArray(preEffects).map((preEffect) => {
-            const outcomes = preEffect.resistanceOutcomes || {}
-            const withDefaults = (outcome) => {
-                const defaults = this._defaultResistanceOutcome()
-                const configured = outcomes[outcome] || {}
-                return {
-                    ...defaults,
-                    ...configured,
-                    marker: { ...defaults.marker, ...(configured.marker || {}) },
-                    condition: { ...defaults.condition, ...(configured.condition || {}) },
-                    tableManagedDisplacement: {
-                        ...defaults.tableManagedDisplacement,
-                        ...(configured.tableManagedDisplacement || {}),
-                    },
-                    changes: toPreEffectArray(configured.changes),
-                    ilarisModifiers: toPreEffectArray(configured.ilarisModifiers),
-                }
-            }
+        return toPreEffectArray(preEffects).map((preEffect, index) =>
+            this._prepareEditorPreEffect(preEffect, `system.preEffects.${index}`),
+        )
+    }
+
+    /** Attach editor-only view state (pathPrefix, summary, normalized arrays) to a pre-effect. */
+    _prepareEditorPreEffect(preEffect, pathPrefix, labels = this._summaryLabels()) {
+        const outcomes = preEffect.resistanceOutcomes || {}
+        const withDefaults = (outcome) => {
+            const defaults = this._defaultResistanceOutcome()
+            const configured = outcomes[outcome] || {}
             return {
-                ...preEffect,
-                resistanceOutcomes: {
-                    failure: withDefaults('failure'),
-                    success: withDefaults('success'),
+                ...defaults,
+                ...configured,
+                marker: { ...defaults.marker, ...(configured.marker || {}) },
+                condition: { ...defaults.condition, ...(configured.condition || {}) },
+                tableManagedDisplacement: {
+                    ...defaults.tableManagedDisplacement,
+                    ...(configured.tableManagedDisplacement || {}),
                 },
+                changes: toPreEffectArray(configured.changes),
+                ilarisModifiers: toPreEffectArray(configured.ilarisModifiers),
             }
-        })
+        }
+        const prepared = {
+            ...preEffect,
+            changes: toPreEffectArray(preEffect.changes),
+            ilarisModifiers: toPreEffectArray(preEffect.ilarisModifiers),
+            resistanceOutcomes: {
+                failure: withDefaults('failure'),
+                success: withDefaults('success'),
+            },
+        }
+        return {
+            ...prepared,
+            pathPrefix,
+            summary: summarizePreEffect(prepared, labels),
+        }
+    }
+
+    _summaryLabels() {
+        const damageTypeLabels = Object.fromEntries(
+            this._getDamageTypeOptions().map((option) => [option.value, option.label]),
+        )
+        const statusEffects = (typeof CONFIG !== 'undefined' && CONFIG.statusEffects) || {}
+        const statusLabels = Object.fromEntries(
+            Object.values(statusEffects).map((effect) => [
+                effect.id,
+                effect.name || effect.label || effect.id,
+            ]),
+        )
+        return { damageTypes: damageTypeLabels, statusLabels }
     }
 
     _getDamageTypeOptions() {
@@ -290,7 +370,81 @@ export class PreEffectItemSheet extends IlarisItemSheet {
         this.element.querySelector('.pre-effects-list')?.addEventListener('click', (event) => {
             this._handlePreEffectEditorClick(event)
         })
+        this.element
+            .querySelector('.pre-effects-section')
+            ?.addEventListener('click', (event) => this._handleAutomationAreaClick(event))
         this._injectPreEffectKeySuggestions()
+    }
+
+    _handleAutomationAreaClick(event) {
+        const button = event.target.closest('button')
+        if (!button) return
+        if (button.closest('.add-automation-feature')) {
+            this._addAutomationFeature(button.dataset.feature)
+            return
+        }
+        if (button.closest('.add-zone-profile')) {
+            this.document.update({ 'system.zone': this._defaultZone() })
+            return
+        }
+        if (button.closest('.clear-zone-profile')) {
+            this.document.update({ 'system.zone': null })
+            return
+        }
+    }
+
+    _addAutomationFeature(featureId) {
+        if (!featureId) return
+        const preEffects = this._clonePreEffects()
+        preEffects.push(this._featurePreEffect(featureId))
+        this.document.update({ 'system.preEffects': preEffects })
+    }
+
+    /** Build a fresh pre-effect pre-configured for the chosen automation feature. */
+    _featurePreEffect(featureId) {
+        const base = this._defaultPreEffect()
+        switch (featureId) {
+            case 'damage':
+                return {
+                    ...base,
+                    changes: [
+                        {
+                            ...this._defaultChange(),
+                            key: 'system.gesundheit.wunden',
+                            damageType: 'PROFAN',
+                        },
+                    ],
+                }
+            case 'status':
+                return { ...base, condition: { enabled: true, statusId: '' } }
+            case 'resistance':
+                return { ...base, avoidTest: { ...base.avoidTest, enabled: true } }
+            case 'summonItem':
+                return { ...base, summonItem: { ...this._defaultSummonItem(), enabled: true } }
+            case 'summonCreature':
+                return {
+                    ...base,
+                    summonCreature: { ...this._defaultSummonCreature(), enabled: true },
+                }
+            case 'armedCombat':
+                return { ...base, armedCombat: { ...base.armedCombat, enabled: true } }
+            default:
+                return base
+        }
+    }
+
+    _defaultZone() {
+        return {
+            shape: 'circle',
+            distance: 1,
+            angle: null,
+            width: null,
+            placement: { anchor: 'caster', range: 0 },
+            lifecycle: 'instant',
+            duration: { source: 'fixed', remaining: 1, attribute: '' },
+            trigger: { triggerOnCreate: false, onEnter: false, onRoundStart: false },
+            movementResistance: { enabled: false, attribut: '', resistDifficulty: 12 },
+        }
     }
 
     _handlePreEffectEditorClick(event) {
@@ -438,7 +592,12 @@ export class PreEffectItemSheet extends IlarisItemSheet {
     }
 
     _getPreEffectCardIndex(preEffectCard) {
-        return [...this.element.querySelectorAll('.pre-effect-card')].indexOf(preEffectCard)
+        const list = this.element.querySelector?.('.pre-effects-list')
+        const scoped = list?.querySelectorAll?.('.pre-effect-card')
+        const cards = [...(scoped || [])]
+        if (cards.length) return cards.indexOf(preEffectCard)
+        const fallback = this.element.querySelectorAll?.('.pre-effect-card')
+        return [...(fallback || [])].indexOf(preEffectCard)
     }
 
     _clonePreEffects() {

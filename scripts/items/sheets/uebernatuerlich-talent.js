@@ -1,4 +1,6 @@
 import { PreEffectItemSheet, toPreEffectArray } from './pre-effect-item.js'
+import { getPreEffectCapabilities } from '../capabilities/pre-effect-capabilities.js'
+import { summarizeZone } from './summaries.js'
 
 export class UebernatuerlichTalentSheet extends PreEffectItemSheet {
     /** @override */
@@ -21,11 +23,28 @@ export class UebernatuerlichTalentSheet extends PreEffectItemSheet {
         if (context.hasOwner) {
             context.fertigkeit_list = this.document.actor.misc.uebernatuerlich_fertigkeit_list
         }
+        context.canAuthorSpellModifications = true
+        context.formPreEffectCapabilities = getPreEffectCapabilities(this.document.type, 'form')
+        context.spellModificationForms = this._getSpellModificationForms()
+        context.zoneSummary = summarizeZone(this.item.system?.zone)
         context.hasLLMPreEffectGeneration =
             game.user.isGM &&
             !!game.settings.get('Ilaris', 'llmApiUrl') &&
             !!game.settings.get('Ilaris', 'llmApiKey')
         return context
+    }
+
+    /** Editor view model for structured forms: pathPrefix + summary per nested pre-effect. */
+    _getSpellModificationForms() {
+        return toPreEffectArray(this.item.system?.spellModifications).map((form, formIndex) => ({
+            ...form,
+            preEffects: toPreEffectArray(form.preEffects).map((preEffect, preEffectIndex) =>
+                this._prepareEditorPreEffect(
+                    preEffect,
+                    `system.spellModifications.${formIndex}.preEffects.${preEffectIndex}`,
+                ),
+            ),
+        }))
     }
 
     /** @override */
@@ -146,6 +165,13 @@ export class UebernatuerlichTalentSheet extends PreEffectItemSheet {
             if (!forms[formIndex]) return
             forms[formIndex].preEffects = toPreEffectArray(forms[formIndex].preEffects)
             forms[formIndex].preEffects.push(this._defaultPreEffect())
+            await updateForms(forms)
+            return
+        }
+        if (button.closest('.add-spell-modification-zone')) {
+            const forms = this.#cloneSpellModifications()
+            if (!forms[formIndex]) return
+            forms[formIndex].zone = this._defaultZone()
             await updateForms(forms)
             return
         }

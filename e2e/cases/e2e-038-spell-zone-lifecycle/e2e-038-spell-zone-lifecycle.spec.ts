@@ -209,30 +209,23 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
 
         try {
             await expect(itemWindow).toBeVisible({ timeout: 15000 })
-            const zoneEditor = itemWindow.locator('.zone-profile-editor')
+            const baseZoneCard = itemWindow.locator('.automation-area .zone-card')
             const formEditor = itemWindow.locator('.spell-modification-editor')
             const preEffects = itemWindow.locator('.pre-effects-section')
-            await expect(zoneEditor).toBeVisible()
+            expect(await itemWindow.locator('.sheet-area > summary').allTextContents()).toEqual([
+                'Regeltext',
+                'Automatisierung',
+                'Strukturierte Zaubermodifikationen',
+                'Erweitert',
+            ])
+            await itemWindow.locator('.modifications-area > summary').click()
+            await expect(baseZoneCard).toBeVisible()
             await expect(formEditor).toBeVisible()
             await expect(preEffects).toBeVisible()
-            expect(
-                await itemWindow.evaluate((window) => {
-                    const zone = window.querySelector('.zone-profile-editor')
-                    const form = window.querySelector('.spell-modification-editor')
-                    const effects = window.querySelector('.pre-effects-section')
-                    return Boolean(
-                        zone &&
-                        form &&
-                        effects &&
-                        zone.compareDocumentPosition(form) & Node.DOCUMENT_POSITION_FOLLOWING &&
-                        form.compareDocumentPosition(effects) & Node.DOCUMENT_POSITION_FOLLOWING,
-                    )
-                }),
-            ).toBe(true)
             await expect(
-                zoneEditor.locator('select[name="system.zone.duration.source"]'),
+                baseZoneCard.locator('select[name="system.zone.duration.source"]'),
             ).toBeVisible()
-            await expect(formEditor.locator('select[name$=".zone.duration.source"]')).toHaveCount(3)
+            await expect(formEditor.locator('select[name$=".zone.duration.source"]')).toHaveCount(1)
 
             const failure = preEffects.locator('.outcome-payload[data-outcome="failure"]').first()
             await failure.locator('input[name$=".resistanceOutcomes.failure.enabled"]').check()
@@ -293,17 +286,18 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
         try {
             await expect(itemWindow).toBeVisible({ timeout: 15000 })
             const formEditor = itemWindow.locator('.spell-modification-editor')
+            await itemWindow.locator('.modifications-area > summary').click()
             await expect(formEditor).toBeVisible()
 
-            const preEffectCards = formEditor.locator('.spell-modification-pre-effect-card')
+            const preEffectCards = formEditor.locator('.pre-effect-card')
             const initialCount = await preEffectCards.count()
             expect(initialCount).toBeGreaterThan(0)
 
-            const avoidTest = formEditor.locator('input[name$=".avoidTest.enabled"]').first()
-            await expect(avoidTest).toBeVisible()
-            await avoidTest.uncheck()
-            await expect(preEffectCards).toHaveCount(initialCount)
-            await avoidTest.check()
+            const magicResistance = formEditor
+                .locator('input[name$=".profile.magicResistance.enabled"]')
+                .first()
+            await expect(magicResistance).toBeVisible()
+            await magicResistance.check()
             await expect(preEffectCards).toHaveCount(initialCount)
 
             await page.waitForFunction(

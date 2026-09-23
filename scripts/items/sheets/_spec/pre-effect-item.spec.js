@@ -8,12 +8,42 @@ global.foundry.applications.sheets = {
 }
 
 const {
+    mergePreEffectFormData,
     normalizePreEffectFormData,
     normalizeSpellModificationFormData,
     PreEffectItemSheet,
 } = require('../pre-effect-item.js')
 
 describe('PreEffectItemSheet', () => {
+    it('preserves existing nested changes when a partial pre-effect form update omits them', () => {
+        const persisted = [
+            {
+                baseDuration: 0,
+                changes: [
+                    {
+                        key: 'system.gesundheit.wunden',
+                        value: '4W6',
+                        damageType: 'FEUER',
+                    },
+                ],
+            },
+        ]
+        const submitted = [{ baseDuration: 9, changes: [] }]
+
+        expect(mergePreEffectFormData(persisted, submitted)).toEqual([
+            {
+                baseDuration: 9,
+                changes: [
+                    {
+                        key: 'system.gesundheit.wunden',
+                        value: '4W6',
+                        damageType: 'FEUER',
+                    },
+                ],
+            },
+        ])
+    })
+
     it('normalizes indexed Pre-Effect form data before document updates', () => {
         const updateData = {
             system: {
@@ -144,39 +174,71 @@ describe('PreEffectItemSheet', () => {
 
     it('renders outcome-payload controls with the correct pre-effect index', () => {
         const template = readFileSync(
-            join(process.cwd(), 'scripts', 'items', 'templates', 'pre-effects.hbs'),
+            join(process.cwd(), 'scripts', 'items', 'templates', 'partials', 'pre-effect-card.hbs'),
             'utf8',
         )
 
-        expect(template).toContain('{{#each preEffects as |preEffect preEffectIndex|}}')
+        expect(template).toContain('name="{{../pathPrefix}}.resistanceOutcomes.failure.enabled"')
+        expect(template).toContain('name="{{../pathPrefix}}.resistanceOutcomes.success.enabled"')
+        expect(template).toContain('name="{{pathPrefix}}.avoidTest.enabled" value="true"')
+        for (const feature of [
+            'condition.enabled',
+            'marker.enabled',
+            'summonItem.enabled',
+            'summonCreature.enabled',
+            'armedCombat.enabled',
+        ]) {
+            expect(template).toContain(`name="{{pathPrefix}}.${feature}" value="true"`)
+        }
         expect(template).toContain(
-            'name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.failure.enabled"',
+            'name="{{../../pathPrefix}}.resistanceOutcomes.failure.changes.{{@index}}.key"',
         )
         expect(template).toContain(
-            'name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.success.enabled"',
+            'name="{{../../pathPrefix}}.resistanceOutcomes.success.ilarisModifiers.{{@index}}.target"',
         )
-        expect(template).toContain(
-            'name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.failure.changes.{{@index}}.key"',
-        )
-        expect(template).toContain(
-            'name="system.preEffects.{{preEffectIndex}}.resistanceOutcomes.success.ilarisModifiers.{{@index}}.target"',
-        )
-        expect(template).not.toContain('system.preEffects..resistanceOutcomes')
+        expect(template).not.toContain('resistanceOutcomes..')
         expect(template).not.toContain('{{@../../index}}.resistanceOutcomes')
+    })
+
+    it('keeps the pre-effect path prefix inside shared change entries', () => {
+        const template = readFileSync(
+            join(process.cwd(), 'scripts', 'items', 'templates', 'partials', 'effect-wirkung.hbs'),
+            'utf8',
+        )
+
+        expect(template).toContain('name="{{../pathPrefix}}.changes.{{@index}}.damageType"')
+        expect(template).not.toContain('name="{{pathPrefix}}.changes.{{@index}}.damageType"')
+    })
+
+    it('keeps the pre-effect path prefix inside every shared nested editor list', () => {
+        const template = readFileSync(
+            join(process.cwd(), 'scripts', 'items', 'templates', 'partials', 'pre-effect-card.hbs'),
+            'utf8',
+        )
+
+        for (const suffix of [
+            'ilarisModifiers.{{@index}}.value',
+            'summonItem.overrides.{{@index}}.path',
+            'summonCreature.overrides.{{@index}}.path',
+            'summonCreature.dominationChecks.entries.{{@index}}.kreaturentyp',
+        ]) {
+            expect(template).toContain(`name="{{../pathPrefix}}.${suffix}"`)
+            expect(template).not.toContain(`name="{{pathPrefix}}.${suffix}"`)
+        }
     })
 
     it('keeps creature, domination, and probe fields behind their active branches', () => {
         const template = readFileSync(
-            join(process.cwd(), 'scripts', 'items', 'templates', 'pre-effects.hbs'),
+            join(process.cwd(), 'scripts', 'items', 'templates', 'partials', 'pre-effect-card.hbs'),
             'utf8',
         )
 
-        expect(template).toContain('{{#if summonCreature.enabled}}')
-        expect(template).toContain('{{#if summonCreature.dominationChecks.enabled}}')
+        expect(template).toContain('{{#if preEffect.summonCreature.enabled}}')
+        expect(template).toContain('{{#if preEffect.summonCreature.dominationChecks.enabled}}')
         expect(template).toContain('{{#if (ifEq probeType "attribut")}}')
-        expect(template).toContain('name="system.preEffects.{{@index}}.summonCreature.sourceUuid"')
+        expect(template).toContain('name="{{pathPrefix}}.summonCreature.sourceUuid"')
         expect(template).toContain(
-            'name="system.preEffects.{{@../index}}.summonCreature.dominationChecks.entries.{{@index}}.fertigkeit"',
+            'name="{{../pathPrefix}}.summonCreature.dominationChecks.entries.{{@index}}.fertigkeit"',
         )
     })
 
@@ -243,6 +305,21 @@ describe('PreEffectItemSheet', () => {
             success: { enabled: false, changes: [], ilarisModifiers: [] },
         })
         expect(legacy[0]).not.toHaveProperty('resistanceOutcomes')
+    })
+
+    it('attaches editor-only pathPrefix and derived summary to prepared pre-effects', () => {
+        const sheet = Object.create(PreEffectItemSheet.prototype)
+
+        const [prepared] = sheet._getEditorPreEffects([
+            {
+                changes: [{ value: '4W6', damageType: 'FEUER' }],
+                avoidTest: { enabled: true, attribut: 'KO', resistDifficulty: 12 },
+            },
+        ])
+
+        expect(prepared.pathPrefix).toBe('system.preEffects.0')
+        expect(prepared.summary).toContain('4W6')
+        expect(prepared.summary).toContain('KO · Schwierigkeit 12')
     })
 
     it('adds a change at the selected nested outcome path', () => {

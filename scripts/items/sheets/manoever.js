@@ -16,17 +16,16 @@ export class ManoeverSheet extends PreEffectItemSheet {
 
     /** @override */
     static PARTS = {
-        ...PreEffectItemSheet.PARTS,
         form: {
             template: 'systems/Ilaris/scripts/items/templates/manoever.hbs',
         },
+        ...PreEffectItemSheet.PARTS,
     }
 
     /** @override */
     async _prepareContext(options) {
         const context = await super._prepareContext(options)
         context.manoever = CONFIG.ILARIS.manoever
-        context.isManeuverPreEffect = true
         return context
     }
 
