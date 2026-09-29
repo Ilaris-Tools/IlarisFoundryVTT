@@ -1,0 +1,27 @@
+name: Copilot Foundry E2E environment
+
+on:
+    workflow_dispatch:
+
+jobs:
+    provision:
+        if: ${{ secrets.FOUNDRY_LICENSE_KEY != '' && (secrets.FOUNDRY_DOWNLOAD_URL != '' || (secrets.FOUNDRY_USERNAME != '' && secrets.FOUNDRY_PASSWORD != '')) }}
+        runs-on: ubuntu-latest
+        environment: copilot
+        permissions:
+            contents: read
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: npm
+            - run: npm install --no-audit --no-fund
+            - name: Provision canonical remote E2E world
+              env:
+                  FOUNDRY_LICENSE_KEY: ${{ secrets.FOUNDRY_LICENSE_KEY }}
+                  FOUNDRY_USERNAME: ${{ secrets.FOUNDRY_USERNAME }}
+                  FOUNDRY_PASSWORD: ${{ secrets.FOUNDRY_PASSWORD }}
+                  FOUNDRY_DOWNLOAD_URL: ${{ secrets.FOUNDRY_DOWNLOAD_URL }}
+                  E2E_HEADLESS: '1'
+              run: npm run foundry:env

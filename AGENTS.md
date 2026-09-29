@@ -109,6 +109,24 @@ Rules from `openspec/config.yaml` apply to all phases:
 
 ## Working Rules
 
+### Foundry E2E lifecycle
+
+Use `node utils/foundry-lifecycle.mjs <Action>` for local E2E lifecycle work.
+It uses the official Foundry CLI and the `ilaris-e2e-world-v14363-r1` world.
+Use `--mode remote` or the documented `npm run foundry:env`/
+`npm run foundry:ctl -- <Action>` commands only when a credentialed remote
+server is needed. Remote setup is opt-in, manifest-driven, and confined to its
+dedicated `FOUNDRY_HOME`; it never replaces the external-server contract of
+`npm run test:e2e`. See `utils/foundry-env/README.md` before using credentials
+or the opt-in sharing command.
+
+For a fresh hosted Linux VM, use `npm run foundry:cloud -- <E2E paths>`. It is
+a disposable environment-only-secret bootstrap: it runs `npm ci`, starts a
+canonical isolated Foundry world, executes headless Playwright, retains
+`test-results/`, and stops only its owned process. Set a unique
+`FOUNDRY_RUN_ID` per concurrent task. Do not use it for Fable's local
+interactive or old-versus-new test workflow.
+
 1. **Consult the Foundry VTT API** (<https://foundryvtt.com/api/>) before making assumptions about Hooks, Documents, utilities, or rendering APIs.
 2. **Run `npm install`** before any build or test operation.
 3. **Run `npm run pack-all`** after modifying any `_source/` compendium data.
@@ -121,6 +139,28 @@ Rules from `openspec/config.yaml` apply to all phases:
 10. **Reuse Foundry helpers first.** Check `foundry.utils.*`, built-in document collection methods, and existing system helpers before introducing a new utility or manually manipulating document data.
 11. **Keep presentation in templates.** Put rendered markup in feature-specific Handlebars (`.hbs`) templates and pass structured context from JavaScript. Use JavaScript for application state, event handling, and data preparation—not large inline HTML strings—unless Foundry requires dynamic HTML at runtime.
 12. **Use the appropriate Foundry abstraction.** Prefer Documents and embedded-document APIs for persistent data, AppV2/Handlebars applications for UI, and documented Hooks for lifecycle integration.
+
+## E2E Test Environment (any agent, any sandbox)
+
+Ephemeral agent environments (Claude Code web, GitHub Copilot coding agent,
+Codex, CI) can run the full Playwright e2e suite against a real Foundry VTT
+server provisioned by `utils/foundry-env/` (manifest-driven
+`ilaris-e2e-world-v14363-r1` baseline world; soft-skips with exit code 3 when
+the Foundry secrets are not configured). See the "Foundry E2E lifecycle"
+working rule above for the commands. Required secrets and per-agent wiring
+(Claude SessionStart hook, Copilot `copilot-setup-steps.yml`, public tunnel
+sharing) are documented in `utils/foundry-env/README.md`.
+
+## Git Workflow (all agents)
+
+- **Base all work on `develop`** and open pull requests against `develop` —
+  never against `main`.
+- `main` is the production branch. It is only updated by a release merge
+  (`develop` → `main`) after manual testing; agents do not target it.
+- Details and the release process are documented in
+  [CONTRIBUTING.md](CONTRIBUTING.md).
+- If a hosted agent session was started from `main` (the repository default),
+  rebase the working branch onto `origin/develop` before opening a PR.
 
 ## Precedence
 

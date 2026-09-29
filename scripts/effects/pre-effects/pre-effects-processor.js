@@ -12,6 +12,14 @@ export function toArray(val) {
 }
 
 /**
+ * Foundry v14 ObjectFields materialize authored arrays as indexed objects at
+ * runtime. Always normalize before deciding whether a spell has pre-effects.
+ */
+export function hasPreEffects(value) {
+    return toArray(value).length > 0
+}
+
+/**
  * Apply all pre-effects from a spell to its targets.
  * Called fire-and-forget — not awaited.
  *
