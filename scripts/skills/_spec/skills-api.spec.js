@@ -113,6 +113,9 @@ function createActor() {
         profan: {
             fertigkeiten: {},
         },
+        items: {
+            get: jest.fn(),
+        },
         update: jest.fn().mockResolvedValue(undefined),
     }
 }
@@ -240,11 +243,11 @@ describe('FertigkeitDialog hooks', () => {
         )
     })
 
-    it('uses PWT for a valid initial specific talent', () => {
-        actor.profan.fertigkeiten = [{ system: { pw: 10, pwt: 14 } }]
+    it('uses PWT from the profane skill Item ID for a valid initial specific talent', () => {
+        actor.items.get.mockReturnValue({ system: { pw: 10, pwt: 14 } })
         const dialog = new FertigkeitDialog(actor, {
             probeType: 'fertigkeit',
-            fertigkeitKey: 0,
+            fertigkeitKey: 'athletik-id',
             fertigkeitName: 'Athletik',
             pw: 10,
             talentList: { 0: 'Akrobatik' },
@@ -262,13 +265,14 @@ describe('FertigkeitDialog hooks', () => {
                 usesTalent: true,
             }),
         )
+        expect(actor.items.get).toHaveBeenCalledWith('athletik-id')
     })
 
-    it('uses PW when the requested initial talent is unavailable', () => {
-        actor.profan.fertigkeiten = [{ system: { pw: 10, pwt: 14 } }]
+    it('uses PW from the profane skill Item ID when the requested initial talent is unavailable', () => {
+        actor.items.get.mockReturnValue({ system: { pw: 10, pwt: 14 } })
         const dialog = new FertigkeitDialog(actor, {
             probeType: 'fertigkeit',
-            fertigkeitKey: 0,
+            fertigkeitKey: 'athletik-id',
             fertigkeitName: 'Athletik',
             pw: 10,
             talentList: { 0: 'Laufen' },
@@ -286,6 +290,7 @@ describe('FertigkeitDialog hooks', () => {
                 usesTalent: false,
             }),
         )
+        expect(actor.items.get).toHaveBeenCalledWith('athletik-id')
     })
 
     it('prepares the computed summary context for summaries-only rerenders', async () => {

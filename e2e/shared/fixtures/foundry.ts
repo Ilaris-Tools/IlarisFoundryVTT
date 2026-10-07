@@ -1,6 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test'
 
-import { assertE2EBaseline, E2E_BASELINE } from '../baseline'
+import { assertE2EBaseline, E2E_BASELINE, restoreE2EBaselineSettings } from '../baseline'
 
 export type FoundryCredentials = {
     url: string
@@ -70,6 +70,8 @@ export async function loginAndJoinWorld(page: Page, config: FoundryCredentials =
             undefined,
             { timeout: 30000 },
         )
+        await restoreE2EBaselineSettings(page)
+        await assertE2EBaseline(page)
         return
     }
 
@@ -145,6 +147,7 @@ export async function loginAndJoinWorld(page: Page, config: FoundryCredentials =
         { timeout: 30000 },
     )
 
+    await restoreE2EBaselineSettings(page)
     await assertE2EBaseline(page)
 
     await dismissFoundryCompatibilityWarnings(page)

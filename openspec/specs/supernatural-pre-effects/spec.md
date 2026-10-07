@@ -61,11 +61,11 @@ When a pre-effect has `avoidTest.enabled: true`, the target SHALL receive a whis
 - **WHEN** a spell with avoidTest succeeds against a target
 - **THEN** a whispered ChatMessage with `.resist-button` SHALL be sent to the target's controlling client via socket routing
 
-#### Scenario: Resist test uses FertigkeitDialog with correct skill resolution
+#### Scenario: Resist test uses FertigkeitDialog with a stable skill reference
 
 - **WHEN** the target clicks the resist button and `avoidTest.fertigkeit` is set to a profane skill name such as "Athletik"
-- **THEN** the resist handler SHALL find the skill in `actor.profan.fertigkeiten` by `name`, extract its array index, `system.pw`, and `system.talente`
-- **AND** `FertigkeitDialog` SHALL be opened with `probeType: 'fertigkeit'`, `fertigkeitKey: <index>`, `pw: <resolved PW>`, and `talentList: <resolved talents>`
+- **THEN** the resist handler SHALL find the skill in `actor.profan.fertigkeiten` by `name`, extract its `id`, `system.pw`, and `system.talente`
+- **AND** `FertigkeitDialog` SHALL be opened with `probeType: 'fertigkeit'`, `fertigkeitKey: <resolved skill ID>`, `pw: <resolved PW>`, and `talentList: <resolved talents>`
 
 #### Scenario: Configured possessed talent is auto-selected
 

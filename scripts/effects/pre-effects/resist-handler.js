@@ -101,19 +101,15 @@ async function handleResistClick(actor, preEffectData, button) {
 
     if (avoidTest.fertigkeit) {
         // Skill-based resist: find the skill by name in the actor's profan.fertigkeiten array
-        const skillIndex = actor.profan.fertigkeiten.findIndex(
-            (f) => f.name === avoidTest.fertigkeit,
-        )
+        const skill = actor.profan.fertigkeiten.find((f) => f.name === avoidTest.fertigkeit)
 
-        if (skillIndex === -1) {
+        if (!skill) {
             ui.notifications.warn(
                 `Fertigkeit "${avoidTest.fertigkeit}" nicht auf diesem Akteur gefunden.`,
             )
             button.disabled = false
             return
         }
-
-        const skill = actor.profan.fertigkeiten[skillIndex]
 
         // Build talent list from the skill's talents
         const talentList = {}
@@ -125,7 +121,7 @@ async function handleResistClick(actor, preEffectData, button) {
 
         dialogOptions = {
             probeType: 'fertigkeit',
-            fertigkeitKey: skillIndex,
+            fertigkeitKey: skill.id,
             fertigkeitName: skill.name,
             pw: skill.system.pw,
             talentList,
