@@ -17,3 +17,13 @@ Einige Begriffe aus dem FoundryVTT-Jargon kurz erklärt:
     - Zauber, Vorteile, Fertigkeiten, Liturgien ... (aus Sephrasto importiert)
     - Kreaturen und Kreatureigenschaften (aus ilaris-online.de/api generiert)
     - Beispielhelden (von Hand erstellt)
+
+## Gegenstände und Fähigkeiten hinzufügen
+
+Wenn du auf dem Helden- oder Kreaturenbogen einen Gegenstand, eine Waffe oder eine Fähigkeit hinzufügst, öffnet sich zunächst eine Auswahl mit passenden Kompendiumseinträgen. Berücksichtigt werden alle für dich lesbaren Kompendien, auch aus der Spielwelt oder aus Modulen mit Hausregeln.
+
+Mit **Suche** filterst du nach dem Namen; unter **Kompendium** kannst du die Auswahl zusätzlich auf eine Quelle beschränken. Die Quelle steht bei jedem Treffer, damit du gleichnamige Einträge unterscheiden kannst. Ein Klick auf den Namen öffnet eine Vorschau. Um den Eintrag auf den Bogen zu übernehmen, wähle ihn aus und klicke auf **Hinzufügen**.
+
+Über die Schaltfläche zum Erstellen eines eigenen Eintrags kannst du weiterhin einen leeren Gegenstand oder eine eigene Fähigkeit anlegen und anschließend bearbeiten. Das ist auch möglich, wenn die Suche keine Treffer liefert. Bei Kreaturen wird ein eigener Vorteil als Eigenschaft angelegt.
+
+**Abbrechen** oder das Schließen der Auswahl legt keinen Eintrag an. Auch das Öffnen einer Vorschau fügt dem Bogen nichts hinzu.

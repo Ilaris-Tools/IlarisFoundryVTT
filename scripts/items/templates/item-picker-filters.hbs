@@ -1,0 +1,16 @@
+<section class="picker-filters" aria-label="Einträge filtern">
+    <label class="form-group">
+        <span>Suche</span>
+        <input type="search" name="search" value="{{search}}" placeholder="Name suchen …" autocomplete="off" {{disabled busy}}>
+    </label>
+    <label class="form-group">
+        <span>Kompendium</span>
+        <select name="pack" {{disabled busy}}>
+            <option value="">Alle zugänglichen Kompendien</option>
+            {{#each packs}}
+            <option value="{{value}}" {{#if selected}}selected{{/if}}>{{label}}</option>
+            {{/each}}
+        </select>
+    </label>
+</section>
+
