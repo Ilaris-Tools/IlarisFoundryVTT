@@ -438,23 +438,21 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
         let usesTalent = false
 
         if (this.probeType === 'fertigkeit' && this.fertigkeitKey !== null) {
+            const skill = this.actor.items.get(this.fertigkeitKey)
             const talentChoice = Number(html.querySelector(`#talent-${this.dialogId}`)?.value)
             if (talentChoice === -2) {
                 // ohne Talent - use pw
-                effectivePW =
-                    this.actor.profan.fertigkeiten[this.fertigkeitKey]?.system.pw || this.pw
+                effectivePW = skill?.system.pw || this.pw
                 // Show warning if talents are available but none selected
                 noTalentSelected = hasTalents
             } else if (talentChoice === -1) {
                 // mit Talent - use pwt
-                effectivePW =
-                    this.actor.profan.fertigkeiten[this.fertigkeitKey]?.system.pwt || this.pw
+                effectivePW = skill?.system.pwt || this.pw
                 label = `${this.fertigkeitName} (Talent)`
                 usesTalent = true
             } else if (talentChoice >= 0 && this.talentList[talentChoice]) {
                 // specific talent - use pwt
-                effectivePW =
-                    this.actor.profan.fertigkeiten[this.fertigkeitKey]?.system.pwt || this.pw
+                effectivePW = skill?.system.pwt || this.pw
                 label = `${this.fertigkeitName} (${this.talentList[talentChoice]})`
                 usesTalent = true
             }

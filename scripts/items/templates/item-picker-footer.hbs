@@ -1,0 +1,11 @@
+<footer class="picker-footer">
+    {{#if error}}<p class="picker-error" role="alert">{{error}}</p>{{/if}}
+    <div class="picker-actions">
+        <button type="button" data-action="createBlank" {{#unless canCreateBlank}}disabled{{/unless}}>{{blankLabel}}</button>
+        <button type="button" data-action="cancel">Abbrechen</button>
+        <button type="button" data-action="add" {{#unless canAdd}}disabled{{/unless}}>
+            <i class="fas fa-plus" aria-hidden="true"></i> Hinzufügen
+        </button>
+    </div>
+</footer>
+
