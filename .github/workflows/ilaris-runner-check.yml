@@ -1,0 +1,74 @@
+name: Ilaris Runner Check
+
+on:
+    workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+    group: ilaris-dev
+    cancel-in-progress: false
+
+jobs:
+    check:
+        name: Check Foundry and Chromium
+        runs-on: [self-hosted, Linux, X64, ilaris-dev]
+        timeout-minutes: 5
+        steps:
+            - name: Check Node.js
+              shell: bash
+              run: |
+                  node -e 'const major = Number(process.versions.node.split(".")[0]); if (major < 24) throw new Error("Node.js 24 or newer is required"); console.log("Node.js", process.version)'
+
+            - name: Check Foundry HTTP endpoint
+              shell: bash
+              run: |
+                  curl --fail --silent --show-error --max-time 15 \
+                    --output /dev/null http://127.0.0.1:30000/
+
+            - name: Check Chromium and WebGL 2
+              shell: bash
+              working-directory: /opt/playwright-check
+              run: |
+                  node <<'EOF'
+                  const assert = require('node:assert/strict');
+                  const { chromium } = require('@playwright/test');
+
+                  (async () => {
+                    const browser = await chromium.launch({
+                      headless: true,
+                      channel: 'chromium',
+                      args: ['--use-gl=angle', '--use-angle=swiftshader'],
+                      timeout: 30000,
+                    });
+
+                    try {
+                      console.log('Chromium:', browser.version());
+                      const page = await browser.newPage({
+                        viewport: { width: 1366, height: 768 },
+                      });
+                      const response = await page.goto('http://127.0.0.1:30000/', {
+                        waitUntil: 'domcontentloaded',
+                        timeout: 30000,
+                      });
+                      assert(response?.ok(), `Foundry HTTP status: ${response?.status()}`);
+
+                      const graphics = await page.evaluate(() => {
+                        const gl = document.createElement('canvas').getContext('webgl2');
+                        if (!gl) return { webgl2: false };
+                        const info = gl.getExtension('WEBGL_debug_renderer_info');
+                        return {
+                          webgl2: true,
+                          renderer: gl.getParameter(info ? info.UNMASKED_RENDERER_WEBGL : gl.RENDERER),
+                        };
+                      });
+                      assert(graphics.webgl2, 'WebGL 2 is unavailable');
+                      console.log('Graphics:', graphics);
+                    } finally {
+                      await browser.close();
+                    }
+                  })().catch(error => {
+                    console.error(error);
+                    process.exitCode = 1;
+                  });
+                  EOF
